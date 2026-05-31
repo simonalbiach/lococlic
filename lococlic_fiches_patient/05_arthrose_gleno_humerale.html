@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="../auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiche patient — Arthrose gléno-humérale</title>
+<style>
+  @page { size: A4; margin: 15mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    line-height: 1.5;
+    padding: 24px;
+  }
+  .sheet {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+    color: white;
+    padding: 28px 36px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 13px;
+    opacity: 0.9;
+  }
+  .logo { font-weight: 800; letter-spacing: -0.3px; font-size: 16px; }
+  .doc-type { text-transform: uppercase; letter-spacing: 1px; font-size: 11px; }
+  .title { font-size: 24px; font-weight: 800; line-height: 1.2; }
+  .subtitle { font-size: 15px; margin-top: 8px; opacity: 0.92; font-weight: 400; }
+
+  .intro {
+    padding: 24px 36px;
+    background: #f0f9ff;
+    border-bottom: 1px solid #e0f2fe;
+  }
+  .intro-text {
+    font-size: 14px;
+    color: #0c4a6e;
+    line-height: 1.6;
+  }
+  .intro-text strong { color: #1e3a5f; }
+
+  .section-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #1e3a5f;
+    padding: 24px 36px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::before {
+    content: '';
+    width: 4px;
+    height: 22px;
+    background: #10b981;
+    border-radius: 2px;
+  }
+
+  .exercises { padding: 0 36px 24px; }
+  .exercise {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    border-left: 4px solid #10b981;
+  }
+  .exercise-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .exercise-number {
+    background: #10b981;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .exercise-name { font-size: 16px; font-weight: 700; color: #1e3a5f; }
+  .exercise-image {
+    background: #e2e8f0;
+    border: 2px dashed #94a3b8;
+    border-radius: 8px;
+    height: 90px;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 12px;
+    font-style: italic;
+  }
+  .exercise-description {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  .exercise-prescription {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .pill {
+    background: white;
+    color: #1e3a5f;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #cbd5e1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pill-icon { font-size: 13px; }
+
+  .avoid {
+    background: #fef3f2;
+    border: 1px solid #fecdd3;
+    border-radius: 12px;
+    margin: 8px 36px 24px;
+    padding: 16px 20px;
+  }
+  .avoid-title {
+    font-weight: 800;
+    color: #991b1b;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .avoid-list {
+    font-size: 13px;
+    color: #7f1d1d;
+    line-height: 1.6;
+    padding-left: 22px;
+  }
+
+  .reconsult {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 12px;
+    margin: 0 36px 24px;
+    padding: 16px 20px;
+  }
+  .reconsult-title {
+    font-weight: 800;
+    color: #92400e;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .reconsult-list {
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.6;
+    padding-left: 22px;
+  }
+
+  .footer {
+    background: #f1f5f9;
+    padding: 16px 36px;
+    text-align: center;
+    font-size: 11px;
+    color: #64748b;
+    border-top: 1px solid #e2e8f0;
+    line-height: 1.5;
+  }
+
+  .print-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1e3a5f;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 100;
+  }
+  .print-btn:hover { background: #2c5f8d; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .sheet { box-shadow: none; border-radius: 0; }
+    .print-btn { display: none; }
+    .exercise { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <header class="header">
+    <div class="header-top">
+      <span class="logo">LocoClic</span>
+      <span class="doc-type">Fiche patient</span>
+    </div>
+    <h1 class="title">Arthrose gléno-humérale</h1>
+    <p class="subtitle">Programme d'exercices à réaliser à la maison</p>
+  </header>
+
+  <section class="intro">
+    <p class="intro-text">Vous souffrez d'<strong>usure du cartilage de l'épaule</strong>. La rééducation vise à <strong>entretenir la mobilité</strong> et à <strong>renforcer les muscles stabilisateurs</strong> pour soulager l'articulation. Un programme régulier pendant 6 à 8 semaines apporte un soulagement durable.</p>
+  </section>
+
+  <h2 class="section-title">Vos exercices quotidiens</h2>
+
+  <div class="exercises">
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-number">1</span>
+        <span class="exercise-name">Renforcement du dentelé antérieur</span>
+      </div>
+      <div class="exercise-image">[ Illustration à insérer ]</div>
+      <p class="exercise-description">Debout face à un mur, mains à hauteur d'épaules, bras tendus. Faites une pompe contre le mur. À la fin du mouvement, poussez encore un peu plus loin en arrondissant le dos pour "décoller" les omoplates du thorax. Revenez doucement.</p>
+      <div class="exercise-prescription">
+        <span class="pill"><span class="pill-icon">🔁</span> 3 séries de 10 répétitions</span>
+        <span class="pill"><span class="pill-icon">📅</span> 1 fois par jour</span>
+        <span class="pill"><span class="pill-icon">⏱️</span> 6 semaines</span>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-number">2</span>
+        <span class="exercise-name">Tirage horizontal avec élastique</span>
+      </div>
+      <div class="exercise-image">[ Illustration à insérer ]</div>
+      <p class="exercise-description">Fixez un élastique à hauteur de poitrine (poignée de porte par exemple). Debout face à l'élastique, tirez les poignées vers vous en gardant les coudes près du corps. À la fin du mouvement, serrez vos omoplates l'une contre l'autre. Revenez lentement.</p>
+      <div class="exercise-prescription">
+        <span class="pill"><span class="pill-icon">🔁</span> 3 séries de 12 répétitions</span>
+        <span class="pill"><span class="pill-icon">📅</span> 1 fois par jour</span>
+        <span class="pill"><span class="pill-icon">⏱️</span> 6 semaines</span>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-number">3</span>
+        <span class="exercise-name">Renforcement isométrique coiffe globale (RE + RI)</span>
+      </div>
+      <div class="exercise-image">[ Illustration à insérer ]</div>
+      <p class="exercise-description">Coude au corps fléchi à 90°. Alternez : poussez le dos de la main vers l'extérieur contre un mur (rotation externe), puis poussez la paume vers l'intérieur contre un mur (rotation interne). Pression douce, sans douleur.</p>
+      <div class="exercise-prescription">
+        <span class="pill"><span class="pill-icon">🔁</span> Maintenir 10 secondes × 10 répétitions de chaque côté</span>
+        <span class="pill"><span class="pill-icon">📅</span> 1 fois par jour</span>
+        <span class="pill"><span class="pill-icon">⏱️</span> 6 semaines</span>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-number">4</span>
+        <span class="exercise-name">Pendule de Codman</span>
+      </div>
+      <div class="exercise-image">[ Illustration à insérer ]</div>
+      <p class="exercise-description">Penchez-vous en avant en vous appuyant d'une main sur une table. Laissez le bras douloureux pendre dans le vide, complètement relâché. Faites de petits cercles avec votre bras, comme un pendule, sans forcer.</p>
+      <div class="exercise-prescription">
+        <span class="pill"><span class="pill-icon">🔁</span> 2 séries de 10 cercles</span>
+        <span class="pill"><span class="pill-icon">📅</span> 2 fois par jour</span>
+        <span class="pill"><span class="pill-icon">⏱️</span> 6 semaines</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="avoid">
+    <div class="avoid-title">⚠️ À éviter pendant la rééducation</div>
+    <ul class="avoid-list">
+      <li>Les charges lourdes et mouvements en force</li>
+      <li>L'immobilisation prolongée</li>
+      <li>Les exercices douloureux</li>
+    </ul>
+  </div>
+
+  <div class="reconsult">
+    <div class="reconsult-title">📞 Reconsulter rapidement si</div>
+    <ul class="reconsult-list">
+      <li>La douleur augmente malgré les exercices après 2-3 semaines</li>
+      <li>Apparition d'une faiblesse marquée du bras</li>
+      <li>Douleur nocturne intense qui vous empêche de dormir</li>
+    </ul>
+  </div>
+
+  <footer class="footer">
+    <strong>LocoClic — Fiche éducative.</strong> Ce document complète mais ne remplace pas l'avis médical.<br>
+    En cas de doute ou d'aggravation, contactez votre médecin.
+  </footer>
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨️ Imprimer la fiche</button>
+
+</body>
+</html>

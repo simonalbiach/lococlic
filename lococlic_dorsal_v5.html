@@ -1,0 +1,2276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocoClic — Rachis dorsal v5</title>
+<style>
+
+
+
+
+
+
+:root {
+  --bg: #f5f3ee;           /* fond crème */
+  --bg-card: #ffffff;       /* cartes blanches */
+  --bg-hover: #f0ede5;      /* survol crème plus foncé */
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a2332;          /* texte sombre principal */
+  --text-dim: #4a5468;      /* texte secondaire */
+  --text-mute: #8a92a0;     /* texte tertiaire */
+  --accent: #2563a8;        /* bleu marine accent */
+  --accent-dim: #1d4d85;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;        /* or plus sombre pour contraste */
+  --navy: #0f2a44;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 16px;
+  line-height: 1.5;
+}
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.header .badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  padding: 3px 10px;
+  background: var(--accent);
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* === STEP INDICATOR === */
+.step-ind {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.si-item {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 8px;
+  background: #fafaf7;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: center;
+}
+.si-item.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+.si-item.done {
+  background: rgba(37, 99, 168, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* === BREADCRUMB === */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.bc-item { font-style: italic; }
+
+/* === BTN BACK === */
+.btn-back {
+  background: white;
+  color: var(--text-dim);
+  border: 1.5px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.btn-back:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.card-tag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-q {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-hint {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+
+/* === CHOICES (Mécanisme, Âge, Horaire) === */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice {
+  width: 100%;
+  text-align: left;
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.choice:hover {
+  background: rgba(37,99,168,0.06);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.choice-lbl {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.choice-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+/* === VIGNETTES === */
+.vig-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .vig-grid { grid-template-columns: 1fr 1fr; }
+}
+.vig {
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.vig:hover { background: rgba(37,99,168,0.06); border-color: var(--accent); }
+.vig-sel {
+  background: rgba(22,163,74,0.08);
+  border-color: var(--green);
+}
+.vig-chk {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.vig-lbl {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.vig-desc {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.foot-info {
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  box-shadow: 0 2px 8px rgba(37,99,168,0.25);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary:not(:disabled):hover { filter: brightness(1.1); }
+
+/* === TESTS === */
+.test-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+.test-fam {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.test-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.test-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.test-section {
+  margin: 14px 0;
+}
+.test-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.test-section div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.test-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn-pos, .btn-neg {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-pos {
+  background: var(--green);
+  color: white;
+}
+.btn-neg {
+  background: var(--red);
+  color: white;
+}
+.btn-pos:hover, .btn-neg:hover { filter: brightness(1.1); }
+.btn-skip {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* === RÉSULTAT === */
+.result-main {
+  border: 2px solid var(--accent);
+  background: linear-gradient(180deg, rgba(93,141,240,0.08), var(--bg-card));
+}
+.result-tag {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.result-icon { font-size: 36px; }
+.result-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+.result-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.result-score {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.result-section {
+  margin: 14px 0;
+}
+.result-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+.sources {
+  list-style: none;
+  font-size: 12px;
+}
+.sources li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sources li:last-child { border: none; }
+.sources a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.sources a:hover { text-decoration: underline; }
+
+/* === ALTS === */
+.alts {
+  margin-top: 18px;
+}
+.alts-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.alt {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alt:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+.alt-icon { font-size: 24px; }
+.alt-body { flex: 1; }
+.alt-name { font-weight: 600; font-size: 14px; }
+.alt-pop { font-size: 11px; color: var(--text-mute); }
+.alt-score {
+  font-weight: 700;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+
+.btn-reset {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+.btn-reset:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,42,68,0.55);
+  z-index: 100;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  padding: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  font-size: 24px;
+  cursor: pointer;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-icon { font-size: 32px; }
+.modal-name { font-size: 17px; font-weight: 700; }
+.modal-pop { font-size: 12px; color: var(--text-mute); }
+.modal-section {
+  margin: 12px 0;
+}
+.modal-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.modal-section > div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.modal-section ul {
+  list-style: none;
+  font-size: 12px;
+}
+.modal-section ul li {
+  padding: 3px 0;
+}
+.modal-section ul a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+
+.key-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.key-tag { display:inline-block; background:rgba(93,141,240,0.15); color:var(--accent); padding:3px 10px; border-radius:12px; font-size:11px; }
+.bullets { list-style:none; padding-left:0; font-size:14px; line-height:1.7; }
+.bullets li { padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.bullets li:last-child { border:none; }
+.result-info { flex:1; }
+.result-prob-wrap { text-align:right; }
+.result-prob { font-size:28px; font-weight:800; color:var(--accent); line-height:1; }
+.result-score { font-size:11px; color:var(--text-mute); margin-top:2px; }
+.alt-right { text-align:right; }
+.alt-prob { font-weight:700; font-size:17px; color:var(--accent); }
+.alt-score { font-size:10px; color:var(--text-mute); }
+.modal-section ul { list-style:none; padding-left:0; font-size:13px; line-height:1.6; }
+.modal-section ul li { padding:3px 0; }
+.modal-section ul a { color:var(--accent); text-decoration:none; }
+
+/* ===== FICHE RÉSULTAT — sections distinctes ===== */
+.result-wrap { animation: fu 0.4s ease both; }
+@keyframes fu { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+.diag-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(37,99,168,0.12);
+}
+
+.diag-top {
+  background: linear-gradient(135deg, rgba(37,99,168,0.10), rgba(37,99,168,0.03));
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.diag-head { display:flex; align-items:center; gap:12px; flex:1; }
+.diag-icon { font-size: 32px; }
+.rank-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.diag-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.diag-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-wrap { text-align: right; min-width:88px; }
+.prob-pct {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.prob-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.prob-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.fiche { background: var(--bg-card); }
+
+.alert-box {
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+
+
+
+
+
+
+
+.fi:last-child { margin-bottom: 0; }
+
+
+
+
+.ref-tag {
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+  background: rgba(167,139,250,0.18);
+  border: 1px solid rgba(167,139,250,0.2);
+}
+.ref-tag.s {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border);
+}
+.ref-info { flex: 1; }
+.ref-who {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ref-why {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.ref-b {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: rgba(109,40,217,0.15);
+  color: #6d28d9;
+}
+.ref-tag.s .ref-b {
+  background: var(--bg-hover);
+  color: var(--text-mute);
+}
+
+.sources-row {
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.025);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.src-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.src-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(37,99,168,0.08);
+  border: 1px solid rgba(37,99,168,0.3);
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.src-chip:hover {
+  background: rgba(37,99,168,0.18);
+}
+
+.section-sep {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 22px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.alt-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .alt-cards { grid-template-columns: 1fr; }
+}
+.alt-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.alt-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+.alt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.alt-ic { font-size: 22px; }
+.alt-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.alt-pct {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-mute);
+}
+.alt-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.alt-fill {
+  height: 100%;
+  background: var(--text-mute);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.alt-key {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.alt-key strong {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 3px;
+}
+.alt-hint {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-align: right;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.actions .btn-primary, .actions .btn-back { flex: 1; min-width: 140px; }
+
+/* Modal fiche */
+.modal-fiche { 
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.modal-sources {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+
+/* === FICHE GRID — sections fortement distinctes === */
+.fiche-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  padding: 2px;
+}
+@media (max-width: 600px) {
+  .fiche-grid { grid-template-columns: 1fr; }
+}
+
+.fiche-sec {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: none;
+  position: relative;
+}
+
+/* Bandeau coloré en haut de chaque section */
+.fiche-sec::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* === COULEURS PAR SECTION === */
+/* Imagerie — bleu */
+.fiche-sec:nth-child(1) {
+  background: linear-gradient(180deg, rgba(94,177,255,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(1)::before { background: #5eb1ff; }
+
+/* Exercices — vert */
+.fiche-sec:nth-child(2) {
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(2)::before { background: #4ade80; }
+
+/* Traitement — jaune/or */
+.fiche-sec:nth-child(3) {
+  background: linear-gradient(180deg, rgba(251,191,36,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(3)::before { background: #fbbf24; }
+
+/* Orientation — violet */
+.fiche-sec:nth-child(4) {
+  background: linear-gradient(180deg, rgba(167,139,250,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(4)::before { background: #a78bfa; }
+
+/* sec-title plus visible */
+.sec-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+.sec-img { color: #1e6db8; }
+.sec-ex  { color: #15803d; }
+.sec-rx  { color: #b45309; }
+.sec-ref { color: #6d28d9; }
+
+/* Items plus aérés et visibles */
+.fi {
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 10px 8px 12px;
+  border-left: 3px solid;
+  margin-bottom: 8px;
+  background: rgba(0,0,0,0.025);
+  border-radius: 0 6px 6px 0;
+}
+.fi:last-child { margin-bottom: 0; }
+.fiche-sec:nth-child(1) .fi { border-left-color: rgba(94,177,255,0.4); }
+.fiche-sec:nth-child(2) .fi { border-left-color: rgba(74,222,128,0.4); }
+.fiche-sec:nth-child(3) .fi { border-left-color: rgba(251,191,36,0.4); }
+.fiche-sec:nth-child(4) .fi { border-left-color: rgba(167,139,250,0.4); }
+
+.fi strong {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+.fi span {
+  color: var(--text-dim);
+  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+}
+.fi-empty {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* === REFERRAL TAGS spécifiques (dans section orientation) === */
+.fiche-sec:nth-child(4) .ref-tag {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.disclaimer { background: #fef3c7; border: 2px solid #f59e0b; border-radius: 9px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #000000; line-height: 1.6; }
+.disclaimer strong { color: #991b1b; font-weight: 800; }
+
+/* === Encart Signes de gravité === */
+.severity-card {
+  background: linear-gradient(135deg, #fff1f2 0%, #fef3c7 100%);
+  border: 1.5px solid #f59e0b;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.15);
+}
+.severity-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b45309;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.severity-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+}
+
+/* === Encart Pièges diagnostiques === */
+.pitfall-card {
+  background: linear-gradient(135deg, #ecfdf5 0%, #cffafe 100%);
+  border: 1.5px solid #06b6d4;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(6, 182, 212, 0.12);
+}
+.pitfall-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0e7490;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.pitfall-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+  margin-bottom: 10px;
+}
+.pitfall-modules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pitfall-chip {
+  display: inline-block;
+  background: #fff;
+  color: #0e7490;
+  border: 1px solid #67e8f9;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+
+
+
+  .alt-ic-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .diag-icon-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.15);
+  }
+  .modal-icon-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  color: #1e3a5f;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s;
+" onmouseover="this.style.background='#1e3a5f';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#1e3a5f';">
+  ← Accueil
+</a>
+
+
+<div class="app">
+  <div class="header">
+    <h1>LocoClic — Rachis dorsal</h1>
+    <div class="badge">v5 · clinique adaptatif</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+// ========== PATHOLOGIES ==========
+const P = {
+  DORS_COMMUNE: {
+    id:'DORS_COMMUNE', name:'Dorsalgie commune mécanique', icon:'🦴', pop:'Tout âge adulte, plus fréquente 30-60 ans, déclenchement par effort, faux mouvement, posture prolongée',
+    desc:"Douleur dorsale mécanique sans signe neurologique ni red flag, évoluant depuis moins de 4-6 semaines. Aggravée par les mouvements, soulagée par le repos. Évolution favorable spontanée. Le rachis dorsal étant peu mobile, les causes mécaniques sont moins fréquentes qu'en lombaire/cervical : éliminer systématiquement les causes viscérales (cœur, poumon, aorte, oesophage, pancréas).",
+    severity:{
+      title:"Red flags à dépister",
+      text:"<strong>Éliminer systématiquement</strong> : douleur thoracique d'allure cardiaque (infarctus, angor), aortique (dissection — douleur transfixiante brutale), respiratoire (embolie, pneumothorax, pleurésie), digestive (ulcère, pancréatite, cholécystite), ostéoporose (fracture vertébrale brutale chez femme ménopausée), cancer (douleur nocturne, perte de poids, ATCD), infection (fièvre, immunosuppression) — la dorsalgie commune est un diagnostic d'élimination."
+    },
+    imaging:[
+      {t:"PAS d'imagerie en première intention",d:"Diagnostic clinique après élimination des red flags par anamnèse et examen"},
+      {t:"Radiographie dorsale face/profil",d:"Si red flag, suspicion fracture (ostéoporose, traumatisme) ou évolution > 6 semaines"},
+      {t:"Bilan biologique (NFS, CRP, calcémie)",d:"Si suspicion d'étiologie systémique, inflammatoire ou métabolique"},
+      {t:"IRM dorsale",d:"Réservée aux cas avec red flag ou évolution prolongée résistante"}
+    ],
+    treatment:[
+      {t:"Réassurance et maintien de l'activité",d:"Évolution favorable dans la majorité des cas"},
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol en première intention, AINS si insuffisant"},
+      {t:"Myorelaxant courte durée",d:"5-7 jours si contracture importante"},
+      {t:"Médecine manuelle / manipulations",d:"Souvent efficaces sur les blocages dorsaux"},
+      {t:"Kinésithérapie",d:"Si évolution prolongée"}
+    ],
+    exercises:[{t:'Mobilisation dorsale en extension sur rouleau',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_01_dorsalgie_commune.html',
+    referral:[
+      {who:'Médecin du sport',why:"Si récidives, sportif, ou pour programme de rééducation",p:false},
+      {who:'Rhumatologue',why:"Si évolution prolongée > 6 semaines, doute diagnostique ou red flag suspecté",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"<strong>Toujours éliminer une cause viscérale</strong> (cardiaque, aortique, respiratoire, digestive) chez tout patient avec dorsalgie aiguë — particulièrement si : douleur thoracique associée, terrain cardiovasculaire, dyspnée, signes digestifs, fièvre. Bilan : ECG, dosages cardiaques selon contexte, imagerie thoraco-abdominale au moindre doute."
+    },
+    sources:[
+      {l:'Briggs et al. 2009 — Thoracic spine pain prevalence systematic review (BMC Musculoskelet Disord)',u:'https://pubmed.ncbi.nlm.nih.gov/19563667/'},
+      {l:'Fouquet et al. 2015 — Prevalence of thoracic spine pain (Occup Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25638207/'},
+      {l:'Heneghan et al. 2018 — Thoracic spine pain physiotherapy (Musculoskelet Sci Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/29709769/'},
+      {l:'Masaracchio et al. 2019 — Thoracic spine manipulation systematic review (PLoS One)',u:'https://pubmed.ncbi.nlm.nih.gov/30759134/'}
+    ],
+    keys:['Dorsalgie aiguë','Mécanique','Diagnostic d\'élimination','Red flags viscéraux','Dos']
+  },
+  DORS_CHRONIQUE: {
+    id:'DORS_CHRONIQUE', name:'Dorsalgie chronique (incluant posture/sédentaire)', icon:'🔄', pop:'Adulte 30-60 ans, métier sédentaire avec écran, posture prolongée, facteurs psycho-sociaux possibles',
+    desc:"Dorsalgie évoluant depuis plus de 3 mois ou récidives fréquentes, le plus souvent d'origine posturale (sédentarité, écran, métier de bureau) ou dégénérative légère. Douleurs dorsales hautes ou moyennes en fin de journée, soulagées par les changements de position et le repos. Souvent associée à une cervicalgie. Diagnostic après élimination des red flags viscéraux et systémiques.",
+    severity:{
+      title:"Red flags à éliminer en cas de chronicité",
+      text:"<strong>Éliminer systématiquement</strong> en cas de chronicité : cancer (douleur nocturne, perte de poids, ATCD), spondylodiscite (fièvre, immunosuppression, toxicomanie IV), ostéoporose et fractures vertébrales (femme ménopausée, corticothérapie), pathologie viscérale chronique (œsophage, biliaire, pancréatique), spondylarthrite si sujet jeune avec composante inflammatoire."
+    },
+    imaging:[
+      {t:'Radiographie dorsale face/profil',d:"Évalue alignement, statique (cyphose), troubles dégénératifs, fractures vertébrales"},
+      {t:'IRM dorsale',d:"Indiquée si retentissement neurologique, doute diagnostique ou red flag — recherche hernie, sténose, atteinte médullaire"},
+      {t:'Bilan biologique',d:"NFS, CRP, calcémie, vitamine D — pour éliminer cause systémique/inflammatoire"}
+    ],
+    treatment:[
+      {t:"Exercice physique régulier",d:"Pierre angulaire — renforcement dorsal, mobilité, étirements"},
+      {t:"Kinésithérapie active",d:"Programme supervisé, renforcement, étirements, mobilisations"},
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol en première intention"},
+      {t:"Médecine manuelle / manipulations",d:"Efficaces sur les blocages dorsaux"},
+      {t:"Infiltration facettaire (art. post.)",d:"Sous radioguidage si composante facettaire dominante — par rhumatologue ou radiologue interventionnel"}
+    ],
+    exercises:[{t:'Mobilisation dorsale en extension sur rouleau',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement paravertébraux + activité aérobie',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_02_dorsalgie_chronique.html',
+    referral:[
+      {who:'Médecin du sport',why:"Programme de rééducation et de réentraînement à l'effort",p:true},
+      {who:'Rhumatologue',why:"Si doute diagnostique, infiltrations ou bilan complet",p:false},
+      {who:'Médecin du travail',why:"Si origine professionnelle ou retentissement sur l'emploi — adaptation du poste",p:false}
+    ],
+    sources:[
+      {l:'Briggs et al. 2009 — Thoracic spine pain prevalence systematic review (BMC Musculoskelet Disord)',u:'https://pubmed.ncbi.nlm.nih.gov/19563667/'},
+      {l:'Fouquet et al. 2015 — Prevalence of thoracic spine pain (Occup Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25638207/'},
+      {l:'Heneghan et al. 2018 — Thoracic spine pain physiotherapy (Musculoskelet Sci Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/29709769/'},
+      {l:'Niemeläinen et al. 2006 — Thoracic spine MRI degenerative findings (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/16778693/'}
+    ],
+    keys:['Dorsalgie chronique','Sédentaire écran','Posture','> 3 mois','Bio-psycho-social']
+  },
+  SYND_FACETTAIRE_D: {
+    id:'SYND_FACETTAIRE_D', name:'Syndrome articulaire postérieur dorsal', icon:'🦴', pop:'Adulte 40-70 ans, arthrose dorsale, posture en hyperlordose ou hypercyphose, parfois post-traumatique',
+    desc:"Douleur dorsale d'origine articulaire postérieure (zygapophysaire) de niveau T2 à T10. Douleur étagée avec irradiation intercostale ou pseudo-viscérale possible (sans dépasser la ligne médiane). Aggravée par l'extension et l'inclinaison ipsilatérale, soulagée par la flexion. PALPER-ROULÉ POSITIF sur le métamère atteint (hyperalgésie cutanée). Bonne réponse à la médecine manuelle / manipulation après élimination des red flags.",
+    imaging:[
+      {t:'Radiographie dorsale face/profil',d:"Recherche arthrose interapophysaire postérieure, pincement discal"},
+      {t:'Scanner ou IRM dorsale',d:"Si doute ou échec du traitement — arthrose facettaire, hypertrophie articulaire"}
+    ],
+    treatment:[
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
+      {t:"Kinésithérapie active",d:"Renforcement dorsal, étirements"},
+      {t:"Médecine manuelle / manipulations",d:"Souvent efficaces sur les blocages facettaires"},
+      {t:"Infiltration facettaire (art. post.)",d:"Sous radioguidage/scanner — par rhumatologue ou radiologue interventionnel si échec médical"}
+    ],
+    exercises:[{t:'Mobilisation dorsale en flexion (ouverture facettes)',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_03_syndrome_facettaire.html',
+    referral:[
+      {who:'Rhumatologue',why:"Pour infiltration facettaire sous radioguidage et bilan complet",p:true},
+      {who:'Médecin du sport',why:"Programme de rééducation et correction posturale",p:false}
+    ],
+    sources:[
+      {l:'Manchikanti et al. 2020 — Thoracic facet joint pain (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/32942779/'},
+      {l:'Stolz et al. 2020 — Thoracic facet joint syndrome diagnosis (Schmerz)',u:'https://pubmed.ncbi.nlm.nih.gov/32072290/'},
+      {l:'Atluri et al. 2008 — Diagnostic accuracy thoracic facet joint blocks (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/18850031/'},
+      {l:'Manchikanti et al. 2012 — Thoracic interventional techniques (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/22622912/'}
+    ],
+    keys:['Extension douloureuse','Pseudo-radiculaire intercostale','Arthrose facettaire','Facettaire dorsal']
+  },
+  DOULEUR_COSTOVERTEBRALE: {
+    id:'DOULEUR_COSTOVERTEBRALE', name:'Douleur costo-vertébrale / blocage costal', icon:'🦴', pop:'Adulte 30-60 ans, déclenchement par effort de torsion, port de charge, toux, sport asymétrique (golf, tennis)',
+    desc:"Douleur dorsale unilatérale d'origine articulaire costo-vertébrale (articulation entre la tête de côte et la vertèbre). Douleur reproductible par la respiration profonde, la toux, les mouvements de rotation et la palpation directe en regard de l'articulation costo-vertébrale. Souvent contexte de blocage post-effort de torsion ou faux mouvement. Évolution favorable avec mobilisation/manipulation.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique"},
+      {t:'Radiographie dorsale face/profil',d:"Élimine fracture costale ou pathologie pulmonaire associée"}
+    ],
+    treatment:[
+      {t:"Médecine manuelle / manipulations",d:"Pierre angulaire — manipulations costo-vertébrales très efficaces (déblocage)"},
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
+      {t:"Kinésithérapie",d:"Mobilisations costo-vertébrales, étirements"}
+    ],
+    exercises:[{t:'Mobilisation respiratoire (inspiration + rotation)',d:''},{t:'Mobilisation dorsale douce',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_04_costovertebrale.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation et prise en charge manipulatoire spécialisée",p:true},
+      {who:'Rhumatologue',why:"Si évolution prolongée ou récidives fréquentes",p:false}
+    ],
+    sources:[
+      {l:'Triano et al. 2013 — Spinal manipulation review (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/24139395/'},
+      {l:'Erwin et al. 2010 — Costovertebral joint pain (PM R)',u:'https://pubmed.ncbi.nlm.nih.gov/20970764/'},
+      {l:'Arroyo et al. 1992 — Costovertebral joint anatomy biomechanics (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/1428657/'},
+      {l:'Heneghan et al. 2018 — Thoracic spine pain physiotherapy (Musculoskelet Sci Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/29709769/'}
+    ],
+    keys:['Effort torsion','Reproductible respiration','Blocage costal','Manipulation efficace','Costo-vertébrale']
+  },
+  SYND_CYRIAX: {
+    id:'SYND_CYRIAX', name:'Syndrome de Cyriax (slipping rib syndrome)', icon:'🦴', pop:'Jeune adulte et adulte 20-50 ans, sportif (course, sport contact), post-traumatique, ATCD chirurgie thoracique',
+    desc:"Hypermobilité douloureuse des derniers arcs costaux flottants (8e, 9e, 10e côtes) avec subluxation cartilagineuse intermittente. Douleur thoracique basse antéro-latérale ou dorsale basse, parfois prise à tort pour une douleur abdominale ou digestive. Test du crochet positif : reproduction de la douleur en tractant les côtes flottantes vers le haut. Souvent diagnostic d'élimination.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (test du crochet positif)"},
+      {t:'Échographie dynamique des derniers arcs costaux',d:"Peut visualiser le mouvement anormal de la côte sous palpation"},
+      {t:'Radiographie thoracique',d:"Élimine fracture costale ou pathologie pleuro-pulmonaire"}
+    ],
+    treatment:[
+      {t:"Antalgiques + AINS",d:"Paracétamol, AINS en poussée"},
+      {t:"Kinésithérapie",d:"Renforcement de la paroi thoracique, étirements doux"},
+      {t:"Infiltration locale",d:"Sous échoguidage en cas de douleur localisée résistante"},
+      {t:"Chirurgie (résection costale partielle)",d:"Si forme invalidante résistante — par chirurgien thoracique"}
+    ],
+    exercises:[{t:'Adaptation des activités',d:''},{t:'Mobilisation respiratoire',d:''},{t:'Mobilisation dorsale douce',d:''},{t:'Étirement des pectoraux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_05_cyriax.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation et programme de rééducation",p:true},
+      {who:'Chirurgien thoracique',why:"Si forme invalidante et résistante au traitement médical — résection costale",p:false}
+    ],
+    sources:[
+      {l:'Foley et al. 2019 — Slipping rib syndrome (Curr Sports Med Rep)',u:'https://pubmed.ncbi.nlm.nih.gov/30817515/'},
+      {l:'Turcios 2017 — Slipping rib syndrome review (J Pediatr Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28528718/'},
+      {l:'Lippi et al. 2019 — Costal cartilage resection slipping rib (Ann Thorac Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/32055418/'},
+      {l:'McMahon 2018 — Slipping rib syndrome diagnosis (BMJ Case Rep)',u:'https://pubmed.ncbi.nlm.nih.gov/29929973/'}
+    ],
+    keys:['Côtes flottantes','Test du crochet','Slipping rib','Subluxation costale','Cyriax']
+  },
+  TIETZE: {
+    id:'TIETZE', name:'Syndrome de Tietze', icon:'🦴', pop:'Jeune adulte 20-40 ans, plus fréquent femme, sujet sportif ou post-traumatisme, parfois post-viral',
+    desc:"Inflammation bénigne d'une articulation chondrocostale ou chondrosternale (souvent 2e ou 3e côte) avec tuméfaction palpable inflammatoire. Douleur thoracique antérieure aiguë ou chronique, reproductible par la palpation directe de la jonction concernée. Évolution favorable spontanée en quelques semaines à mois. À distinguer de la costo-chondrite (sans tuméfaction). Diagnostic clinique.",
+    severity:{
+      title:"Diagnostic d'élimination",
+      text:"<strong>Toute douleur thoracique antérieure</strong> doit d'abord éliminer une étiologie cardiaque (infarctus, angor), aortique, pulmonaire ou pleurale avant de retenir un syndrome de Tietze. ECG, dosages cardiaques, imagerie thoracique au moindre doute."
+    },
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (tuméfaction palpable + douleur exquise)"},
+      {t:'Échographie ou IRM',d:"Confirme l'inflammation chondrocostale si doute (œdème, épaississement)"},
+      {t:'Radiographie thoracique',d:"Élimine fracture costale ou pathologie pleuro-pulmonaire"}
+    ],
+    treatment:[
+      {t:"Antalgiques + AINS",d:"Paracétamol, AINS en poussée — souvent efficaces"},
+      {t:"Repos sportif transitoire",d:"Si origine sportive"},
+      {t:"Infiltration locale",d:"Sous échoguidage en cas de forme résistante"}
+    ],
+    exercises:[{t:'Repos relatif et glaçage local',d:''},{t:'Mobilisation respiratoire douce',d:''},{t:'Étirement des pectoraux (léger)',d:''},{t:'Reprise progressive des activités',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_06_tietze.html',
+    referral:[
+      {who:'Rhumatologue',why:"Si forme résistante, infiltration ou doute diagnostique",p:false},
+      {who:'Médecin du sport',why:"Si origine sportive — gestion de la reprise",p:false}
+    ],
+    sources:[
+      {l:'Schumann 2023 — Tietze syndrome review (Eur Heart J)',u:'https://pubmed.ncbi.nlm.nih.gov/37551691/'},
+      {l:'Aeschlimann & Kahn 1990 — Tietze syndrome 32 cases (J Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/2280720/'},
+      {l:'Proulx & Zryd 2009 — Costochondritis diagnosis treatment (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/19751083/'},
+      {l:'Ayloo et al. 2013 — Evaluation noncardiac chest pain (Prim Care)',u:'https://pubmed.ncbi.nlm.nih.gov/24209725/'}
+    ],
+    keys:['Tuméfaction chondrocostale','2e-3e côte','Femme jeune','Inflammation bénigne','Tietze']
+  },
+  FRACT_VERTEBRE_OSTEOP: {
+    id:'FRACT_VERTEBRE_OSTEOP', name:'Fracture vertébrale ostéoporotique', icon:'⚠️', pop:'Femme ménopausée > 60 ans, homme > 70 ans, corticothérapie au long cours, ATCD fracture, faible IMC, tabagisme',
+    desc:"Tassement vertébral par fragilité osseuse, le plus souvent dorso-lombaire (T11-L2). Apparition brutale d'une douleur dorsale intense après un effort minime (toux, port léger, simple mouvement). Impotence fonctionnelle, douleur exquise à la palpation de l'épineuse, parfois irradiation en ceinture. Risque de tassement progressif avec cyphose et perte de taille.",
+    severity:{
+      title:"URGENCE diagnostique - terrain à risque",
+      text:"<strong>Penser systématiquement</strong> à la fracture vertébrale ostéoporotique chez : femme ménopausée, homme > 70 ans, corticothérapie au long cours, ATCD fracture de fragilité, perte de taille > 3 cm. Apparition brutale après effort minime = critère majeur. Radiographie en urgence + bilan d'ostéoporose (DEXA, calcémie, vitamine D, bilan endocrinien)."
+    },
+    imaging:[
+      {t:'Radiographie dorso-lombaire face/profil',d:"Examen de référence en première intention — tassement vertébral, hauteur réduite (> 20% = fracture), classification Genant"},
+      {t:'IRM dorsale',d:"Différencie fracture récente (œdème osseux T2) versus ancienne — utile si doute"},
+      {t:'DEXA (densitométrie osseuse)',d:"Bilan ostéoporose — T-score lombaire et fémoral"},
+      {t:'Bilan biologique ostéoporose',d:"Calcémie, vitamine D, créatinine, NFS, électrophorèse protéines (éliminer myélome)"}
+    ],
+    treatment:[
+      {t:"Antalgiques (paliers progressifs)",d:"Paracétamol + palier 2 souvent nécessaires"},
+      {t:"Mobilisation précoce adaptée",d:"Éviter alitement prolongé"},
+      {t:"Ceinture lombaire ou corset",d:"Soutien transitoire en phase aiguë"},
+      {t:"Traitement de l'ostéoporose",d:"Calcium + vitamine D, bisphosphonates — par rhumatologue"},
+      {t:"Kinésithérapie",d:"Renforcement progressif après phase aiguë"},
+      {t:"Vertébroplastie / cyphoplastie",d:"Si douleur invalidante résistante > 4-6 semaines — par radiologue interventionnel"}
+    ],
+    exercises:[{t:'Repos relatif et corset (selon avis)',d:''},{t:'Mobilisation dorsale très douce (post phase aiguë)',d:''},{t:'Renforcement isométrique des paravertébraux',d:''},{t:'Suivi spécialisé indispensable',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_07_fracture_vertebrale_osteop.html',
+    referral:[
+      {who:'Rhumatologue',why:"Bilan complet d'ostéoporose et mise en route du traitement de fond",p:true},
+      {who:'Radiologue interventionnel',why:"Si vertébroplastie ou cyphoplastie indiquée — douleur invalidante résistante",p:false},
+      {who:'Chirurgien orthopédique (rachis)',why:"Si tassement majeur, cyphose évolutive ou compression neurologique",p:false}
+    ],
+    sources:[
+      {l:'Compston et al. 2019 — Osteoporosis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/30739747/'},
+      {l:'Briot & Roux 2017 — Prise en charge ostéoporose (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/28017737/'},
+      {l:'Camacho et al. 2020 — AACE/ACE guidelines osteoporosis',u:'https://pubmed.ncbi.nlm.nih.gov/32427503/'},
+      {l:'HAS 2019 — Prise en charge fracture ostéoporose',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Femme ménopausée','Effort minime','Brutal','T11-L2','Fracture ostéoporotique']
+  },
+  SCHEUERMANN: {
+    id:'SCHEUERMANN', name:'Maladie de Scheuermann (cyphose juvénile)', icon:'🧒', pop:'Adolescent 12-17 ans, plus fréquent garçon, terrain familial, sportif (cyphose flexible) ou sédentaire',
+    desc:"Dystrophie de croissance vertébrale avec cunéiformisation des vertèbres dorsales (au moins 3 vertèbres adjacentes avec cunéiformisation ≥ 5°). Cyphose dorsale fixée (non corrigée volontairement) chez l'adolescent, parfois douloureuse. Évolution favorable à la fin de la croissance dans les formes mineures. Risque de cyphose pathologique > 50° (Cobb).",
+    imaging:[
+      {t:'Radiographie dorso-lombaire face/profil debout',d:"Examen de référence — cunéiformisation ≥ 5° d'au moins 3 vertèbres adjacentes, irrégularité des plateaux, nodules de Schmorl, mesure angle de Cobb"},
+      {t:'IRM dorsale',d:"Si suspicion de hernie ou bilan préopératoire — précise les atteintes discales"}
+    ],
+    treatment:[
+      {t:"Kinésithérapie active",d:"Pierre angulaire — renforcement dorsal, étirements pectoraux"},
+      {t:"Activité physique régulière",d:"Natation (dos crawlé), gymnastique"},
+      {t:"Antalgiques selon besoin",d:"Paracétamol si douleur"},
+      {t:"Corset orthopédique",d:"Si cyphose évolutive > 45-50° Cobb — par chirurgien"},
+      {t:"Chirurgie (arthrodèse)",d:"Réservée aux formes sévères > 70° Cobb"}
+    ],
+    exercises:[{t:'Mobilisation dorsale en extension',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_08_scheuermann.html',
+    referral:[
+      {who:'Chirurgien orthopédique (rachis pédiatrique)',why:"Si cyphose évolutive > 45-50° Cobb en cours de croissance — bilan et indication corset/chirurgie",p:true},
+      {who:'Médecin du sport',why:"Encadrement du programme de rééducation et de l'activité physique",p:true}
+    ],
+    sources:[
+      {l:'Palazzo et al. 2014 — Scheuermann disease review (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/24369971/'},
+      {l:'Lowe 2007 — Scheuermann disease (J Bone Joint Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/17828283/'},
+      {l:'Ali et al. 2000 — Scheuermann kyphosis natural history (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/10833254/'},
+      {l:'Ristolainen et al. 2012 — Untreated Scheuermann long-term follow-up (J Bone Joint Surg Br)',u:'https://pubmed.ncbi.nlm.nih.gov/22219252/'}
+    ],
+    keys:['Adolescent','Cyphose fixée','Cunéiformisation','Nodules de Schmorl','Scheuermann']
+  },
+  SYND_CHARNIERE_DL: {
+    id:'SYND_CHARNIERE_DL', name:"Syndrome de la charnière dorso-lombaire (Maigne)", icon:'🔄', pop:'Adulte 30-60 ans, sport ou métier avec rotations répétées du tronc (golf, tennis, ports asymétriques), sédentaire',
+    desc:"Syndrome articulaire postérieur de la charnière dorso-lombaire (T11-T12-L1) avec dysfonction des facettes et irritation des branches postérieures. Douleur lombaire haute déclenchée mais avec irradiations atypiques évocatrices : douleur fessière haute (zone de la crête iliaque), douleur du flanc, parfois pubalgie. ROTATION dorso-lombaire reproduisant la douleur (test discriminant). PALPER-ROULÉ POSITIF sur le métamère T11-L1 (zone crête iliaque). Bonne réponse à la médecine manuelle.",
+    severity:{
+      title:"Diagnostic d'élimination",
+      text:"<strong>Toujours éliminer</strong> : pathologie viscérale (rein, colon, organes pelviens), pathologie de hanche (coxopathie), fracture ostéoporotique de la charnière, pathologie radiculaire L1-L2. Le syndrome de Maigne est un diagnostic clinique d'élimination."
+    },
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (palper-roulé + rotation + irradiations typiques)"},
+      {t:'Radiographie dorso-lombaire face/profil',d:"Si red flag ou évolution prolongée — élimine pathologie organique"},
+      {t:'IRM ou Scanner',d:"Réservés aux cas atypiques ou résistants"}
+    ],
+    treatment:[
+      {t:"Médecine manuelle / manipulations",d:"Pierre angulaire — manipulations spécifiques T11-L1 très efficaces"},
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
+      {t:"Kinésithérapie",d:"Mobilisations, étirements, renforcement musculature paravertébrale"},
+      {t:"Infiltration facettaire (art. post.) T11-L1",d:"Sous radioguidage si échec — par rhumatologue ou radiologue interventionnel"}
+    ],
+    exercises:[{t:'Mobilisation de la charnière dorso-lombaire',d:''},{t:'Étirement TFL et chaîne latérale',d:''},{t:'Renforcement des abdominaux profonds (Bird-dog)',d:''},{t:'Tirage horizontal avec élastique',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_09_charniere_dl_maigne.html',
+    referral:[
+      {who:'Médecin du sport',why:"Pour prise en charge manipulatoire et programme de rééducation",p:true},
+      {who:'Rhumatologue',why:"Si évolution prolongée ou pour infiltration facettaire",p:false},
+      {who:'Radiologue interventionnel',why:"Pour infiltration facettaire T11-L1 sous radioguidage",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"<strong>Diagnostic différentiel</strong> : douleur de hanche (irradiations fessières), pathologie rénale (lombalgie + flanc), pathologie pelvienne. Toujours éliminer ces causes avant de retenir le syndrome de Maigne — examen abdo-pelvien et examen de hanche systématiques."
+    },
+    sources:[
+      {l:'Maigne 1980 — Low back pain of thoracolumbar origin (Arch Phys Med Rehabil)',u:'https://pubmed.ncbi.nlm.nih.gov/6446290/'},
+      {l:'Sebbag et al. 2006 — Syndrome de la charnière dorso-lombaire (Rev Rhum)',u:'https://www.sciencedirect.com/science/article/abs/pii/S1169833005001754'},
+      {l:'Proctor 1985 — Posterior ramus syndromes',u:'https://pubmed.ncbi.nlm.nih.gov/3160078/'},
+      {l:'Maigne JY 2007 — Le syndrome de la charnière dorso-lombaire (Rev Med Suisse)',u:'https://www.revmed.ch'}
+    ],
+    keys:['Maigne','Charnière T11-L1','Rotation douloureuse','Irradiations atypiques','Palper-roulé']
+  },
+    DISCOPATHIE_D: {
+    id:'DISCOPATHIE_D', name:'Discopathie dorsale', icon:'💿', pop:'Adulte 30-60 ans, effort de flexion/port de charge en flexion, sport ou métier physique, sédentaire',
+    desc:"Atteinte discale dorsale (le plus souvent T7-T11) avec irritation ou hernie. Douleur dorsale aggravée par la FLEXION antérieure du tronc et soulagée par l'extension (inverse du syndrome facettaire). Parfois irradiation en hémiceinture (en arc, de l'épineuse vers le sternum ou le flanc). Le rachis dorsal étant peu mobile, les discopathies y sont moins fréquentes mais réelles. Diagnostic clinique + IRM en cas de persistance.",
+    severity:{
+      title:"Red flags à dépister",
+      text:"<strong>Adresser EN URGENCE</strong> si signes médullaires : troubles de la marche, hyperréflexie, paresthésies des membres inférieurs, troubles sphinctériens. Une hernie discale dorsale médiane peut comprimer la moelle (compression médullaire dorsale = urgence chirurgicale)."
+    },
+    imaging:[
+      {t:"Pas d'imagerie d'emblée si pas de red flag",d:"Délai d'observation 4-6 semaines avant imagerie"},
+      {t:'IRM dorsale',d:"Examen de référence — visualise hernie discale, déshydratation discale, conflit disco-radiculaire ou disco-médullaire"},
+      {t:'Scanner dorsal',d:"Si contre-indication à l'IRM"},
+      {t:'Radiographie dorsale face/profil',d:"Recherche pincement discal, signes dégénératifs associés"}
+    ],
+    treatment:[
+      {t:"Antalgiques (paliers progressifs)",d:"Paracétamol + AINS, neuropathiques (gabapentine, prégabaline) si composante radiculaire"},
+      {t:"Kinésithérapie (McKenzie)",d:"Préférence d'extension, renforcement"},
+      {t:"Infiltration facettaire (art. post.)",d:"Sous radioguidage si composante facettaire associée"},
+      {t:"Infiltration péri-radiculaire ou épidurale",d:"Sous radioguidage si échec antalgique — par radiologue interventionnel"},
+      {t:"Chirurgie",d:"Si compression médullaire ou hyperalgie résistante"}
+    ],
+    exercises:[{t:'Mobilisation dorsale douce',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_10_discopathie.html',
+    referral:[
+      {who:'Rhumatologue',why:"Si évolution prolongée ou pour infiltration",p:true},
+      {who:'Radiologue interventionnel',why:"Pour infiltration péri-radiculaire ou épidurale sous radioguidage",p:false},
+      {who:'Chirurgien orthopédique (rachis)',why:"Si compression médullaire, hyperalgie résistante ou déficit progressif",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"<strong>Toujours dépister une compression médullaire dorsale</strong> : signes pyramidaux des membres inférieurs (Babinski, hyperréflexie, troubles marche), paresthésies en chaussette, troubles sphinctériens. Une hernie discale dorsale médiane est une URGENCE chirurgicale."
+    },
+    sources:[
+      {l:'Stillerman et al. 1998 — Experience in management thoracic disc herniations (J Neurosurg)',u:'https://pubmed.ncbi.nlm.nih.gov/9525713/'},
+      {l:'Wood et al. 1995 — Thoracic disc herniation MRI (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/7747234/'},
+      {l:'Brown et al. 1992 — Symptomatic thoracic disc herniation (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/1411773/'},
+      {l:'McInerney & Ball 2000 — Thoracic disc disease pathophysiology (Br J Neurosurg)',u:'https://pubmed.ncbi.nlm.nih.gov/10923146/'}
+    ],
+    keys:['Flexion douloureuse','T7-T11','Hémiceinture','McKenzie','Discopathie dorsale']
+  },
+  SPONDYLARTHRITE_D: {
+    id:'SPONDYLARTHRITE_D', name:'Atteinte dorsale d\'une spondylarthrite (à dépister)', icon:'⚠️', pop:'Jeune adulte 15-45 ans, terrain HLA-B27, ATCD familial, psoriasis, MICI, uvéite, atteinte axiale prédominante',
+    desc:"Atteinte dorsale d'un rhumatisme inflammatoire chronique. Souvent associée à une atteinte sacro-iliaque et/ou lombaire (rarement isolée dorsale). Raideur matinale prolongée, douleurs nocturnes, perte progressive des amplitudes dorsales, parfois enthésites costo-sternales. Évolution possible vers l'ankylose dorsale.",
+    severity:{
+      title:"Critères de dépistage MG (ASAS)",
+      text:"<strong>Adresser au rhumatologue</strong> devant une dorsalgie chronique > 3 mois chez sujet < 45 ans avec au moins l'un de ces signes : raideur matinale > 30 min, douleurs en 2e partie de nuit, amélioration au mouvement, atteinte sacro-iliaque ou lombaire associée, ATCD personnel/familial psoriasis/MICI/uvéite, enthésites."
+    },
+    imaging:[
+      {t:'Radiographie bassin face',d:"Indispensable — recherche sacro-iliite (atteinte habituellement associée)"},
+      {t:'IRM sacro-iliaques + rachis',d:"Référence pour le diagnostic précoce — œdème osseux, atteinte enthésique"},
+      {t:'Radiographie dorsale face/profil',d:"Recherche syndesmophytes, ankylose"},
+      {t:'Bilan biologique',d:"CRP, VS, HLA-B27, NFS"}
+    ],
+    treatment:[
+      {t:"AINS ou AIS au long cours",d:"Première intention — pierre angulaire"},
+      {t:"Kinésithérapie active",d:"Maintien des amplitudes, étirements — quotidien"},
+      {t:"Activité physique régulière",d:"Natation, marche"},
+      {t:"Anti-TNFα ou anti-IL17",d:"Si forme active malgré AINS — par rhumatologue"}
+    ],
+    exercises:[{t:'Mobilisation globale du rachis (toutes directions)',d:''},{t:'Étirement de la chaîne antérieure',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''},{t:'Activité aérobie régulière',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_11_spondylarthrite_dorsale.html',
+    referral:[
+      {who:'Rhumatologue',why:"Pour confirmation diagnostique, mise en route traitement de fond, suivi",p:true},
+      {who:'Médecin du sport',why:"Programme de rééducation et de réentraînement à l'effort",p:false}
+    ],
+    sources:[
+      {l:'Sieper et al. 2017 — Axial spondyloarthritis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/28110981/'},
+      {l:'van der Heijde et al. 2017 — ASAS-EULAR management recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/28087505/'},
+      {l:'Rudwaleit et al. 2009 — ASAS classification criteria axial spondyloarthritis',u:'https://pubmed.ncbi.nlm.nih.gov/19297344/'},
+      {l:'Wendling et al. 2022 — Recommandations SFR spondyloarthrite (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/35487390/'}
+    ],
+    keys:['Raideur inflammatoire','Sujet jeune','HLA-B27','Atteinte axiale','Spondylarthrite dorsale']
+  }
+};
+
+// ========== TESTS CLINIQUES ==========
+const TESTS = {
+  // === FAMILLE DORSAL GÉNÉRAL ===
+  palp_epineuses_d: {
+    name:"Palpation des épineuses dorsales (signe de la sonnette)", family:'DISCO', badge:'EPI',
+    desc:"Palpation/percussion des épineuses dorsales — signe de la sonnette",
+    how:"Patient assis ou décubitus ventral. Pression douce puis percussion de chaque épineuse de T1 à T12. Le signe de la sonnette est positif si la pression sur une épineuse reproduit la douleur dorsale ± irradiation (irritation discale en regard).",
+    pos:"Douleur exquise reproductible avec ou sans irradiation — signe de la sonnette (discopathie) ou tassement vertébral selon contexte",
+    neg:"Indolore",
+    affects_pos:{DISCOPATHIE_D:50, FRACT_VERTEBRE_OSTEOP:50, DORS_COMMUNE:15}, affects_neg:{DISCOPATHIE_D:-20, FRACT_VERTEBRE_OSTEOP:-20}
+  },
+// === FAMILLE FACETTAIRE DORSALE ===
+  extension_rotation_d: {
+    name:"Test d'extension-rotation dorsale", family:'FACET_D', badge:'EXR',
+    desc:"Mise en tension des articulations facettaires dorsales",
+    how:"Patient assis. Demander une extension du rachis dorsal avec rotation et inclinaison du côté douloureux. Maintenir 5-10 secondes.",
+    pos:"Reproduction de la douleur dorsale ipsilatérale, parfois irradiation pseudo-radiculaire intercostale — syndrome facettaire dorsal",
+    neg:"Indolore",
+    affects_pos:{SYND_FACETTAIRE_D:55}, affects_neg:{SYND_FACETTAIRE_D:-25}
+  },
+  flexion_anterieure_d: {
+    name:"Test de flexion antérieure dorsale", family:'DISCO', badge:'FLX',
+    desc:"Reproduction de la douleur par flexion antérieure du tronc",
+    how:"Patient debout ou assis. Demander une flexion antérieure maximale du tronc (toucher les pieds). Maintenir 5-10 secondes. Évaluer la reproduction de la douleur dorsale ± irradiation en hémiceinture.",
+    pos:"Reproduction de la douleur dorsale en flexion, soulagement à l'extension — discopathie dorsale (préférence d'extension)",
+    neg:"Indolore ou douleur en extension (oriente plutôt vers facettaire)",
+    affects_pos:{DISCOPATHIE_D:60}, affects_neg:{DISCOPATHIE_D:-30}
+  },
+  toux_valsalva_d: {
+    name:"Reproduction par toux / Valsalva (signe de Dejerine)", family:'DISCO', badge:'TOU',
+    desc:"Reproduction de la douleur par augmentation de la pression intra-discale",
+    how:"Demander au patient de tousser fortement ou de réaliser une manœuvre de Valsalva (expiration forcée glotte fermée). Évaluer la reproduction de la douleur dorsale ± irradiation en hémiceinture.",
+    pos:"Reproduction nette de la douleur dorsale en toux/Valsalva — signe de Dejerine positif, très spécifique de la discopathie",
+    neg:"Indolore",
+    affects_pos:{DISCOPATHIE_D:55}, affects_neg:{DISCOPATHIE_D:-25}
+  },
+  palp_facettes_d: {
+    name:"Palpation des facettes articulaires dorsales", family:'FACET_D', badge:'FAC',
+    desc:"Palpation directe des massifs articulaires postérieurs dorsaux",
+    how:"Patient en décubitus ventral. Palpation directe des massifs articulaires postérieurs dorsaux à 2-3 cm latéralement des épineuses, à chaque étage. Recherche douleur exquise étagée.",
+    pos:"Douleur exquise reproductible sur un ou plusieurs niveaux facettaires — syndrome facettaire dorsal",
+    neg:"Indolore",
+    affects_pos:{SYND_FACETTAIRE_D:45, DORS_COMMUNE:15}, affects_neg:{SYND_FACETTAIRE_D:-20}
+  },
+
+  // === FAMILLE COSTO-VERTEBRALE ===
+  palp_costovertebrale: {
+    name:"Palpation des articulations costo-vertébrales", family:'COSTO', badge:'CVT',
+    desc:"Palpation directe en regard de la tête de côte",
+    how:"Patient en décubitus ventral. Palpation directe à 3-4 cm latéralement des épineuses (en regard de l'articulation tête de côte / corps vertébral). Recherche douleur reproductible et localisée.",
+    pos:"Douleur exquise reproductible en regard d'une articulation costo-vertébrale — blocage costo-vertébral",
+    neg:"Indolore",
+    affects_pos:{DOULEUR_COSTOVERTEBRALE:60}, affects_neg:{DOULEUR_COSTOVERTEBRALE:-25}
+  },
+  reproduction_respiration: {
+    name:"Reproduction de la douleur par la respiration profonde", family:'COSTO', badge:'RES',
+    desc:"Test de mise en tension des articulations costales",
+    how:"Demander au patient une inspiration profonde maximale, puis une toux franche. Évaluer la reproduction de la douleur unilatérale.",
+    pos:"Reproduction nette de la douleur dorsale unilatérale en inspiration ou toux — blocage costo-vertébral",
+    neg:"Indolore",
+    affects_pos:{DOULEUR_COSTOVERTEBRALE:50}, affects_neg:{DOULEUR_COSTOVERTEBRALE:-20}
+  },
+
+  // === FAMILLE CYRIAX (côtes flottantes) ===
+  hooking_maneuver: {
+    name:"Test du crochet (hooking maneuver)", family:'CYRIAX', badge:'HOO',
+    desc:"Test spécifique du slipping rib syndrome",
+    how:"Patient en décubitus dorsal. L'examinateur place ses doigts sous le bord costal antéro-latéral inférieur (8e-10e côtes) et exerce une traction vers le haut, comme un crochet. Comparer avec côté sain.",
+    pos:"Reproduction de la douleur du patient ± clic palpable au passage de la côte — syndrome de Cyriax (slipping rib syndrome)",
+    neg:"Indolore",
+    affects_pos:{SYND_CYRIAX:65}, affects_neg:{SYND_CYRIAX:-30}
+  },
+  palp_arcs_costaux: {
+    name:"Palpation des derniers arcs costaux", family:'CYRIAX', badge:'ARC',
+    desc:"Palpation directe des 8e, 9e, 10e arcs costaux",
+    how:"Patient en décubitus dorsal. Palpation systématique des derniers arcs costaux antéro-latéraux (8e, 9e, 10e côtes). Recherche point douloureux exquis, mobilité anormale d'une côte flottante.",
+    pos:"Douleur exquise localisée à un arc costal flottant ± mobilité anormale — syndrome de Cyriax",
+    neg:"Indolore",
+    affects_pos:{SYND_CYRIAX:50}, affects_neg:{SYND_CYRIAX:-20}
+  },
+
+  // === FAMILLE TIETZE ===
+  palp_chondrocostale: {
+    name:"Palpation des jonctions chondrocostales", family:'TIETZE_F', badge:'CHO',
+    desc:"Palpation directe des jonctions chondrocostales et chondrosternales",
+    how:"Patient en décubitus dorsal ou assis. Palpation systématique des jonctions chondrocostales (2e à 5e côtes ++) et chondrosternales antérieures. Recherche tuméfaction palpable et douleur exquise.",
+    pos:"Tuméfaction palpable inflammatoire et douleur exquise sur une jonction (typiquement 2e ou 3e côte) — syndrome de Tietze",
+    neg:"Indolore, pas de tuméfaction",
+    affects_pos:{TIETZE:65}, affects_neg:{TIETZE:-30}
+  },
+
+  // === FAMILLE OSTEOPOROSE ===
+  recherche_fragilite: {
+    name:"Recherche de terrain de fragilité osseuse", family:'OSTEO', badge:'OST',
+    desc:"Interrogatoire et examen de signes d'ostéoporose",
+    how:"Interroger : femme ménopausée, homme > 70 ans, corticothérapie au long cours, ATCD personnel/familial de fracture de fragilité, perte de taille progressive (> 3 cm), tabagisme, alcoolisme, faible IMC. Mesurer la taille du patient et la comparer.",
+    pos:"Terrain à risque (femme ménopausée, corticothérapie, ATCD) + douleur brutale après effort minime — fracture vertébrale ostéoporotique",
+    neg:"Pas de terrain de fragilité",
+    affects_pos:{FRACT_VERTEBRE_OSTEOP:60}, affects_neg:{FRACT_VERTEBRE_OSTEOP:-30}
+  },
+
+  // === FAMILLE INFLAMMATOIRE ===
+  horaire_inflammatoire_d: {
+    name:"Critères de douleur inflammatoire (ASAS)", family:'INFLAM_D', badge:'INF',
+    desc:"Critères ASAS de la douleur inflammatoire",
+    how:"Interroger sur les 5 critères : âge début < 40 ans, début insidieux, amélioration à l'exercice, pas d'amélioration au repos, douleur nocturne avec amélioration au lever. Au moins 4/5 = inflammatoire.",
+    pos:"Au moins 4/5 critères ASAS — dorsalgie inflammatoire (spondylarthrite à dépister)",
+    neg:"Profil mécanique",
+    affects_pos:{SPONDYLARTHRITE_D:60}, affects_neg:{SPONDYLARTHRITE_D:-30}
+  },
+
+  // === FAMILLE SCHEUERMANN ===
+  cyphose_fixee: {
+    name:"Test de la cyphose corrigée vs fixée", family:'SCHEU', badge:'CYP',
+    desc:"Évalue la réductibilité volontaire de la cyphose dorsale",
+    how:"Patient debout, demander de se tenir droit et de redresser le dos activement. Observer si la cyphose dorsale se corrige (souple = fonctionnelle) ou reste fixée malgré l'effort (structurelle).",
+    pos:"Cyphose fixée, non corrigée par l'effort volontaire chez adolescent — Maladie de Scheuermann probable",
+    neg:"Cyphose corrigée volontairement (posturale, fonctionnelle)",
+    affects_pos:{SCHEUERMANN:60}, affects_neg:{SCHEUERMANN:-30}
+  },
+
+  // === FAMILLE POSTURALE ===
+// === FAMILLE MEDECINE MANUELLE / METAMERE ===
+  palper_roule: {
+    name:"Palper-roulé", family:'METAM', badge:'P-R',
+    desc:"Pincement-roulement de la peau et tissus sous-cutanés sur le métamère",
+    how:"Patient assis ou debout. L'examinateur pince entre pouce et index la peau et le tissu sous-cutané, et la fait rouler le long du métamère testé (dorsal ou dorso-lombaire). Comparer les côtés et les niveaux.",
+    pos:"Douleur reproductible et hyperalgésie cutanée localisée sur le métamère atteint — signe d'irritation segmentaire (syndrome articulaire postérieur)",
+    neg:"Indolore",
+    affects_pos:{SYND_FACETTAIRE_D:40, SYND_CHARNIERE_DL:55}, affects_neg:{SYND_FACETTAIRE_D:-15, SYND_CHARNIERE_DL:-25}
+  },
+  rotation_dorsolombaire: {
+    name:"Test de rotation dorso-lombaire", family:'CHARNIERE', badge:'ROT',
+    desc:"Mise en tension de la charnière dorso-lombaire par rotation",
+    how:"Patient assis (bassin stabilisé). Demander une rotation maximale du tronc à droite puis à gauche. Comparer amplitudes et reproduction de la douleur. Sensibilisation possible en ajoutant une inclinaison.",
+    pos:"Reproduction de la douleur lombaire haute ou irradiation fessière/flanc en rotation — syndrome de la charnière dorso-lombaire (Maigne)",
+    neg:"Indolore ou douleur non reproduite",
+    affects_pos:{SYND_CHARNIERE_DL:60}, affects_neg:{SYND_CHARNIERE_DL:-30}
+  }
+};
+
+// ========== VIGNETTES + CHOIX + CIRCUITS ==========
+const VIGNETTES = {
+  // === LOCALISATIONS ===
+  loc_dors_mediane: {
+    id:'loc_dors_mediane', lbl:'⬇️ Douleur médiane (ligne des épineuses)',
+    desc:"Douleur dorsale sur la ligne médiane, au niveau des épineuses",
+    score:{DORS_COMMUNE:35, DORS_CHRONIQUE:30, FRACT_VERTEBRE_OSTEOP:40, SPONDYLARTHRITE_D:25, SCHEUERMANN:20, DISCOPATHIE_D:35}
+  },
+  loc_dors_paramediane: {
+    id:'loc_dors_paramediane', lbl:'↔️ Douleur paramédiane et latérale',
+    desc:"Douleur paravertébrale dorsale unilatérale ou bilatérale, à distance de la ligne des épineuses",
+    score:{SYND_FACETTAIRE_D:50, DISCOPATHIE_D:50, DOULEUR_COSTOVERTEBRALE:40}
+  },
+  loc_thorax_lateral_bas: {
+    id:'loc_thorax_lateral_bas', lbl:'⤵️ Douleur antérieure basse latérale (côtes flottantes)',
+    desc:"Douleur thoracique basse antéro-latérale, en regard des derniers arcs costaux (8e-10e côtes)",
+    score:{SYND_CYRIAX:65}
+  },
+  loc_sternocostal: {
+    id:'loc_sternocostal', lbl:'⬇️ Douleur sterno-costale (± tuméfaction)',
+    desc:"Douleur en regard d'une jonction sterno-costale ou chondrocostale antérieure, parfois tuméfaction palpable",
+    score:{TIETZE:65}
+  },
+  loc_irradiation_maigne: {
+    id:'loc_irradiation_maigne', lbl:'⤴️ Irradiation fesse / aile iliaque / flanc',
+    desc:"Irradiation latérale basse vers la fesse, l'aile iliaque ou le flanc (territoire des branches postérieures)",
+    score:{SYND_CHARNIERE_DL:65}
+  },
+  loc_cyphose: {
+    id:'loc_cyphose', lbl:'🦴 Cyphose dorsale visible chez adolescent',
+    desc:"Cyphose dorsale (dos rond) progressive chez adolescent, parfois associée à des douleurs",
+    score:{SCHEUERMANN:65}
+  },
+
+  // === PRÉSENTATIONS / CONTEXTE ===
+  pres_inflam_d: {
+    id:'pres_inflam_d', lbl:'🔥 Raideur matinale > 30 min et douleurs nocturnes',
+    desc:"Raideur matinale prolongée (> 30 min), réveils nocturnes en 2e partie de nuit, amélioration au mouvement, sujet jeune < 45 ans",
+    score:{SPONDYLARTHRITE_D:65}
+  },
+  pres_extension_dlr_d: {
+    id:'pres_extension_dlr_d', lbl:'⬆️ Aggravation par extension du tronc',
+    desc:"Douleur aggravée par l'extension du tronc et soulagée par la flexion",
+    score:{SYND_FACETTAIRE_D:50}
+  },
+  pres_respiration_dlr: {
+    id:'pres_respiration_dlr', lbl:'😮‍💨 Aggravation par respiration profonde / toux',
+    desc:"Douleur reproductible par l'inspiration profonde, la toux, les mouvements de torsion",
+    score:{DOULEUR_COSTOVERTEBRALE:60, SYND_CYRIAX:25}
+  },
+  pres_postural_d: {
+    id:'pres_postural_d', lbl:'💻 Aggravation par travail sur écran prolongé',
+    desc:"Douleurs aggravées en fin de journée de travail (écran, bureau), soulagées par le repos et les changements de position",
+    score:{DORS_CHRONIQUE:55}
+  },
+  pres_brutal_minime: {
+    id:'pres_brutal_minime', lbl:'⚡ Apparition brutale après effort minime (terrain fragile)',
+    desc:"Apparition brutale d'une douleur dorsale intense après un effort minime (toux, port léger, simple mouvement) sur terrain fragile",
+    score:{FRACT_VERTEBRE_OSTEOP:65}
+  }
+}
+
+const MECA_VIGS = {
+  mecanique_d:    ['loc_dors_mediane','loc_dors_paramediane','loc_thorax_lateral_bas','loc_sternocostal','loc_irradiation_maigne','pres_brutal_minime'],
+  postural_d:     ['loc_dors_mediane','loc_dors_paramediane','loc_irradiation_maigne','pres_postural_d','pres_extension_dlr_d'],
+  spontane_d:     ['loc_sternocostal','loc_thorax_lateral_bas','loc_dors_paramediane','pres_respiration_dlr'],
+  croissance:     ['loc_cyphose','loc_dors_mediane'],
+  progressif_jeune_d: ['loc_dors_mediane','loc_dors_paramediane','pres_inflam_d']
+};
+
+const CHOICES = {
+  MECANISME: {
+    tag:'Étape 1 · Mécanisme', q:"Comment la douleur est-elle apparue ?",
+    items:[
+      {key:'mecanique_d', lbl:'Mécanique aigu (effort, faux mouvement, torsion, port de charge)',
+        desc:"Apparition récente après effort, port de charge, mouvement de torsion, faux mouvement ou effort minime sur terrain fragile",
+        score:{DORS_COMMUNE:40, DOULEUR_COSTOVERTEBRALE:35, SYND_FACETTAIRE_D:20, SYND_CYRIAX:30, SYND_CHARNIERE_DL:30, FRACT_VERTEBRE_OSTEOP:40, TIETZE:25, DISCOPATHIE_D:35}},
+      {key:'postural_d', lbl:'Postural ou chronique (douleurs récurrentes, terrain dégénératif)',
+        desc:"Douleurs récurrentes ou prolongées, liées aux postures et positions maintenues, ou sur terrain dégénératif",
+        score:{DORS_CHRONIQUE:50, SYND_FACETTAIRE_D:40, SYND_CHARNIERE_DL:25}},
+      {key:'spontane_d', lbl:'Spontané sans déclenchement clair',
+        desc:"Apparition sans facteur déclenchant identifié, parfois post-viral ou idiopathique",
+        score:{TIETZE:35, SYND_CYRIAX:30, DORS_COMMUNE:15}},
+      {key:'croissance', lbl:'Progressif chez adolescent en croissance',
+        desc:"Apparition progressive d'une déformation dorsale ou de douleurs chez adolescent en période de croissance",
+        score:{SCHEUERMANN:65}},
+      {key:'progressif_jeune_d', lbl:'Progressif insidieux (à dépister)',
+        desc:"Apparition progressive et insidieuse, sans événement déclenchant net",
+        score:{SPONDYLARTHRITE_D:55, DORS_CHRONIQUE:15}}
+    ]
+  },
+  AGE: {
+    tag:'Étape 2 · Profil', q:'Quel est le profil du patient ?',
+    items:[
+      {key:'adolescent_d', lbl:'Adolescent 12-17 ans',
+        desc:"Sujet en période de croissance",
+        score:{SCHEUERMANN:55}},
+      {key:'jeune_adult_d', lbl:'Jeune adulte (< 45 ans)',
+        desc:"Sujet jeune — terrain de dorsalgies aiguës et chroniques",
+        score:{SPONDYLARTHRITE_D:25, TIETZE:25, SYND_CYRIAX:25, DORS_COMMUNE:15}},
+      {key:'adulte_sedentaire_d', lbl:'Adulte 30-60 ans, sédentaire/écran',
+        desc:"Tranche d'âge la plus touchée — sédentarité, écran, métier de bureau",
+        score:{DORS_CHRONIQUE:40, DORS_COMMUNE:20, SYND_FACETTAIRE_D:20, DOULEUR_COSTOVERTEBRALE:15, SYND_CHARNIERE_DL:20, DISCOPATHIE_D:20}},
+      {key:'adulte_actif_d', lbl:'Adulte 30-60 ans, métier physique ou sportif',
+        desc:"Tranche d'âge active — sport, métier physique, exposition aux efforts de torsion",
+        score:{DORS_COMMUNE:25, DOULEUR_COSTOVERTEBRALE:30, SYND_CYRIAX:25, SYND_FACETTAIRE_D:15, SYND_CHARNIERE_DL:25, DISCOPATHIE_D:25}},
+      {key:'senior_d', lbl:'Sénior > 60 ans (dégénératif + fragilité osseuse)',
+        desc:"Sujet > 60 ans, femme ménopausée ou homme > 70 ans — terrain dégénératif et à risque d'ostéoporose",
+        score:{FRACT_VERTEBRE_OSTEOP:55, SYND_FACETTAIRE_D:30, DORS_CHRONIQUE:20}}
+    ]
+  },
+  HORAIRE: {
+    tag:'Étape 4 · Horaire', q:"Quel est l'horaire de la douleur ?",
+    items:[
+      {key:'aigu_recent_d', lbl:'Aigu (< 6 semaines)',
+        desc:"Apparition récente, parfois après un événement déclenchant",
+        score:{DORS_COMMUNE:35, DOULEUR_COSTOVERTEBRALE:30, FRACT_VERTEBRE_OSTEOP:20, TIETZE:25}},
+      {key:'mecanique_d', lbl:'Mécanique (effort, fin de journée, soulagée au repos)',
+        desc:"Aggravée par les mouvements, la posture prolongée, le travail sur écran, soulagée par le repos et les changements de position",
+        score:{DORS_COMMUNE:25, DORS_CHRONIQUE:45, SYND_FACETTAIRE_D:25, DOULEUR_COSTOVERTEBRALE:20, SYND_CHARNIERE_DL:20}},
+      {key:'inflammatoire_d', lbl:'Inflammatoire (raideur matinale, nocturne)',
+        desc:"Raideur matinale > 30 min, réveils nocturnes en 2e partie de nuit, amélioration au mouvement",
+        score:{SPONDYLARTHRITE_D:55}},
+      {key:'permanent_d', lbl:'Permanente ou évolution > 3 mois',
+        desc:"Douleur persistante, évolution prolongée",
+        score:{DORS_CHRONIQUE:40, SCHEUERMANN:15, SYND_CYRIAX:15}}
+    ]
+  }
+};
+
+// Circuits de 5 tests par pathologie
+const CIRCUITS = {
+  DORS_COMMUNE:           ['extension_rotation_d','flexion_anterieure_d','palp_epineuses_d','palp_facettes_d','horaire_inflammatoire_d'],
+  DORS_CHRONIQUE:         ['extension_rotation_d','palp_facettes_d','palper_roule','palp_epineuses_d','horaire_inflammatoire_d'],
+  SYND_FACETTAIRE_D:      ['extension_rotation_d','palp_facettes_d','flexion_anterieure_d','palper_roule','horaire_inflammatoire_d'],
+  DOULEUR_COSTOVERTEBRALE:['palp_costovertebrale','reproduction_respiration','flexion_anterieure_d','palp_facettes_d','extension_rotation_d'],
+  SYND_CYRIAX:            ['hooking_maneuver','palp_arcs_costaux','reproduction_respiration','palp_chondrocostale','palp_costovertebrale'],
+  TIETZE:                 ['palp_chondrocostale','palp_arcs_costaux','reproduction_respiration','hooking_maneuver','palp_costovertebrale'],
+  FRACT_VERTEBRE_OSTEOP:  ['recherche_fragilite','palp_epineuses_d','extension_rotation_d','palp_facettes_d','horaire_inflammatoire_d'],
+  SCHEUERMANN:            ['cyphose_fixee','extension_rotation_d','palp_epineuses_d','palp_facettes_d','horaire_inflammatoire_d'],
+  SPONDYLARTHRITE_D:      ['horaire_inflammatoire_d','palper_roule','palp_facettes_d','extension_rotation_d','palp_epineuses_d'],
+  DISCOPATHIE_D:          ['flexion_anterieure_d','toux_valsalva_d','palp_epineuses_d','extension_rotation_d','palper_roule'],
+  SYND_CHARNIERE_DL:      ['rotation_dorsolombaire','palper_roule','palp_facettes_d','extension_rotation_d','horaire_inflammatoire_d']
+};
+
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR ==========
+// ========== ÉTAT ==========
+const PATHO_LIST = Object.keys(P);
+let scores = {};
+let history = [];
+let mecaKey = null;
+let testsToRun = [];
+let testIdx = 0;
+let currentStep = 'MECANISME';
+let selectedVigs = new Set();
+
+function init(){
+  scores = {};
+  PATHO_LIST.forEach(p => scores[p] = 0);
+  history = [];
+  mecaKey = null;
+  testsToRun = [];
+  testIdx = 0;
+  currentStep = 'MECANISME';
+  selectedVigs = new Set();
+}
+
+function addScore(delta){
+  for(const k in delta){
+    if(k in scores) scores[k] += delta[k];
+  }
+}
+
+function ranked(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+}
+
+function top1(){ return ranked()[0]; }
+
+function top3WithScores(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+}
+
+// ========== LOGIQUE TESTS ADAPTATIFS ==========
+// Règle : 5 tests max
+// - Test POS  → continuer le circuit du top1 actuel (confirmation)
+// - Test NÉG  → proposer un test d\'une AUTRE famille clinique
+
+const MAX_TESTS = 5;
+
+function buildInitialQueue(){
+  const t1 = top1();
+  return [...(CIRCUITS[t1] || [])].slice(0, MAX_TESTS);
+}
+
+function applyTest(tKey, positive){
+  const t = TESTS[tKey];
+  if(!t) return;
+  const delta = positive ? t.affects_pos : t.affects_neg;
+  addScore(delta);
+  history.push({test:tKey, name:t.name, result:positive ? '✅':'❌'});
+}
+
+function nextTestAdaptive(currentFamily, positive, previousTop1){
+  // Tests déjà faits (jamais reproposés)
+  const done = new Set(testsToRun.slice(0, testIdx));
+  const newTop1 = top1();
+  
+  if(positive){
+    // POS : continuer circuit du top1 actuel (confirmation)
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+    return null;
+  }
+  
+  // NEG :
+  // Cas 1 : top1 INCHANGÉ → continuer le circuit du top1 (poursuite logique, ex: cluster Laslett pour SI)
+  if(newTop1 === previousTop1){
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+  }
+  
+  // Cas 2 : top1 a CHANGÉ → proposer le test #1 de la nouvelle patho top1
+  // (qui sera presque toujours d'une famille différente)
+  // On parcourt le ranking pour trouver le 1er candidat de famille différente
+  for(const patho of ranked()){
+    const cands = CIRCUITS[patho];
+    if(!cands || !cands.length) continue;
+    for(const candTest of cands){
+      if(done.has(candTest)) continue;
+      const candFamily = (TESTS[candTest] || {}).family;
+      if(candFamily && candFamily !== currentFamily) return candTest;
+    }
+  }
+  
+  // Fallback : n\'importe quel test non fait
+  for(const patho of ranked()){
+    for(const t of (CIRCUITS[patho] || [])){
+      if(!done.has(t)) return t;
+    }
+  }
+  return null;
+}
+
+function testResult(positive){
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t) return;
+  
+  // Capturer top1 AVANT d\'appliquer le résultat
+  const previousTop1 = top1();
+  
+  applyTest(tKey, positive);
+  const currentFamily = t.family;
+  testIdx++;
+  
+  // Si pas encore atteint MAX, choisir le prochain test
+  if(testIdx < MAX_TESTS){
+    const nextT = nextTestAdaptive(currentFamily, positive, previousTop1);
+    if(nextT){
+      // Remplacer le prochain prévu (ou l\'insérer)
+      if(testIdx < testsToRun.length){
+        testsToRun[testIdx] = nextT;
+      } else {
+        testsToRun.push(nextT);
+      }
+    }
+  }
+  
+  renderStep();
+}
+
+// ========== RENDERING ==========
+function pickChoice(stepKey, item){
+  addScore(item.score);
+  history.push({step:stepKey, label:item.lbl});
+  
+  if(stepKey === 'MECANISME'){
+    mecaKey = item.key;
+    currentStep = 'AGE';
+  } else if(stepKey === 'AGE'){
+    currentStep = 'TABLEAU';
+  } else if(stepKey === 'HORAIRE'){
+    testsToRun = buildInitialQueue();
+    testIdx = 0;
+    currentStep = 'TESTS';
+  }
+  renderStep();
+}
+
+function toggleVig(vid){
+  if(selectedVigs.has(vid)){
+    selectedVigs.delete(vid);
+  } else {
+    if(selectedVigs.size >= 3) return;
+    selectedVigs.add(vid);
+  }
+  renderStep();
+}
+
+function validateTableau(){
+  if(selectedVigs.size === 0) return;
+  selectedVigs.forEach(vid => {
+    addScore(VIGNETTES[vid].score);
+    history.push({step:'TABLEAU', label:VIGNETTES[vid].lbl});
+  });
+  currentStep = 'HORAIRE';
+  renderStep();
+}
+
+function skipTest(){
+  testIdx++;
+  if(testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+  }
+  renderStep();
+}
+
+function reset(){
+  init();
+  renderStep();
+}
+
+function goBack(){
+  // Retour à l\'étape précédente — simple
+  if(currentStep === 'AGE') currentStep = 'MECANISME';
+  else if(currentStep === 'TABLEAU') currentStep = 'AGE';
+  else if(currentStep === 'HORAIRE') currentStep = 'TABLEAU';
+  else if(currentStep === 'TESTS' && testIdx > 0){
+    testIdx--;
+    // Annuler le dernier test (pas le scoring pour simplifier, juste revenir au test)
+  } else if(currentStep === 'TESTS' && testIdx === 0){
+    currentStep = 'HORAIRE';
+  } else if(currentStep === 'RESULT'){
+    currentStep = 'TESTS';
+    testIdx = Math.max(0, MAX_TESTS - 1);
+  }
+  renderStep();
+}
+
+
+// ========== RENDU ==========
+// ========== HELPERS RENDU ==========
+function backBtn(){
+  if(currentStep === 'MECANISME') return '';
+  return `<button class="btn-back" onclick="goBack()">← Modifier</button>`;
+}
+
+function breadcrumbHTML(){
+  if(!history.length) return '';
+  const items = history.slice(-4).map(h => `<span class="bc-item">${(h.label||h.test||'').slice(0,30)}</span>`).join(' › ');
+  return `<div class="breadcrumb">${items}</div>`;
+}
+
+function stepIndicator(currentIdx){
+  const steps = ['Mécanisme', 'Profil', 'Tableau', 'Horaire', 'Examen'];
+  return `<div class="step-ind">
+    ${steps.map((s,i) => `<div class="si-item ${i===currentIdx?'active':''} ${i<currentIdx?'done':''}">${i+1}. ${s}</div>`).join('')}
+  </div>`;
+}
+
+// ========== ÉTAPE CHOIX (Mécanisme, Âge, Horaire) ==========
+function renderChoice(stepKey, stepIdx){
+  const c = CHOICES[stepKey];
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(stepIdx)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">${c.tag}</div>
+      <h2 class="card-q">${c.q}</h2>
+      <div class="choices">
+        ${c.items.map(it => `
+          <button class="choice" onclick="pickChoice('${stepKey}', CHOICES['${stepKey}'].items.find(x=>x.key==='${it.key}'))">
+            <div class="choice-lbl">${it.lbl}</div>
+            <div class="choice-desc">${it.desc}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TABLEAU CLINIQUE (multi-vignettes) ==========
+function renderTableau(){
+  const vigs = (MECA_VIGS[mecaKey] || Object.keys(VIGNETTES));
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(2)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 3 · Tableau clinique</div>
+      <h2 class="card-q">Cochez ce qui correspond au patient</h2>
+      <div class="card-hint">Maximum 3 cases cochables.</div>
+      <div class="vig-grid">
+        ${vigs.map(vid => {
+          const v = VIGNETTES[vid];
+          const sel = selectedVigs.has(vid);
+          return `<div class="vig ${sel?'vig-sel':''}" onclick="toggleVig('${vid}')">
+            <div class="vig-chk">${sel?'☑':'☐'}</div>
+            <div class="vig-body">
+              <div class="vig-lbl">${v.lbl}</div>
+              <div class="vig-desc">${v.desc}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="card-foot">
+        <span class="foot-info">${selectedVigs.size===0?'Aucune sélection':selectedVigs.size+'/3 coché'+(selectedVigs.size>1?'s':'')}</span>
+        <button class="btn-primary" ${selectedVigs.size===0?'disabled':''} onclick="validateTableau()">Confirmer →</button>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TESTS ==========
+function renderTests(){
+  if(testIdx >= testsToRun.length || testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+    renderStep();
+    return;
+  }
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t){
+    testIdx++;
+    renderTests();
+    return;
+  }
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(4)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 5 · Examen clinique (${testIdx+1}/${MAX_TESTS})</div>
+      <div class="test-name">${t.name}</div>
+      <div class="test-fam"><span class="test-badge">${t.badge}</span> Famille : ${t.family}</div>
+      <div class="test-desc">${t.desc}</div>
+      <div class="test-section">
+        <strong>Technique</strong>
+        <div>${t.how}</div>
+      </div>
+      <div class="test-section">
+        <strong>Interprétation</strong>
+        <div>✅ <strong>Positif :</strong> ${t.pos}</div>
+        <div>❌ <strong>Négatif :</strong> ${t.neg}</div>
+      </div>
+      <div class="test-btns">
+        <button class="btn-pos" onclick="testResult(true)">✅ Positif</button>
+        <button class="btn-neg" onclick="testResult(false)">❌ Négatif</button>
+      </div>
+      ${testIdx > 0 ? `<button class="btn-skip" onclick="skipTest()">Passer ce test →</button>` : ''}
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+
+
+// ========== ÉTAPE RÉSULTAT ==========
+function renderResult(){
+  const top = top3WithScores();
+  const total = top.reduce((s,[,sc]) => s + Math.max(0,sc), 0) || 1;
+  const main = top[0];
+  const alts = top.slice(1);
+  const mainP = P[main[0]];
+  const mainProb = Math.round(100 * Math.max(0, main[1]) / total);
+  
+  const alertHTML = mainP.alert ? `
+    <div class="alert-box alert-${mainP.alert.type}">
+      <span style="font-size:16px">${mainP.alert.type === 'red' ? '🚨' : '⚠️'}</span>
+      <span>${mainP.alert.text}</span>
+    </div>` : '';
+  
+  // Sections détaillées
+  const imagingItems = (mainP.imaging || []).map(i => 
+    `<div class="fi"><strong>${i.t}</strong>${i.d ? `<span>${i.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const treatmentItems = (mainP.treatment || []).map(t => 
+    `<div class="fi"><strong>${t.t}</strong>${t.d ? `<span>${t.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const exercisesItems = (mainP.exercises || []).map(e => 
+    `<div class="fi"><strong>${e.t}</strong>${e.d ? `<span>${e.d}</span>` : ''}</div>`
+  ).join('') + (mainP.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${mainP.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  
+  const referralItems = (mainP.referral || []).map(r => `
+    <div class="ref-tag ${r.p ? 'p' : 's'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p ? '→ ' : ''}${r.who}</div>
+        ${r.why ? `<div class="ref-why">${r.why}</div>` : ''}
+      </div>
+      <span class="ref-b">${r.p ? 'Prioritaire' : 'Si besoin'}</span>
+    </div>`).join('');
+  
+  // Sources
+  const sourcesHTML = mainP.sources?.length ? `
+    <div class="sources-row">
+      <span class="src-lbl">📚 Sources</span>
+      ${mainP.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('')}
+    </div>` : '';
+  
+  // Encart Signes de gravité (severity)
+  const severityHTML = mainP.severity ? `
+    <div class="severity-card">
+      <div class="severity-head">🔍 ${mainP.severity.title}</div>
+      <div class="severity-body">${mainP.severity.text}</div>
+    </div>` : '';
+  
+  // Encart Pièges diagnostiques (pitfall)
+  const pitfallHTML = mainP.pitfall ? `
+    <div class="pitfall-card">
+      <div class="pitfall-head">💡 À considérer aussi</div>
+      <div class="pitfall-body">${mainP.pitfall.text}</div>
+      ${(mainP.pitfall.modules || []).length ? `
+      <div class="pitfall-modules">
+        ${mainP.pitfall.modules.map(m => `<span class="pitfall-chip">→ Module ${m}</span>`).join('')}
+      </div>` : ''}
+    </div>` : '';
+  
+  // Alternatifs
+  const altCardsHTML = alts.map(([pid, sc]) => {
+    const p = P[pid];
+    const prob = Math.round(100 * Math.max(0, sc) / total);
+    return `<div class="alt-card" onclick="showModal('${pid}')">
+      <div class="alt-header">
+        <img src="images_pathologies/dorsal.png" alt="" class="alt-ic-img" />
+        <div class="alt-name">${p.name}</div>
+        <div class="alt-pct">${prob}%</div>
+      </div>
+      <div class="alt-bar"><div class="alt-fill" style="width:${prob}%"></div></div>
+      <div class="alt-key">
+        <strong>Éléments clés</strong>
+        ${(p.keys || []).slice(0,2).join(' · ')}
+      </div>
+      <div class="alt-hint">Appuyer pour la fiche complète →</div>
+    </div>`;
+  }).join('');
+  
+  const html = `
+    ${stepIndicator(5)}
+    ${breadcrumbHTML()}
+    <div class="result-wrap">
+      
+      <!-- DIAGNOSTIC PRINCIPAL -->
+      <div class="diag-card">
+        <div class="diag-top">
+          <div class="diag-head">
+            <img src="images_pathologies/dorsal.png" alt="" class="diag-icon-img" />
+            <div>
+              <span class="rank-badge">Diagnostic principal</span>
+              <div class="diag-name">${mainP.name}</div>
+              <div class="diag-pop">${mainP.pop}</div>
+            </div>
+          </div>
+          <div class="prob-wrap">
+            <div class="prob-pct">${mainProb}%</div>
+            <div class="prob-label">Probabilité</div>
+            <div class="prob-bar"><div class="prob-fill" style="width:${mainProb}%"></div></div>
+          </div>
+        </div>
+        
+        <div class="fiche">
+          ${alertHTML}
+          <div class="fiche-grid">
+            <div class="fiche-sec">
+              <div class="sec-title sec-img">🔬 Imagerie</div>
+              ${imagingItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ex">💪 Exercices</div>
+              ${exercisesItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-rx">💊 Traitement</div>
+              ${treatmentItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ref">🏥 Orientation</div>
+              ${referralItems || '<div class="fi-empty">—</div>'}
+            </div>
+          </div>
+          ${severityHTML}
+          ${pitfallHTML}
+          ${sourcesHTML}
+        </div>
+      </div>
+      
+      <!-- DIAGNOSTICS ALTERNATIFS -->
+      <div class="section-sep">Diagnostics alternatifs à considérer</div>
+      <div class="alt-cards">${altCardsHTML}</div>
+      
+      <div class="disclaimer">
+        ⚠️ <strong>Outil d'aide à la décision clinique</strong> — Les probabilités sont indicatives et basées sur le profil sélectionné. Non substitutif au jugement médical. Sources : HAS, EULAR, sociétés savantes.
+      </div>
+      
+      <div class="actions">
+        <button class="btn-primary" onclick="reset()">↺ Nouveau cas</button>
+        <button class="btn-back" onclick="goBack()">← Modifier les réponses</button>
+      </div>
+      
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="if(event.target.id==='modal') closeModal()">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+  
+  // Animer les barres
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill, .alt-fill').forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => el.style.width = target));
+    });
+  }, 50);
+}
+
+function showModal(pid){
+  const p = P[pid];
+  const imagingHTML = (p.imaging || []).map(i => `<div class="fi"><strong>${i.t}</strong>${i.d?`<span>${i.d}</span>`:''}</div>`).join('');
+  const treatmentHTML = (p.treatment || []).map(t => `<div class="fi"><strong>${t.t}</strong>${t.d?`<span>${t.d}</span>`:''}</div>`).join('');
+  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  const referralHTML = (p.referral || []).map(r => `
+    <div class="ref-tag ${r.p?'p':'s'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p?'→ ':''}${r.who}</div>
+        ${r.why?`<div class="ref-why">${r.why}</div>`:''}
+      </div>
+      <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
+    </div>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-head">
+      <img src="images_pathologies/dorsal.png" alt="" class="modal-icon-img" />
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div class="modal-pop">${p.pop}</div>
+      </div>
+    </div>
+    ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
+    <div class="fiche-grid modal-fiche">
+      <div class="fiche-sec">
+        <div class="sec-title sec-img">🔬 Imagerie</div>
+        ${imagingHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ex">💪 Exercices</div>
+        ${exercisesHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-rx">💊 Traitement</div>
+        ${treatmentHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ref">🏥 Orientation</div>
+        ${referralHTML || '<div class="fi-empty">—</div>'}
+      </div>
+    </div>
+    <div class="sources-row modal-sources">
+      <span class="src-lbl">📚 Sources</span>
+      ${sourcesHTML}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+
+// ========== DISPATCHER ==========
+function renderStep(){
+  if(currentStep === 'MECANISME') renderChoice('MECANISME', 0);
+  else if(currentStep === 'AGE') renderChoice('AGE', 1);
+  else if(currentStep === 'TABLEAU') renderTableau();
+  else if(currentStep === 'HORAIRE') renderChoice('HORAIRE', 3);
+  else if(currentStep === 'TESTS') renderTests();
+  else if(currentStep === 'RESULT') renderResult();
+}
+
+// ========== INIT ==========
+init();
+renderStep();
+
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocoClic — Rachis lombaire v5</title>
+<style>
+
+
+
+
+:root {
+  --bg: #f5f3ee;           /* fond crème */
+  --bg-card: #ffffff;       /* cartes blanches */
+  --bg-hover: #f0ede5;      /* survol crème plus foncé */
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a2332;          /* texte sombre principal */
+  --text-dim: #4a5468;      /* texte secondaire */
+  --text-mute: #8a92a0;     /* texte tertiaire */
+  --accent: #2563a8;        /* bleu marine accent */
+  --accent-dim: #1d4d85;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;        /* or plus sombre pour contraste */
+  --navy: #0f2a44;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 16px;
+  line-height: 1.5;
+}
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.header .badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  padding: 3px 10px;
+  background: var(--accent);
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* === STEP INDICATOR === */
+.step-ind {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.si-item {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 8px;
+  background: #fafaf7;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: center;
+}
+.si-item.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+.si-item.done {
+  background: rgba(37, 99, 168, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* === BREADCRUMB === */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.bc-item { font-style: italic; }
+
+/* === BTN BACK === */
+.btn-back {
+  background: white;
+  color: var(--text-dim);
+  border: 1.5px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.btn-back:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.card-tag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-q {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-hint {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+
+/* === CHOICES (Mécanisme, Âge, Horaire) === */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice {
+  width: 100%;
+  text-align: left;
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.choice:hover {
+  background: rgba(37,99,168,0.06);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.choice-lbl {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.choice-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+/* === VIGNETTES === */
+.vig-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .vig-grid { grid-template-columns: 1fr 1fr; }
+}
+.vig {
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.vig:hover { background: rgba(37,99,168,0.06); border-color: var(--accent); }
+.vig-sel {
+  background: rgba(22,163,74,0.08);
+  border-color: var(--green);
+}
+.vig-chk {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.vig-lbl {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.vig-desc {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.foot-info {
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  box-shadow: 0 2px 8px rgba(37,99,168,0.25);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary:not(:disabled):hover { filter: brightness(1.1); }
+
+/* === TESTS === */
+.test-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+.test-fam {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.test-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.test-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.test-section {
+  margin: 14px 0;
+}
+.test-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.test-section div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.test-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn-pos, .btn-neg {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-pos {
+  background: var(--green);
+  color: white;
+}
+.btn-neg {
+  background: var(--red);
+  color: white;
+}
+.btn-pos:hover, .btn-neg:hover { filter: brightness(1.1); }
+.btn-skip {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* === RÉSULTAT === */
+.result-main {
+  border: 2px solid var(--accent);
+  background: linear-gradient(180deg, rgba(93,141,240,0.08), var(--bg-card));
+}
+.result-tag {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.result-icon { font-size: 36px; }
+.result-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+.result-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.result-score {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.result-section {
+  margin: 14px 0;
+}
+.result-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+.sources {
+  list-style: none;
+  font-size: 12px;
+}
+.sources li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sources li:last-child { border: none; }
+.sources a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.sources a:hover { text-decoration: underline; }
+
+/* === ALTS === */
+.alts {
+  margin-top: 18px;
+}
+.alts-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.alt {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alt:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+.alt-icon { font-size: 24px; }
+.alt-body { flex: 1; }
+.alt-name { font-weight: 600; font-size: 14px; }
+.alt-pop { font-size: 11px; color: var(--text-mute); }
+.alt-score {
+  font-weight: 700;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+
+.btn-reset {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+.btn-reset:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,42,68,0.55);
+  z-index: 100;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  padding: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  font-size: 24px;
+  cursor: pointer;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-icon { font-size: 32px; }
+.modal-name { font-size: 17px; font-weight: 700; }
+.modal-pop { font-size: 12px; color: var(--text-mute); }
+.modal-section {
+  margin: 12px 0;
+}
+.modal-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.modal-section > div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.modal-section ul {
+  list-style: none;
+  font-size: 12px;
+}
+.modal-section ul li {
+  padding: 3px 0;
+}
+.modal-section ul a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+
+.key-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.key-tag { display:inline-block; background:rgba(93,141,240,0.15); color:var(--accent); padding:3px 10px; border-radius:12px; font-size:11px; }
+.bullets { list-style:none; padding-left:0; font-size:14px; line-height:1.7; }
+.bullets li { padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.bullets li:last-child { border:none; }
+.result-info { flex:1; }
+.result-prob-wrap { text-align:right; }
+.result-prob { font-size:28px; font-weight:800; color:var(--accent); line-height:1; }
+.result-score { font-size:11px; color:var(--text-mute); margin-top:2px; }
+.alt-right { text-align:right; }
+.alt-prob { font-weight:700; font-size:17px; color:var(--accent); }
+.alt-score { font-size:10px; color:var(--text-mute); }
+.modal-section ul { list-style:none; padding-left:0; font-size:13px; line-height:1.6; }
+.modal-section ul li { padding:3px 0; }
+.modal-section ul a { color:var(--accent); text-decoration:none; }
+
+/* ===== FICHE RÉSULTAT — sections distinctes ===== */
+.result-wrap { animation: fu 0.4s ease both; }
+@keyframes fu { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+.diag-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(37,99,168,0.12);
+}
+
+.diag-top {
+  background: linear-gradient(135deg, rgba(37,99,168,0.10), rgba(37,99,168,0.03));
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.diag-head { display:flex; align-items:center; gap:12px; flex:1; }
+.diag-icon { font-size: 32px; }
+.rank-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.diag-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.diag-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-wrap { text-align: right; min-width:88px; }
+.prob-pct {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.prob-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.prob-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.fiche { background: var(--bg-card); }
+
+.alert-box {
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+
+
+
+
+
+
+
+.fi:last-child { margin-bottom: 0; }
+
+
+
+
+.ref-tag {
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+  background: rgba(167,139,250,0.18);
+  border: 1px solid rgba(167,139,250,0.2);
+}
+.ref-tag.s {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border);
+}
+.ref-info { flex: 1; }
+.ref-who {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ref-why {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.ref-b {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: rgba(109,40,217,0.15);
+  color: #6d28d9;
+}
+.ref-tag.s .ref-b {
+  background: var(--bg-hover);
+  color: var(--text-mute);
+}
+
+.sources-row {
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.025);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.src-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.src-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(37,99,168,0.08);
+  border: 1px solid rgba(37,99,168,0.3);
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.src-chip:hover {
+  background: rgba(37,99,168,0.18);
+}
+
+.section-sep {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 22px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.alt-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .alt-cards { grid-template-columns: 1fr; }
+}
+.alt-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.alt-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+.alt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.alt-ic { font-size: 22px; }
+.alt-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.alt-pct {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-mute);
+}
+.alt-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.alt-fill {
+  height: 100%;
+  background: var(--text-mute);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.alt-key {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.alt-key strong {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 3px;
+}
+.alt-hint {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-align: right;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.actions .btn-primary, .actions .btn-back { flex: 1; min-width: 140px; }
+
+/* Modal fiche */
+.modal-fiche { 
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.modal-sources {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+
+/* === FICHE GRID — sections fortement distinctes === */
+.fiche-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  padding: 2px;
+}
+@media (max-width: 600px) {
+  .fiche-grid { grid-template-columns: 1fr; }
+}
+
+.fiche-sec {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: none;
+  position: relative;
+}
+
+/* Bandeau coloré en haut de chaque section */
+.fiche-sec::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* === COULEURS PAR SECTION === */
+/* Imagerie — bleu */
+.fiche-sec:nth-child(1) {
+  background: linear-gradient(180deg, rgba(94,177,255,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(1)::before { background: #5eb1ff; }
+
+/* Exercices — vert */
+.fiche-sec:nth-child(2) {
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(2)::before { background: #4ade80; }
+
+/* Traitement — jaune/or */
+.fiche-sec:nth-child(3) {
+  background: linear-gradient(180deg, rgba(251,191,36,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(3)::before { background: #fbbf24; }
+
+/* Orientation — violet */
+.fiche-sec:nth-child(4) {
+  background: linear-gradient(180deg, rgba(167,139,250,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(4)::before { background: #a78bfa; }
+
+/* sec-title plus visible */
+.sec-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+.sec-img { color: #1e6db8; }
+.sec-ex  { color: #15803d; }
+.sec-rx  { color: #b45309; }
+.sec-ref { color: #6d28d9; }
+
+/* Items plus aérés et visibles */
+.fi {
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 10px 8px 12px;
+  border-left: 3px solid;
+  margin-bottom: 8px;
+  background: rgba(0,0,0,0.025);
+  border-radius: 0 6px 6px 0;
+}
+.fi:last-child { margin-bottom: 0; }
+.fiche-sec:nth-child(1) .fi { border-left-color: rgba(94,177,255,0.4); }
+.fiche-sec:nth-child(2) .fi { border-left-color: rgba(74,222,128,0.4); }
+.fiche-sec:nth-child(3) .fi { border-left-color: rgba(251,191,36,0.4); }
+.fiche-sec:nth-child(4) .fi { border-left-color: rgba(167,139,250,0.4); }
+
+.fi strong {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+.fi span {
+  color: var(--text-dim);
+  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+}
+.fi-empty {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* === REFERRAL TAGS spécifiques (dans section orientation) === */
+.fiche-sec:nth-child(4) .ref-tag {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.disclaimer { background: #fef3c7; border: 2px solid #f59e0b; border-radius: 9px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #000000; line-height: 1.6; }
+.disclaimer strong { color: #991b1b; font-weight: 800; }
+
+/* === Encart Signes de gravité === */
+.severity-card {
+  background: linear-gradient(135deg, #fff1f2 0%, #fef3c7 100%);
+  border: 1.5px solid #f59e0b;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.15);
+}
+.severity-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b45309;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.severity-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+}
+
+/* === Encart Pièges diagnostiques === */
+.pitfall-card {
+  background: linear-gradient(135deg, #ecfdf5 0%, #cffafe 100%);
+  border: 1.5px solid #06b6d4;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(6, 182, 212, 0.12);
+}
+.pitfall-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0e7490;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.pitfall-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+  margin-bottom: 10px;
+}
+.pitfall-modules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pitfall-chip {
+  display: inline-block;
+  background: #fff;
+  color: #0e7490;
+  border: 1px solid #67e8f9;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+
+  .alt-ic-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .diag-icon-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.15);
+  }
+  .modal-icon-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  color: #1e3a5f;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s;
+" onmouseover="this.style.background='#1e3a5f';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#1e3a5f';">
+  ← Accueil
+</a>
+
+
+<div class="app">
+  <div class="header">
+    <h1>LocoClic — Rachis lombaire</h1>
+    <div class="badge">v5 · clinique adaptatif</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+// ========== PATHOLOGIES ==========
+const P = {
+  LOMB_COMMUNE: {
+    id:'LOMB_COMMUNE', name:'Lombalgie commune aiguë', icon:'🦴', pop:'Tout âge adulte, plus fréquente 30-60 ans, déclenchement par effort ou faux mouvement, sédentaire ou métier de port',
+    desc:"Douleur lombo-sacrée mécanique sans signe radiculaire ni red flag, évoluant depuis moins de 4-6 semaines. Aggravée par les mouvements, soulagée par le repos. Évolution favorable spontanée dans 90% des cas. Recherche systématique de drapeaux rouges (red flags) avant de retenir le diagnostic.",
+    severity:{
+      title:"Red flags à dépister",
+      text:"<strong>Éliminer systématiquement</strong> : âge > 50 ans avec début récent, ATCD cancer, fièvre, perte de poids, traumatisme, déficit neuro, troubles sphinctériens, anesthésie en selle (queue de cheval), douleur nocturne non mécanique, immunosuppression."
+    },
+    imaging:[
+      {t:"PAS d'imagerie en première intention (HAS 2019)",d:"Aucune indication en l'absence de red flag — informer le patient"},
+      {t:"Radiographie lombaire",d:"Uniquement si red flag ou suspicion étiologie spécifique"},
+      {t:"IRM lombaire",d:"À discuter au-delà de 6 semaines de radiculalgie résistante ou si red flag — pas systématique"}
+    ],
+    treatment:[
+      {t:"Information et réassurance du patient",d:"Évolution favorable dans 90% des cas en 4-6 semaines — démédicaliser, dédramatiser (HAS 2019)"},
+      {t:"Maintien de l'activité physique",d:"Pierre angulaire — éviter le repos prolongé, reprise progressive des activités habituelles"},
+      {t:"Antalgiques de palier 1-2",d:"Paracétamol en première intention, AINS courte durée si insuffisant"},
+      {t:"Myorelaxant (courte durée)",d:"Si contracture importante — 5-7 jours max"},
+      {t:"Kinésithérapie",d:"Pas dans les 4 premières semaines (HAS) sauf échec ou facteurs de risque de chronicité — exercices, manipulations"},
+      {t:"Ceinture lombaire",d:"Peut aider transitoirement à la reprise d'activité — pas de port prolongé"}
+    ],
+    exercises:[{t:'Stabilisation lombaire (Bird-dog)',d:''},{t:'Position du chat (dos rond / dos plat)',d:''},{t:'Étirement des ischio-jambiers',d:''},{t:'Marche quotidienne',d:''}],ficheExercice:'lococlic_fiches_patient/lombaire_01_lombalgie_aigue.html',
+    referral:[
+      {who:'Médecin du sport',why:"Si récidives, sportif, ou pour programme de rééducation",p:false},
+      {who:'Rhumatologue',why:"Si évolution prolongée > 6 semaines, doute diagnostique ou red flag suspecté",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"<strong>Si lombalgie > 6 semaines</strong> chez sujet jeune (< 45 ans) avec raideur matinale > 30 min, douleurs nocturnes en 2e partie de nuit, atteinte sacro-iliaque, terrain psoriasis/MICI/uvéite : penser à une spondylarthrite axiale. Bilan : CRP, HLA-B27, radio bassin (sacro-iliaques)."
+    },
+    sources:[
+      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},
+      {l:'Foster et al. 2018 — Low back pain prevention (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'},
+      {l:'Hartvigsen et al. 2018 — What low back pain is and why we need to pay attention (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573870/'},
+      {l:'Maher et al. 2017 — Non-specific low back pain (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/27745712/'}
+    ],
+    keys:['Lombalgie aiguë','Mécanique','Pas imagerie','HAS 2019','Mouvement']
+  },
+  LOMB_CHRONIQUE: {
+    id:'LOMB_CHRONIQUE', name:'Lombalgie chronique', icon:'🔄', pop:'Adulte 35-65 ans, facteurs psycho-sociaux (yellow flags), métier physique ou sédentaire, ATCD lombalgie',
+    desc:"Lombalgie évoluant depuis plus de 3 mois ou récidives fréquentes. Prise en charge globale bio-psycho-sociale avec recherche systématique de facteurs psycho-sociaux (yellow flags) : kinésiophobie, anxiété, dépression, désinsertion professionnelle. L'exercice physique est le traitement principal.",
+    severity:{
+      title:"Yellow flags à dépister",
+      text:"<strong>Repérer les facteurs de chronicisation</strong> : kinésiophobie (peur du mouvement), catastrophisme, anxiété, dépression, conflit professionnel, arrêt de travail prolongé, isolement social. Score STarT Back ou questionnaire FABQ utiles."
+    },
+    imaging:[
+      {t:'IRM lombaire',d:"Indiquée si lombalgie chronique > 3 mois (HAS 2019) — discopathie, arthrose, sténose, hernie séquellaire"},
+      {t:'Scanner lombaire',d:"Si contre-indication à l'IRM"},
+      {t:'Radiographie debout face/profil',d:"Évalue alignement, statique, troubles posturaux, listhésis"}
+    ],
+    treatment:[
+      {t:"Exercice physique régulier",d:"Pierre angulaire — programme adapté (renforcement, mobilité, cardio) — grade B HAS"},
+      {t:"Approche bio-psycho-sociale",d:"Prendre en compte les facteurs psycho-sociaux — décision médicale partagée"},
+      {t:"Thérapie cognitivo-comportementale (TCC)",d:"Si yellow flags ++ — gestion de la peur du mouvement et catastrophisme"},
+      {t:"Kinésithérapie active",d:"Programme supervisé d'exercices, renforcement, étirements, manipulations dans un programme multimodal"},
+      {t:"Antalgiques selon palier",d:"Privilégier paracétamol, AINS courte durée — éviter opiacés au long cours"},
+      {t:"Programme de réadaptation pluridisciplinaire",d:"Si retentissement fonctionnel important — physique + psycho + socio-pro"},
+      {t:"Maintien dans l'emploi",d:"Coordination avec médecin du travail — adaptation du poste"}
+    ],
+    exercises:[{t:'Stabilisation lombaire (Bird-dog)',d:''},{t:'Pont fessier',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Marche et activité aérobie régulière',d:''}],ficheExercice:'lococlic_fiches_patient/lombaire_02_lombalgie_chronique.html',
+    referral:[
+      {who:'Médecin du sport',why:"Programme de rééducation et de réentraînement à l'effort",p:true},
+      {who:'Rhumatologue',why:"Si bilan complémentaire, infiltrations, ou doute diagnostique",p:false},
+      {who:'Médecin du travail',why:"Si origine professionnelle ou retentissement sur l'emploi — adaptation du poste",p:false},
+      {who:'Chirurgien orthopédique (rachis)',why:"Uniquement si indication chirurgicale (canal étroit symptomatique, instabilité)",p:false}
+    ],
+    sources:[
+      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/'},
+      {l:'Foster et al. 2018 — Low back pain prevention treatment (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'},
+      {l:'Qaseem et al. 2017 — ACP guideline noninvasive treatments low back pain',u:'https://pubmed.ncbi.nlm.nih.gov/28192789/'},
+      {l:'Saragiotto et al. 2016 — Motor control exercise chronic low back pain Cochrane',u:'https://pubmed.ncbi.nlm.nih.gov/26742533/'}
+    ],
+    keys:['Lombalgie chronique','> 3 mois','Yellow flags','Bio-psycho-social','Exercice']
+  },
+  SYND_FACETTAIRE: {
+    id:'SYND_FACETTAIRE', name:'Syndrome facettaire lombaire', icon:'🦴', pop:'Adulte 40-70 ans, arthrose lombaire dégénérative, surcharge, posture en hyperlordose',
+    desc:"Douleur lombaire mécanique d'origine articulaire postérieure (zygapophysaire). Douleur lombaire basse, parfois irradiation pseudo-radiculaire fessière ou cuisse postérieure ne dépassant pas le genou. Aggravée par l'extension et la rotation, soulagée par la flexion. Pas de signe radiculaire vrai. Souvent associée à une arthrose interapophysaire postérieure.",
+    imaging:[
+      {t:'Radiographie lombaire face/profil',d:"Recherche arthrose interapophysaire postérieure, pincement discal, listhésis"},
+      {t:'IRM lombaire',d:"Si doute ou échec du traitement — visualise arthrose facettaire, hypertrophie articulaire, épanchement"},
+      {t:'Scanner lombaire',d:"Bonne visualisation de l'arthrose facettaire — alternative IRM"}
+    ],
+    treatment:[
+      {t:"Maintien de l'activité",d:"Éviter le repos prolongé, reprise progressive"},
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
+      {t:"Kinésithérapie active",d:"Renforcement du tronc, étirements, correction de la posture, travail des fléchisseurs de hanche"},
+      {t:"Médecine manuelle / manipulations vertébrales",d:"Manipulations ostéopathiques ou de médecine manuelle dans un programme multimodal — souvent efficaces sur les blocages facettaires (HAS 2019, grade B)"},
+      {t:"Infiltration de corticoïde des facettes",d:"Sous radioguidage/scanner — par rhumatologue ou médecin de la douleur si échec médical"},
+      {t:"Thermocoagulation facettaire",d:"En cas d'échec des infiltrations — par centre antidouleur"}
+    ],
+    exercises:[{t:'Stabilisation lombaire (Bird-dog)',d:''},{t:'Position du chat en dos rond',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Étirement des ischio-jambiers',d:''}],ficheExercice:'lococlic_fiches_patient/lombaire_03_syndrome_facettaire.html',
+    referral:[
+      {who:'Rhumatologue',why:"Pour infiltration facettaire sous radioguidage et bilan complet",p:true},
+      {who:'Médecin du sport',why:"Programme de rééducation et correction posturale",p:false}
+    ],
+    sources:[
+      {l:'Cohen & Raja 2007 — Pathogenesis diagnosis treatment lumbar zygapophysial joint pain (Anesthesiology)',u:'https://pubmed.ncbi.nlm.nih.gov/17585245/'},
+      {l:'Manchikanti et al. 2015 — Lumbar facet joint interventions (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/26218948/'},
+      {l:'Perolat et al. 2018 — Facet joint syndrome (Insights Imaging)',u:'https://pubmed.ncbi.nlm.nih.gov/30090998/'},
+      {l:'HAS — Lombalgie commune chronique',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Lombalgie basse','Extension douloureuse','Arthrose facettaire','Pseudo-radiculaire','Facettaire']
+  },
+  SCIATIQUE: {
+    id:'SCIATIQUE', name:'Lombo-sciatique (radiculalgie L5 ou S1)', icon:'⚡', pop:'30-50 ans, effort de soulèvement, hernie discale L4-L5 ou L5-S1, sédentaire',
+    desc:"Radiculalgie lombo-sacrée par compression d'une racine nerveuse, le plus souvent L5 ou S1, par hernie discale (jeune) ou arthrose foraminale (sénior). Douleur irradiée selon le trajet radiculaire (Lasègue positif). L5 : face postéro-latérale cuisse, face antéro-latérale jambe, dos du pied, gros orteil. S1 : face postérieure cuisse, mollet, talon, plante, 5e orteil.",
+    severity:{
+      title:"Signes de gravité (urgence)",
+      text:"<strong>Adresser EN URGENCE</strong> si : syndrome de la queue de cheval (anesthésie en selle, troubles sphinctériens), déficit moteur progressif (testing < 3/5), sciatique hyperalgique malgré antalgiques palier 3. IRM en urgence + avis chirurgical."
+    },
+    imaging:[
+      {t:"Pas d'imagerie d'emblée si pas de red flag",d:"Délai de 6-8 semaines avant IRM si évolution favorable (HAS 2019)"},
+      {t:'IRM lombaire',d:"Référence — visualise hernie discale, conflit disco-radiculaire, sténose foraminale — au-delà de 6-8 semaines ou red flag"},
+      {t:'Scanner lombaire',d:"Si contre-indication à l'IRM"}
+    ],
+    treatment:[
+      {t:"Maintien de l'activité",d:"Éviter le repos prolongé, reprise progressive selon douleur"},
+      {t:"Antalgiques (paliers progressifs)",d:"Paracétamol + AINS, palier 2 si insuffisant, neuropathiques (gabapentine, prégabaline) si douleur radiculaire intense"},
+      {t:"Corticothérapie orale courte",d:"5-10 jours si poussée hyperalgique (à discuter)"},
+      {t:"Infiltration épidurale",d:"Sous radioguidage par rhumatologue — si échec antalgique > 4-6 semaines"},
+      {t:"Kinésithérapie",d:"Après la phase aiguë — étirements, renforcement, étirement de la chaîne postérieure"},
+      {t:"Chirurgie (discectomie)",d:"Indications : déficit moteur progressif, sciatique hyperalgique résistante > 6 semaines, queue de cheval (urgence)"}
+    ],
+    exercises:[{t:'Mobilisation neurale du nerf sciatique',d:''},{t:'Position du chat (dos rond / dos plat)',d:''},{t:'Étirement du piriforme',d:''},{t:'Marche quotidienne',d:''}],ficheExercice:'lococlic_fiches_patient/lombaire_04_sciatique.html',
+    referral:[
+      {who:'Rhumatologue',why:"Si évolution prolongée, pour infiltration épidurale et bilan",p:true},
+      {who:'Chirurgien orthopédique (rachis)',why:"Si déficit moteur, hyperalgie résistante > 6 semaines, ou red flag",p:true}
+    ],
+    sources:[
+      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/'},
+      {l:'Jordan et al. 2009 — Herniated lumbar disc BMJ Clin Evid',u:'https://pubmed.ncbi.nlm.nih.gov/19445754/'},
+      {l:'Vroomen et al. 2002 — Diagnostic value of history physical exam lumbosacral radicular syndrome (J Neurol)',u:'https://pubmed.ncbi.nlm.nih.gov/12082608/'},
+      {l:'Pinto et al. 2012 — Drugs for sciatica systematic review (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/22331277/'}
+    ],
+    keys:['Lasègue','Trajet L5 ou S1','Hernie discale','Radiculalgie','Sciatique']
+  },
+  CRURALGIE: {
+    id:'CRURALGIE', name:'Cruralgie (radiculalgie L3 ou L4)', icon:'⚡', pop:'40-70 ans, hernie discale L2-L3 ou L3-L4, arthrose foraminale haute, parfois post-zona',
+    desc:"Radiculalgie par compression d'une racine lombaire haute (L3 ou L4) par hernie discale (rare) ou arthrose foraminale. Douleur irradiée à la face antérieure de la cuisse, dépassant ou non le genou (Léri positif). L3 : face antéro-médiale cuisse, parfois genou. L4 : face antéro-latérale cuisse, face médiale jambe et cheville. Plus rare que la sciatique, souvent plus invalidante.",
+    severity:{
+      title:"Signes de gravité (urgence)",
+      text:"<strong>Adresser EN URGENCE</strong> si : déficit moteur progressif du quadriceps (lâchage du genou), cruralgie hyperalgique malgré antalgiques palier 3, anesthésie en selle. IRM en urgence + avis chirurgical."
+    },
+    imaging:[
+      {t:'IRM lombaire',d:"Référence — visualise hernie discale haute, sténose foraminale, kyste articulaire"},
+      {t:'Scanner lombaire',d:"Si contre-indication à l'IRM"},
+      {t:"EMG",d:"Pour quantifier déficit moteur, parfois utile pour différencier d'une atteinte fémorale"}
+    ],
+    treatment:[
+      {t:"Maintien de l'activité",d:"Éviter le repos prolongé"},
+      {t:"Antalgiques (paliers progressifs)",d:"Paracétamol + AINS, neuropathiques (gabapentine, prégabaline) souvent nécessaires"},
+      {t:"Corticothérapie orale courte",d:"5-10 jours si poussée hyperalgique"},
+      {t:"Infiltration épidurale",d:"Sous radioguidage — souvent efficace dans la cruralgie résistante"},
+      {t:"Kinésithérapie",d:"Étirements, renforcement progressif, mobilisations neurales"},
+      {t:"Chirurgie (discectomie)",d:"Indications : déficit moteur quadricipital, cruralgie hyperalgique résistante > 6 semaines"}
+    ],
+    exercises:[{t:'Mobilisation neurale du nerf crural',d:''},{t:'Étirement du psoas',d:''},{t:'Position du chat (dos rond / dos plat)',d:''},{t:'Marche quotidienne',d:''}],ficheExercice:'lococlic_fiches_patient/lombaire_05_cruralgie.html',
+    referral:[
+      {who:'Rhumatologue',why:"Pour infiltration épidurale et bilan complet",p:true},
+      {who:'Chirurgien orthopédique (rachis)',why:"Si déficit moteur du quadriceps, hyperalgie résistante",p:true}
+    ],
+    sources:[
+      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/'},
+      {l:'Suri et al. 2011 — Femoral nerve stretch test physical exam (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/21482199/'},
+      {l:'Tarulli & Raynor 2007 — Lumbosacral radiculopathy (Neurol Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/17445733/'},
+      {l:'Jordan et al. 2011 — Herniated lumbar disc BMJ Clin Evid',u:'https://pubmed.ncbi.nlm.nih.gov/21711958/'}
+    ],
+    keys:['Léri positif','Trajet L3 ou L4','Cruralgie','Hernie haute','Quadriceps']
+  },
+  CANAL_LOMBAIRE: {
+    id:'CANAL_LOMBAIRE', name:'Canal lombaire étroit', icon:'🦴', pop:'Sénior > 60 ans, arthrose lombaire évoluée, terrain dégénératif, parfois congénital',
+    desc:"Sténose du canal lombaire par arthrose dégénérative (facettes, ligaments jaunes, disque). Tableau de claudication neurogène intermittente : douleurs lombaires + irradiation bilatérale (ou alternante) dans les membres inférieurs à la marche, soulagées par la position penchée en avant (caddy sign) et l'arrêt. Évolution progressive avec retentissement sur le périmètre de marche.",
+    imaging:[
+      {t:'IRM lombaire',d:"Examen de référence — mesure du diamètre canalaire (< 12 mm = sténose), hypertrophie facettaire, ligament jaune"},
+      {t:'Scanner lombaire',d:"Si contre-indication à l'IRM — bonne visualisation osseuse"},
+      {t:'Radiographie debout face/profil',d:"Évalue alignement, listhésis dégénératif souvent associé"}
+    ],
+    treatment:[
+      {t:"Maintien de l'activité adaptée",d:"Privilégier les exercices en flexion (vélo, natation, marche penchée en avant)"},
+      {t:"Antalgiques et neuropathiques",d:"Paracétamol, AINS courte durée, gabapentine/prégabaline si composante neuropathique"},
+      {t:"Kinésithérapie active",d:"Renforcement du tronc, flexion lombaire, étirements de la chaîne postérieure"},
+      {t:"Infiltration épidurale",d:"Sous radioguidage — peut soulager transitoirement, par rhumatologue"},
+      {t:"Chirurgie de décompression",d:"Laminectomie/recalibrage — si retentissement marqué sur le périmètre de marche, échec conservateur"}
+    ],
+    exercises:[{t:'Position du chat en dos rond',d:''},{t:'Étirement des ischio-jambiers',d:''},{t:'Vélo d\'appartement (en flexion)',d:''},{t:'Marche avec arrêts assis fréquents',d:''}],ficheExercice:'lococlic_fiches_patient/lombaire_06_canal_lombaire_etroit.html',
+    referral:[
+      {who:'Rhumatologue',why:"Pour infiltration épidurale et bilan complet",p:true},
+      {who:'Radiologue interventionnel',why:"Pour infiltration épidurale sous radioguidage",p:true},
+      {who:'Chirurgien orthopédique (rachis)',why:"Si retentissement marqué sur le périmètre de marche après échec conservateur",p:true}
+    ],
+    sources:[
+      {l:'Lurie & Tomkins-Lane 2016 — Management of lumbar spinal stenosis (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/26727925/'},
+      {l:'Kalichman et al. 2009 — Spinal stenosis prevalence (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/19111259/'},
+      {l:'Katz et al. 2008 — Lumbar spinal stenosis NEJM',u:'https://pubmed.ncbi.nlm.nih.gov/18272897/'},
+      {l:'Ammendolia et al. 2013 — Non-operative treatment for lumbar spinal stenosis Cochrane',u:'https://pubmed.ncbi.nlm.nih.gov/23959343/'}
+    ],
+    keys:['Claudication neurogène','Caddy sign','Sénior','Marche penchée','Canal étroit']
+  },
+  SACRO_ILIAQUE: {
+    id:'SACRO_ILIAQUE', name:"Sacro-iliaque mécanique", icon:'🦴', pop:'Femme post-grossesse, sportif (course, tennis), post-traumatique, 30-50 ans',
+    desc:"Douleur de la fesse en regard de la sacro-iliaque (zone du Fortin, juste sous l'épine iliaque postéro-supérieure), parfois irradiation cuisse postérieure ne dépassant pas le genou. Aggravée par les transferts (assis-debout), l'appui monopodal, la marche. Tests provocateurs sacro-iliaques positifs (FABER, distraction, compression).",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (tests sacro-iliaques)"},
+      {t:'Radiographie bassin face',d:"Élimine sacro-iliite inflammatoire (érosions, sclérose) — important pour le différentiel"},
+      {t:'IRM sacro-iliaques',d:"Si suspicion d'atteinte inflammatoire (spondylarthrite) — œdème osseux"}
+    ],
+    treatment:[
+      {t:"Information et maintien de l'activité",d:"Réassurance, reprise progressive"},
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
+      {t:"Kinésithérapie",d:"Mobilisations sacro-iliaques, renforcement des stabilisateurs (fessiers, transverse), correction de la statique"},
+      {t:"Ceinture pelvienne",d:"Utile en post-partum ou poussée — port transitoire"},
+      {t:"Infiltration sacro-iliaque",d:"Sous radio/échoguidage si échec — par rhumatologue ou médecin de la douleur"}
+    ],
+    exercises:[
+      {t:"Renforcement des stabilisateurs",d:"Fessiers, transverse, multifides, plancher pelvien"},
+      {t:"Mobilisations sacro-iliaques",d:"Exercices d'auto-mobilisation, gainage dynamique"},
+      {t:"Étirements ciblés",d:"Piriforme, ischio-jambiers, psoas"},
+      {t:"Correction posturale et de la marche",d:"Par kiné"}
+    ],
+    referral:[
+      {who:'Rhumatologue',why:"Si évolution prolongée, suspicion atteinte inflammatoire, ou pour infiltration",p:true},
+      {who:'Médecin du sport',why:"Si origine sportive ou post-partum — programme de rééducation",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"<strong>Éliminer une sacro-iliite inflammatoire</strong> (spondylarthrite axiale) chez le jeune adulte avec : douleurs nocturnes, raideur matinale > 30 min, atteinte d'autres enthèses, ATCD de psoriasis/MICI/uvéite. Bilan : CRP, HLA-B27, IRM sacro-iliaques."
+    },
+    sources:[
+      {l:'Cohen 2005 — Sacroiliac joint pain comprehensive review (Anesth Analg)',u:'https://pubmed.ncbi.nlm.nih.gov/16244000/'},
+      {l:'Laslett 2008 — Evidence-based diagnosis treatment sacroiliac joint (J Man Manip Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/19119403/'},
+      {l:'Dreyfuss et al. 2004 — Sacroiliac joint pain (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/15089082/'},
+      {l:'Vanelderen et al. 2010 — Sacroiliac joint pain (Pain Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/20667026/'}
+    ],
+    keys:['Fortin point','FABER positif','Post-partum','Fesse haute','Sacro-iliaque']
+  },
+  SPONDYLOLISTHESIS: {
+    id:'SPONDYLOLISTHESIS', name:'Spondylolisthésis', icon:'🦴', pop:'Adolescent/jeune sportif (isthmique, sports hyperextension : gymnaste, danseur, plongeur) ou sénior (dégénératif L4-L5)',
+    desc:"Glissement antérieur d'une vertèbre sur la sous-jacente. Deux formes principales : isthmique (lyse isthmique de L5 chez le jeune sportif en hyperextension) et dégénérative (L4-L5 chez le sénior, arthrose facettaire). Douleur lombaire mécanique, parfois radiculalgie associée, signes neurologiques possibles dans les formes évoluées.",
+    imaging:[
+      {t:'Radiographie lombaire face/profil debout',d:"Examen de référence — visualise le glissement (classification de Meyerding I-IV), recherche lyse isthmique sur les obliques"},
+      {t:'IRM lombaire',d:"Si retentissement radiculaire ou bilan préopératoire — précise compression nerveuse"},
+      {t:'Scanner lombaire',d:"Précise la lyse isthmique osseuse"}
+    ],
+    treatment:[
+      {t:"Information et adaptation de l'activité",d:"Éviction temporaire des sports en hyperextension chez le jeune (gymnastique, plongeon)"},
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
+      {t:"Kinésithérapie active",d:"Renforcement du tronc (gainage, abdominaux), étirements, correction de l'hyperlordose"},
+      {t:"Corset lombaire",d:"Possible chez l'adolescent en phase aiguë — port transitoire"},
+      {t:"Chirurgie (arthrodèse)",d:"Si glissement évolutif, déficit neurologique, ou échec conservateur invalidant"}
+    ],
+    exercises:[{t:'Stabilisation lombaire (Bird-dog)',d:''},{t:'Pont fessier',d:''},{t:'Position du chat en dos rond',d:''},{t:'Étirement des ischio-jambiers',d:''}],ficheExercice:'lococlic_fiches_patient/lombaire_07_spondylolisthesis.html',
+    referral:[
+      {who:'Rhumatologue',why:"Bilan complet et suivi",p:false},
+      {who:'Chirurgien orthopédique (rachis)',why:"Si glissement évolutif, déficit neurologique, ou retentissement invalidant",p:false},
+      {who:'Médecin du sport',why:"Pour le jeune sportif — encadrement de la reprise et adaptation de l'activité",p:true}
+    ],
+    sources:[
+      {l:'Kalichman & Hunter 2008 — Diagnosis treatment degenerative spondylolisthesis (Eur Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/18075763/'},
+      {l:'Beutler et al. 2003 — Natural history of spondylolysis spondylolisthesis (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/12782996/'},
+      {l:'Tebet 2014 — Spondylolisthesis update (Rev Bras Ortop)',u:'https://pubmed.ncbi.nlm.nih.gov/26229765/'},
+      {l:'Kreiner et al. 2016 — NASS guideline degenerative spondylolisthesis (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/27037096/'}
+    ],
+    keys:['Glissement vertébral','Lyse isthmique','Jeune sportif hyperextension','Sénior dégénératif','Spondylolisthésis']
+  },
+  LUMBAGO_AIGU: {
+    id:'LUMBAGO_AIGU', name:'Lumbago aigu (contracture)', icon:'🔥', pop:'Tout âge adulte, déclenchement brutal après effort de soulèvement, faux mouvement, port de charge',
+    desc:"Apparition brutale d'une douleur lombaire intense avec contracture musculaire para-vertébrale majeure, suite à un effort, un faux mouvement ou un soulèvement. Impotence fonctionnelle marquée, attitude antalgique. Pas de signe radiculaire, pas de red flag. Évolution favorable en quelques jours à 2 semaines avec maintien de l'activité.",
+    imaging:[
+      {t:"Pas d'imagerie indiquée",d:"En l'absence de red flag (HAS 2019) — informer le patient"}
+    ],
+    treatment:[
+      {t:"Information et réassurance",d:"Évolution favorable en quelques jours à 2 semaines — dédramatiser, démédicaliser"},
+      {t:"Maintien de l'activité adaptée",d:"Éviter le repos prolongé, reprise progressive selon douleur (pas de repos au lit > 48h)"},
+      {t:"Antalgiques palier 1-2",d:"Paracétamol, AINS courte durée"},
+      {t:"Myorelaxant courte durée",d:"5-7 jours max — utile si contracture importante"},
+      {t:"Application de chaleur locale",d:"Soulage la contracture musculaire"},
+      {t:"Ceinture lombaire",d:"Peut aider transitoirement à la reprise d'activité"}
+    ],
+    exercises:[{t:'Activation transverse allongé (bracing)',d:''},{t:'Position du chat (dos rond / dos plat)',d:''},{t:'Étirement des ischio-jambiers',d:''},{t:'Marche douce progressive',d:''}],ficheExercice:'lococlic_fiches_patient/lombaire_08_lumbago_aigu.html',
+    referral:[
+      {who:'Médecin du sport',why:"Si récidives fréquentes ou contexte sportif",p:false},
+      {who:'Rhumatologue',why:"Si évolution prolongée ou apparition de red flag",p:false}
+    ],
+    sources:[
+      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/'},
+      {l:'Foster et al. 2018 — Low back pain prevention treatment (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'},
+      {l:'Hartvigsen et al. 2018 — What low back pain is and why we need to pay attention (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573870/'},
+      {l:'Qaseem et al. 2017 — ACP guideline noninvasive treatments low back pain',u:'https://pubmed.ncbi.nlm.nih.gov/28192789/'}
+    ],
+    keys:['Brutal après effort','Contracture','Faux mouvement','Impotence','Lumbago']
+  },
+  SPONDYLARTHRITE: {
+    id:'SPONDYLARTHRITE', name:'Spondylarthrite axiale (à dépister)', icon:'⚠️', pop:'Jeune adulte 15-45 ans, terrain HLA-B27, ATCD familial, psoriasis, MICI, uvéite',
+    desc:"Rhumatisme inflammatoire chronique du rachis et des sacro-iliaques. Lombalgie inflammatoire (raideur matinale > 30 min, douleur en 2e partie de nuit, amélioration au mouvement, sujet jeune < 45 ans). Atteinte des sacro-iliaques quasi systématique. Atteintes extra-articulaires possibles : uvéite, psoriasis, MICI, enthésites (talon, ischions).",
+    severity:{
+      title:"Critères de dépistage MG (ASAS)",
+      text:"<strong>Adresser au rhumatologue</strong> devant une lombalgie chronique > 3 mois chez sujet < 45 ans avec au moins l'un de ces signes : raideur matinale > 30 min, douleurs en 2e partie de nuit, amélioration au mouvement, atteinte fessière alternante, ATCD personnel/familial psoriasis/MICI/uvéite."
+    },
+    imaging:[
+      {t:'Radiographie bassin face',d:"Recherche sacro-iliite radiologique (érosions, sclérose, ankylose) — signes tardifs"},
+      {t:'IRM sacro-iliaques',d:"Examen de référence pour le diagnostic précoce — œdème osseux sacro-iliaque (formes axiales non radiographiques)"},
+      {t:'Bilan biologique',d:"CRP, VS, HLA-B27, NFS — pour le diagnostic et le suivi"}
+    ],
+    treatment:[
+      {t:"AINS ou AIS au long cours",d:"Première intention — pierre angulaire du traitement, à dose efficace, en continu ou à la demande"},
+      {t:"Kinésithérapie active",d:"Maintien des amplitudes du rachis, étirements, exercices posturaux — quotidien"},
+      {t:"Activité physique régulière",d:"Pierre angulaire — natation, marche, exercices doux"},
+      {t:"Anti-TNFα ou anti-IL17",d:"Si forme active malgré AINS (score BASDAI > 4) — par rhumatologue"},
+      {t:"Conventional DMARDs",d:"Sulfasalazine, méthotrexate — pour les atteintes périphériques"},
+      {t:"Sevrage tabagique",d:"Le tabac aggrave l'évolution et diminue la réponse aux traitements"}
+    ],
+    exercises:[{t:'Mobilisation globale du rachis',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Renforcement des extenseurs du dos (Superman)',d:''},{t:'Marche et activité aérobie régulière',d:''}],ficheExercice:'lococlic_fiches_patient/lombaire_09_spondylarthrite.html',
+    referral:[
+      {who:'Rhumatologue',why:"Pour confirmation diagnostique, mise en route traitement de fond, suivi",p:true},
+      {who:'Médecin du sport',why:"Programme de rééducation et de réentraînement à l'effort",p:false}
+    ],
+    sources:[
+      {l:'Sieper et al. 2017 — Axial spondyloarthritis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/28110981/'},
+      {l:'van der Heijde et al. 2017 — ASAS-EULAR management recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/28087505/'},
+      {l:'Rudwaleit et al. 2009 — ASAS classification criteria axial spondyloarthritis',u:'https://pubmed.ncbi.nlm.nih.gov/19297344/'},
+      {l:'Wendling et al. 2022 — Recommandations SFR spondyloarthrite (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/35487390/'}
+    ],
+    keys:['Lombalgie inflammatoire','Sujet jeune','HLA-B27','Sacro-iliite','Spondylarthrite']
+  }
+};
+
+// ========== TESTS CLINIQUES ==========
+const TESTS = {
+  // === FAMILLE LOMBAIRE GÉNÉRAL ===
+  palp_paravertebrale: {
+    name:"Palpation paravertébrale lombaire", family:'LOMB', badge:'PAL',
+    desc:"Palpation systématique des masses musculaires paravertébrales lombaires",
+    how:"Patient en décubitus ventral. Palpation systématique des masses musculaires paravertébrales lombaires de L1 à L5, recherche de contractures, points douloureux, cordon induré.",
+    pos:"Contracture musculaire palpable, douleur exquise paravertébrale reproductible — lombalgie commune ou lumbago",
+    neg:"Indolore, pas de contracture",
+    affects_pos:{LOMB_COMMUNE:35, LUMBAGO_AIGU:50, LOMB_CHRONIQUE:25}, affects_neg:{LOMB_COMMUNE:-15, LUMBAGO_AIGU:-25}
+  },
+  schober_test: {
+    name:"Test de Schober (flexion antérieure du rachis)", family:'MOBILITE', badge:'SCH',
+    desc:"Mesure de la mobilité en flexion du rachis lombaire",
+    how:"Patient debout. Repérer S1 (épines iliaques postéro-supérieures), marquer un point 10 cm au-dessus. Patient se penche en avant doigts vers le sol, mesurer la nouvelle distance.",
+    pos:"Distance augmentée de moins de 4 cm — raideur lombaire (spondylarthrite, canal lombaire, arthrose évoluée)",
+    neg:"Distance augmentée de plus de 4 cm — mobilité conservée",
+    affects_pos:{SPONDYLARTHRITE:40, CANAL_LOMBAIRE:30, LOMB_CHRONIQUE:15}, affects_neg:{SPONDYLARTHRITE:-30}
+  },
+
+  // === FAMILLE FACETTAIRE ===
+  extension_rotation: {
+    name:"Test d'extension-rotation (Kemp)", family:'FACET', badge:'KEM',
+    desc:"Mise en tension des articulations facettaires",
+    how:"Patient debout ou assis. L'examinateur demande une extension du rachis lombaire avec rotation et inclinaison du côté douloureux. Maintenir 5-10 secondes.",
+    pos:"Reproduction de la douleur lombaire basse ipsilatérale, parfois irradiation pseudo-radiculaire fessière — syndrome facettaire",
+    neg:"Indolore ou douleur non reproduite",
+    affects_pos:{SYND_FACETTAIRE:55}, affects_neg:{SYND_FACETTAIRE:-25}
+  },
+  palp_facettes: {
+    name:"Palpation directe des facettes articulaires", family:'FACET', badge:'FAC',
+    desc:"Palpation directe des massifs articulaires postérieurs",
+    how:"Patient en décubitus ventral. Palpation directe des massifs articulaires postérieurs à 2-3 cm latéralement des épineuses, à chaque étage lombaire. Recherche de douleur exquise.",
+    pos:"Douleur exquise reproductible sur un ou plusieurs niveaux facettaires — syndrome facettaire",
+    neg:"Indolore",
+    affects_pos:{SYND_FACETTAIRE:45}, affects_neg:{SYND_FACETTAIRE:-20}
+  },
+
+  // === FAMILLE RADICULAIRE L5/S1 (SCIATIQUE) ===
+  lasegue: {
+    name:"Test de Lasègue (élévation jambe tendue)", family:'RAD_L5S1', badge:'LAS',
+    desc:"Test de mise en tension des racines L5 et S1",
+    how:"Patient en décubitus dorsal, jambes tendues. L'examinateur élève passivement le membre inférieur tendu, en flexion de hanche, jusqu'à reproduction de la douleur. Noter l'angle.",
+    pos:"Reproduction de la douleur radiculaire dans le trajet (face postéro-latérale cuisse, jambe, pied) avant 60° — sciatique L5 ou S1",
+    neg:"Indolore ou douleur lombaire pure sans irradiation — Lasègue négatif",
+    affects_pos:{SCIATIQUE:60}, affects_neg:{SCIATIQUE:-30}
+  },
+  bragard: {
+    name:"Manœuvre de Bragard (sensibilisation Lasègue)", family:'RAD_L5S1', badge:'BRA',
+    desc:"Sensibilisation neurale du Lasègue par dorsiflexion du pied",
+    how:"Reproduire le Lasègue jusqu'à l'angle douloureux, redescendre légèrement (10°), puis ajouter une dorsiflexion passive du pied (et/ou du gros orteil).",
+    pos:"Aggravation ou réapparition de la douleur radiculaire au moment de la dorsiflexion — confirme l'origine radiculaire (sciatique)",
+    neg:"Pas d'aggravation",
+    affects_pos:{SCIATIQUE:45}, affects_neg:{SCIATIQUE:-15}
+  },
+  testing_l5_s1: {
+    name:"Testing moteur et sensitif L5-S1", family:'NEURO_BAS', badge:'NEU',
+    desc:"Examen neurologique systématique des territoires L5 et S1",
+    how:"L5 : marche sur les talons, extension du gros orteil contre résistance, sensibilité dos du pied et gros orteil. S1 : marche sur la pointe des pieds, flexion plantaire contre résistance, réflexe achilléen, sensibilité plante et 5e orteil.",
+    pos:"Déficit moteur (testing < 5/5), abolition réflexe achilléen, hypoesthésie territoriale — confirme la racine atteinte",
+    neg:"Examen neurologique normal",
+    affects_pos:{SCIATIQUE:50}, affects_neg:{SCIATIQUE:-15}
+  },
+
+  // === FAMILLE RADICULAIRE L3/L4 (CRURALGIE) ===
+  leri_stretch: {
+    name:"Test de Léri (stretch du nerf fémoral)", family:'RAD_L3L4', badge:'LER',
+    desc:"Test de mise en tension des racines L3 et L4 par étirement fémoral",
+    how:"Patient en décubitus ventral. L'examinateur fléchit passivement le genou (talon vers la fesse) puis réalise une extension de la hanche en soulevant la cuisse. Comparer au côté sain.",
+    pos:"Reproduction de la douleur cruralgique face antérieure de la cuisse — cruralgie L3 ou L4",
+    neg:"Indolore",
+    affects_pos:{CRURALGIE:60}, affects_neg:{CRURALGIE:-30}
+  },
+  testing_l3_l4: {
+    name:"Testing moteur et sensitif L3-L4", family:'NEURO_HAUT', badge:'NEU',
+    desc:"Examen neurologique systématique des territoires L3 et L4",
+    how:"L3 : extension du genou contre résistance (quadriceps), sensibilité face antérieure cuisse et genou. L4 : flexion dorsale du pied contre résistance (tibial antérieur), réflexe rotulien, sensibilité face médiale de la jambe.",
+    pos:"Déficit moteur (testing quadriceps ou tibial antérieur < 5/5), abolition réflexe rotulien, hypoesthésie territoriale — confirme la racine atteinte",
+    neg:"Examen neurologique normal",
+    affects_pos:{CRURALGIE:50}, affects_neg:{CRURALGIE:-15}
+  },
+
+  // === FAMILLE CANAL LOMBAIRE ÉTROIT ===
+  marche_penchee: {
+    name:"Test de la marche penchée (caddy sign)", family:'CANAL', badge:'CAD',
+    desc:"Test de soulagement positionnel pathognomonique",
+    how:"Interroger le patient : la douleur (ou la claudication) est-elle soulagée par la position penchée en avant (marche avec caddy, montée d'escalier, vélo) et aggravée par la station debout ou la marche en terrain plat prolongée ?",
+    pos:"Soulagement net en flexion lombaire, aggravation en extension/marche prolongée — canal lombaire étroit (claudication neurogène)",
+    neg:"Pas de soulagement positionnel",
+    affects_pos:{CANAL_LOMBAIRE:60}, affects_neg:{CANAL_LOMBAIRE:-30}
+  },
+
+  // === FAMILLE SACRO-ILIAQUE ===
+  compression_si: {
+    name:"Test de compression sacro-iliaque", family:'SI', badge:'COM',
+    desc:"Test provocateur par compression bilatérale",
+    how:"Patient en décubitus latéral. L'examinateur applique une compression ferme vers le bas sur la crête iliaque supérieure, mettant en tension les ligaments sacro-iliaques.",
+    pos:"Reproduction de la douleur sacro-iliaque — atteinte sacro-iliaque",
+    neg:"Indolore",
+    affects_pos:{SACRO_ILIAQUE:45, SPONDYLARTHRITE:15}, affects_neg:{SACRO_ILIAQUE:-20}
+  },
+  fortin_finger: {
+    name:"Fortin finger sign (point du Fortin)", family:'SI', badge:'FOR',
+    desc:"Localisation du point douloureux maximal",
+    how:"Demander au patient de pointer d'un doigt le point douloureux maximal de sa douleur. Positif si le point désigné est situé dans une zone de 1 cm autour de l'épine iliaque postéro-supérieure (zone du Fortin).",
+    pos:"Point douloureux maximal pointé dans la zone du Fortin — atteinte sacro-iliaque très probable",
+    neg:"Douleur diffuse ou ailleurs",
+    affects_pos:{SACRO_ILIAQUE:50}, affects_neg:{SACRO_ILIAQUE:-15}
+  },
+
+  // === FAMILLE INFLAMMATOIRE ===
+  horaire_inflammatoire: {
+    name:"Critères de douleur inflammatoire (ASAS)", family:'INFLAM', badge:'INF',
+    desc:"Critères ASAS de la douleur lombaire inflammatoire",
+    how:"Interroger le patient sur les 5 critères ASAS : âge début < 40 ans, début insidieux, amélioration à l'exercice, pas d'amélioration au repos, douleur nocturne (avec amélioration au lever). Au moins 4/5 = inflammatoire.",
+    pos:"Au moins 4/5 critères ASAS présents — lombalgie inflammatoire (spondylarthrite à dépister)",
+    neg:"Profil mécanique (< 4/5 critères)",
+    affects_pos:{SPONDYLARTHRITE:60}, affects_neg:{SPONDYLARTHRITE:-30}
+  }
+};
+
+// ========== VIGNETTES + CHOIX + CIRCUITS ==========
+const VIGNETTES = {
+  // === LOCALISATIONS ===
+  loc_lomb_basse: {
+    id:'loc_lomb_basse', lbl:'⬇️ Douleur lombaire basse, sans irradiation',
+    desc:"Douleur lombaire basse, médiane ou paravertébrale, sans irradiation au-delà du pli fessier",
+    score:{LOMB_COMMUNE:45, LOMB_CHRONIQUE:30, LUMBAGO_AIGU:30, SYND_FACETTAIRE:30, SPONDYLARTHRITE:20, SPONDYLOLISTHESIS:20}
+  },
+  loc_irradiation_fesse: {
+    id:'loc_irradiation_fesse', lbl:'⬇️ Douleur lombo-fessière, sans dépasser le genou',
+    desc:"Douleur lombaire avec irradiation fessière ou cuisse postérieure, sans dépasser le genou",
+    score:{SYND_FACETTAIRE:45, SACRO_ILIAQUE:50, SPONDYLOLISTHESIS:15}
+  },
+  loc_trajet_l5_s1: {
+    id:'loc_trajet_l5_s1', lbl:'⚡ Irradiation jambe (L5 ou S1)',
+    desc:"Douleur irradiée à toute la jambe et au pied : face postéro-latérale de cuisse et jambe, dos ou plante du pied",
+    score:{SCIATIQUE:60}
+  },
+  loc_trajet_l3_l4: {
+    id:'loc_trajet_l3_l4', lbl:'⚡ Irradiation face antérieure de cuisse',
+    desc:"Douleur irradiée à la face antérieure ou antéro-médiale de la cuisse, parfois jusqu'à la face médiale de la jambe",
+    score:{CRURALGIE:60}
+  },
+  loc_fortin_si: {
+    id:'loc_fortin_si', lbl:'📍 Douleur en regard de la sacro-iliaque',
+    desc:"Douleur localisée précisément à 1-2 cm en dedans et sous l'épine iliaque postéro-supérieure (zone du Fortin)",
+    score:{SACRO_ILIAQUE:55, SPONDYLARTHRITE:20}
+  },
+  loc_bilaterale_jambes: {
+    id:'loc_bilaterale_jambes', lbl:'🦵 Douleurs bilatérales des jambes à la marche',
+    desc:"Douleurs bilatérales ou alternantes des membres inférieurs à la marche, soulagées par l'arrêt ou la position penchée en avant",
+    score:{CANAL_LOMBAIRE:60}
+  },
+
+  // === PRÉSENTATIONS / CONTEXTE ===
+  pres_inflammatoire: {
+    id:'pres_inflammatoire', lbl:'🔥 Raideur matinale > 30 min et douleurs nocturnes',
+    desc:"Raideur matinale prolongée (> 30 min), réveils nocturnes en 2e partie de nuit, amélioration au mouvement, sujet jeune < 45 ans",
+    score:{SPONDYLARTHRITE:65}
+  },
+  pres_extension_dlr: {
+    id:'pres_extension_dlr', lbl:'⬆️ Aggravation par extension du tronc',
+    desc:"Douleur aggravée par l'extension du tronc (regarder vers le haut, debout prolongé) et soulagée par la flexion",
+    score:{SYND_FACETTAIRE:50, CANAL_LOMBAIRE:30, SPONDYLOLISTHESIS:25}
+  },
+  pres_marche_limitee: {
+    id:'pres_marche_limitee', lbl:'🚶 Périmètre de marche limité, sénior',
+    desc:"Sujet > 60 ans avec périmètre de marche progressivement limité, soulagé par la position penchée ou assise",
+    score:{CANAL_LOMBAIRE:55}
+  }
+};
+
+const MECA_VIGS = {
+  mecanique:           ['loc_lomb_basse','loc_irradiation_fesse','loc_trajet_l5_s1','loc_trajet_l3_l4'],
+  postural:            ['loc_lomb_basse','loc_irradiation_fesse','loc_fortin_si','pres_extension_dlr'],
+  degeneratif:         ['loc_lomb_basse','loc_fortin_si','loc_trajet_l5_s1','loc_bilaterale_jambes','pres_extension_dlr','pres_marche_limitee'],
+  post_partum_trauma:  ['loc_fortin_si','loc_irradiation_fesse'],
+  progressif_jeune:    ['loc_lomb_basse','loc_fortin_si','pres_inflammatoire']
+};
+
+const CHOICES = {
+  MECANISME: {
+    tag:'Étape 1 · Mécanisme', q:"Comment la douleur est-elle apparue ?",
+    items:[
+      {key:'mecanique', lbl:'Mécanique aigu (effort, faux mouvement)',
+        desc:"Apparition récente après effort de soulèvement, port de charge, faux mouvement ou traumatisme",
+        score:{LOMB_COMMUNE:40, LUMBAGO_AIGU:50, SCIATIQUE:40, CRURALGIE:35, SYND_FACETTAIRE:20, SPONDYLOLISTHESIS:15}},
+      {key:'postural', lbl:'Postural ou chronique (douleurs récurrentes)',
+        desc:"Douleurs récurrentes ou prolongées, liées aux postures, à la position prolongée, sans événement déclenchant net",
+        score:{LOMB_CHRONIQUE:40, SYND_FACETTAIRE:35, SPONDYLOLISTHESIS:25}},
+      {key:'degeneratif', lbl:'Dégénératif (sénior, terrain arthrosique)',
+        desc:"Apparition progressive chez sujet > 60 ans avec terrain dégénératif lombaire",
+        score:{CANAL_LOMBAIRE:45, SYND_FACETTAIRE:25, CRURALGIE:20, SPONDYLOLISTHESIS:20, LOMB_CHRONIQUE:15, SACRO_ILIAQUE:25}},
+      {key:'post_partum_trauma', lbl:'Post-partum, post-trauma ou sport pivot',
+        desc:"Apparition après accouchement, traumatisme du bassin, ou pratique de sports asymétriques (tennis, course)",
+        score:{SACRO_ILIAQUE:55, SPONDYLARTHRITE:25}},
+      {key:'progressif_jeune', lbl:'Progressif chez jeune adulte (< 45 ans)',
+        desc:"Apparition progressive chez sujet jeune sans facteur déclenchant net — terrain à dépister",
+        score:{SPONDYLARTHRITE:55, LOMB_CHRONIQUE:20, SPONDYLOLISTHESIS:15}}
+    ]
+  },
+  AGE: {
+    tag:'Étape 2 · Profil', q:'Quel est le profil du patient ?',
+    items:[
+      {key:'jeune_sport', lbl:'Adolescent ou jeune adulte sportif',
+        desc:"Sujet jeune < 25 ans, sport en hyperextension ou intensif",
+        score:{SPONDYLOLISTHESIS:45, SPONDYLARTHRITE:20, LUMBAGO_AIGU:15}},
+      {key:'jeune_adult', lbl:'Jeune adulte (< 45 ans)',
+        desc:"Sujet < 45 ans — terrain de douleurs lombaires aiguës et chroniques",
+        score:{SPONDYLARTHRITE:25, SCIATIQUE:25, LOMB_COMMUNE:15, LUMBAGO_AIGU:20}},
+      {key:'adulte', lbl:'Adulte 30-60 ans, métier physique ou sédentaire',
+        desc:"Tranche d'âge la plus touchée par la lombalgie commune et la sciatique",
+        score:{LOMB_COMMUNE:25, LUMBAGO_AIGU:25, SCIATIQUE:25, LOMB_CHRONIQUE:20, SYND_FACETTAIRE:20}},
+      {key:'femme_post_partum', lbl:'Femme en post-partum ou ATCD grossesse',
+        desc:"Femme en post-partum récent ou ATCD de grossesses multiples",
+        score:{SACRO_ILIAQUE:35, SPONDYLARTHRITE:25, LOMB_COMMUNE:15, LOMB_CHRONIQUE:15}},
+      {key:'senior', lbl:'> 60 ans (terrain dégénératif)',
+        desc:"Sénior avec terrain dégénératif lombaire évolué",
+        score:{CANAL_LOMBAIRE:35, SYND_FACETTAIRE:25, SPONDYLOLISTHESIS:20, CRURALGIE:25, LOMB_CHRONIQUE:20, SACRO_ILIAQUE:20, LUMBAGO_AIGU:15}}
+    ]
+  },
+  HORAIRE: {
+    tag:'Étape 4 · Horaire', q:"Quel est l'horaire de la douleur ?",
+    items:[
+      {key:'aigu_recent', lbl:'Aigu (< 6 semaines)',
+        desc:"Apparition récente, le plus souvent après un événement déclenchant",
+        score:{LUMBAGO_AIGU:35, LOMB_COMMUNE:30, SCIATIQUE:20, CRURALGIE:15}},
+      {key:'mecanique', lbl:'Mécanique (aggravée par mouvement, soulagée au repos)',
+        desc:"Aggravée par les mouvements, la station debout prolongée, soulagée par le repos et la nuit",
+        score:{LOMB_COMMUNE:25, LOMB_CHRONIQUE:25, SYND_FACETTAIRE:25, CANAL_LOMBAIRE:20, SPONDYLOLISTHESIS:20}},
+      {key:'effort_marche', lbl:"À l'effort ou à la marche prolongée",
+        desc:"Aggravée par la marche ou l'effort prolongé, soulagée par l'arrêt ou la position penchée",
+        score:{CANAL_LOMBAIRE:40, SPONDYLOLISTHESIS:20}},
+      {key:'inflammatoire', lbl:'Inflammatoire (raideur matinale, nocturne)',
+        desc:"Raideur matinale > 30 min, réveils nocturnes en 2e partie de nuit, amélioration au mouvement",
+        score:{SPONDYLARTHRITE:55}},
+      {key:'permanent', lbl:'Permanente ou évolution > 3 mois',
+        desc:"Douleur persistante, peu d'amélioration nette, évolution prolongée",
+        score:{LOMB_CHRONIQUE:55, SPONDYLARTHRITE:15}}
+    ]
+  }
+};
+
+// Circuits de 5 tests par pathologie
+const CIRCUITS = {
+  LOMB_COMMUNE:      ['palp_paravertebrale','schober_test','lasegue','extension_rotation','horaire_inflammatoire'],
+  LOMB_CHRONIQUE:    ['palp_paravertebrale','schober_test','extension_rotation','lasegue','horaire_inflammatoire'],
+  SYND_FACETTAIRE:   ['extension_rotation','palp_facettes','palp_paravertebrale','lasegue','schober_test'],
+  SCIATIQUE:         ['lasegue','bragard','testing_l5_s1','palp_paravertebrale','leri_stretch'],
+  CRURALGIE:         ['leri_stretch','testing_l3_l4','palp_paravertebrale','lasegue','schober_test'],
+  CANAL_LOMBAIRE:    ['marche_penchee','testing_l5_s1','schober_test','palp_paravertebrale','lasegue'],
+  SACRO_ILIAQUE:     ['fortin_finger','compression_si','palp_paravertebrale','lasegue','horaire_inflammatoire'],
+  SPONDYLOLISTHESIS: ['palp_paravertebrale','extension_rotation','schober_test','lasegue','testing_l5_s1'],
+  LUMBAGO_AIGU:      ['palp_paravertebrale','schober_test','lasegue','extension_rotation','testing_l5_s1'],
+  SPONDYLARTHRITE:   ['horaire_inflammatoire','schober_test','fortin_finger','compression_si','palp_paravertebrale']
+};
+
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR ==========
+// ========== ÉTAT ==========
+const PATHO_LIST = Object.keys(P);
+let scores = {};
+let history = [];
+let mecaKey = null;
+let testsToRun = [];
+let testIdx = 0;
+let currentStep = 'MECANISME';
+let selectedVigs = new Set();
+
+function init(){
+  scores = {};
+  PATHO_LIST.forEach(p => scores[p] = 0);
+  history = [];
+  mecaKey = null;
+  testsToRun = [];
+  testIdx = 0;
+  currentStep = 'MECANISME';
+  selectedVigs = new Set();
+}
+
+function addScore(delta){
+  for(const k in delta){
+    if(k in scores) scores[k] += delta[k];
+  }
+}
+
+function ranked(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+}
+
+function top1(){ return ranked()[0]; }
+
+function top3WithScores(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+}
+
+// ========== LOGIQUE TESTS ADAPTATIFS ==========
+// Règle : 5 tests max
+// - Test POS  → continuer le circuit du top1 actuel (confirmation)
+// - Test NÉG  → proposer un test d\'une AUTRE famille clinique
+
+const MAX_TESTS = 5;
+
+function buildInitialQueue(){
+  const t1 = top1();
+  return [...(CIRCUITS[t1] || [])].slice(0, MAX_TESTS);
+}
+
+function applyTest(tKey, positive){
+  const t = TESTS[tKey];
+  if(!t) return;
+  const delta = positive ? t.affects_pos : t.affects_neg;
+  addScore(delta);
+  history.push({test:tKey, name:t.name, result:positive ? '✅':'❌'});
+}
+
+function nextTestAdaptive(currentFamily, positive, previousTop1){
+  // Tests déjà faits (jamais reproposés)
+  const done = new Set(testsToRun.slice(0, testIdx));
+  const newTop1 = top1();
+  
+  if(positive){
+    // POS : continuer circuit du top1 actuel (confirmation)
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+    return null;
+  }
+  
+  // NEG :
+  // Cas 1 : top1 INCHANGÉ → continuer le circuit du top1 (poursuite logique, ex: cluster Laslett pour SI)
+  if(newTop1 === previousTop1){
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+  }
+  
+  // Cas 2 : top1 a CHANGÉ → proposer le test #1 de la nouvelle patho top1
+  // (qui sera presque toujours d'une famille différente)
+  // On parcourt le ranking pour trouver le 1er candidat de famille différente
+  for(const patho of ranked()){
+    const cands = CIRCUITS[patho];
+    if(!cands || !cands.length) continue;
+    for(const candTest of cands){
+      if(done.has(candTest)) continue;
+      const candFamily = (TESTS[candTest] || {}).family;
+      if(candFamily && candFamily !== currentFamily) return candTest;
+    }
+  }
+  
+  // Fallback : n\'importe quel test non fait
+  for(const patho of ranked()){
+    for(const t of (CIRCUITS[patho] || [])){
+      if(!done.has(t)) return t;
+    }
+  }
+  return null;
+}
+
+function testResult(positive){
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t) return;
+  
+  // Capturer top1 AVANT d\'appliquer le résultat
+  const previousTop1 = top1();
+  
+  applyTest(tKey, positive);
+  const currentFamily = t.family;
+  testIdx++;
+  
+  // Si pas encore atteint MAX, choisir le prochain test
+  if(testIdx < MAX_TESTS){
+    const nextT = nextTestAdaptive(currentFamily, positive, previousTop1);
+    if(nextT){
+      // Remplacer le prochain prévu (ou l\'insérer)
+      if(testIdx < testsToRun.length){
+        testsToRun[testIdx] = nextT;
+      } else {
+        testsToRun.push(nextT);
+      }
+    }
+  }
+  
+  renderStep();
+}
+
+// ========== RENDERING ==========
+function pickChoice(stepKey, item){
+  addScore(item.score);
+  history.push({step:stepKey, label:item.lbl});
+  
+  if(stepKey === 'MECANISME'){
+    mecaKey = item.key;
+    currentStep = 'AGE';
+  } else if(stepKey === 'AGE'){
+    currentStep = 'TABLEAU';
+  } else if(stepKey === 'HORAIRE'){
+    testsToRun = buildInitialQueue();
+    testIdx = 0;
+    currentStep = 'TESTS';
+  }
+  renderStep();
+}
+
+function toggleVig(vid){
+  if(selectedVigs.has(vid)){
+    selectedVigs.delete(vid);
+  } else {
+    if(selectedVigs.size >= 3) return;
+    selectedVigs.add(vid);
+  }
+  renderStep();
+}
+
+function validateTableau(){
+  if(selectedVigs.size === 0) return;
+  selectedVigs.forEach(vid => {
+    addScore(VIGNETTES[vid].score);
+    history.push({step:'TABLEAU', label:VIGNETTES[vid].lbl});
+  });
+  currentStep = 'HORAIRE';
+  renderStep();
+}
+
+function skipTest(){
+  testIdx++;
+  if(testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+  }
+  renderStep();
+}
+
+function reset(){
+  init();
+  renderStep();
+}
+
+function goBack(){
+  // Retour à l\'étape précédente — simple
+  if(currentStep === 'AGE') currentStep = 'MECANISME';
+  else if(currentStep === 'TABLEAU') currentStep = 'AGE';
+  else if(currentStep === 'HORAIRE') currentStep = 'TABLEAU';
+  else if(currentStep === 'TESTS' && testIdx > 0){
+    testIdx--;
+    // Annuler le dernier test (pas le scoring pour simplifier, juste revenir au test)
+  } else if(currentStep === 'TESTS' && testIdx === 0){
+    currentStep = 'HORAIRE';
+  } else if(currentStep === 'RESULT'){
+    currentStep = 'TESTS';
+    testIdx = Math.max(0, MAX_TESTS - 1);
+  }
+  renderStep();
+}
+
+
+// ========== RENDU ==========
+// ========== HELPERS RENDU ==========
+function backBtn(){
+  if(currentStep === 'MECANISME') return '';
+  return `<button class="btn-back" onclick="goBack()">← Modifier</button>`;
+}
+
+function breadcrumbHTML(){
+  if(!history.length) return '';
+  const items = history.slice(-4).map(h => `<span class="bc-item">${(h.label||h.test||'').slice(0,30)}</span>`).join(' › ');
+  return `<div class="breadcrumb">${items}</div>`;
+}
+
+function stepIndicator(currentIdx){
+  const steps = ['Mécanisme', 'Profil', 'Tableau', 'Horaire', 'Examen'];
+  return `<div class="step-ind">
+    ${steps.map((s,i) => `<div class="si-item ${i===currentIdx?'active':''} ${i<currentIdx?'done':''}">${i+1}. ${s}</div>`).join('')}
+  </div>`;
+}
+
+// ========== ÉTAPE CHOIX (Mécanisme, Âge, Horaire) ==========
+function renderChoice(stepKey, stepIdx){
+  const c = CHOICES[stepKey];
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(stepIdx)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">${c.tag}</div>
+      <h2 class="card-q">${c.q}</h2>
+      <div class="choices">
+        ${c.items.map(it => `
+          <button class="choice" onclick="pickChoice('${stepKey}', CHOICES['${stepKey}'].items.find(x=>x.key==='${it.key}'))">
+            <div class="choice-lbl">${it.lbl}</div>
+            <div class="choice-desc">${it.desc}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TABLEAU CLINIQUE (multi-vignettes) ==========
+function renderTableau(){
+  const vigs = (MECA_VIGS[mecaKey] || Object.keys(VIGNETTES));
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(2)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 3 · Tableau clinique</div>
+      <h2 class="card-q">Cochez ce qui correspond au patient</h2>
+      <div class="card-hint">Maximum 3 cases cochables.</div>
+      <div class="vig-grid">
+        ${vigs.map(vid => {
+          const v = VIGNETTES[vid];
+          const sel = selectedVigs.has(vid);
+          return `<div class="vig ${sel?'vig-sel':''}" onclick="toggleVig('${vid}')">
+            <div class="vig-chk">${sel?'☑':'☐'}</div>
+            <div class="vig-body">
+              <div class="vig-lbl">${v.lbl}</div>
+              <div class="vig-desc">${v.desc}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="card-foot">
+        <span class="foot-info">${selectedVigs.size===0?'Aucune sélection':selectedVigs.size+'/3 coché'+(selectedVigs.size>1?'s':'')}</span>
+        <button class="btn-primary" ${selectedVigs.size===0?'disabled':''} onclick="validateTableau()">Confirmer →</button>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TESTS ==========
+function renderTests(){
+  if(testIdx >= testsToRun.length || testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+    renderStep();
+    return;
+  }
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t){
+    testIdx++;
+    renderTests();
+    return;
+  }
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(4)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 5 · Examen clinique (${testIdx+1}/${MAX_TESTS})</div>
+      <div class="test-name">${t.name}</div>
+      <div class="test-fam"><span class="test-badge">${t.badge}</span> Famille : ${t.family}</div>
+      <div class="test-desc">${t.desc}</div>
+      <div class="test-section">
+        <strong>Technique</strong>
+        <div>${t.how}</div>
+      </div>
+      <div class="test-section">
+        <strong>Interprétation</strong>
+        <div>✅ <strong>Positif :</strong> ${t.pos}</div>
+        <div>❌ <strong>Négatif :</strong> ${t.neg}</div>
+      </div>
+      <div class="test-btns">
+        <button class="btn-pos" onclick="testResult(true)">✅ Positif</button>
+        <button class="btn-neg" onclick="testResult(false)">❌ Négatif</button>
+      </div>
+      ${testIdx > 0 ? `<button class="btn-skip" onclick="skipTest()">Passer ce test →</button>` : ''}
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+
+
+// ========== ÉTAPE RÉSULTAT ==========
+function renderResult(){
+  const top = top3WithScores();
+  const total = top.reduce((s,[,sc]) => s + Math.max(0,sc), 0) || 1;
+  const main = top[0];
+  const alts = top.slice(1);
+  const mainP = P[main[0]];
+  const mainProb = Math.round(100 * Math.max(0, main[1]) / total);
+  
+  const alertHTML = mainP.alert ? `
+    <div class="alert-box alert-${mainP.alert.type}">
+      <span style="font-size:16px">${mainP.alert.type === 'red' ? '🚨' : '⚠️'}</span>
+      <span>${mainP.alert.text}</span>
+    </div>` : '';
+  
+  // Sections détaillées
+  const imagingItems = (mainP.imaging || []).map(i => 
+    `<div class="fi"><strong>${i.t}</strong>${i.d ? `<span>${i.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const treatmentItems = (mainP.treatment || []).map(t => 
+    `<div class="fi"><strong>${t.t}</strong>${t.d ? `<span>${t.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const exercisesItems = (mainP.exercises || []).map(e => 
+    `<div class="fi"><strong>${e.t}</strong>${e.d ? `<span>${e.d}</span>` : ''}</div>`
+  ).join('') + (mainP.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${mainP.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  
+  const referralItems = (mainP.referral || []).map(r => `
+    <div class="ref-tag ${r.p ? 'p' : 's'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p ? '→ ' : ''}${r.who}</div>
+        ${r.why ? `<div class="ref-why">${r.why}</div>` : ''}
+      </div>
+      <span class="ref-b">${r.p ? 'Prioritaire' : 'Si besoin'}</span>
+    </div>`).join('');
+  
+  // Sources
+  const sourcesHTML = mainP.sources?.length ? `
+    <div class="sources-row">
+      <span class="src-lbl">📚 Sources</span>
+      ${mainP.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('')}
+    </div>` : '';
+  
+  // Encart Signes de gravité (severity)
+  const severityHTML = mainP.severity ? `
+    <div class="severity-card">
+      <div class="severity-head">🔍 ${mainP.severity.title}</div>
+      <div class="severity-body">${mainP.severity.text}</div>
+    </div>` : '';
+  
+  // Encart Pièges diagnostiques (pitfall)
+  const pitfallHTML = mainP.pitfall ? `
+    <div class="pitfall-card">
+      <div class="pitfall-head">💡 À considérer aussi</div>
+      <div class="pitfall-body">${mainP.pitfall.text}</div>
+      ${(mainP.pitfall.modules || []).length ? `
+      <div class="pitfall-modules">
+        ${mainP.pitfall.modules.map(m => `<span class="pitfall-chip">→ Module ${m}</span>`).join('')}
+      </div>` : ''}
+    </div>` : '';
+  
+  // Alternatifs
+  const altCardsHTML = alts.map(([pid, sc]) => {
+    const p = P[pid];
+    const prob = Math.round(100 * Math.max(0, sc) / total);
+    return `<div class="alt-card" onclick="showModal('${pid}')">
+      <div class="alt-header">
+        <img src="images_pathologies/lombaire.png" alt="" class="alt-ic-img" />
+        <div class="alt-name">${p.name}</div>
+        <div class="alt-pct">${prob}%</div>
+      </div>
+      <div class="alt-bar"><div class="alt-fill" style="width:${prob}%"></div></div>
+      <div class="alt-key">
+        <strong>Éléments clés</strong>
+        ${(p.keys || []).slice(0,2).join(' · ')}
+      </div>
+      <div class="alt-hint">Appuyer pour la fiche complète →</div>
+    </div>`;
+  }).join('');
+  
+  const html = `
+    ${stepIndicator(5)}
+    ${breadcrumbHTML()}
+    <div class="result-wrap">
+      
+      <!-- DIAGNOSTIC PRINCIPAL -->
+      <div class="diag-card">
+        <div class="diag-top">
+          <div class="diag-head">
+            <img src="images_pathologies/lombaire.png" alt="" class="diag-icon-img" />
+            <div>
+              <span class="rank-badge">Diagnostic principal</span>
+              <div class="diag-name">${mainP.name}</div>
+              <div class="diag-pop">${mainP.pop}</div>
+            </div>
+          </div>
+          <div class="prob-wrap">
+            <div class="prob-pct">${mainProb}%</div>
+            <div class="prob-label">Probabilité</div>
+            <div class="prob-bar"><div class="prob-fill" style="width:${mainProb}%"></div></div>
+          </div>
+        </div>
+        
+        <div class="fiche">
+          ${alertHTML}
+          <div class="fiche-grid">
+            <div class="fiche-sec">
+              <div class="sec-title sec-img">🔬 Imagerie</div>
+              ${imagingItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ex">💪 Exercices</div>
+              ${exercisesItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-rx">💊 Traitement</div>
+              ${treatmentItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ref">🏥 Orientation</div>
+              ${referralItems || '<div class="fi-empty">—</div>'}
+            </div>
+          </div>
+          ${severityHTML}
+          ${pitfallHTML}
+          ${sourcesHTML}
+        </div>
+      </div>
+      
+      <!-- DIAGNOSTICS ALTERNATIFS -->
+      <div class="section-sep">Diagnostics alternatifs à considérer</div>
+      <div class="alt-cards">${altCardsHTML}</div>
+      
+      <div class="disclaimer">
+        ⚠️ <strong>Outil d'aide à la décision clinique</strong> — Les probabilités sont indicatives et basées sur le profil sélectionné. Non substitutif au jugement médical. Sources : HAS, EULAR, sociétés savantes.
+      </div>
+      
+      <div class="actions">
+        <button class="btn-primary" onclick="reset()">↺ Nouveau cas</button>
+        <button class="btn-back" onclick="goBack()">← Modifier les réponses</button>
+      </div>
+      
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="if(event.target.id==='modal') closeModal()">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+  
+  // Animer les barres
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill, .alt-fill').forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => el.style.width = target));
+    });
+  }, 50);
+}
+
+function showModal(pid){
+  const p = P[pid];
+  const imagingHTML = (p.imaging || []).map(i => `<div class="fi"><strong>${i.t}</strong>${i.d?`<span>${i.d}</span>`:''}</div>`).join('');
+  const treatmentHTML = (p.treatment || []).map(t => `<div class="fi"><strong>${t.t}</strong>${t.d?`<span>${t.d}</span>`:''}</div>`).join('');
+  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  const referralHTML = (p.referral || []).map(r => `
+    <div class="ref-tag ${r.p?'p':'s'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p?'→ ':''}${r.who}</div>
+        ${r.why?`<div class="ref-why">${r.why}</div>`:''}
+      </div>
+      <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
+    </div>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-head">
+      <img src="images_pathologies/lombaire.png" alt="" class="modal-icon-img" />
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div class="modal-pop">${p.pop}</div>
+      </div>
+    </div>
+    ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
+    <div class="fiche-grid modal-fiche">
+      <div class="fiche-sec">
+        <div class="sec-title sec-img">🔬 Imagerie</div>
+        ${imagingHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ex">💪 Exercices</div>
+        ${exercisesHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-rx">💊 Traitement</div>
+        ${treatmentHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ref">🏥 Orientation</div>
+        ${referralHTML || '<div class="fi-empty">—</div>'}
+      </div>
+    </div>
+    <div class="sources-row modal-sources">
+      <span class="src-lbl">📚 Sources</span>
+      ${sourcesHTML}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+
+// ========== DISPATCHER ==========
+function renderStep(){
+  if(currentStep === 'MECANISME') renderChoice('MECANISME', 0);
+  else if(currentStep === 'AGE') renderChoice('AGE', 1);
+  else if(currentStep === 'TABLEAU') renderTableau();
+  else if(currentStep === 'HORAIRE') renderChoice('HORAIRE', 3);
+  else if(currentStep === 'TESTS') renderTests();
+  else if(currentStep === 'RESULT') renderResult();
+}
+
+// ========== INIT ==========
+init();
+renderStep();
+
+
+
+
+</script>
+</body>
+</html>

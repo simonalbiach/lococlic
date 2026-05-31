@@ -1,0 +1,2267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocoClic — Jambe v5</title>
+<style>
+
+
+
+:root {
+  --bg: #f5f3ee;           /* fond crème */
+  --bg-card: #ffffff;       /* cartes blanches */
+  --bg-hover: #f0ede5;      /* survol crème plus foncé */
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a2332;          /* texte sombre principal */
+  --text-dim: #4a5468;      /* texte secondaire */
+  --text-mute: #8a92a0;     /* texte tertiaire */
+  --accent: #2563a8;        /* bleu marine accent */
+  --accent-dim: #1d4d85;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;        /* or plus sombre pour contraste */
+  --navy: #0f2a44;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 16px;
+  line-height: 1.5;
+}
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.header .badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  padding: 3px 10px;
+  background: var(--accent);
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* === STEP INDICATOR === */
+.step-ind {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.si-item {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 8px;
+  background: #fafaf7;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: center;
+}
+.si-item.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+.si-item.done {
+  background: rgba(37, 99, 168, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* === BREADCRUMB === */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.bc-item { font-style: italic; }
+
+/* === BTN BACK === */
+.btn-back {
+  background: white;
+  color: var(--text-dim);
+  border: 1.5px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.btn-back:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.card-tag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-q {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-hint {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+
+/* === CHOICES (Mécanisme, Âge, Horaire) === */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice {
+  width: 100%;
+  text-align: left;
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.choice:hover {
+  background: rgba(37,99,168,0.06);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.choice-lbl {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.choice-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+/* === VIGNETTES === */
+.vig-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .vig-grid { grid-template-columns: 1fr 1fr; }
+}
+.vig {
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.vig:hover { background: rgba(37,99,168,0.06); border-color: var(--accent); }
+.vig-sel {
+  background: rgba(22,163,74,0.08);
+  border-color: var(--green);
+}
+.vig-chk {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.vig-lbl {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.vig-desc {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.foot-info {
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  box-shadow: 0 2px 8px rgba(37,99,168,0.25);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary:not(:disabled):hover { filter: brightness(1.1); }
+
+/* === TESTS === */
+.test-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+.test-fam {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.test-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.test-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.test-section {
+  margin: 14px 0;
+}
+.test-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.test-section div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.test-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn-pos, .btn-neg {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-pos {
+  background: var(--green);
+  color: white;
+}
+.btn-neg {
+  background: var(--red);
+  color: white;
+}
+.btn-pos:hover, .btn-neg:hover { filter: brightness(1.1); }
+.btn-skip {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* === RÉSULTAT === */
+.result-main {
+  border: 2px solid var(--accent);
+  background: linear-gradient(180deg, rgba(93,141,240,0.08), var(--bg-card));
+}
+.result-tag {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.result-icon { font-size: 36px; }
+.result-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+.result-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.result-score {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.result-section {
+  margin: 14px 0;
+}
+.result-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+.sources {
+  list-style: none;
+  font-size: 12px;
+}
+.sources li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sources li:last-child { border: none; }
+.sources a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.sources a:hover { text-decoration: underline; }
+
+/* === ALTS === */
+.alts {
+  margin-top: 18px;
+}
+.alts-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.alt {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alt:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+.alt-icon { font-size: 24px; }
+.alt-body { flex: 1; }
+.alt-name { font-weight: 600; font-size: 14px; }
+.alt-pop { font-size: 11px; color: var(--text-mute); }
+.alt-score {
+  font-weight: 700;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+
+.btn-reset {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+.btn-reset:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,42,68,0.55);
+  z-index: 100;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  padding: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  font-size: 24px;
+  cursor: pointer;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-icon { font-size: 32px; }
+.modal-name { font-size: 17px; font-weight: 700; }
+.modal-pop { font-size: 12px; color: var(--text-mute); }
+.modal-section {
+  margin: 12px 0;
+}
+.modal-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.modal-section > div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.modal-section ul {
+  list-style: none;
+  font-size: 12px;
+}
+.modal-section ul li {
+  padding: 3px 0;
+}
+.modal-section ul a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+
+.key-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.key-tag { display:inline-block; background:rgba(93,141,240,0.15); color:var(--accent); padding:3px 10px; border-radius:12px; font-size:11px; }
+.bullets { list-style:none; padding-left:0; font-size:14px; line-height:1.7; }
+.bullets li { padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.bullets li:last-child { border:none; }
+.result-info { flex:1; }
+.result-prob-wrap { text-align:right; }
+.result-prob { font-size:28px; font-weight:800; color:var(--accent); line-height:1; }
+.result-score { font-size:11px; color:var(--text-mute); margin-top:2px; }
+.alt-right { text-align:right; }
+.alt-prob { font-weight:700; font-size:17px; color:var(--accent); }
+.alt-score { font-size:10px; color:var(--text-mute); }
+.modal-section ul { list-style:none; padding-left:0; font-size:13px; line-height:1.6; }
+.modal-section ul li { padding:3px 0; }
+.modal-section ul a { color:var(--accent); text-decoration:none; }
+
+/* ===== FICHE RÉSULTAT — sections distinctes ===== */
+.result-wrap { animation: fu 0.4s ease both; }
+@keyframes fu { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+.diag-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(37,99,168,0.12);
+}
+
+.diag-top {
+  background: linear-gradient(135deg, rgba(37,99,168,0.10), rgba(37,99,168,0.03));
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.diag-head { display:flex; align-items:center; gap:12px; flex:1; }
+.diag-icon { font-size: 32px; }
+.rank-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.diag-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.diag-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-wrap { text-align: right; min-width:88px; }
+.prob-pct {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.prob-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.prob-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.fiche { background: var(--bg-card); }
+
+.alert-box {
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+
+
+
+
+
+
+
+.fi:last-child { margin-bottom: 0; }
+
+
+
+
+.ref-tag {
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+  background: rgba(167,139,250,0.18);
+  border: 1px solid rgba(167,139,250,0.2);
+}
+.ref-tag.s {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border);
+}
+.ref-info { flex: 1; }
+.ref-who {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ref-why {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.ref-b {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: rgba(109,40,217,0.15);
+  color: #6d28d9;
+}
+.ref-tag.s .ref-b {
+  background: var(--bg-hover);
+  color: var(--text-mute);
+}
+
+.sources-row {
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.025);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.src-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.src-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(37,99,168,0.08);
+  border: 1px solid rgba(37,99,168,0.3);
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.src-chip:hover {
+  background: rgba(37,99,168,0.18);
+}
+
+.section-sep {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 22px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.alt-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .alt-cards { grid-template-columns: 1fr; }
+}
+.alt-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.alt-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+.alt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.alt-ic { font-size: 22px; }
+.alt-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.alt-pct {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-mute);
+}
+.alt-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.alt-fill {
+  height: 100%;
+  background: var(--text-mute);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.alt-key {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.alt-key strong {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 3px;
+}
+.alt-hint {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-align: right;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.actions .btn-primary, .actions .btn-back { flex: 1; min-width: 140px; }
+
+/* Modal fiche */
+.modal-fiche { 
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.modal-sources {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+
+/* === FICHE GRID — sections fortement distinctes === */
+.fiche-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  padding: 2px;
+}
+@media (max-width: 600px) {
+  .fiche-grid { grid-template-columns: 1fr; }
+}
+
+.fiche-sec {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: none;
+  position: relative;
+}
+
+/* Bandeau coloré en haut de chaque section */
+.fiche-sec::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* === COULEURS PAR SECTION === */
+/* Imagerie — bleu */
+.fiche-sec:nth-child(1) {
+  background: linear-gradient(180deg, rgba(94,177,255,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(1)::before { background: #5eb1ff; }
+
+/* Exercices — vert */
+.fiche-sec:nth-child(2) {
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(2)::before { background: #4ade80; }
+
+/* Traitement — jaune/or */
+.fiche-sec:nth-child(3) {
+  background: linear-gradient(180deg, rgba(251,191,36,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(3)::before { background: #fbbf24; }
+
+/* Orientation — violet */
+.fiche-sec:nth-child(4) {
+  background: linear-gradient(180deg, rgba(167,139,250,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(4)::before { background: #a78bfa; }
+
+/* sec-title plus visible */
+.sec-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+.sec-img { color: #1e6db8; }
+.sec-ex  { color: #15803d; }
+.sec-rx  { color: #b45309; }
+.sec-ref { color: #6d28d9; }
+
+/* Items plus aérés et visibles */
+.fi {
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 10px 8px 12px;
+  border-left: 3px solid;
+  margin-bottom: 8px;
+  background: rgba(0,0,0,0.025);
+  border-radius: 0 6px 6px 0;
+}
+.fi:last-child { margin-bottom: 0; }
+.fiche-sec:nth-child(1) .fi { border-left-color: rgba(94,177,255,0.4); }
+.fiche-sec:nth-child(2) .fi { border-left-color: rgba(74,222,128,0.4); }
+.fiche-sec:nth-child(3) .fi { border-left-color: rgba(251,191,36,0.4); }
+.fiche-sec:nth-child(4) .fi { border-left-color: rgba(167,139,250,0.4); }
+
+.fi strong {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+.fi span {
+  color: var(--text-dim);
+  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+}
+.fi-empty {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* === REFERRAL TAGS spécifiques (dans section orientation) === */
+.fiche-sec:nth-child(4) .ref-tag {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.disclaimer { background: #fef3c7; border: 2px solid #f59e0b; border-radius: 9px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #000000; line-height: 1.6; }
+.disclaimer strong { color: #991b1b; font-weight: 800; }
+
+
+
+  .alt-ic-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .diag-icon-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.15);
+  }
+  .modal-icon-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  color: #1e3a5f;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s;
+" onmouseover="this.style.background='#1e3a5f';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#1e3a5f';">
+  ← Accueil
+</a>
+
+
+<div class="app">
+  <div class="header">
+    <h1>LocoClic — Jambe</h1>
+    <div class="badge">v5 · clinique adaptatif</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+// ========== PATHOLOGIES ==========
+const P = {
+  DECHIRURE_GASTROC: {
+    id:'DECHIRURE_GASTROC', name:'Déchirure du gastrocnémien médial (tennis leg)', icon:'💥', pop:'Sportif 35-60 ans, tennis, course, sport pivot',
+    desc:"Douleur AIGUË brutale au mollet médial pendant un effort en extension du genou + flexion dorsale (impression de \'coup de pied\' ou de \'claquage\'). Œdème immédiat, ecchymose médiale et descendante après 24-48h. Marche difficile. Pas d\'impotence totale.",
+    alert:{type:'yellow',text:"Toujours éliminer une TVP devant un mollet douloureux et œdématié, surtout si pas de mécanisme évident ou ecchymose tardive (TVP-déchirure peuvent coexister)."},
+    imaging:[
+      {t:'Échographie mollet',d:'Examen de référence en urgence — visualise la déchirure et élimine TVP par doppler associé'},
+      {t:'IRM',d:'Si bilan complémentaire (sportif de haut niveau, doute diagnostique)'},
+      {t:'D-Dimères + écho-doppler',d:'Si suspicion de TVP associée (++)'}
+    ],
+    treatment:[
+      {t:'Repos relatif initial 48-72h',d:"Surélévation, glaçage 15-20 min × 4/jour les 48 premières heures"},
+      {t:'Contention élastique / bande de compression',d:'Limite l\'œdème — 2-3 semaines'},
+      {t:'Talonnette 1-2 cm',d:'Met le mollet en décharge — 2-3 semaines, à diminuer progressivement'},
+      {t:'Antalgiques (paracétamol)',d:"Éviter AINS les premiers jours (sur risque hémorragique)"},
+      {t:'Mobilisation précoce indolore',d:'Marche dès que possible, sans douleur'},
+      {t:'Rééducation excentrique progressive',d:'Après J7-J10, kiné'}
+    ],
+    exercises:[{t:'Heel raises progressifs (tolérance douleur EVA ≤ 5/10)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Reprise progressive de la course',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_01_tennis_leg.html',ficheExercice:'lococlic_fiches_patient/jambe_01_tennis_leg.html',
+    referral:[
+      {who:'Médecin du sport',why:'Suivi clinique, prescription échographie de confirmation et programme de rééducation',p:true}
+    ],
+    sources:[
+      {l:'Bryan Dixon 2009 — Gastrocnemius vs soleus strain (Curr Sports Med Rep)',u:'https://pubmed.ncbi.nlm.nih.gov/19741354/'},
+      {l:'Hsu et al. 2024 — Tennis leg review (StatPearls)',u:'https://www.ncbi.nlm.nih.gov/books/NBK470442/'},
+      {l:'Kwak et al. 2006 — Sonography tennis leg (J Ultrasound Med)',u:'https://pubmed.ncbi.nlm.nih.gov/16895174/'},
+      {l:'HAS — Traumatismes musculaires',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Coup de pied','Mollet médial','Brutal','Tennis leg','Éliminer TVP']
+  },
+  RUPTURE_ACHILLE: {
+    id:'RUPTURE_ACHILLE', name:'Rupture du tendon d\'Achille', icon:'🚨', pop:'Homme 30-50 ans, sportif occasionnel ("weekend warrior"), tendinopathie chronique',
+    desc:"Sensation de COUP DE FOUET ou de \'coup de pied derrière le talon\' lors d\'un démarrage ou d\'un saut. Douleur brutale post-malléolaire suivie d\'une impotence à la marche normale, incapacité à monter sur la pointe du pied. Encoche palpable parfois visible sur le trajet du tendon.",
+    alert:{type:'red',text:"URGENCE chirurgicale relative : avis orthopédique sous 48-72h. Confirmation clinique par TEST DE THOMPSON + écho. Risque de rupture chronique si retard de prise en charge."},
+    imaging:[
+      {t:'Échographie tendon d\'Achille',d:'Première intention — visualise la rupture, mesure l\'écart (gap)'},
+      {t:'IRM',d:'Si bilan préopératoire ou doute diagnostique'},
+      {t:'Pas de radiographie de première intention',d:'Sauf si suspicion de fracture associée (rare)'}
+    ],
+    treatment:[
+      {t:'Immobilisation immédiate',d:'Botte avec talonnette en flexion plantaire 20-30° — En attendant l\'avis chirurgical'},
+      {t:'Avis chirurgical orthopédique sous 48-72h',d:'Décision chirurgie vs conservateur fonctionnel'},
+      {t:'Traitement chirurgical',d:'Si sportif jeune, rupture franche — suture percutanée ou ouverte'},
+      {t:'Traitement conservateur fonctionnel',d:'Botte de marche avec talonnette dégressive 8-10 semaines, mise en charge progressive'},
+      {t:'Antalgiques (paracétamol)',d:'Éviter AINS prolongés'}
+    ],
+    exercises:[
+      {t:'Aucun exercice initialement',d:'Selon le protocole orthopédique post-décision'},
+      {t:'Rééducation progressive après immobilisation',d:'Mobilisations, renforcement excentrique progressif (kiné)'},
+      {t:'Reprise sportive après 4-6 mois',d:'Lente, encadrée — sport pivot en dernier'}
+    ],
+    referral:[
+      {who:'Chirurgien orthopédique (urgent)',why:"Avis sous 48-72h pour décision thérapeutique (chirurgie vs conservateur)",p:true},
+      {who:'Médecin du sport',why:'Suivi post-immobilisation et reprise sportive encadrée',p:false}
+    ],
+    sources:[
+      {l:'Maffulli et al. 2021 — Achilles tendon rupture review (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/33632704/'},
+      {l:'AAOS 2010 — Achilles tendon rupture CPG',u:'https://pubmed.ncbi.nlm.nih.gov/20810936/'},
+      {l:'Ochen et al. 2019 — Operative vs nonoperative meta-analysis (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/30617101/'},
+      {l:'HAS — Pathologies tendineuses',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Coup de fouet','Encoche','Thompson positif','Urgence','Rupture']
+  },
+  TVP: {
+    id:'TVP', name:'Thrombose veineuse profonde (TVP)', icon:'🚨', pop:'Tout âge — facteurs de risque (alitement, post-chirurgie, contraception, voyage long, cancer, ATCD)',
+    desc:"Douleur unilatérale du mollet, sensation de tension, œdème, augmentation de chaleur cutanée locale, parfois rougeur. Pâleur, dilatation veineuse superficielle. Asymétrie de mollets (différence > 3 cm). Facteurs de risque +++. Peut être asymptomatique.",
+    alert:{type:'red',text:"URGENCE médicale : risque d\'embolie pulmonaire. Score de Wells + D-Dimères + écho-doppler veineux en URGENCE. Hospitalisation si haute probabilité. Anticoagulation à débuter dès suspicion forte."},
+    imaging:[
+      {t:'Écho-doppler veineux des MI',d:'Examen de référence — confirme le diagnostic'},
+      {t:'D-Dimères',d:'Si score de Wells bas/intermédiaire — VPN élevée si négatif'},
+      {t:'Pas d\'imagerie de routine si Wells faible + D-Dimères négatif',d:'TVP éliminée'}
+    ],
+    treatment:[
+      {t:'Anticoagulation curative',d:'AOD (rivaroxaban, apixaban) ou HBPM relais AVK — selon profil patient'},
+      {t:'Hospitalisation si TVP proximale étendue',d:'TVP iliaque, signes d\'EP, comorbidités'},
+      {t:'Contention élastique',d:"Classe 3 d\'emblée, port quotidien"},
+      {t:'Mobilisation précoce',d:'Pas de repos strict prolongé'},
+      {t:'Recherche étiologique',d:'Selon contexte : néoplasie, thrombophilie (si TVP idiopathique, jeune, récidive)'}
+    ],
+    exercises:[
+      {t:'Mobilisation précoce',d:'Pas d\'immobilisation — marche dès que possible sous anticoagulation'},
+      {t:'Port de la contention',d:'Bas de classe 3, à vie ou prolongée selon profil'},
+      {t:'Activité physique régulière',d:'Marche quotidienne en prévention secondaire'}
+    ],
+    referral:[
+      {who:'Service d\'urgence ou angiologue (urgent)',why:'Confirmation diagnostic + initiation anticoagulation',p:true},
+      {who:'Médecin vasculaire',why:'Suivi à distance, bilan étiologique si nécessaire',p:false}
+    ],
+    sources:[
+      {l:'HAS 2019 — Maladie thromboembolique veineuse',u:'https://www.has-sante.fr/jcms/c_2843463'},
+      {l:'Kearon et al. 2016 — VTE treatment CHEST guidelines',u:'https://pubmed.ncbi.nlm.nih.gov/26867832/'},
+      {l:'Konstantinides et al. 2019 — ESC guidelines acute PE',u:'https://pubmed.ncbi.nlm.nih.gov/31504429/'},
+      {l:'Stevens et al. 2021 — Antithrombotic therapy VTE CHEST',u:'https://pubmed.ncbi.nlm.nih.gov/34352278/'}
+    ],
+    keys:['Asymétrie mollet','Wells','D-Dimères','FDR thrombose','Urgence']
+  },
+  PERIOSTITE:{id:'PERIOSTITE',name:'Périostite tibiale',icon:'🟣',pop:'20–40 ans , sportif , femmes',
+    desc:'Douleur face interne tibia ( ou postéro-interne)',alert:null,
+    imaging:[{t:'Radiographies ( élimine diagnostic différentiel )',d:''},{t:'IRM ( classification Fredericsson )',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Changement environnement et chaussage adapté',d:''},{t:'Podologie',d:''}],
+    exercises:[{t:'Repos relatif et adaptation',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_02_periostite_tibiale.html',ficheExercice:'lococlic_fiches_patient/jambe_02_periostite_tibiale.html',referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'Winters et al. 2013 — MTSS systematic review (Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/23529287/'},{l:'Reshef & Guelich 2012 — MTSS treatment (Clin Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/22657988/'},{l:'Winters et al. 2018 — Graded running MTSS RCT (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29550623/'},{l:'HAS — Pathologies du coureur',u:'https://www.has-sante.fr'}],keys:['Douleur face interne tibia ( ou postéro-interne)','Douleur début course','Réapparition après course','Changement de matériel et environnement','Intensification entrainement','Douleur face interne tibial à la palpation doigts en crochet']},
+  FRACT_STRESS_TIB: {
+    id:'FRACT_STRESS_TIB', name:'Fracture de fatigue du tibia', icon:'🚨', pop:'Coureur fond, militaire, danseur, femme triade athlète',
+    desc:"Douleur progressive sur la face antéro-médiale du tibia, contexte de sur-entraînement (augmentation brutale du volume/intensité). Point douloureux EXQUIS très focalisé (< 2 cm), persistant au repos. Souvent confondue avec une périostite — la fracture de stress reste douloureuse au repos et à la nuit.",
+    alert:{type:'yellow',text:"Suspicion de fracture de fatigue tibiale : arrêt sportif strict + IRM si radiographie normale. Risque de fracture déplacée (notamment face antérieure du tibia, dreaded black line)."},
+    imaging:[
+      {t:'Radiographie tibia face/profil',d:'Première intention — souvent normale les 2-3 premières semaines (signe de Looser)'},
+      {t:'IRM tibia',d:"Examen de référence si radio normale et suspicion clinique forte — œdème médullaire, trait de fracture"},
+      {t:'Scintigraphie osseuse',d:'Alternative à l\'IRM, hyperfixation focale fusiforme'}
+    ],
+    treatment:[
+      {t:'Arrêt sportif strict',d:"4-8 semaines selon localisation, pas de course ni de saut"},
+      {t:'Mise en décharge partielle',d:'Cannes anglaises 2-4 semaines si douleur à la marche'},
+      {t:'Cross-training sans impact',d:'Vélo, natation, aquajogging — si indolore'},
+      {t:'Antalgiques par paliers',d:'Paracétamol ± AINS courte durée (éviter AINS prolongés — retardent consolidation)'},
+      {t:'Bilan facteurs de risque',d:'Vitamine D, calcium, ferritine, bilan triade athlète, ostéodensitométrie si > 50 ans'},
+      {t:'Reprise progressive encadrée',d:'Règle des 10% par semaine, indolore'}
+    ],
+    exercises:[{t:'Repos relatif',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Reprise progressive de l\'activité',d:''},{t:'Avis spécialisé indispensable',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_03_fracture_fatigue_tibia.html',ficheExercice:'lococlic_fiches_patient/jambe_03_fracture_fatigue_tibia.html',
+    referral:[
+      {who:'Médecin du sport',why:'Bilan facteurs de risque + reprise sportive encadrée',p:true},
+      {who:'Chirurgien orthopédique',why:'Si fracture face antérieure du tibia (zone à risque, dreaded black line) ou déplacement',p:false}
+    ],
+    sources:[
+      {l:'Warden et al. 2014 — Stress fractures management (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/24766359/'},
+      {l:'Kahanov et al. 2015 — Lower extremity stress fractures (Open Access J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25848327/'},
+      {l:'Robertson & Wood 2017 — Tibial stress fracture in athletes (J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/28959645/'},
+      {l:'HAS — Pathologies de la jambe',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Point exquis tibial','Coureur','Augmentation volume','Douleur au repos','Fracture stress']
+  },
+  SYND_LOGES: {
+    id:'SYND_LOGES', name:"Syndrome des loges d\'effort (chronic exertional compartment syndrome)", icon:'⚡', pop:'Coureur, marche militaire, sport pivot — souvent < 40 ans',
+    desc:"Douleur de jambe à l\'effort, soulagée par le repos (3-10 min), reproductible à un même seuil d\'effort. Sensation de tension, brûlure, parfois paresthésies. Bilatérale dans 80% des cas. La loge antérieure est la plus touchée. Examen au repos NORMAL.",
+    imaging:[
+      {t:'Pas d\'imagerie en première intention',d:'Diagnostic clinique avant tout'},
+      {t:'Mesure des pressions intra-musculaires à l\'effort',d:'Test diagnostique de référence — par médecin du sport spécialisé'},
+      {t:"Échographie jambe",d:"Pour éliminer un diagnostic différentiel (masse, collection, atteinte tendineuse)"}
+    ],
+    treatment:[
+      {t:'Modification de l\'activité',d:"Réduire ou modifier l\'activité provocante (changer de surface, de chaussures)"},
+      {t:'Kinésithérapie',d:"Rééducation de la foulée (passage talon → médio-pied), étirements, renforcement"},
+      {t:'Semelles orthopédiques',d:"Si pied creux ou hyperpronation"},
+      {t:'Aponévrotomie chirurgicale',d:'Référence si échec conservateur > 3-6 mois — fasciotomie des loges atteintes'}
+    ],
+    exercises:[{t:'Étirement du mollet',d:''},{t:'Auto-massage du mollet et des loges',d:''},{t:'Adaptation de l\'activité sportive',d:''},{t:'Mobilisation de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_04_syndrome_loges_chronique.html',ficheExercice:'lococlic_fiches_patient/jambe_04_syndrome_loges_chronique.html',
+    referral:[
+      {who:'Médecin du sport',why:"Mesure des pressions intra-compartimentales à l'effort + adaptation sportive",p:true},
+      {who:'Chirurgien orthopédique',why:'Aponévrotomie si échec conservateur prolongé',p:false}
+    ],
+    sources:[
+      {l:'Vajapey & Miller 2017 — Chronic exertional compartment syndrome (Phys Sportsmed)',u:'https://pubmed.ncbi.nlm.nih.gov/28135907/'},
+      {l:'Pasic et al. 2015 — Chronic exertional compartment syndrome review (Open Access J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/26635484/'},
+      {l:'Rajasekaran & Finnoff 2016 — Exertional leg pain (PM&R Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/27117718/'},
+      {l:'HAS — Pathologies de la jambe',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Douleur effort seul','Soulagement repos','Reproductible','Bilatéral 80%','Syndrome loges']
+  },
+  TEND_ACHILLE_J:{id:'TEND_ACHILLE_J',name:'Tendinopathie achilléenne',icon:'🟡',pop:'30–50 ans , sportif',
+    desc:'Douleur talon postérieur',alert:null,
+    imaging:[{t:'Echographie',d:''},{t:'Radiographie ( recherche ostéophyte calcanéum postérieur )',d:''}],treatment:[{t:'Kinésithérapie',d:''}],
+    exercises:[{t:'Renforcement excentrique du mollet (protocole Alfredson)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement isométrique de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_05_tendinopathie_achilleenne.html',ficheExercice:'lococlic_fiches_patient/jambe_05_tendinopathie_achilleenne.html',referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'HAS 2024 — Tendinopathies de l\'arrière-pied',u:'https://www.has-sante.fr'},{l:'de Vos et al. 2021 — Dutch multidisciplinary Achilles tendinopathy guideline (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/33172873/'},{l:'Wilson et al. 2018 — Exercise/orthoses Achilles tendinopathy meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29794101/'},{l:'Martin et al. 2018 — Achilles pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur talon postérieur','Douleur augmentée sauts et réception','Douleur course à pied (sprints++)','Palpation douloureuse en flexion dorsale de cheville','Palpation douloureuse jonction corps musculaire et tendon']},
+  TEND_TIB_POST:{id:'TEND_TIB_POST',name:'Tendinopathie tibial postérieur',icon:'🟣',pop:'40-60 ans',
+    desc:'Douleur médiale trajet rétromalléolaire médial',alert:null,
+    imaging:[{t:'Echographie',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Podologue',d:''}],
+    exercises:[{t:'Renforcement excentrique du tibial postérieur',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_06_tendinopathie_tibial_post.html',ficheExercice:'lococlic_fiches_patient/jambe_06_tendinopathie_tibial_post.html',referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'Ross et al. 2018 — Posterior tibial tendon dysfunction CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29787335/'},{l:'Bowring & Chockalingam 2010 — Posterior tibial tendon dysfunction (Foot)',u:'https://pubmed.ncbi.nlm.nih.gov/20434910/'},{l:'Kohls-Gatzoulis et al. 2009 — PTTD adult flatfoot (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/19293223/'},{l:'HAS 2024 — Tendinopathies de l\'arrière-pied',u:'https://www.has-sante.fr'}],keys:['Douleur médiale trajet rétromalléolaire médial','Douleur course à pied','Douleur marche prolongée','Douleur inversion et flexion plantaire ( réalisé décubitus ventral)','Douleur levée sur pointe unipodal']},
+  TEND_TIB_ANT: {
+    id:'TEND_TIB_ANT', name:'Tendinopathie du tibial antérieur', icon:'🦵', pop:'Coureur, randonneur, marcheur prolongé, descente répétée',
+    desc:"Douleur de la face antéro-latérale du tibia ou rétro-malléolaire antérieure, exacerbée par la flexion dorsale et la marche en descente. Parfois nodule palpable sur le tendon en avant de la cheville. Plus rare que les autres tendinopathies.",
+    imaging:[
+      {t:'Échographie tendon',d:'Examen de première intention — épaississement, hyperhémie, parfois rupture chronique chez le sujet âgé'},
+      {t:'IRM',d:'Si bilan préopératoire ou suspicion de rupture'}
+    ],
+    treatment:[
+      {t:'Adaptation de la charge',d:"Diminuer descente, terrain en pente, sans repos complet"},
+      {t:'Modification du chaussage',d:'Éviter chaussures trop rigides, lacets ne comprimant pas le tendon'},
+      {t:'Kinésithérapie',d:'Excentrique tibial antérieur, étirements de la chaîne postérieure'},
+      {t:'Semelles orthopédiques',d:"Si besoin de modification du chaussage (podologue) — déchargement transitoire"},
+      {t:'Antalgiques simples (paracétamol)',d:'Éviter AINS et glaçage prolongés (retardent cicatrisation tendineuse)'},
+      {t:'Chirurgie',d:'Si rupture complète (rare, sujet âgé) — réparation/transfert'}
+    ],
+    exercises:[{t:'Renforcement excentrique du tibial antérieur',d:''},{t:'Renforcement des releveurs du pied',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_07_tendinopathie_tibial_ant.html',ficheExercice:'lococlic_fiches_patient/jambe_07_tendinopathie_tibial_ant.html',
+    referral:[
+      {who:'Médecin du sport',why:'Suivi du programme de rééducation et adaptation du geste sportif',p:true},
+      {who:'Chirurgien orthopédique',why:'Si rupture (rare, sujet âgé > 60)',p:false}
+    ],
+    sources:[
+      {l:'Petersen & Stoltenberg 2009 — Tibialis anterior tendon (Foot Ankle Spec)',u:'https://pubmed.ncbi.nlm.nih.gov/19825754/'},
+      {l:'Sammarco et al. 2009 — Anterior tibial tendon (J Bone Joint Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/19797583/'},
+      {l:'Mengiardi et al. 2005 — Anterior tibial tendon MRI/US (Skeletal Radiol)',u:'https://pubmed.ncbi.nlm.nih.gov/16404637/'},
+      {l:'HAS — Pathologies tendineuses',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Antéro-médial','Flexion dorsale','Descente','Coureur','Tibial antérieur']
+  },
+  TEND_FHL:{id:'TEND_FHL',name:'Tendinopathie long fléchisseur de l’hallux',icon:'🟡',pop:'20–40 ans , sportif',
+    desc:'Douleur voûte plantaire médial ( premier rayon )',alert:null,
+    imaging:[{t:'Echographie ( ténosynovite )',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Semelles orthopédiques',d:''},{t:'Adaptation charge entrainement',d:''}],
+    exercises:[{t:'Travail en fente progressif (FHL — iso → concentrique → excentrique)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Mobilisation de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_08_tendinopathie_fhl.html',ficheExercice:'lococlic_fiches_patient/jambe_08_tendinopathie_fhl.html',referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'Lopez-Ben 2011 — FHL tendinopathy in dancers (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/21600455/'},{l:'Michelson & Dunn 2005 — Tenosynovitis FHL (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/15737259/'},{l:'Lynch et al. 2018 — FHL pathology in athletes (Sports Health)',u:'https://pubmed.ncbi.nlm.nih.gov/29346030/'},{l:'HAS 2024 — Tendinopathies de l\'arrière-pied',u:'https://www.has-sante.fr'}],keys:['Douleur voûte plantaire médial ( premier rayon )','Douleur migrante dans mollet','Horaire mécanique','Douleur propulsion , poussée avant pied','Douleur flexion hallux ( en extension )','Douleur palpation sous premier rayon']},
+  CLAUDICATION_VASC: {
+    id:'CLAUDICATION_VASC', name:'Claudication intermittente (artériopathie)', icon:'🩸', pop:'Homme > 55 ans, tabac, diabète, HTA, hypercholestérolémie',
+    desc:"Douleur de mollet (ou cuisse, fesse) à la marche, après une distance reproductible (périmètre de marche), soulagée par 2-5 min de repos debout ou assis. Crampe ou brûlure. Pouls périphériques diminués ou abolis. Peau froide, pâle, dépilée — stade avancé.",
+    alert:{type:'yellow',text:"Toute claudication d\'effort doit faire évoquer une AOMI : ECG, lipides, glycémie, mesure IPS (index de pression systolique), bilan vasculaire. Risque cardio-vasculaire majeur associé."},
+    imaging:[
+      {t:'Mesure IPS (index de pression systolique)',d:'Examen de référence en MG — IPS < 0,9 = AOMI'},
+      {t:'Écho-doppler artériel des MI',d:'Localise et quantifie les sténoses'},
+      {t:'Angioscanner ou angio-IRM',d:'Si bilan préopératoire ou geste de revascularisation'}
+    ],
+    treatment:[
+      {t:'Arrêt du tabac',d:'Premier facteur — IMPÉRATIF'},
+      {t:'Marche quotidienne 30 min',d:"Stimule la circulation collatérale — efficacité prouvée"},
+      {t:'Statines à visée pleiotropique',d:'Cible LDL < 0,7 g/L'},
+      {t:'Antiagrégant plaquettaire',d:'Aspirine 75-100 mg/j ou clopidogrel'},
+      {t:'Contrôle des autres FdR CV',d:'HTA, diabète, dyslipidémie'},
+      {t:'Revascularisation',d:'Si stade évolué (douleurs de repos, troubles trophiques) — chirurgie ou endovasculaire'}
+    ],
+    exercises:[{t:'Marche progressive (training intermittent à la douleur)',d:''},{t:'Mobilisation de la cheville',d:''},{t:'Étirement du mollet',d:''},{t:'Suivi cardio-vasculaire global',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_09_claudication.html',ficheExercice:'lococlic_fiches_patient/jambe_09_claudication.html',
+    referral:[
+      {who:'Médecin vasculaire / angiologue',why:'Bilan complet AOMI, suivi',p:true},
+      {who:'Cardiologue',why:'Bilan CV global — risque coronarien associé fréquent',p:true},
+      {who:'Chirurgien vasculaire',why:'Si stade évolué nécessitant revascularisation',p:false}
+    ],
+    sources:[
+      {l:'HAS 2022 — AOMI prise en charge',u:'https://www.has-sante.fr'},
+      {l:'Aboyans et al. 2017 — ESC guidelines PAD',u:'https://pubmed.ncbi.nlm.nih.gov/28886620/'},
+      {l:'Gerhard-Herman et al. 2017 — AHA/ACC PAD guideline',u:'https://pubmed.ncbi.nlm.nih.gov/27851991/'},
+      {l:'Bonaca et al. 2020 — PAD review (NEJM)',u:'https://pubmed.ncbi.nlm.nih.gov/32997905/'}
+    ],
+    keys:['Périmètre marche','Tabac','Pouls absents','IPS bas','AOMI']
+  },
+  SYND_POPLITE:{id:'SYND_POPLITE',name:'Syndrome artère poplitée piégée',icon:'⚡',pop:'< 30 ans , sportif',
+    desc:'Claudication intermittente',alert:null,
+    imaging:[{t:'Angio-IRM',d:''},{t:'Angio-scanner',d:''},{t:'Echographie doppler dynamique',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration toxine botulique',d:''},{t:'Chirurgie',d:''}],
+    exercises:[{t:'Avis chirurgical et adaptation',d:''},{t:'Étirement du mollet',d:''},{t:'Mobilisation de la cheville',d:''},{t:'Adaptation de l\'activité sportive',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_10_artere_poplitee.html',ficheExercice:'lococlic_fiches_patient/jambe_10_artere_poplitee.html',referral:[
+      {who:'Médecin vasculaire / angiologue',why:'Confirmation diagnostique (écho-doppler dynamique, angio-IRM)',p:true},
+      {who:'Médecin du sport',why:'Évaluation et adaptation du geste sportif',p:true},
+      {who:'Chirurgien vasculaire',why:'Si confirmation de piégeage anatomique — décompression chirurgicale',p:false}
+    ],
+    sources:[{l:'Sinha et al. 2012 — Popliteal artery entrapment review (J Vasc Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/22197514/'},{l:'Hislop et al. 2014 — Popliteal artery entrapment systematic review (J Vasc Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/24650745/'},{l:'Liu et al. 2014 — Functional popliteal entrapment (Vasc Med)',u:'https://pubmed.ncbi.nlm.nih.gov/24558038/'},{l:'HAS — Claudication intermittente',u:'https://www.has-sante.fr'}],keys:['Claudication intermittente','Douleur mollet progressive à la course à pied (montée++)','N’impose pas l’arrêt','Persistant post effort','Diminution pouls en flexion plantaire','Test de provocation (course sur tapis avec dénivelé) positif']},
+  SYND_TUNNEL_TARSIEN: {
+    id:'SYND_TUNNEL_TARSIEN', name:'Syndrome du tunnel tarsien', icon:'⚡', pop:'Coureur, marche prolongée, pied plat valgus, ATCD entorse, varices',
+    desc:"Compression du nerf tibial postérieur dans le canal rétro et sous-malléolaire médial. Paresthésies, brûlures de la plante du pied et de la face médiale, parfois irradiation jusqu'aux orteils. Aggravation à la marche, à la course, en station debout prolongée. Soulagement par le repos et la décharge. Souvent unilatéral.",
+    imaging:[
+      {t:'Pas d\'imagerie en première intention',d:"Diagnostic clinique avant tout (Tinel + reproduction des symptômes)"},
+      {t:'EMG (électroneuromyogramme)',d:"Référence pour confirmer la compression — sensibilité limitée en début de maladie"},
+      {t:'Échographie nerveuse / IRM',d:"Si suspicion de compression mécanique (kyste synovial, masse, varice) ou bilan préopératoire"}
+    ],
+    treatment:[
+      {t:'Adaptation de la charge',d:"Réduire course, marche prolongée, surfaces dures"},
+      {t:'Modification du chaussage',d:"Éviter chaussures comprimant la cheville médiale, laçage adapté"},
+      {t:'Kinésithérapie',d:"Mobilisation neurale du nerf tibial, étirements chaîne postérieure, renforcement intrinsèques du pied"},
+      {t:'Semelles orthopédiques',d:"Correction du pied plat valgus, soutien de l\'arche médiale"},
+      {t:'Infiltration de corticoïdes guidée',d:"Si échec du traitement conservateur 3 mois — par radiologue interventionnel"},
+      {t:'Chirurgie (libération du tunnel)',d:"Si échec conservateur > 6 mois ou compression mécanique objectivée"}
+    ],
+    exercises:[{t:'Renforcement gastrocnémien classique',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Reprise sportive progressive',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_11_tunnel_tarsien.html',ficheExercice:'lococlic_fiches_patient/jambe_11_tunnel_tarsien.html',
+    referral:[
+      {who:'Neurologue',why:"EMG pour confirmer la compression et le niveau",p:true},
+      {who:'Médecin du sport',why:"Évaluation des facteurs déclenchants (chaussage, foulée) et adaptation",p:true},
+      {who:'Chirurgien orthopédique',why:"Si échec conservateur prolongé ou compression mécanique (kyste, masse)",p:false}
+    ],
+    sources:[
+      {l:'Ahmad et al. 2012 — Tarsal tunnel syndrome review (Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/22443989/'},
+      {l:'Antoniadis & Scheglmann 2008 — Posterior tarsal tunnel syndrome (Dtsch Arztebl Int)',u:'https://pubmed.ncbi.nlm.nih.gov/19759827/'},
+      {l:'Kiel & Kaiser 2023 — Tarsal tunnel syndrome (StatPearls)',u:'https://www.ncbi.nlm.nih.gov/books/NBK513263/'},
+      {l:'HAS — Mononeuropathies des membres inférieurs',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Plante du pied','Paresthésies','Coureur','Tinel rétromalléolaire','Tunnel tarsien']
+  },
+  NERF_FIB_SUPERF:{id:'NERF_FIB_SUPERF',name:'Syndrome d\'irritation fibulaire superficiel',icon:'⚡',pop:'30–50 ans , Ski , Wake board',
+    desc:'Paresthésies dos du pied épargnant le premier espace',alert:null,
+    imaging:[{t:'ENMG',d:''},{t:'Echographie',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Eviction compression',d:''}],
+    exercises:[{t:'Renforcement gastrocnémien classique',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des fibulaires',d:''},{t:'Reprise sportive progressive',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_12_nerf_fib_superficiel.html',ficheExercice:'lococlic_fiches_patient/jambe_12_nerf_fib_superficiel.html',referral:[
+      {who:'Neurologue',why:'EMG pour confirmer et localiser la compression',p:true},
+      {who:'Médecin du sport',why:'Évaluation des facteurs déclenchants et adaptation',p:true},
+      {who:'Chirurgien orthopédique',why:"Si échec médical et compression mécanique objectivée",p:false}
+    ],
+    sources:[{l:'Iwamoto et al. 2018 — Superficial peroneal nerve entrapment (J Orthop Sci)',u:'https://pubmed.ncbi.nlm.nih.gov/29108770/'},{l:'McCrory et al. 2002 — Nerve entrapments leg (Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/11951948/'},{l:'Garozzo et al. 2014 — Peripheral nerve entrapment (J Brachial Plex Peripher Nerve Inj)',u:'https://pubmed.ncbi.nlm.nih.gov/25309052/'},{l:'HAS — Neuropathies de compression',u:'https://www.has-sante.fr'}],keys:['Paresthésies dos du pied épargnant le premier espace','Augmenté à la flexion dorsale cheville','Compression chaussures hautes','Appui monopodal prolongé reproduit la paresthésie','Tinel jambe antérolatéral positif']},
+  NERF_FIB_PROF:{id:'NERF_FIB_PROF',name:'Syndrome irritation nerf fibulaire profond',icon:'⚡',pop:'30-50 ans , sportif',
+    desc:'Paresthésies 1er espace inter orteil',alert:null,
+    imaging:[{t:'ENMG',d:''},{t:'Echographie',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Eviction compression',d:''},{t:'Infiltration corticostéroïdes',d:''}],
+    exercises:[{t:'Renforcement gastrocnémien classique',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des releveurs du pied',d:''},{t:'Reprise sportive progressive',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_13_nerf_fib_profond.html',ficheExercice:'lococlic_fiches_patient/jambe_13_nerf_fib_profond.html',referral:[
+      {who:'Neurologue',why:'EMG pour confirmer + bilan étiologique',p:true},
+      {who:'Médecin du sport',why:'Évaluation des facteurs déclenchants et adaptation',p:true},
+      {who:'Chirurgien orthopédique',why:'Si compression mécanique objectivée ou échec médical',p:false}
+    ],
+    sources:[{l:'McCrory et al. 2002 — Nerve entrapments leg (Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/11951948/'},{l:'Garozzo et al. 2014 — Peripheral nerve entrapment (J Brachial Plex Peripher Nerve Inj)',u:'https://pubmed.ncbi.nlm.nih.gov/25309052/'},{l:'Dellon 1990 — Deep peroneal nerve entrapment (Foot Ankle)',u:'https://pubmed.ncbi.nlm.nih.gov/2246492/'},{l:'HAS — Neuropathies de compression',u:'https://www.has-sante.fr'}],keys:['Paresthésies 1er espace inter orteil','Faiblesse extension orteils','Pied tombant','Test de compression','Déficit moteur extenseurs orteils']},
+  SYND_TUNNEL_TARSIEN: {
+    id:'SYND_TUNNEL_TARSIEN', name:'Syndrome du tunnel tarsien', icon:'⚡', pop:"Coureur, marche prolongée, pied plat, posture pronation excessive, post-entorse",
+    desc:"Compression du nerf tibial postérieur sous le rétinaculum des fléchisseurs (derrière la malléole médiale). Paresthésies / brûlures / hypoesthésie de la PLANTE du pied et des orteils (territoire plantaire médial et latéral), parfois irradiant vers le mollet. Aggravation à la marche prolongée, en station debout, parfois nocturne. Souvent confondu avec fasciite plantaire ou tendinopathie tibial postérieur.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:'Diagnostic clinique avant tout (Tinel + sensibilité plantaire)'},
+      {t:'Échographie tunnel tarsien',d:'Recherche cause compressive : kyste synovial, varicosités, tumeur des gaines tendineuses, accessoire musculaire'},
+      {t:'IRM cheville',d:'Si suspicion forte avec étude anatomique précise du tunnel'},
+      {t:'EMG (électroneuromyogramme)',d:'Confirme la neuropathie du nerf tibial postérieur et localise la compression'}
+    ],
+    treatment:[
+      {t:"Éviction des facteurs déclenchants",d:'Réduction de la marche prolongée, repos relatif, adaptation du chaussage'},
+      {t:"Semelles orthopédiques",d:"Correction de la pronation excessive (podologue) — soutien de l'arche médiale"},
+      {t:'Kinésithérapie',d:"Mobilisation neurale du nerf tibial, étirements de la chaîne postérieure, renforcement du tibial postérieur"},
+      {t:'Antalgiques + traitement de la douleur neuropathique',d:'Paracétamol, gabapentine ou prégabaline si paresthésies invalidantes'},
+      {t:'Infiltration de corticoïde',d:'Sous échoguidage dans le tunnel tarsien — si échec du traitement conservateur'},
+      {t:'Chirurgie de décompression',d:'Section du rétinaculum des fléchisseurs si échec médical 3-6 mois ou cause mécanique objectivée'}
+    ],
+    exercises:[
+      {t:'Mobilisation neurale du nerf tibial',d:'Glissements nerveux — encadrés par kiné formé'},
+      {t:"Étirements chaîne postérieure",d:'Gastrocnémien, soléaire — 30 sec × 3, plusieurs fois par jour'},
+      {t:"Renforcement intrinsèques du pied (short foot exercise)",d:"Activation des muscles courts plantaires"},
+      {t:"Renforcement du tibial postérieur",d:"Heel raise + inversion contre résistance"}
+    ],
+    referral:[
+      {who:'Neurologue',why:'EMG pour confirmer et grader la neuropathie',p:true},
+      {who:'Médecin du sport',why:"Évaluation des facteurs déclenchants, adaptation du geste sportif et du chaussage",p:true},
+      {who:'Chirurgien orthopédique pied/cheville',why:"Si échec conservateur ou cause mécanique objectivée (kyste, varicosités)",p:false}
+    ],
+    sources:[
+      {l:'Ahmad et al. 2012 — Tarsal tunnel syndrome review (Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/22443993/'},
+      {l:'Antoniadis & Scheglmann 2008 — Posterior tarsal tunnel syndrome (Dtsch Arztebl Int)',u:'https://pubmed.ncbi.nlm.nih.gov/19593454/'},
+      {l:'Kiel & Kaiser 2023 — Tarsal tunnel syndrome (StatPearls)',u:'https://www.ncbi.nlm.nih.gov/books/NBK513273/'},
+      {l:'HAS — Mononeuropathies des membres inférieurs',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Plante du pied','Coureur','Tinel rétromalléolaire médial','Pied plat','Tunnel tarsien']
+  }
+};
+
+// ========== TESTS CLINIQUES ==========
+const TESTS = {
+  // === FAMILLE PÉRIOSTITE ===
+  palp_tibia: {
+    name:"Palpation du tibia antéro-médial", family:'PERIOSTITE', badge:'PER',
+    desc:"Palpation diffuse du bord interne du tibia (vs douleur localisée < 2 cm de la fracture)",
+    how:"Patient assis. Palpation systématique du bord postéro-médial du tibia sur toute sa longueur, des 2/3 distaux. Comparer côté opposé.",
+    pos:"Douleur DIFFUSE sur > 5 cm le long du tibia — périostite tibiale typique",
+    neg:"Indolore",
+    affects_pos:{PERIOSTITE:55, FRACT_STRESS_TIB:15}, affects_neg:{PERIOSTITE:-25}
+  },
+  percussion_tibia: {
+    name:"Percussion focale du tibia", family:'FRACTURE', badge:'FRA',
+    desc:"Test discriminant fracture stress vs périostite — plus sensible que la palpation",
+    how:"Percussion par 2-3 coups secs avec les doigts sur le site douloureux. Alternative : tuning fork test (diapason 128 Hz vibrant sur l\'os).",
+    pos:"Douleur EXQUISE focale (< 2 cm) reproduite — suspicion de fracture de stress tibiale",
+    neg:"Indolore à la percussion focale",
+    affects_pos:{FRACT_STRESS_TIB:55, PERIOSTITE:-10}, affects_neg:{FRACT_STRESS_TIB:-25}
+  },
+  hop_test_jambe: {
+    name:"Hop test (saut unipodal)", family:'FRACTURE', badge:'FRA',
+    desc:"Test fonctionnel de mise en charge pour fracture de stress",
+    how:"Demander au patient de sautiller 10 fois sur la jambe douloureuse.",
+    pos:"Douleur vive reproductible ou impossibilité de sautiller — suspicion fracture de stress",
+    neg:"Sautillement indolore (30% faux négatifs si fracture précoce)",
+    affects_pos:{FRACT_STRESS_TIB:50, PERIOSTITE:-5}, affects_neg:{FRACT_STRESS_TIB:-20}
+  },
+
+  // === FAMILLE ACHILLE ===
+  palp_achille: {
+    name:"Palpation du tendon d\'Achille", family:'ACHILLE', badge:'ACH',
+    desc:"Palpation tendon, corps et insertion",
+    how:"Pince pouce/index sur le corps du tendon (2-6 cm au-dessus du calcanéum). Comparer côté opposé — épaississement, douleur, nodule.",
+    pos:"Douleur exquise, épaississement, nodule — tendinopathie achilléenne",
+    neg:"Tendon souple, indolore",
+    affects_pos:{TEND_ACHILLE_J:50}, affects_neg:{TEND_ACHILLE_J:-25}
+  },
+  thompson: {
+    name:"Test de Thompson", family:'ACHILLE_RUPT', badge:'RUP',
+    desc:"Test de rupture du tendon d\'Achille — référence",
+    how:"Patient en décubitus ventral, pieds dépassant de la table. Comprimer fermement le mollet (jumeaux).",
+    pos:"PAS de flexion plantaire du pied — RUPTURE COMPLÈTE DU TENDON (URGENCE chirurgicale)",
+    neg:"Flexion plantaire normale — pas de rupture complète",
+    affects_pos:{RUPTURE_ACHILLE:60}, affects_neg:{RUPTURE_ACHILLE:-35, TEND_ACHILLE_J:5}
+  },
+  palp_encoche: {
+    name:"Palpation d\'une encoche tendineuse", family:'ACHILLE_RUPT', badge:'RUP',
+    desc:"Recherche d\'une solution de continuité du tendon",
+    how:"Pince le tendon entre pouce et index. Palpation systématique de 5 cm au-dessus de l\'insertion calcanéenne vers le haut.",
+    pos:"Encoche palpable ou \'vide\' sur le trajet du tendon — rupture",
+    neg:"Tendon continu",
+    affects_pos:{RUPTURE_ACHILLE:45}, affects_neg:{RUPTURE_ACHILLE:-20}
+  },
+
+  // === FAMILLE TIBIAL POSTÉRIEUR ===
+  heel_raise: {
+    name:"Single heel raise (montée sur pointe unipodale)", family:'TIB_POST', badge:'TBP',
+    desc:"Test fonctionnel du tibial postérieur",
+    how:"Patient debout, appui modéré sur un mur. Demander de se mettre sur la pointe d\'un seul pied. Comparer aux 2 côtés.",
+    pos:"Incapacité à monter / arche médiale s\'effondre — atteinte du tibial postérieur",
+    neg:"Montée possible, calcanéum tourne en varus, arche maintenue",
+    affects_pos:{TEND_TIB_POST:55}, affects_neg:{TEND_TIB_POST:-30}
+  },
+  palp_tib_post: {
+    name:"Palpation rétromalléolaire médiale", family:'TIB_POST', badge:'TBP',
+    desc:"Palpation du tendon du tibial postérieur",
+    how:"Palpation derrière et sous la malléole médiale, vers son insertion sur le naviculaire.",
+    pos:"Douleur exquise, épaississement — tendinopathie tibial postérieur",
+    neg:"Tendon souple, indolore",
+    affects_pos:{TEND_TIB_POST:40}, affects_neg:{TEND_TIB_POST:-18}
+  },
+
+  // === FAMILLE FHL (long fléchisseur hallux) ===
+  palp_fhl: {
+    name:"Palpation du FHL rétromalléolaire", family:'FHL', badge:'FHL',
+    desc:"Palpation du long fléchisseur de l\'hallux derrière la malléole médiale",
+    how:"Palpation profonde du sillon rétromalléolaire médial (zone du tunnel tarsien). Demander une flexion active du gros orteil — palper la course tendineuse.",
+    pos:"Douleur reproductible avec craquement / sensation de blocage — tendinopathie FHL",
+    neg:"Indolore",
+    affects_pos:{TEND_FHL:55}, affects_neg:{TEND_FHL:-25}
+  },
+  flexion_hallux: {
+    name:"Flexion de l\'hallux contrariée", family:'FHL', badge:'FHL',
+    desc:"Test fonctionnel du FHL",
+    how:"Demander une flexion active du gros orteil contre la résistance de l\'examinateur.",
+    pos:"Douleur ou faiblesse reproduite — atteinte du FHL",
+    neg:"Force conservée, indolore",
+    affects_pos:{TEND_FHL:45}, affects_neg:{TEND_FHL:-20}
+  },
+
+  // === FAMILLE NERVEUSE FIBULAIRE SUPERFICIEL ===
+  palp_nerf_superf: {
+    name:"Palpation du nerf fibulaire superficiel", family:'NERF_SUP', badge:'NSP',
+    desc:"Test de compression du nerf fibulaire superficiel (à 8-15 cm au-dessus de la cheville, face antéro-latérale)",
+    how:"Palpation du trajet du nerf fibulaire superficiel (face antéro-latérale de la jambe inférieure). Tinel par percussion.",
+    pos:"Paresthésies électriques irradiant sur le dos du pied (épargnant 1er espace) — neuropathie fibulaire superficiel",
+    neg:"Pas de paresthésie",
+    affects_pos:{NERF_FIB_SUPERF:55}, affects_neg:{NERF_FIB_SUPERF:-25}
+  },
+
+  // === FAMILLE NERVEUSE FIBULAIRE PROFOND ===
+  tinel_fibulaire: {
+    name:"Tinel au col de la fibula", family:'NERF_PROF', badge:'NPR',
+    desc:"Test du nerf fibulaire commun/profond",
+    how:"Percussion par 2-3 coups secs au col de la fibula (juste sous la tête fibulaire, face latérale).",
+    pos:"Paresthésies électriques sur la face dorsale du pied — atteinte du nerf fibulaire",
+    neg:"Pas de paresthésie déclenchée",
+    affects_pos:{NERF_FIB_PROF:50, NERF_FIB_SUPERF:20}, affects_neg:{NERF_FIB_PROF:-25}
+  },
+  paresth_1er: {
+    name:"Test sensitif 1er espace inter-orteil", family:'NERF_PROF', badge:'NPR',
+    desc:"Recherche hypoesthésie du nerf fibulaire profond",
+    how:"Tester la sensibilité (toucher léger, piqûre) du 1er espace inter-orteil (entre gros orteil et 2e orteil) face dorsale. Comparer côté opposé.",
+    pos:"Hypoesthésie ou paresthésie du 1er espace — atteinte du nerf fibulaire profond",
+    neg:"Sensibilité conservée et comparable",
+    affects_pos:{NERF_FIB_PROF:55}, affects_neg:{NERF_FIB_PROF:-25}
+  },
+
+  // === FAMILLE GASTROCNÉMIEN (déchirure) ===
+  palp_gastroc: {
+    name:"Palpation du mollet médial", family:'GASTROC', badge:'GAS',
+    desc:"Recherche d\'une déchirure aiguë du gastrocnémien médial",
+    how:"Palpation systématique du chef médial du gastrocnémien (face postéro-médiale du mollet). Rechercher encoche, masse œdémateuse, ecchymose.",
+    pos:"Encoche palpable, douleur exquise localisée, hématome, ecchymose médiale — déchirure du gastrocnémien",
+    neg:"Mollet souple, indolore",
+    affects_pos:{DECHIRURE_GASTROC:55, TVP:10}, affects_neg:{DECHIRURE_GASTROC:-30}
+  },
+
+  // === FAMILLE TVP ===
+  signes_tvp: {
+    name:"Signes cliniques de TVP (Homans, mollet asymétrique, chaleur)", family:'VASC', badge:'TVP',
+    desc:"Recherche des signes de thrombose veineuse profonde",
+    how:"Comparer les 2 mollets : asymétrie de circonférence > 3 cm, augmentation de chaleur locale, œdème godet, douleur à la dorsiflexion du pied (Homans, valeur limitée mais utile en combinaison).",
+    pos:"Au moins 2 signes parmi : asymétrie > 3 cm, chaleur, œdème, Homans positif — suspicion de TVP",
+    neg:"Aucun signe — TVP peu probable mais ne l\'élimine pas",
+    affects_pos:{TVP:60, DECHIRURE_GASTROC:5}, affects_neg:{TVP:-30}
+  },
+
+  // === FAMILLE ARTÉRITE / SYNDROME POPLITÉ ===
+  pouls_pedieux: {
+    name:"Palpation des pouls pédieux et tibial postérieur", family:'VASC_ART', badge:'ART',
+    desc:"Test artériel — claudication vasculaire",
+    how:"Palpation systématique des pouls pédieux (face dorsale du pied) et tibial postérieur (rétromalléolaire médial). Comparer les 2 côtés.",
+    pos:"Pouls diminués ou abolis (uni ou bilatéral) — suspicion d\'artériopathie",
+    neg:"Pouls bien perçus, symétriques",
+    affects_pos:{CLAUDICATION_VASC:55, SYND_POPLITE:25}, affects_neg:{CLAUDICATION_VASC:-30, SYND_POPLITE:-10}
+  },
+  pouls_flexplant: {
+    name:"Disparition pouls en flexion plantaire forcée", family:'VASC_POP', badge:'POP',
+    desc:"Test du syndrome de l\'artère poplitée piégée",
+    how:"Palper le pouls tibial postérieur ou pédieux. Demander au patient une flexion plantaire active et résistée maximale du pied.",
+    pos:"Disparition du pouls pendant la manœuvre — suspicion de syndrome poplité piégé",
+    neg:"Pouls maintenu",
+    affects_pos:{SYND_POPLITE:55}, affects_neg:{SYND_POPLITE:-25}
+  },
+
+  // === FAMILLE TIBIAL ANTÉRIEUR ===
+  palp_tib_ant: {
+    name:"Palpation du tendon tibial antérieur", family:'TIB_ANT', badge:'TAN',
+    desc:"Palpation tendon en avant de la cheville",
+    how:"Palpation directe du tendon du tibial antérieur sur sa course (face antérieure de la cheville, du tibia distal au cunéiforme médial).",
+    pos:"Douleur exquise, épaississement, parfois nodule — tendinopathie tibial antérieur",
+    neg:"Tendon souple, indolore",
+    affects_pos:{TEND_TIB_ANT:50}, affects_neg:{TEND_TIB_ANT:-22}
+  },
+  flexdors_contrariee: {
+    name:"Flexion dorsale contrariée", family:'TIB_ANT', badge:'TAN',
+    desc:"Test fonctionnel du tibial antérieur",
+    how:"Demander une flexion dorsale active du pied contre la résistance de l\'examinateur.",
+    pos:"Douleur reproduite face antérieure de la jambe / cheville — tendinopathie tibial antérieur",
+    neg:"Force conservée, indolore",
+    affects_pos:{TEND_TIB_ANT:45, NERF_FIB_PROF:5}, affects_neg:{TEND_TIB_ANT:-20}
+  },
+
+  // === FAMILLE SYNDROME DES LOGES ===
+  tinel_tarsien: {
+    name:"Tinel au tunnel tarsien (rétromalléolaire médial)", family:'TUNNEL_TAR', badge:'TUN',
+    desc:"Test de compression du nerf tibial postérieur dans le tunnel tarsien",
+    how:"Percussion par 2-3 coups secs avec les doigts sur la face postérieure et inférieure de la malléole médiale (trajet du nerf tibial). Peut être complété par dorsiflexion-éversion maintenue 10-15 sec.",
+    pos:"Paresthésies, brûlures, fourmillements irradiant vers la plante du pied — compression du nerf tibial",
+    neg:"Pas de paresthésie déclenchée",
+    affects_pos:{SYND_TUNNEL_TARSIEN:55}, affects_neg:{SYND_TUNNEL_TARSIEN:-25}
+  },
+  sensitif_plante: {
+    name:"Test sensitif plante du pied", family:'TUNNEL_TAR', badge:'TUN',
+    desc:"Recherche d'hypoesthésie plantaire (territoire nerf tibial)",
+    how:"Tester la sensibilité (toucher léger, piqûre) de la plante du pied côté médial (territoire du nerf plantaire médial) et latéral. Comparer côté opposé.",
+    pos:"Hypoesthésie ou paresthésie plantaire — atteinte du nerf tibial dans le tunnel tarsien",
+    neg:"Sensibilité conservée et symétrique",
+    affects_pos:{SYND_TUNNEL_TARSIEN:45}, affects_neg:{SYND_TUNNEL_TARSIEN:-20}
+  },
+  examen_repos: {
+    name:"Examen au repos après effort", family:'LOGES', badge:'LOG',
+    desc:"Test d\'orientation pour syndrome des loges d\'effort",
+    how:"Examen clinique au cabinet APRÈS un effort déclenchant (faire courir/marcher le patient si possible, sinon interrogatoire détaillé). Évaluer si récupération en < 5-10 minutes.",
+    pos:"Douleur reproductible à un seuil d\'effort précis, soulagée rapidement par le repos. Examen au repos normal — suspicion de syndrome des loges",
+    neg:"Douleur permanente au repos, ou pas de seuil reproductible — éliminer autres diagnostics",
+    affects_pos:{SYND_LOGES:50, PERIOSTITE:10}, affects_neg:{SYND_LOGES:-25}
+  },
+  // === FAMILLE TUNNEL TARSIEN ===
+  tinel_tarsien: {
+    name:"Tinel rétromalléolaire médial (tunnel tarsien)", family:'TUNNEL', badge:'TUN',
+    desc:"Test du nerf tibial postérieur dans le tunnel tarsien",
+    how:"Patient assis ou décubitus, cheville en flexion dorsale + éversion (mise en tension du nerf). Percussion par 2-3 coups secs sur le trajet du nerf tibial postérieur, derrière la malléole médiale (entre malléole et tendon d'Achille).",
+    pos:"Paresthésies/décharges électriques irradiant vers la plante du pied — syndrome du tunnel tarsien",
+    neg:"Pas de paresthésie déclenchée",
+    affects_pos:{SYND_TUNNEL_TARSIEN:55}, affects_neg:{SYND_TUNNEL_TARSIEN:-25}
+  },
+  sensitif_plante: {
+    name:"Test sensitif plantaire", family:'TUNNEL', badge:'TUN',
+    desc:"Évaluation de la sensibilité de la plante du pied (territoire nerf tibial)",
+    how:"Tester la sensibilité (toucher léger, piqûre) de la plante du pied — territoire plantaire médial (gros orteil → 3e orteil) ET plantaire latéral (4e-5e orteils). Comparer avec côté opposé.",
+    pos:"Hypoesthésie ou paresthésie plantaire — atteinte du nerf tibial postérieur (tunnel tarsien)",
+    neg:"Sensibilité conservée et symétrique",
+    affects_pos:{SYND_TUNNEL_TARSIEN:50}, affects_neg:{SYND_TUNNEL_TARSIEN:-22}
+  }
+};
+
+// ========== VIGNETTES + CHOIX + CIRCUITS ==========
+const VIGNETTES = {
+  // === LOCALISATIONS ===
+  loc_tibia_int: {
+    id:'loc_tibia_int', lbl:'📍 Douleur face antéro-médiale du tibia',
+    desc:'Bord interne du tibia chez le coureur',
+    score:{PERIOSTITE:45, FRACT_STRESS_TIB:40}
+  },
+  loc_tibia_ant: {
+    id:'loc_tibia_ant', lbl:'⬆️ Douleur face antéro-latérale (loge antérieure)',
+    desc:'Face antéro-latérale de la jambe',
+    score:{SYND_LOGES:40, TEND_TIB_ANT:40}
+  },
+  loc_post_haut: {
+    id:'loc_post_haut', lbl:'⬅️ Douleur mollet médial (postérieur haut)',
+    desc:'Chef médial du gastrocnémien, mollet',
+    score:{DECHIRURE_GASTROC:45, TVP:30}
+  },
+  loc_post_bas: {
+    id:'loc_post_bas', lbl:'⬇️ Douleur postérieure basse (talon d\'Achille)',
+    desc:"Douleur au talon postérieur, le long du tendon d\'Achille ou à son insertion — tendinopathie ou rupture",
+    score:{TEND_ACHILLE_J:45, RUPTURE_ACHILLE:25}
+  },
+  loc_retromall_med: {
+    id:'loc_retromall_med', lbl:'⬅️ Douleur rétromalléolaire médiale',
+    desc:'Derrière la malléole médiale',
+    score:{TEND_TIB_POST:45, TEND_FHL:30}
+  },
+  loc_paresth_dos: {
+    id:'loc_paresth_dos', lbl:'⚡ Paresthésies face dorsale du pied',
+    desc:'Fourmillements face dorsale du pied',
+    score:{NERF_FIB_SUPERF:45, NERF_FIB_PROF:35}
+  },
+  loc_paresth_1er: {
+    id:'loc_paresth_1er', lbl:'⚡ Paresthésies 1er espace inter-orteil',
+    desc:'Fourmillements au 1er espace (entre 1er et 2e orteil)',
+    score:{NERF_FIB_PROF:55}
+  },
+  loc_hallux: {
+    id:'loc_hallux', lbl:'🦶 Douleur de l\'hallux à la flexion',
+    desc:"Douleur retromalléolaire médiale à la flexion du gros orteil, sensation de blocage — tendinopathie du FHL",
+    score:{TEND_FHL:55}
+  },
+
+  // === PRÉSENTATIONS / CONTEXTE ===
+  loc_plantaire: {
+    id:'loc_plantaire', lbl:'🦶 Paresthésies / brûlures plantaires',
+    desc:'Fourmillements ou brûlures plantaires, surtout médiales',
+    score:{SYND_TUNNEL_TARSIEN:55}
+  },
+  pres_brutal: {
+    id:'pres_brutal', lbl:"💥 Apparition BRUTALE pendant l\'effort",
+    desc:"Sensation de coup de fouet, claquage, à un démarrage ou un saut — déchirure musculaire ou rupture tendineuse",
+    score:{DECHIRURE_GASTROC:45, RUPTURE_ACHILLE:45}
+  },
+  pres_effort_seuil: {
+    id:'pres_effort_seuil', lbl:'⚙️ Douleur à un seuil reproductible d\'effort',
+    desc:"Douleur à un seuil d'effort reproductible, soulagée au repos",
+    score:{SYND_LOGES:45, CLAUDICATION_VASC:35, SYND_POPLITE:25}
+  },
+  pres_aug_volume: {
+    id:'pres_aug_volume', lbl:'📈 Augmentation récente du volume sportif',
+    desc:"Augmentation brutale du kilométrage ou de l'intensité",
+    score:{FRACT_STRESS_TIB:35, PERIOSTITE:35, TEND_ACHILLE_J:20, TEND_TIB_ANT:20, TEND_TIB_POST:15}
+  },
+  pres_fdr_thrombose: {
+    id:'pres_fdr_thrombose', lbl:'🩸 Facteurs de risque de thrombose',
+    desc:'Alitement, chirurgie, plâtre, voyage, contraception, ATCD',
+    score:{TVP:50}
+  },
+  pres_fdr_vasculaire: {
+    id:'pres_fdr_vasculaire', lbl:'🚬 Tabac, diabète, HTA — terrain vasculaire',
+    desc:'Tabac, diabète, HTA, dyslipidémie chez homme > 55 ans',
+    score:{CLAUDICATION_VASC:50}
+  },
+  pres_jeune_claudication: {
+    id:'pres_jeune_claudication', lbl:"🏃 Claudication chez sportif jeune (< 40 ans)",
+    desc:"Douleur de mollet à l'effort chez sujet jeune sportif",
+    score:{SYND_POPLITE:60, SYND_LOGES:10}
+  },
+  pres_mollet_dur: {
+    id:'pres_mollet_dur', lbl:'🪨 Mollet DUR "comme de la pierre" après effort',
+    desc:'Mollet dur « comme de la pierre » après effort, persistant',
+    score:{SYND_LOGES:60, SYND_POPLITE:-15}
+  },
+  pres_mollet_souple: {
+    id:'pres_mollet_souple', lbl:'✋ Mollet SOUPLE au repos entre les crises',
+    desc:'Mollet souple à la palpation entre les épisodes',
+    score:{SYND_POPLITE:55, SYND_LOGES:-20}
+  }
+};
+
+const MECA_VIGS = {
+  trauma_aigu: ['loc_post_haut','loc_post_bas','pres_brutal'],
+  surcharge: ['loc_tibia_int','loc_tibia_ant','loc_post_bas','loc_retromall_med','loc_hallux','loc_plantaire','pres_aug_volume','pres_effort_seuil','pres_mollet_dur'],
+  vasculaire: ['loc_post_haut','pres_fdr_thrombose','pres_fdr_vasculaire','pres_jeune_claudication','pres_effort_seuil','pres_mollet_dur','pres_mollet_souple'],
+  neuro: ['loc_paresth_dos','loc_paresth_1er','loc_plantaire']
+};
+
+const CHOICES = {
+  MECANISME: {
+    tag:'Étape 1 · Mécanisme', q:"Comment la douleur est-elle apparue ?",
+    items:[
+      {key:'trauma_aigu', lbl:"Apparition BRUTALE pendant l\'effort",
+        desc:"Coup de fouet, claquage, sensation de coup de pied — déchirure musculaire ou rupture tendineuse",
+        score:{DECHIRURE_GASTROC:35, RUPTURE_ACHILLE:35}},
+      {key:'surcharge', lbl:'Surcharge progressive (sport, métier)',
+        desc:"Apparition progressive à l\'augmentation du volume, course, marche prolongée",
+        score:{PERIOSTITE:25, FRACT_STRESS_TIB:25, TEND_ACHILLE_J:20, TEND_TIB_POST:20, TEND_TIB_ANT:20, TEND_FHL:18, SYND_LOGES:20, SYND_TUNNEL_TARSIEN:18}},
+      {key:'vasculaire', lbl:'Mollet douloureux + facteurs de risque vasculaire ou thrombose',
+        desc:"Œdème, asymétrie, FDR vasculaires (tabac, contraception, voyage, alitement, post-op)",
+        score:{TVP:40, CLAUDICATION_VASC:35, SYND_POPLITE:20}},
+      {key:'neuro', lbl:'Paresthésies / faiblesse',
+        desc:"Fourmillements, hypoesthésie, faiblesse releveurs — atteinte nerveuse",
+        score:{NERF_FIB_PROF:40, NERF_FIB_SUPERF:40, SYND_TUNNEL_TARSIEN:40}}
+    ]
+  },
+  AGE: {
+    tag:'Étape 2 · Profil', q:'Quel est le profil du patient ?',
+    items:[
+      {key:'sport_jeune', lbl:'< 40 ans, sportif',
+        desc:"Coureur, sportif pivot, militaire, danseur",
+        score:{PERIOSTITE:18, FRACT_STRESS_TIB:18, SYND_LOGES:25, SYND_POPLITE:15, TEND_ACHILLE_J:10, SYND_TUNNEL_TARSIEN:15}},
+      {key:'a40_60', lbl:'40-60 ans, sportif occasionnel',
+        desc:"\'Weekend warrior\', sport repris à l\'âge mûr, tendinopathies de surmenage",
+        score:{TEND_ACHILLE_J:20, RUPTURE_ACHILLE:20, DECHIRURE_GASTROC:25, TEND_TIB_POST:15, SYND_TUNNEL_TARSIEN:12}},
+      {key:'femme_40p', lbl:'Femme > 40 ans ± surpoids',
+        desc:"Femme 40+ ans, contraception (FDR vasculaire), fatigabilité à la marche",
+        score:{TEND_TIB_POST:25, TVP:15}},
+      {key:'senior_fdr', lbl:'> 55 ans avec FDR cardio-vasculaire',
+        desc:"Tabac, diabète, HTA, dyslipidémie — risque artériopathie",
+        score:{CLAUDICATION_VASC:45, TVP:10}}
+    ]
+  },
+  HORAIRE: {
+    tag:'Étape 4 · Horaire', q:"Caractère et horaire de la douleur ?",
+    items:[
+      {key:'effort_pur', lbl:"À l\'effort uniquement, soulagée au repos",
+        desc:"Périmètre de marche, seuil reproductible — vasculaire, syndrome des loges, périostite",
+        score:{CLAUDICATION_VASC:30, SYND_LOGES:30, SYND_POPLITE:25, PERIOSTITE:15}},
+      {key:'demarrage', lbl:'Au démarrage (raideur initiale)',
+        desc:"Douleur en début d\'effort qui s\'estompe puis revient — tendinopathies",
+        score:{TEND_ACHILLE_J:25, TEND_TIB_POST:20, TEND_TIB_ANT:20, TEND_FHL:18, SYND_TUNNEL_TARSIEN:18}},
+      {key:'permanent', lbl:'Permanent ± nocturne',
+        desc:"Douleur au repos et la nuit",
+        score:{FRACT_STRESS_TIB:35, TVP:25, CLAUDICATION_VASC:10}},
+      {key:'brutal_perm', lbl:'Brutal puis permanent (impotence)',
+        desc:"Coup de fouet brutal puis impotence à la marche — rupture tendineuse ou déchirure musculaire",
+        score:{DECHIRURE_GASTROC:30, RUPTURE_ACHILLE:30}}
+    ]
+  }
+};
+
+// Circuits de 5 tests par pathologie
+const CIRCUITS = {
+  PERIOSTITE:        ['palp_tibia','percussion_tibia','hop_test_jambe','examen_repos','palp_achille'],
+  FRACT_STRESS_TIB:  ['percussion_tibia','hop_test_jambe','palp_tibia','palp_achille','examen_repos'],
+  SYND_LOGES:        ['examen_repos','palp_tibia','pouls_pedieux','flexdors_contrariee','palp_achille'],
+  TEND_ACHILLE_J:    ['palp_achille','thompson','heel_raise','palp_tib_post','palp_tibia'],
+  RUPTURE_ACHILLE:   ['thompson','palp_encoche','palp_achille','heel_raise','palp_tibia'],
+  TEND_TIB_POST:     ['heel_raise','palp_tib_post','palp_achille','palp_fhl','palp_tibia'],
+  TEND_TIB_ANT:      ['palp_tib_ant','flexdors_contrariee','palp_tibia','palp_achille','tinel_fibulaire'],
+  TEND_FHL:          ['flexion_hallux','palp_fhl','palp_tib_post','heel_raise','palp_achille'],
+  DECHIRURE_GASTROC: ['palp_gastroc','signes_tvp','thompson','palp_achille','palp_tibia'],
+  TVP:               ['signes_tvp','palp_gastroc','pouls_pedieux','palp_achille','palp_tibia'],
+  CLAUDICATION_VASC: ['pouls_pedieux','signes_tvp','palp_tibia','examen_repos','palp_achille'],
+  SYND_POPLITE:      ['pouls_flexplant','pouls_pedieux','examen_repos','palp_tibia','palp_achille'],
+  NERF_FIB_SUPERF:   ['palp_nerf_superf','tinel_fibulaire','palp_tibia','palp_achille','flexdors_contrariee'],
+  NERF_FIB_PROF:     ['tinel_fibulaire','paresth_1er','flexdors_contrariee','palp_nerf_superf','palp_tibia'],
+  SYND_TUNNEL_TARSIEN: ['tinel_tarsien','sensitif_plante','palp_tib_post','tinel_fibulaire','palp_achille']
+};
+
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR ==========
+// ========== ÉTAT ==========
+const PATHO_LIST = Object.keys(P);
+let scores = {};
+let history = [];
+let mecaKey = null;
+let testsToRun = [];
+let testIdx = 0;
+let currentStep = 'MECANISME';
+let selectedVigs = new Set();
+
+function init(){
+  scores = {};
+  PATHO_LIST.forEach(p => scores[p] = 0);
+  history = [];
+  mecaKey = null;
+  testsToRun = [];
+  testIdx = 0;
+  currentStep = 'MECANISME';
+  selectedVigs = new Set();
+}
+
+function addScore(delta){
+  for(const k in delta){
+    if(k in scores) scores[k] += delta[k];
+  }
+}
+
+function ranked(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+}
+
+function top1(){ return ranked()[0]; }
+
+function top3WithScores(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+}
+
+// ========== LOGIQUE TESTS ADAPTATIFS ==========
+// Règle : 5 tests max
+// - Test POS  → continuer le circuit du top1 actuel (confirmation)
+// - Test NÉG  → proposer un test d\'une AUTRE famille clinique
+
+const MAX_TESTS = 5;
+
+function buildInitialQueue(){
+  const t1 = top1();
+  return [...(CIRCUITS[t1] || [])].slice(0, MAX_TESTS);
+}
+
+function applyTest(tKey, positive){
+  const t = TESTS[tKey];
+  if(!t) return;
+  const delta = positive ? t.affects_pos : t.affects_neg;
+  addScore(delta);
+  history.push({test:tKey, name:t.name, result:positive ? '✅':'❌'});
+}
+
+function nextTestAdaptive(currentFamily, positive, previousTop1){
+  // Tests déjà faits (jamais reproposés)
+  const done = new Set(testsToRun.slice(0, testIdx));
+  const newTop1 = top1();
+  
+  if(positive){
+    // POS : continuer circuit du top1 actuel (confirmation)
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+    return null;
+  }
+  
+  // NEG :
+  // Cas 1 : top1 INCHANGÉ → continuer le circuit du top1 (poursuite logique, ex: cluster Laslett pour SI)
+  if(newTop1 === previousTop1){
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+  }
+  
+  // Cas 2 : top1 a CHANGÉ → proposer le test #1 de la nouvelle patho top1
+  // (qui sera presque toujours d'une famille différente)
+  // On parcourt le ranking pour trouver le 1er candidat de famille différente
+  for(const patho of ranked()){
+    const cands = CIRCUITS[patho];
+    if(!cands || !cands.length) continue;
+    for(const candTest of cands){
+      if(done.has(candTest)) continue;
+      const candFamily = (TESTS[candTest] || {}).family;
+      if(candFamily && candFamily !== currentFamily) return candTest;
+    }
+  }
+  
+  // Fallback : n\'importe quel test non fait
+  for(const patho of ranked()){
+    for(const t of (CIRCUITS[patho] || [])){
+      if(!done.has(t)) return t;
+    }
+  }
+  return null;
+}
+
+function testResult(positive){
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t) return;
+  
+  // Capturer top1 AVANT d\'appliquer le résultat
+  const previousTop1 = top1();
+  
+  applyTest(tKey, positive);
+  const currentFamily = t.family;
+  testIdx++;
+  
+  // Si pas encore atteint MAX, choisir le prochain test
+  if(testIdx < MAX_TESTS){
+    const nextT = nextTestAdaptive(currentFamily, positive, previousTop1);
+    if(nextT){
+      // Remplacer le prochain prévu (ou l\'insérer)
+      if(testIdx < testsToRun.length){
+        testsToRun[testIdx] = nextT;
+      } else {
+        testsToRun.push(nextT);
+      }
+    }
+  }
+  
+  renderStep();
+}
+
+// ========== RENDERING ==========
+function pickChoice(stepKey, item){
+  addScore(item.score);
+  history.push({step:stepKey, label:item.lbl});
+  
+  if(stepKey === 'MECANISME'){
+    mecaKey = item.key;
+    currentStep = 'AGE';
+  } else if(stepKey === 'AGE'){
+    currentStep = 'TABLEAU';
+  } else if(stepKey === 'HORAIRE'){
+    testsToRun = buildInitialQueue();
+    testIdx = 0;
+    currentStep = 'TESTS';
+  }
+  renderStep();
+}
+
+function toggleVig(vid){
+  if(selectedVigs.has(vid)){
+    selectedVigs.delete(vid);
+  } else {
+    if(selectedVigs.size >= 3) return;
+    selectedVigs.add(vid);
+  }
+  renderStep();
+}
+
+function validateTableau(){
+  if(selectedVigs.size === 0) return;
+  selectedVigs.forEach(vid => {
+    addScore(VIGNETTES[vid].score);
+    history.push({step:'TABLEAU', label:VIGNETTES[vid].lbl});
+  });
+  currentStep = 'HORAIRE';
+  renderStep();
+}
+
+function skipTest(){
+  testIdx++;
+  if(testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+  }
+  renderStep();
+}
+
+function reset(){
+  init();
+  renderStep();
+}
+
+function goBack(){
+  // Retour à l\'étape précédente — simple
+  if(currentStep === 'AGE') currentStep = 'MECANISME';
+  else if(currentStep === 'TABLEAU') currentStep = 'AGE';
+  else if(currentStep === 'HORAIRE') currentStep = 'TABLEAU';
+  else if(currentStep === 'TESTS' && testIdx > 0){
+    testIdx--;
+    // Annuler le dernier test (pas le scoring pour simplifier, juste revenir au test)
+  } else if(currentStep === 'TESTS' && testIdx === 0){
+    currentStep = 'HORAIRE';
+  } else if(currentStep === 'RESULT'){
+    currentStep = 'TESTS';
+    testIdx = Math.max(0, MAX_TESTS - 1);
+  }
+  renderStep();
+}
+
+
+// ========== RENDU ==========
+// ========== HELPERS RENDU ==========
+function backBtn(){
+  if(currentStep === 'MECANISME') return '';
+  return `<button class="btn-back" onclick="goBack()">← Modifier</button>`;
+}
+
+function breadcrumbHTML(){
+  if(!history.length) return '';
+  const items = history.slice(-4).map(h => `<span class="bc-item">${(h.label||h.test||'').slice(0,30)}</span>`).join(' › ');
+  return `<div class="breadcrumb">${items}</div>`;
+}
+
+function stepIndicator(currentIdx){
+  const steps = ['Mécanisme', 'Profil', 'Tableau', 'Horaire', 'Examen'];
+  return `<div class="step-ind">
+    ${steps.map((s,i) => `<div class="si-item ${i===currentIdx?'active':''} ${i<currentIdx?'done':''}">${i+1}. ${s}</div>`).join('')}
+  </div>`;
+}
+
+// ========== ÉTAPE CHOIX (Mécanisme, Âge, Horaire) ==========
+function renderChoice(stepKey, stepIdx){
+  const c = CHOICES[stepKey];
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(stepIdx)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">${c.tag}</div>
+      <h2 class="card-q">${c.q}</h2>
+      <div class="choices">
+        ${c.items.map(it => `
+          <button class="choice" onclick="pickChoice('${stepKey}', CHOICES['${stepKey}'].items.find(x=>x.key==='${it.key}'))">
+            <div class="choice-lbl">${it.lbl}</div>
+            <div class="choice-desc">${it.desc}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TABLEAU CLINIQUE (multi-vignettes) ==========
+function renderTableau(){
+  const vigs = (MECA_VIGS[mecaKey] || Object.keys(VIGNETTES));
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(2)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 3 · Tableau clinique</div>
+      <h2 class="card-q">Cochez ce qui correspond au patient</h2>
+      <div class="card-hint">Maximum 3 cases cochables.</div>
+      <div class="vig-grid">
+        ${vigs.map(vid => {
+          const v = VIGNETTES[vid];
+          const sel = selectedVigs.has(vid);
+          return `<div class="vig ${sel?'vig-sel':''}" onclick="toggleVig('${vid}')">
+            <div class="vig-chk">${sel?'☑':'☐'}</div>
+            <div class="vig-body">
+              <div class="vig-lbl">${v.lbl}</div>
+              <div class="vig-desc">${v.desc}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="card-foot">
+        <span class="foot-info">${selectedVigs.size===0?'Aucune sélection':selectedVigs.size+'/3 coché'+(selectedVigs.size>1?'s':'')}</span>
+        <button class="btn-primary" ${selectedVigs.size===0?'disabled':''} onclick="validateTableau()">Confirmer →</button>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TESTS ==========
+function renderTests(){
+  if(testIdx >= testsToRun.length || testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+    renderStep();
+    return;
+  }
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t){
+    testIdx++;
+    renderTests();
+    return;
+  }
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(4)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 5 · Examen clinique (${testIdx+1}/${MAX_TESTS})</div>
+      <div class="test-name">${t.name}</div>
+      <div class="test-fam"><span class="test-badge">${t.badge}</span> Famille : ${t.family}</div>
+      <div class="test-desc">${t.desc}</div>
+      <div class="test-section">
+        <strong>Technique</strong>
+        <div>${t.how}</div>
+      </div>
+      <div class="test-section">
+        <strong>Interprétation</strong>
+        <div>✅ <strong>Positif :</strong> ${t.pos}</div>
+        <div>❌ <strong>Négatif :</strong> ${t.neg}</div>
+      </div>
+      <div class="test-btns">
+        <button class="btn-pos" onclick="testResult(true)">✅ Positif</button>
+        <button class="btn-neg" onclick="testResult(false)">❌ Négatif</button>
+      </div>
+      ${testIdx > 0 ? `<button class="btn-skip" onclick="skipTest()">Passer ce test →</button>` : ''}
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+
+
+// ========== ÉTAPE RÉSULTAT ==========
+function renderResult(){
+  const top = top3WithScores();
+  const total = top.reduce((s,[,sc]) => s + Math.max(0,sc), 0) || 1;
+  const main = top[0];
+  const alts = top.slice(1);
+  const mainP = P[main[0]];
+  const mainProb = Math.round(100 * Math.max(0, main[1]) / total);
+  
+  const alertHTML = mainP.alert ? `
+    <div class="alert-box alert-${mainP.alert.type}">
+      <span style="font-size:16px">${mainP.alert.type === 'red' ? '🚨' : '⚠️'}</span>
+      <span>${mainP.alert.text}</span>
+    </div>` : '';
+  
+  // Sections détaillées
+  const imagingItems = (mainP.imaging || []).map(i => 
+    `<div class="fi"><strong>${i.t}</strong>${i.d ? `<span>${i.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const treatmentItems = (mainP.treatment || []).map(t => 
+    `<div class="fi"><strong>${t.t}</strong>${t.d ? `<span>${t.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const exercisesItems = (mainP.exercises || []).map(e => 
+    `<div class="fi"><strong>${e.t}</strong>${e.d ? `<span>${e.d}</span>` : ''}</div>`
+  ).join('') + (mainP.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${mainP.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  
+  const referralItems = (mainP.referral || []).map(r => `
+    <div class="ref-tag ${r.p ? 'p' : 's'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p ? '→ ' : ''}${r.who}</div>
+        ${r.why ? `<div class="ref-why">${r.why}</div>` : ''}
+      </div>
+      <span class="ref-b">${r.p ? 'Prioritaire' : 'Si besoin'}</span>
+    </div>`).join('');
+  
+  // Sources
+  const sourcesHTML = mainP.sources?.length ? `
+    <div class="sources-row">
+      <span class="src-lbl">📚 Sources</span>
+      ${mainP.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('')}
+    </div>` : '';
+  
+  // Alternatifs
+  const altCardsHTML = alts.map(([pid, sc]) => {
+    const p = P[pid];
+    const prob = Math.round(100 * Math.max(0, sc) / total);
+    return `<div class="alt-card" onclick="showModal('${pid}')">
+      <div class="alt-header">
+        <img src="images_pathologies/jambe.png" alt="" class="alt-ic-img" />
+        <div class="alt-name">${p.name}</div>
+        <div class="alt-pct">${prob}%</div>
+      </div>
+      <div class="alt-bar"><div class="alt-fill" style="width:${prob}%"></div></div>
+      <div class="alt-key">
+        <strong>Éléments clés</strong>
+        ${(p.keys || []).slice(0,2).join(' · ')}
+      </div>
+      <div class="alt-hint">Appuyer pour la fiche complète →</div>
+    </div>`;
+  }).join('');
+  
+  const html = `
+    ${stepIndicator(5)}
+    ${breadcrumbHTML()}
+    <div class="result-wrap">
+      
+      <!-- DIAGNOSTIC PRINCIPAL -->
+      <div class="diag-card">
+        <div class="diag-top">
+          <div class="diag-head">
+            <img src="images_pathologies/jambe.png" alt="" class="diag-icon-img" />
+            <div>
+              <span class="rank-badge">Diagnostic principal</span>
+              <div class="diag-name">${mainP.name}</div>
+              <div class="diag-pop">${mainP.pop}</div>
+            </div>
+          </div>
+          <div class="prob-wrap">
+            <div class="prob-pct">${mainProb}%</div>
+            <div class="prob-label">Probabilité</div>
+            <div class="prob-bar"><div class="prob-fill" style="width:${mainProb}%"></div></div>
+          </div>
+        </div>
+        
+        <div class="fiche">
+          ${alertHTML}
+          <div class="fiche-grid">
+            <div class="fiche-sec">
+              <div class="sec-title sec-img">🔬 Imagerie</div>
+              ${imagingItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ex">💪 Exercices</div>
+              ${exercisesItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-rx">💊 Traitement</div>
+              ${treatmentItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ref">🏥 Orientation</div>
+              ${referralItems || '<div class="fi-empty">—</div>'}
+            </div>
+          </div>
+          ${sourcesHTML}
+        </div>
+      </div>
+      
+      <!-- DIAGNOSTICS ALTERNATIFS -->
+      <div class="section-sep">Diagnostics alternatifs à considérer</div>
+      <div class="alt-cards">${altCardsHTML}</div>
+      
+      <div class="disclaimer">
+        ⚠️ <strong>Outil d'aide à la décision clinique</strong> — Les probabilités sont indicatives et basées sur le profil sélectionné. Non substitutif au jugement médical. Sources : HAS, EULAR, sociétés savantes.
+      </div>
+      
+      <div class="actions">
+        <button class="btn-primary" onclick="reset()">↺ Nouveau cas</button>
+        <button class="btn-back" onclick="goBack()">← Modifier les réponses</button>
+      </div>
+      
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="if(event.target.id==='modal') closeModal()">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+  
+  // Animer les barres
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill, .alt-fill').forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => el.style.width = target));
+    });
+  }, 50);
+}
+
+function showModal(pid){
+  const p = P[pid];
+  const imagingHTML = (p.imaging || []).map(i => `<div class="fi"><strong>${i.t}</strong>${i.d?`<span>${i.d}</span>`:''}</div>`).join('');
+  const treatmentHTML = (p.treatment || []).map(t => `<div class="fi"><strong>${t.t}</strong>${t.d?`<span>${t.d}</span>`:''}</div>`).join('');
+  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  const referralHTML = (p.referral || []).map(r => `
+    <div class="ref-tag ${r.p?'p':'s'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p?'→ ':''}${r.who}</div>
+        ${r.why?`<div class="ref-why">${r.why}</div>`:''}
+      </div>
+      <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
+    </div>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-head">
+      <img src="images_pathologies/jambe.png" alt="" class="modal-icon-img" />
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div class="modal-pop">${p.pop}</div>
+      </div>
+    </div>
+    ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
+    <div class="fiche-grid modal-fiche">
+      <div class="fiche-sec">
+        <div class="sec-title sec-img">🔬 Imagerie</div>
+        ${imagingHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ex">💪 Exercices</div>
+        ${exercisesHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-rx">💊 Traitement</div>
+        ${treatmentHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ref">🏥 Orientation</div>
+        ${referralHTML || '<div class="fi-empty">—</div>'}
+      </div>
+    </div>
+    <div class="sources-row modal-sources">
+      <span class="src-lbl">📚 Sources</span>
+      ${sourcesHTML}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+
+// ========== DISPATCHER ==========
+function renderStep(){
+  if(currentStep === 'MECANISME') renderChoice('MECANISME', 0);
+  else if(currentStep === 'AGE') renderChoice('AGE', 1);
+  else if(currentStep === 'TABLEAU') renderTableau();
+  else if(currentStep === 'HORAIRE') renderChoice('HORAIRE', 3);
+  else if(currentStep === 'TESTS') renderTests();
+  else if(currentStep === 'RESULT') renderResult();
+}
+
+// ========== INIT ==========
+init();
+renderStep();
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocoClic — Rachis cervical v5</title>
+<style>
+
+
+
+
+
+:root {
+  --bg: #f5f3ee;           /* fond crème */
+  --bg-card: #ffffff;       /* cartes blanches */
+  --bg-hover: #f0ede5;      /* survol crème plus foncé */
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a2332;          /* texte sombre principal */
+  --text-dim: #4a5468;      /* texte secondaire */
+  --text-mute: #8a92a0;     /* texte tertiaire */
+  --accent: #2563a8;        /* bleu marine accent */
+  --accent-dim: #1d4d85;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;        /* or plus sombre pour contraste */
+  --navy: #0f2a44;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 16px;
+  line-height: 1.5;
+}
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.header .badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  padding: 3px 10px;
+  background: var(--accent);
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* === STEP INDICATOR === */
+.step-ind {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.si-item {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 8px;
+  background: #fafaf7;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: center;
+}
+.si-item.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+.si-item.done {
+  background: rgba(37, 99, 168, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* === BREADCRUMB === */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.bc-item { font-style: italic; }
+
+/* === BTN BACK === */
+.btn-back {
+  background: white;
+  color: var(--text-dim);
+  border: 1.5px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.btn-back:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.card-tag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-q {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-hint {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+
+/* === CHOICES (Mécanisme, Âge, Horaire) === */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice {
+  width: 100%;
+  text-align: left;
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.choice:hover {
+  background: rgba(37,99,168,0.06);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.choice-lbl {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.choice-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+/* === VIGNETTES === */
+.vig-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .vig-grid { grid-template-columns: 1fr 1fr; }
+}
+.vig {
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.vig:hover { background: rgba(37,99,168,0.06); border-color: var(--accent); }
+.vig-sel {
+  background: rgba(22,163,74,0.08);
+  border-color: var(--green);
+}
+.vig-chk {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.vig-lbl {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.vig-desc {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.foot-info {
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  box-shadow: 0 2px 8px rgba(37,99,168,0.25);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary:not(:disabled):hover { filter: brightness(1.1); }
+
+/* === TESTS === */
+.test-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+.test-fam {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.test-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.test-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.test-section {
+  margin: 14px 0;
+}
+.test-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.test-section div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.test-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn-pos, .btn-neg {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-pos {
+  background: var(--green);
+  color: white;
+}
+.btn-neg {
+  background: var(--red);
+  color: white;
+}
+.btn-pos:hover, .btn-neg:hover { filter: brightness(1.1); }
+.btn-skip {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* === RÉSULTAT === */
+.result-main {
+  border: 2px solid var(--accent);
+  background: linear-gradient(180deg, rgba(93,141,240,0.08), var(--bg-card));
+}
+.result-tag {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.result-icon { font-size: 36px; }
+.result-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+.result-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.result-score {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.result-section {
+  margin: 14px 0;
+}
+.result-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+.sources {
+  list-style: none;
+  font-size: 12px;
+}
+.sources li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sources li:last-child { border: none; }
+.sources a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.sources a:hover { text-decoration: underline; }
+
+/* === ALTS === */
+.alts {
+  margin-top: 18px;
+}
+.alts-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.alt {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alt:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+.alt-icon { font-size: 24px; }
+.alt-body { flex: 1; }
+.alt-name { font-weight: 600; font-size: 14px; }
+.alt-pop { font-size: 11px; color: var(--text-mute); }
+.alt-score {
+  font-weight: 700;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+
+.btn-reset {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+.btn-reset:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,42,68,0.55);
+  z-index: 100;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  padding: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  font-size: 24px;
+  cursor: pointer;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-icon { font-size: 32px; }
+.modal-name { font-size: 17px; font-weight: 700; }
+.modal-pop { font-size: 12px; color: var(--text-mute); }
+.modal-section {
+  margin: 12px 0;
+}
+.modal-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.modal-section > div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.modal-section ul {
+  list-style: none;
+  font-size: 12px;
+}
+.modal-section ul li {
+  padding: 3px 0;
+}
+.modal-section ul a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+
+.key-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.key-tag { display:inline-block; background:rgba(93,141,240,0.15); color:var(--accent); padding:3px 10px; border-radius:12px; font-size:11px; }
+.bullets { list-style:none; padding-left:0; font-size:14px; line-height:1.7; }
+.bullets li { padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.bullets li:last-child { border:none; }
+.result-info { flex:1; }
+.result-prob-wrap { text-align:right; }
+.result-prob { font-size:28px; font-weight:800; color:var(--accent); line-height:1; }
+.result-score { font-size:11px; color:var(--text-mute); margin-top:2px; }
+.alt-right { text-align:right; }
+.alt-prob { font-weight:700; font-size:17px; color:var(--accent); }
+.alt-score { font-size:10px; color:var(--text-mute); }
+.modal-section ul { list-style:none; padding-left:0; font-size:13px; line-height:1.6; }
+.modal-section ul li { padding:3px 0; }
+.modal-section ul a { color:var(--accent); text-decoration:none; }
+
+/* ===== FICHE RÉSULTAT — sections distinctes ===== */
+.result-wrap { animation: fu 0.4s ease both; }
+@keyframes fu { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+.diag-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(37,99,168,0.12);
+}
+
+.diag-top {
+  background: linear-gradient(135deg, rgba(37,99,168,0.10), rgba(37,99,168,0.03));
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.diag-head { display:flex; align-items:center; gap:12px; flex:1; }
+.diag-icon { font-size: 32px; }
+.rank-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.diag-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.diag-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-wrap { text-align: right; min-width:88px; }
+.prob-pct {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.prob-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.prob-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.fiche { background: var(--bg-card); }
+
+.alert-box {
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+
+
+
+
+
+
+
+.fi:last-child { margin-bottom: 0; }
+
+
+
+
+.ref-tag {
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+  background: rgba(167,139,250,0.18);
+  border: 1px solid rgba(167,139,250,0.2);
+}
+.ref-tag.s {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border);
+}
+.ref-info { flex: 1; }
+.ref-who {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ref-why {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.ref-b {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: rgba(109,40,217,0.15);
+  color: #6d28d9;
+}
+.ref-tag.s .ref-b {
+  background: var(--bg-hover);
+  color: var(--text-mute);
+}
+
+.sources-row {
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.025);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.src-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.src-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(37,99,168,0.08);
+  border: 1px solid rgba(37,99,168,0.3);
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.src-chip:hover {
+  background: rgba(37,99,168,0.18);
+}
+
+.section-sep {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 22px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.alt-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .alt-cards { grid-template-columns: 1fr; }
+}
+.alt-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.alt-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+.alt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.alt-ic { font-size: 22px; }
+.alt-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.alt-pct {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-mute);
+}
+.alt-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.alt-fill {
+  height: 100%;
+  background: var(--text-mute);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.alt-key {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.alt-key strong {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 3px;
+}
+.alt-hint {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-align: right;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.actions .btn-primary, .actions .btn-back { flex: 1; min-width: 140px; }
+
+/* Modal fiche */
+.modal-fiche { 
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.modal-sources {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+
+/* === FICHE GRID — sections fortement distinctes === */
+.fiche-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  padding: 2px;
+}
+@media (max-width: 600px) {
+  .fiche-grid { grid-template-columns: 1fr; }
+}
+
+.fiche-sec {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: none;
+  position: relative;
+}
+
+/* Bandeau coloré en haut de chaque section */
+.fiche-sec::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* === COULEURS PAR SECTION === */
+/* Imagerie — bleu */
+.fiche-sec:nth-child(1) {
+  background: linear-gradient(180deg, rgba(94,177,255,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(1)::before { background: #5eb1ff; }
+
+/* Exercices — vert */
+.fiche-sec:nth-child(2) {
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(2)::before { background: #4ade80; }
+
+/* Traitement — jaune/or */
+.fiche-sec:nth-child(3) {
+  background: linear-gradient(180deg, rgba(251,191,36,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(3)::before { background: #fbbf24; }
+
+/* Orientation — violet */
+.fiche-sec:nth-child(4) {
+  background: linear-gradient(180deg, rgba(167,139,250,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(4)::before { background: #a78bfa; }
+
+/* sec-title plus visible */
+.sec-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+.sec-img { color: #1e6db8; }
+.sec-ex  { color: #15803d; }
+.sec-rx  { color: #b45309; }
+.sec-ref { color: #6d28d9; }
+
+/* Items plus aérés et visibles */
+.fi {
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 10px 8px 12px;
+  border-left: 3px solid;
+  margin-bottom: 8px;
+  background: rgba(0,0,0,0.025);
+  border-radius: 0 6px 6px 0;
+}
+.fi:last-child { margin-bottom: 0; }
+.fiche-sec:nth-child(1) .fi { border-left-color: rgba(94,177,255,0.4); }
+.fiche-sec:nth-child(2) .fi { border-left-color: rgba(74,222,128,0.4); }
+.fiche-sec:nth-child(3) .fi { border-left-color: rgba(251,191,36,0.4); }
+.fiche-sec:nth-child(4) .fi { border-left-color: rgba(167,139,250,0.4); }
+
+.fi strong {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+.fi span {
+  color: var(--text-dim);
+  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+}
+.fi-empty {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* === REFERRAL TAGS spécifiques (dans section orientation) === */
+.fiche-sec:nth-child(4) .ref-tag {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.disclaimer { background: #fef3c7; border: 2px solid #f59e0b; border-radius: 9px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #000000; line-height: 1.6; }
+.disclaimer strong { color: #991b1b; font-weight: 800; }
+
+/* === Encart Signes de gravité === */
+.severity-card {
+  background: linear-gradient(135deg, #fff1f2 0%, #fef3c7 100%);
+  border: 1.5px solid #f59e0b;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.15);
+}
+.severity-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b45309;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.severity-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+}
+
+/* === Encart Pièges diagnostiques === */
+.pitfall-card {
+  background: linear-gradient(135deg, #ecfdf5 0%, #cffafe 100%);
+  border: 1.5px solid #06b6d4;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(6, 182, 212, 0.12);
+}
+.pitfall-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0e7490;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.pitfall-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+  margin-bottom: 10px;
+}
+.pitfall-modules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pitfall-chip {
+  display: inline-block;
+  background: #fff;
+  color: #0e7490;
+  border: 1px solid #67e8f9;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+
+
+  .alt-ic-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .diag-icon-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.15);
+  }
+  .modal-icon-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  color: #1e3a5f;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s;
+" onmouseover="this.style.background='#1e3a5f';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#1e3a5f';">
+  ← Accueil
+</a>
+
+
+<div class="app">
+  <div class="header">
+    <h1>LocoClic — Rachis cervical</h1>
+    <div class="badge">v5 · clinique adaptatif</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+// ========== PATHOLOGIES ==========
+const P = {
+  CERV_COMMUNE: {
+    id:'CERV_COMMUNE', name:'Cervicalgie commune aiguë', icon:'🦴', pop:'Tout âge adulte, plus fréquente 30-60 ans, déclenchement par effort, posture prolongée, faux mouvement',
+    desc:"Douleur cervicale mécanique sans signe neurologique ni red flag, évoluant depuis moins de 4-6 semaines. Aggravée par les mouvements, soulagée par le repos. Évolution favorable spontanée dans 80-90% des cas. Recherche systématique de drapeaux rouges avant de retenir le diagnostic.",
+    severity:{
+      title:"Red flags à dépister",
+      text:"<strong>Éliminer systématiquement</strong> : âge > 50 ans avec début récent, ATCD cancer, fièvre, perte de poids, traumatisme cervical, déficit neuro, signes médullaires (troubles marche, signes pyramidaux), céphalée brutale en coup de poignard (penser dissection vertébrale), immunosuppression."
+    },
+    imaging:[
+      {t:"PAS d'imagerie en première intention",d:"Aucune indication en l'absence de red flag — informer le patient"},
+      {t:"Radiographie cervicale face/profil",d:"Uniquement si red flag ou suspicion étiologie spécifique"},
+      {t:"IRM cervicale",d:"À discuter au-delà de 6 semaines de NCB résistante ou si red flag — pas systématique"}
+    ],
+    treatment:[
+      {t:"Information et réassurance du patient",d:"Évolution favorable en 4-6 semaines — démédicaliser, dédramatiser"},
+      {t:"Maintien de l'activité",d:"Pierre angulaire — éviter l'immobilisation prolongée, reprise progressive"},
+      {t:"Antalgiques de palier 1-2",d:"Paracétamol en première intention, AINS courte durée si insuffisant"},
+      {t:"Myorelaxant (courte durée)",d:"Si contracture importante — 5-7 jours maximum"},
+      {t:"Application de chaleur locale",d:"Soulage la contracture musculaire"},
+      {t:"Kinésithérapie",d:"Pas systématique en phase aiguë — proposée si échec ou facteurs de risque de chronicité"},
+      {t:"Collier cervical",d:"À éviter ou usage très transitoire (< 48h) — l'immobilisation prolongée aggrave la chronicisation"}
+    ],
+    exercises:[{t:'Rétraction du menton (chin tuck)',d:''},{t:'Mobilisation cervicale douce',d:''},{t:'Étirement du trapèze supérieur',d:''},{t:'Tirage horizontal avec élastique',d:''}],ficheExercice:'lococlic_fiches_patient/cervical_01_cervicalgie_aigue.html',
+    referral:[
+      {who:'Médecin du sport',why:"Si récidives, sportif, ou pour programme de rééducation",p:false},
+      {who:'Rhumatologue',why:"Si évolution prolongée > 6 semaines, doute diagnostique ou red flag suspecté",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"<strong>Si cervicalgie > 6 semaines</strong> chez sujet jeune (< 45 ans) avec raideur matinale > 30 min, douleurs nocturnes en 2e partie de nuit, atteinte d'autres articulations ou ATCD personnel/familial de psoriasis, uvéite ou MICI : penser à une spondylarthrite. Bilan : CRP, HLA-B27, IRM sacro-iliaques."
+    },
+    sources:[
+      {l:'Cohen 2015 — Epidemiology diagnosis treatment of neck pain (Mayo Clin Proc)',u:'https://pubmed.ncbi.nlm.nih.gov/25659245/'},
+      {l:'Hoy et al. 2010 — Epidemiology of neck pain (Best Pract Res Clin Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/21665125/'},
+      {l:'Côté et al. 2008 — Neck pain task force results general population (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/18204405/'},
+      {l:'Blanpied et al. 2017 — Neck pain CPG (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/28666405/'}
+    ],
+    keys:['Cervicalgie aiguë','Mécanique','Pas imagerie','Évolution favorable','Cou']
+  },
+  CERV_CHRONIQUE: {
+    id:'CERV_CHRONIQUE', name:'Cervicalgie chronique', icon:'🔄', pop:'Adulte 30-60 ans, métier sédentaire avec écran, posture prolongée, facteurs psycho-sociaux (yellow flags)',
+    desc:"Cervicalgie évoluant depuis plus de 3 mois ou récidives fréquentes. Prise en charge globale bio-psycho-sociale avec recherche systématique de facteurs psycho-sociaux. Posture de travail, sédentarité, stress, kinésiophobie comme facteurs entretenants. L'exercice physique et l'éducation sont les traitements principaux.",
+    severity:{
+      title:"Yellow flags à dépister",
+      text:"<strong>Repérer les facteurs de chronicisation</strong> : kinésiophobie, catastrophisme, anxiété, dépression, conflit professionnel, arrêt de travail prolongé, isolement social. Évaluer le retentissement fonctionnel et professionnel."
+    },
+    imaging:[
+      {t:'Radiographie cervicale face/profil',d:"Évalue alignement, statique, troubles posturaux, signes d'arthrose"},
+      {t:'IRM cervicale',d:"Indiquée si retentissement neurologique, NCB associée ou doute diagnostique"}
+    ],
+    treatment:[
+      {t:"Exercice physique régulier",d:"Pierre angulaire — programme adapté (renforcement, mobilité, étirements) — grade fort"},
+      {t:"Approche bio-psycho-sociale",d:"Prendre en compte les facteurs psycho-sociaux et professionnels"},
+      {t:"Kinésithérapie active",d:"Programme supervisé d'exercices, renforcement profonds du cou, étirements, mobilisations"},
+      {t:"Adaptation du poste de travail",d:"Ergonomie, hauteur écran, pauses régulières — coordination avec médecin du travail"},
+      {t:"Antalgiques selon palier",d:"Privilégier paracétamol, AINS courte durée — éviter opiacés au long cours"},
+      {t:"Médecine manuelle / manipulations",d:"Manipulations vertébrales douces dans un programme multimodal (avec prudence cervicale)"},
+      {t:"Thérapie cognitivo-comportementale (TCC)",d:"Si yellow flags importants — gestion de la peur du mouvement"}
+    ],
+    exercises:[{t:'Rétraction du menton (chin tuck)',d:''},{t:'Renforcement isométrique du cou (toutes directions)',d:''},{t:'Étirement du trapèze supérieur',d:''},{t:'Tirage horizontal + activité aérobie régulière',d:''}],ficheExercice:'lococlic_fiches_patient/cervical_02_cervicalgie_chronique.html',
+    referral:[
+      {who:'Médecin du sport',why:"Programme de rééducation et réentraînement à l'effort",p:true},
+      {who:'Rhumatologue',why:"Si bilan complémentaire, infiltrations, ou doute diagnostique",p:false},
+      {who:'Médecin du travail',why:"Si origine professionnelle ou retentissement sur l'emploi — adaptation du poste",p:false}
+    ],
+    sources:[
+      {l:'Blanpied et al. 2017 — Neck pain CPG (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/28666405/'},
+      {l:'Gross et al. 2015 — Exercises for mechanical neck disorders Cochrane',u:'https://pubmed.ncbi.nlm.nih.gov/25629215/'},
+      {l:'Bier et al. 2018 — KNGF clinical practice guideline neck pain',u:'https://pubmed.ncbi.nlm.nih.gov/29073829/'},
+      {l:'Côté et al. 2016 — OPTIMa Collaboration neck pain noninvasive interventions',u:'https://pubmed.ncbi.nlm.nih.gov/26984843/'}
+    ],
+    keys:['Cervicalgie chronique','> 3 mois','Sédentaire écran','Bio-psycho-social','Exercice']
+  },
+  TORTICOLIS_AIGU: {
+    id:'TORTICOLIS_AIGU', name:'Torticolis aigu (contracture)', icon:'🔥', pop:'Tout âge, apparition brutale au réveil ou après faux mouvement, pic 20-60 ans',
+    desc:"Apparition brutale (souvent au réveil) d'une contracture musculaire cervicale unilatérale intense avec attitude antalgique vicieuse en inclinaison-rotation. Impotence fonctionnelle marquée. Pas de signe neurologique. Évolution favorable en quelques jours à 2 semaines avec maintien de l'activité.",
+    imaging:[
+      {t:"Pas d'imagerie indiquée",d:"En l'absence de red flag — diagnostic clinique"}
+    ],
+    treatment:[
+      {t:"Information et réassurance",d:"Évolution favorable en quelques jours — dédramatiser"},
+      {t:"Maintien de l'activité",d:"Éviter l'immobilisation prolongée"},
+      {t:"Antalgiques palier 1-2",d:"Paracétamol, AINS courte durée"},
+      {t:"Myorelaxant courte durée",d:"5-7 jours maximum — souvent utile si contracture intense"},
+      {t:"Application de chaleur locale",d:"Soulage efficacement la contracture musculaire"},
+      {t:"Mobilisations douces",d:"Dès que possible, dans l'amplitude indolore"}
+    ],
+    exercises:[{t:'Mobilisation cervicale douce',d:''},{t:'Étirement du trapèze supérieur',d:''},{t:'Renforcement isométrique contrarié (côté libre)',d:''},{t:'Chaleur locale + mobilisation progressive',d:''}],ficheExercice:'lococlic_fiches_patient/cervical_03_torticolis_aigu.html',
+    referral:[
+      {who:'Médecin du sport',why:"Si récidives fréquentes ou contexte sportif",p:false},
+      {who:'Rhumatologue',why:"Si évolution prolongée > 2 semaines ou apparition de red flag",p:false}
+    ],
+    sources:[
+      {l:'Cohen 2015 — Epidemiology diagnosis treatment of neck pain (Mayo Clin Proc)',u:'https://pubmed.ncbi.nlm.nih.gov/25659245/'},
+      {l:'Blanpied et al. 2017 — Neck pain CPG (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/28666405/'},
+      {l:"Bonfort et al. 2007 — Acute neck pain conservative care (Spine J)",u:'https://pubmed.ncbi.nlm.nih.gov/17321965/'},
+      {l:'Hurwitz et al. 2008 — Treatment of neck pain task force (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/18204402/'}
+    ],
+    keys:['Brutal au réveil','Contracture','Attitude vicieuse','Impotence','Torticolis']
+  },
+  SYND_FACETTAIRE_C: {
+    id:'SYND_FACETTAIRE_C', name:'Syndrome facettaire cervical', icon:'🦴', pop:'Adulte 40-70 ans, arthrose cervicale, surcharge posturale, parfois post-traumatique (whiplash)',
+    desc:"Douleur cervicale mécanique d'origine articulaire postérieure (zygapophysaire). Douleur cervicale parfois irradiation pseudo-radiculaire dans le trapèze, l'épaule, parfois la région occipitale, sans dépasser le coude. Aggravée par l'extension et la rotation, soulagée par la flexion. Pas de signe radiculaire vrai.",
+    imaging:[
+      {t:'Radiographie cervicale face/profil',d:"Recherche arthrose interapophysaire postérieure, pincement discal"},
+      {t:'IRM cervicale',d:"Si doute ou échec du traitement — arthrose facettaire, hypertrophie articulaire"},
+      {t:'Scanner cervical',d:"Bonne visualisation de l'arthrose facettaire — alternative IRM"}
+    ],
+    treatment:[
+      {t:"Maintien de l'activité",d:"Éviter le repos prolongé, reprise progressive"},
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
+      {t:"Kinésithérapie active",d:"Renforcement profonds du cou, étirements, correction posturale"},
+      {t:"Médecine manuelle / manipulations",d:"Manipulations vertébrales douces (avec prudence cervicale) — souvent efficaces sur les blocages facettaires"},
+      {t:"Infiltration de corticoïde des facettes",d:"Sous radioguidage/scanner — par rhumatologue ou centre antidouleur si échec médical"},
+      {t:"Thermocoagulation facettaire",d:"Centre antidouleur — si échec des infiltrations"}
+    ],
+    exercises:[{t:'Rétraction du menton (chin tuck)',d:''},{t:'Mobilisation cervicale en flexion (ouverture facettes)',d:''},{t:'Étirement du trapèze supérieur',d:''},{t:'Renforcement isométrique du cou',d:''}],ficheExercice:'lococlic_fiches_patient/cervical_04_syndrome_facettaire.html',
+    referral:[
+      {who:'Rhumatologue',why:"Pour infiltration facettaire sous radioguidage et bilan complet",p:true},
+      {who:'Médecin du sport',why:"Programme de rééducation et correction posturale",p:false}
+    ],
+    sources:[
+      {l:'Manchikanti et al. 2020 — Cervical facet joint pain (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/32942779/'},
+      {l:'Cohen et al. 2007 — Cervical zygapophysial joint pain (Anesthesiology)',u:'https://pubmed.ncbi.nlm.nih.gov/17585245/'},
+      {l:'Bogduk 2011 — On cervical zygapophyseal joint pain (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/21587101/'},
+      {l:'Falco et al. 2012 — Cervical facet joint interventions (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/22828690/'}
+    ],
+    keys:['Extension douloureuse','Pseudo-radiculaire trapèze','Arthrose facettaire','Facettaire cervical']
+  },
+  NCB: {
+    id:'NCB', name:'Névralgie cervico-brachiale (NCB)', icon:'⚡', pop:'30-60 ans, hernie discale (jeune) ou arthrose foraminale (sénior), C6-C7 les plus touchées',
+    desc:"Radiculalgie du membre supérieur par compression d'une racine cervicale, le plus souvent C6 ou C7, par hernie discale (jeune) ou arthrose foraminale (sénior). Douleur irradiée selon le trajet radiculaire (Spurling positif). C5 : moignon épaule, deltoïde, biceps. C6 : face latérale bras, pouce, index. C7 : face postérieure bras, majeur. C8 : 4e-5e doigts (bord ulnaire).",
+    severity:{
+      title:"Signes de gravité (urgence)",
+      text:"<strong>Adresser EN URGENCE</strong> si : signes médullaires (troubles marche, hyperréflexie, Hoffmann/Babinski positif), déficit moteur progressif (testing < 3/5), NCB hyperalgique malgré antalgiques palier 3, atteinte sphinctérienne. IRM en urgence + avis chirurgical."
+    },
+    imaging:[
+      {t:"Pas d'imagerie d'emblée si pas de red flag",d:"Délai de 6-8 semaines avant IRM si évolution favorable"},
+      {t:'IRM cervicale',d:"Référence — visualise hernie discale, conflit disco-radiculaire, sténose foraminale — au-delà de 6-8 semaines ou red flag"},
+      {t:'Scanner cervical',d:"Si contre-indication à l'IRM"}
+    ],
+    treatment:[
+      {t:"Maintien de l'activité",d:"Éviter le repos prolongé, reprise progressive selon douleur"},
+      {t:"Antalgiques (paliers progressifs)",d:"Paracétamol + AINS, palier 2 si insuffisant, neuropathiques (gabapentine, prégabaline) si douleur radiculaire intense"},
+      {t:"Corticothérapie orale courte",d:"5-10 jours si poussée hyperalgique (à discuter)"},
+      {t:"Infiltration foraminale ou épidurale",d:"Sous radioguidage par rhumatologue ou radiologue interventionnel — si échec antalgique > 4-6 semaines"},
+      {t:"Kinésithérapie",d:"Après la phase aiguë — étirements, renforcement, mobilisations neurales"},
+      {t:"Chirurgie (discectomie ± arthrodèse)",d:"Indications : déficit moteur progressif, NCB hyperalgique résistante > 6 semaines, signes médullaires"}
+    ],
+    exercises:[{t:'Mobilisation neurale (slider universel)',d:''},{t:'Étirement du trapèze supérieur',d:''},{t:'Mobilisation cervicale douce',d:''},{t:'Tirage horizontal avec élastique',d:''}],ficheExercice:'lococlic_fiches_patient/cervical_05_ncb.html',
+    referral:[
+      {who:'Rhumatologue',why:"Si évolution prolongée, pour infiltration foraminale et bilan",p:true},
+      {who:'Radiologue interventionnel',why:"Pour infiltration foraminale sous radioguidage",p:true},
+      {who:'Chirurgien orthopédique (rachis)',why:"Si déficit moteur, hyperalgie résistante > 6 semaines, signes médullaires ou red flag",p:true}
+    ],
+    pitfall:{
+      modules:[],
+      text:"<strong>Toujours dépister une atteinte médullaire</strong> (myélopathie cervicarthrosique) : signes pyramidaux (Hoffmann, Babinski), troubles de la marche, hyperréflexie, troubles sphinctériens. Si présents : urgence chirurgicale.<br><br><strong>Diagnostic différentiel : syndrome du défilé thoraco-brachial</strong> (SDTB) — paresthésies des 4e-5e doigts aggravées bras levé, position du soldat, port de charge, terrain cervico-thoracique. Tests de Roos, Wright, Adson positifs. À évoquer si Spurling négatif et symptômes positionnels."
+    },
+    sources:[
+      {l:'Caridi et al. 2011 — Cervical radiculopathy a review (HSS J)',u:'https://pubmed.ncbi.nlm.nih.gov/22582013/'},
+      {l:'Iyer & Kim 2016 — Cervical radiculopathy (Curr Rev Musculoskelet Med)',u:'https://pubmed.ncbi.nlm.nih.gov/27101095/'},
+      {l:'Thoomes et al. 2018 — Physical tests cervical radiculopathy systematic review (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/28838833/'},
+      {l:'Bono et al. 2011 — NASS guideline cervical radiculopathy (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/21168100/'}
+    ],
+    keys:['Spurling','Trajet C5-C8','Hernie cervicale','Radiculalgie','NCB']
+  },
+  ARTHROSE_CERV: {
+    id:'ARTHROSE_CERV', name:'Cervicarthrose (uncarthrose / discarthrose)', icon:'🦴', pop:'Sénior > 50 ans, terrain dégénératif, ATCD traumatique, métier physique',
+    desc:"Arthrose du rachis cervical touchant les disques (discarthrose) et les articulations uncovertébrales (uncarthrose). Douleur cervicale chronique avec raideur, parfois irradiation dans le trapèze ou la région occipitale. Aggravation par les postures prolongées et les mouvements. Évolution lente, parfois entrecoupée de poussées. Peut se compliquer de NCB foraminale ou de myélopathie.",
+    imaging:[
+      {t:'Radiographie cervicale face/profil + obliques',d:"Examen de référence en première intention — pincement discal, ostéophytes, uncarthrose, sténose foraminale visible sur les obliques"},
+      {t:'IRM cervicale',d:"Si retentissement neurologique (NCB, myélopathie) ou bilan préopératoire — visualise compression neurale et état médullaire"}
+    ],
+    treatment:[
+      {t:"Information et adaptation de l'activité",d:"Éviter les postures prolongées, ergonomie du poste"},
+      {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
+      {t:"Kinésithérapie active",d:"Renforcement profonds du cou, étirements, mobilisations, correction posturale"},
+      {t:"Médecine manuelle / manipulations douces",d:"Mobilisations vertébrales douces (avec prudence cervicale) — dans un programme multimodal"},
+      {t:"Infiltration facettaire",d:"Sous radioguidage si composante facettaire dominante — par rhumatologue ou centre antidouleur"}
+    ],
+    exercises:[{t:'Rétraction du menton (chin tuck)',d:''},{t:'Renforcement isométrique du cou',d:''},{t:'Étirement du trapèze supérieur',d:''},{t:'Mobilisation cervicale douce',d:''}],ficheExercice:'lococlic_fiches_patient/cervical_06_cervicarthrose.html',
+    referral:[
+      {who:'Rhumatologue',why:"Bilan complet, infiltrations facettaires si poussée",p:true},
+      {who:'Médecin du sport',why:"Programme de rééducation et correction posturale",p:false}
+    ],
+    sources:[
+      {l:'Goode et al. 2010 — Prevalence cervical spine osteoarthritis (Best Pract Res Clin Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/21665128/'},
+      {l:'Binder 2007 — Cervical spondylosis neck pain (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/17347239/'},
+      {l:'Theodore 2020 — Degenerative cervical spondylosis (N Engl J Med)',u:'https://pubmed.ncbi.nlm.nih.gov/32101671/'},
+      {l:'Kuijper et al. 2009 — Cervical collar physiotherapy radiculopathy (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/19808579/'}
+    ],
+    keys:['Sénior','Raideur cervicale','Uncarthrose','Discarthrose','Cervicarthrose']
+  },
+  MYELOPATHIE_CERV: {
+    id:'MYELOPATHIE_CERV', name:'Myélopathie cervicarthrosique (à dépister)', icon:'⚠️', pop:'Sénior > 55 ans, arthrose cervicale évoluée, parfois congénital (canal cervical étroit constitutionnel)',
+    desc:"Souffrance médullaire par compression du cordon cervical (arthrose évoluée, sténose canalaire, hernie médiane). Tableau insidieux à dépister : troubles de la marche (équilibre, démarche maladroite), perte de dextérité (boutons, écriture), paresthésies des 4 membres, signes pyramidaux (Hoffmann, Babinski, hyperréflexie). À TOUJOURS DÉPISTER chez le sénior cervicalgique.",
+    severity:{
+      title:"URGENCE — Signes médullaires",
+      text:"<strong>Adresser EN URGENCE</strong> tout sénior avec : troubles de la marche/équilibre, signe de Hoffmann positif, Babinski positif, hyperréflexie, perte de dextérité fine, troubles sphinctériens. IRM cervicale en urgence + avis neurochirurgien. La myélopathie évoluée est irréversible."
+    },
+    imaging:[
+      {t:'IRM cervicale',d:"Examen de référence en urgence — mesure du diamètre canalaire, visualise compression médullaire, hyperintensité T2 (souffrance médullaire), diagnostic certain"},
+      {t:'Radiographie cervicale dynamique',d:"Évalue instabilité associée — utile pré-opératoire"},
+      {t:'Potentiels évoqués somesthésiques',d:"Optionnels — pour quantifier l'atteinte médullaire"}
+    ],
+    treatment:[
+      {t:"Adresser au neurochirurgien",d:"Pierre angulaire — diagnostic = avis spécialisé"},
+      {t:"Chirurgie de décompression",d:"Indication très large dès les premiers signes — laminectomie, laminoplastie, discectomie/arthrodèse antérieure selon niveaux"},
+      {t:"Surveillance rapprochée",d:"Si forme débutante non opérée — examen clinique répété, IRM de contrôle"},
+      {t:"Pas de manipulations cervicales",d:"FORMELLEMENT CONTRE-INDIQUÉES (risque aggravation médullaire)"},
+      {t:"Antalgiques selon douleur",d:"En attente de la prise en charge chirurgicale"}
+    ],
+    exercises:[{t:'Mobilisation cervicale très douce',d:''},{t:'Rétraction du menton (chin tuck) doux',d:''},{t:'Renforcement isométrique du cou (en douceur)',d:''},{t:'Étirement du trapèze supérieur',d:''}],ficheExercice:'lococlic_fiches_patient/cervical_07_myelopathie.html',
+    referral:[
+      {who:'Chirurgien orthopédique (rachis) ou neurochirurgien',why:"Avis chirurgical EN URGENCE dès la suspicion clinique",p:true},
+      {who:'Rhumatologue',why:"Bilan complet et coordination",p:false}
+    ],
+    sources:[
+      {l:'Nouri et al. 2015 — Degenerative cervical myelopathy review (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/26020847/'},
+      {l:'Fehlings et al. 2017 — Clinical practice guidelines management cervical myelopathy (Global Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/29164027/'},
+      {l:'Tetreault et al. 2015 — Cervical spondylotic myelopathy prognosis (J Bone Joint Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/26537168/'},
+      {l:'Davies et al. 2018 — Degenerative cervical myelopathy (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/29472200/'}
+    ],
+    keys:['Troubles marche','Hoffmann','Babinski','Sénior','Myélopathie cervicale']
+  },
+  WHIPLASH: {
+    id:'WHIPLASH', name:'Whiplash / coup du lapin (cervicalgie post-traumatique)', icon:'💥', pop:'Tout âge, ATCD d\'accident de la voie publique (rear-end collision ++) ou choc cervical, 20-50 ans',
+    desc:"Cervicalgie post-traumatique après mécanisme d'hyperextension-flexion brutale (typiquement collision arrière). Douleurs cervicales avec irradiation possible (céphalées, épaules, dos), raideur, troubles cognitifs/sensoriels associés possibles. Évolution favorable dans 50-60% des cas, mais 30-40% évoluent vers la chronicité (whiplash chronique). Recherche systématique de yellow flags.",
+    severity:{
+      title:"Red flags après trauma cervical",
+      text:"<strong>Adresser EN URGENCE</strong> si : déficit neurologique, signes médullaires, douleurs cervicales très intenses, mécanisme à haute énergie (chute > 1m, AVP haute vélocité, > 65 ans). Appliquer les Canadian C-spine rules pour décider de l'imagerie."
+    },
+    imaging:[
+      {t:'Canadian C-spine rules',d:"Règles de décision clinique pour indiquer ou non l'imagerie en urgence"},
+      {t:'Radiographie cervicale face/profil + odontoïde',d:"En urgence si red flag ou Canadian C-spine rules positives"},
+      {t:'Scanner cervical',d:"Si suspicion fracture (high-energy mechanism, > 65 ans, déficit neuro)"},
+      {t:'IRM cervicale',d:"Si suspicion atteinte ligamentaire, médullaire ou évolution prolongée > 6 semaines"}
+    ],
+    treatment:[
+      {t:"Information et réassurance",d:"Pierre angulaire — démédicaliser, dédramatiser, expliquer la bénignité dans la majorité des cas"},
+      {t:"Maintien de l'activité",d:"Éviter l'immobilisation prolongée — pas de collier cervical au long cours"},
+      {t:"Antalgiques palier 1-2",d:"Paracétamol, AINS courte durée"},
+      {t:"Kinésithérapie précoce",d:"Active et progressive — mobilisations, exercices, éducation"},
+      {t:"Approche bio-psycho-sociale",d:"Surtout en cas de retentissement psychologique ou contexte médico-légal"},
+      {t:"Thérapie cognitivo-comportementale",d:"Si chronicisation ou yellow flags importants"}
+    ],
+    exercises:[{t:'Rétraction du menton (chin tuck) progressif',d:''},{t:'Mobilisation cervicale active progressive',d:''},{t:'Étirement du trapèze supérieur',d:''},{t:'Reprise progressive des activités',d:''}],ficheExercice:'lococlic_fiches_patient/cervical_08_whiplash.html',
+    referral:[
+      {who:'Médecin du sport',why:"Encadrement de la rééducation et de la reprise sportive",p:true},
+      {who:'Rhumatologue',why:"Si évolution prolongée > 3 mois ou doute diagnostique",p:false},
+      {who:'Médecin du travail',why:"Si origine ou retentissement professionnel",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"<strong>Whiplash chronique (> 3 mois)</strong> : composante psycho-sociale fréquente (yellow flags ++) — kinésiophobie, anxiété, contexte médico-légal/assurantiel. Approche bio-psycho-sociale indispensable. Ne pas surtraiter (imagerie, collier, opiacés)."
+    },
+    sources:[
+      {l:'Sterling 2014 — Physiotherapy management of whiplash-associated disorders (Phys Ther Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/24834007/'},
+      {l:'Côté et al. 2008 — Treatment whiplash associated disorders task force (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/18204402/'},
+      {l:'Stiell et al. 2001 — Canadian C-spine rule (JAMA)',u:'https://pubmed.ncbi.nlm.nih.gov/11597285/'},
+      {l:'Carroll et al. 2008 — Whiplash prognosis course (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/18204384/'}
+    ],
+    keys:['AVP','Hyperextension-flexion','Yellow flags','Canadian C-spine','Whiplash']
+  },
+  SPONDYLARTHRITE_C: {
+    id:'SPONDYLARTHRITE_C', name:'Atteinte cervicale d\'une spondylarthrite (à dépister)', icon:'⚠️', pop:'Jeune adulte 15-45 ans, terrain HLA-B27, ATCD familial, psoriasis, MICI, uvéite, atteinte axiale prédominante',
+    desc:"Atteinte cervicale d'un rhumatisme inflammatoire chronique (le plus souvent spondylarthrite axiale évoluée). Rare en cervical isolé — généralement précédée d'une atteinte lombo-sacrée. Raideur matinale prolongée, douleurs nocturnes, perte progressive des amplitudes cervicales (Schober occipital diminué). Évolution possible vers l'ankylose cervicale (column de bambou).",
+    severity:{
+      title:"Critères de dépistage MG (ASAS)",
+      text:"<strong>Adresser au rhumatologue</strong> devant une cervicalgie chronique > 3 mois chez sujet < 45 ans avec au moins l'un de ces signes : raideur matinale > 30 min, douleurs en 2e partie de nuit, amélioration au mouvement, atteinte lombaire ou sacro-iliaque associée, ATCD personnel/familial psoriasis/MICI/uvéite, enthésites."
+    },
+    imaging:[
+      {t:'Radiographie cervicale face/profil',d:"Recherche syndesmophytes, ankylose, signes d'arthrite des articulations apophysaires"},
+      {t:'Radiographie bassin face',d:"Indispensable — recherche sacro-iliite (atteinte habituellement associée)"},
+      {t:'IRM sacro-iliaques + cervicale',d:"Référence — œdème osseux, atteinte enthésique"},
+      {t:'Bilan biologique',d:"CRP, VS, HLA-B27, NFS"}
+    ],
+    treatment:[
+      {t:"AINS ou AIS au long cours",d:"Première intention — pierre angulaire, à dose efficace, en continu ou à la demande"},
+      {t:"Kinésithérapie active",d:"Maintien des amplitudes cervicales et globales, étirements, exercices posturaux — quotidien"},
+      {t:"Activité physique régulière",d:"Pierre angulaire — natation, marche, exercices doux"},
+      {t:"Anti-TNFα ou anti-IL17",d:"Si forme active malgré AINS (BASDAI > 4) — par rhumatologue"},
+      {t:"Sevrage tabagique",d:"Le tabac aggrave l'évolution"}
+    ],
+    exercises:[{t:'Mobilisation globale du cou (toutes directions)',d:''},{t:'Étirement du trapèze supérieur',d:''},{t:'Renforcement isométrique du cou',d:''},{t:'Activité aérobie régulière',d:''}],ficheExercice:'lococlic_fiches_patient/cervical_09_spondylarthrite_cervicale.html',
+    referral:[
+      {who:'Rhumatologue',why:"Pour confirmation diagnostique, mise en route traitement de fond, suivi",p:true},
+      {who:'Médecin du sport',why:"Programme de rééducation et de réentraînement à l'effort",p:false}
+    ],
+    sources:[
+      {l:'Sieper et al. 2017 — Axial spondyloarthritis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/28110981/'},
+      {l:'van der Heijde et al. 2017 — ASAS-EULAR management recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/28087505/'},
+      {l:'Kim et al. 2007 — Cervical spine involvement ankylosing spondylitis (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/17304130/'},
+      {l:'Wendling et al. 2022 — Recommandations SFR spondyloarthrite (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/35487390/'}
+    ],
+    keys:['Raideur inflammatoire','Sujet jeune','HLA-B27','Atteinte axiale','Spondylarthrite cervicale']
+  }
+};
+
+// ========== TESTS CLINIQUES ==========
+const TESTS = {
+  // === FAMILLE CERVICAL GÉNÉRAL ===
+  amplitudes_cervicales: {
+    name:"Évaluation des amplitudes cervicales", family:'MOBILITE', badge:'AMP',
+    desc:"Mesure clinique des amplitudes en flexion, extension, rotation, inclinaison",
+    how:"Patient assis. Mesurer la flexion (menton-sternum), extension, rotations droite/gauche (normales 80°), inclinaisons droite/gauche. Noter limitations, asymétrie, reproduction de la douleur.",
+    pos:"Limitation marquée et asymétrique (rotation < 60° vers le côté symptomatique = critère validé) — cervicarthrose, torticolis, NCB",
+    neg:"Mobilité conservée et symétrique",
+    affects_pos:{ARTHROSE_CERV:40, TORTICOLIS_AIGU:30, SPONDYLARTHRITE_C:35, NCB:20}, affects_neg:{ARTHROSE_CERV:-20}
+  },
+
+  // === FAMILLE FACETTAIRE CERVICALE ===
+  extension_rotation_c: {
+    name:"Test d'extension-rotation cervicale", family:'FACET_C', badge:'EXR',
+    desc:"Mise en tension des articulations facettaires cervicales",
+    how:"Patient assis. L'examinateur demande une extension cervicale avec rotation et inclinaison du côté douloureux. Maintenir 5-10 secondes. Différent du Spurling (sans compression axiale).",
+    pos:"Reproduction de la douleur cervicale ipsilatérale, parfois irradiation pseudo-radiculaire dans le trapèze, sans dépasser le coude — syndrome facettaire cervical",
+    neg:"Indolore ou douleur non reproduite",
+    affects_pos:{SYND_FACETTAIRE_C:55}, affects_neg:{SYND_FACETTAIRE_C:-25}
+  },
+  palp_facettes_c: {
+    name:"Palpation des facettes articulaires cervicales", family:'FACET_C', badge:'FAC',
+    desc:"Palpation directe des massifs articulaires postérieurs cervicaux",
+    how:"Patient en décubitus dorsal ou ventral. Palpation directe des massifs articulaires postérieurs cervicaux à 2-3 cm latéralement des épineuses, à chaque étage (C2-C7). Recherche de douleur exquise.",
+    pos:"Douleur exquise reproductible sur un ou plusieurs niveaux facettaires — syndrome facettaire ou arthrose cervicale",
+    neg:"Indolore",
+    affects_pos:{SYND_FACETTAIRE_C:45, ARTHROSE_CERV:25}, affects_neg:{SYND_FACETTAIRE_C:-20}
+  },
+
+  // === FAMILLE RADICULAIRE (NCB) ===
+  spurling: {
+    name:"Test de Spurling", family:'RAD_C', badge:'SPU',
+    desc:"Test de compression cervicale provocateur radiculaire (haute spécificité, faible sensibilité)",
+    how:"Patient assis, cou en extension et inclinaison du côté symptomatique. L'examinateur applique une compression axiale ferme sur le sommet de la tête (5-7 kg). Maintenir 5-10 secondes.",
+    pos:"Reproduction de la douleur radiculaire dans le membre supérieur, suivant un trajet précis (épaule, bras, avant-bras, doigts) — NCB confirmée (spécificité 89-100%)",
+    neg:"Douleur cervicale locale sans irradiation distale — NCB peu probable",
+    affects_pos:{NCB:60}, affects_neg:{NCB:-25}
+  },
+  distraction_cervicale: {
+    name:"Test de distraction cervicale", family:'RAD_C', badge:'DIS',
+    desc:"Test de soulagement par traction axiale (haute spécificité)",
+    how:"Patient en décubitus dorsal ou assis. L'examinateur place une main sous le menton et l'autre sous l'occiput, et exerce une traction axiale douce vers le haut. Maintenir 10-15 secondes.",
+    pos:"Soulagement net de la douleur radiculaire du membre supérieur pendant la traction — NCB confirmée (spécificité élevée)",
+    neg:"Pas de soulagement",
+    affects_pos:{NCB:50}, affects_neg:{NCB:-20}
+  },
+  testing_c5_c8: {
+    name:"Testing moteur et sensitif C5-C6-C7-C8", family:'NEURO_MS', badge:'NEU',
+    desc:"Examen neurologique systématique des territoires C5 à C8",
+    how:"C5 : abduction épaule (deltoïde), face latérale moignon. C6 : flexion coude (biceps), réflexe bicipital, pouce-index. C7 : extension coude (triceps), réflexe tricipital, majeur. C8 : flexion des doigts, 4e-5e doigts.",
+    pos:"Déficit moteur (testing < 5/5), abolition d'un réflexe ostéotendineux (bicipital, tricipital, styloradial), hypoesthésie territoriale — confirme la racine atteinte",
+    neg:"Examen neurologique normal",
+    affects_pos:{NCB:50}, affects_neg:{NCB:-15}
+  },
+
+  // === FAMILLE MYELOPATHIE ===
+  hoffmann: {
+    name:"Signe de Hoffmann", family:'MEDUL', badge:'HOF',
+    desc:"Recherche d'une atteinte pyramidale du membre supérieur",
+    how:"Patient assis, main détendue. L'examinateur pince fermement entre pouce et index la phalange distale du majeur, qu'il relâche brusquement (chiquenaude vers le bas).",
+    pos:"Flexion réflexe du pouce et/ou de l'index — signe pyramidal présent (atteinte médullaire suspectée)",
+    neg:"Pas de flexion — examen normal",
+    affects_pos:{MYELOPATHIE_CERV:60}, affects_neg:{MYELOPATHIE_CERV:-30}
+  },
+  babinski_marche: {
+    name:"Babinski + recherche troubles de la marche", family:'MEDUL', badge:'BAB',
+    desc:"Examen pyramidal des membres inférieurs et de la marche",
+    how:"Réflexe cutané plantaire : extension du gros orteil = Babinski positif. Évaluer la marche : démarche maladroite, déséquilibre, élargissement du polygone de sustentation. Romberg : chute si yeux fermés = atteinte proprioceptive.",
+    pos:"Babinski positif, marche maladroite, troubles équilibre, hyperréflexie OT — atteinte médullaire (myélopathie)",
+    neg:"Marche normale, RCP normaux, équilibre conservé",
+    affects_pos:{MYELOPATHIE_CERV:60}, affects_neg:{MYELOPATHIE_CERV:-30}
+  },
+
+  // === FAMILLE INFLAMMATOIRE ===
+  schober_cervical: {
+    name:"Schober cervical (Distance menton-sternum + occiput-mur)", family:'INFLAM_C', badge:'SCH',
+    desc:"Mesure des amplitudes cervicales pour atteinte inflammatoire",
+    how:"Distance menton-sternum : en flexion active maximale, mesurer la distance (normale 0-2 cm). Distance occiput-mur : patient debout dos au mur, talons contre le mur, mesurer la distance occiput-mur (normale 0 cm).",
+    pos:"Menton-sternum > 2 cm OU occiput-mur > 0 cm — raideur cervicale (atteinte inflammatoire ou ankylose)",
+    neg:"Mesures normales",
+    affects_pos:{SPONDYLARTHRITE_C:50, ARTHROSE_CERV:25}, affects_neg:{SPONDYLARTHRITE_C:-30}
+  },
+  horaire_inflammatoire_c: {
+    name:"Critères de douleur inflammatoire (ASAS adapté cervical)", family:'INFLAM_C', badge:'INF',
+    desc:"Critères ASAS adaptés à la cervicalgie inflammatoire",
+    how:"Interroger sur les 5 critères : âge début < 40 ans, début insidieux, amélioration à l'exercice, pas d'amélioration au repos, douleur nocturne avec amélioration au lever. Au moins 4/5 = inflammatoire.",
+    pos:"Au moins 4/5 critères ASAS présents — cervicalgie inflammatoire (spondylarthrite à dépister)",
+    neg:"Profil mécanique (< 4/5 critères)",
+    affects_pos:{SPONDYLARTHRITE_C:60}, affects_neg:{SPONDYLARTHRITE_C:-30}
+  },
+
+  // === FAMILLE POSTURALE / WHIPLASH ===
+  anamnese_posturale: {
+    name:"Interrogatoire postural et ergonomique", family:'POST', badge:'POS',
+    desc:"Anamnèse postura et professionnelle",
+    how:"Évaluer : temps quotidien passé devant un écran, posture (hauteur écran, smartphone), pauses, métier sédentaire, douleur en fin de journée, soulagement au repos et changement de position.",
+    pos:"Sédentarité importante, posture prolongée écran/smartphone, douleur en fin de journée soulagée au repos — cervicalgie posturale",
+    neg:"Pas de profil postural net",
+    affects_pos:{CERV_CHRONIQUE:55}, affects_neg:{CERV_CHRONIQUE:-15}
+  },
+  anamnese_trauma: {
+    name:"Anamnèse traumatique cervicale", family:'TRAUMA_C', badge:'TRA',
+    desc:"Recherche d'un mécanisme post-traumatique cervical",
+    how:"Interroger sur un événement traumatique : accident de la voie publique (collision arrière ++), choc cervical sportif, chute. Évaluer le délai entre le traumatisme et le début des symptômes (souvent quelques heures à 48h).",
+    pos:"Traumatisme cervical récent (AVP, choc, chute) avec apparition des symptômes dans les 48h — whiplash post-traumatique",
+    neg:"Pas de notion traumatique",
+    affects_pos:{WHIPLASH:65}, affects_neg:{WHIPLASH:-30}
+  }
+};
+
+// ========== VIGNETTES + CHOIX + CIRCUITS ==========
+const VIGNETTES = {
+  // === LOCALISATIONS ===
+  loc_cerv_basse: {
+    id:'loc_cerv_basse', lbl:'⬇️ Douleur cervicale basse, sans irradiation',
+    desc:"Douleur cervicale basse ou trapèze, sans irradiation au-delà de l'épaule",
+    score:{CERV_COMMUNE:40, CERV_CHRONIQUE:45, TORTICOLIS_AIGU:35, SYND_FACETTAIRE_C:30, ARTHROSE_CERV:25, SPONDYLARTHRITE_C:20}
+  },
+  loc_cerv_haute: {
+    id:'loc_cerv_haute', lbl:'⬆️ Douleur cervicale haute / occipitale',
+    desc:"Douleur cervicale haute, irradiant vers la région occipitale ou la base du crâne",
+    score:{CERV_COMMUNE:25, ARTHROSE_CERV:35, SYND_FACETTAIRE_C:35, TORTICOLIS_AIGU:25}
+  },
+  loc_pseudo_radic: {
+    id:'loc_pseudo_radic', lbl:'⤴️ Irradiation trapèze / épaule (sans dépasser le coude)',
+    desc:"Douleur cervicale avec irradiation dans le trapèze et l'épaule, sans dépasser le coude",
+    score:{SYND_FACETTAIRE_C:45, ARTHROSE_CERV:25, CERV_CHRONIQUE:20}
+  },
+  loc_irradiation_bras: {
+    id:'loc_irradiation_bras', lbl:'⚡ Décharge électrique / fourmillements dans le bras',
+    desc:"Douleur en décharge électrique, fourmillements ou paresthésies irradiant dans le bras",
+    score:{NCB:65}
+  },
+  loc_paresth_4membres: {
+    id:'loc_paresth_4membres', lbl:'⚡ Paresthésies des 4 membres / troubles marche',
+    desc:"Paresthésies ou troubles sensitifs des 4 membres, troubles de la marche, perte de dextérité fine",
+    score:{MYELOPATHIE_CERV:65}
+  },
+
+  // === PRÉSENTATIONS / CONTEXTE ===
+  pres_inflam_c: {
+    id:'pres_inflam_c', lbl:'🔥 Raideur matinale > 30 min et douleurs nocturnes',
+    desc:"Raideur matinale prolongée (> 30 min), réveils nocturnes en 2e partie de nuit, amélioration au mouvement, sujet jeune < 45 ans",
+    score:{SPONDYLARTHRITE_C:65}
+  },
+  pres_extension_dlr_c: {
+    id:'pres_extension_dlr_c', lbl:'⬆️ Aggravation par extension du cou',
+    desc:"Douleur aggravée par l'extension du cou (regarder vers le haut, regarder au plafond) et soulagée par la flexion",
+    score:{SYND_FACETTAIRE_C:50, ARTHROSE_CERV:35, NCB:25}
+  },
+  pres_perte_dexterite: {
+    id:'pres_perte_dexterite', lbl:'✋ Perte de dextérité fine (boutons, écriture)',
+    desc:"Perte progressive de dextérité fine (boutons de chemise, écriture, manipulation d'objets), troubles de l'équilibre, démarche maladroite",
+    score:{MYELOPATHIE_CERV:65}
+  },
+  pres_postural_ecran: {
+    id:'pres_postural_ecran', lbl:'💻 Aggravation par travail sur écran prolongé',
+    desc:"Douleurs aggravées en fin de journée de travail (écran, bureau, smartphone), soulagées par le repos et les changements de position",
+    score:{CERV_CHRONIQUE:55}
+  }
+};
+
+const MECA_VIGS = {
+  mecanique_c:    ['loc_cerv_basse','loc_cerv_haute','loc_pseudo_radic','loc_irradiation_bras','pres_extension_dlr_c'],
+  postural_c:     ['loc_cerv_basse','loc_pseudo_radic','loc_irradiation_bras','pres_postural_ecran','pres_extension_dlr_c','pres_perte_dexterite'],
+  degeneratif_c:  ['loc_cerv_basse','loc_cerv_haute','loc_pseudo_radic','loc_irradiation_bras','loc_paresth_4membres','pres_perte_dexterite'],
+  trauma_c:       ['loc_cerv_basse','loc_cerv_haute','loc_irradiation_bras','loc_paresth_4membres','pres_perte_dexterite'],
+  progressif_jeune_c: ['loc_cerv_basse','loc_cerv_haute','loc_pseudo_radic','loc_irradiation_bras','pres_inflam_c']
+};
+
+const CHOICES = {
+  MECANISME: {
+    tag:'Étape 1 · Mécanisme', q:"Comment la douleur est-elle apparue ?",
+    items:[
+      {key:'mecanique_c', lbl:'Mécanique aigu (effort, faux mouvement, réveil)',
+        desc:"Apparition récente après effort, faux mouvement, posture prolongée ou au réveil",
+        score:{CERV_COMMUNE:35, TORTICOLIS_AIGU:40, NCB:30, SYND_FACETTAIRE_C:20}},
+      {key:'postural_c', lbl:'Postural ou chronique (douleurs récurrentes)',
+        desc:"Douleurs récurrentes ou prolongées, liées aux postures et positions maintenues",
+        score:{CERV_CHRONIQUE:55, SYND_FACETTAIRE_C:25}},
+      {key:'degeneratif_c', lbl:'Dégénératif (terrain arthrosique)',
+        desc:"Apparition progressive sur terrain dégénératif cervical, sans événement déclenchant net",
+        score:{ARTHROSE_CERV:50, SYND_FACETTAIRE_C:25, NCB:25, MYELOPATHIE_CERV:25, CERV_CHRONIQUE:15}},
+      {key:'trauma_c', lbl:'Post-traumatique (AVP, choc cervical, chute)',
+        desc:"Apparition après un événement traumatique cervical (accident voie publique, choc, chute)",
+        score:{WHIPLASH:60, NCB:25}},
+      {key:'progressif_jeune_c', lbl:'Progressif (apparition insidieuse)',
+        desc:"Apparition progressive et insidieuse, sans événement déclenchant net",
+        score:{SPONDYLARTHRITE_C:55, CERV_CHRONIQUE:20}}
+    ]
+  },
+  AGE: {
+    tag:'Étape 2 · Profil', q:'Quel est le profil du patient ?',
+    items:[
+      {key:'jeune_adult_c', lbl:'Jeune adulte (< 45 ans)',
+        desc:"Sujet < 45 ans — terrain de cervicalgies aiguës et chroniques",
+        score:{SPONDYLARTHRITE_C:25, NCB:20, CERV_COMMUNE:15, WHIPLASH:15, TORTICOLIS_AIGU:15}},
+      {key:'adulte_sedentaire_c', lbl:'Adulte 30-60 ans, sédentaire/écran',
+        desc:"Tranche d'âge la plus touchée — sédentarité, écran, métier de bureau",
+        score:{CERV_CHRONIQUE:40, CERV_COMMUNE:20, TORTICOLIS_AIGU:20, SYND_FACETTAIRE_C:20}},
+      {key:'adulte_actif_c', lbl:'Adulte 30-60 ans, métier physique ou sportif',
+        desc:"Tranche d'âge active — sport ou métier physique, exposition aux traumatismes et surcharges",
+        score:{NCB:25, CERV_COMMUNE:20, TORTICOLIS_AIGU:20, WHIPLASH:20, SYND_FACETTAIRE_C:15}},
+      {key:'senior_c', lbl:'> 60 ans (terrain dégénératif)',
+        desc:"Sénior avec terrain dégénératif cervical évolué",
+        score:{ARTHROSE_CERV:40, MYELOPATHIE_CERV:30, NCB:25, SYND_FACETTAIRE_C:25, CERV_CHRONIQUE:20}}
+    ]
+  },
+  HORAIRE: {
+    tag:'Étape 4 · Horaire', q:"Quel est l'horaire de la douleur ?",
+    items:[
+      {key:'aigu_recent_c', lbl:'Aigu (< 6 semaines)',
+        desc:"Apparition récente, parfois après un événement déclenchant",
+        score:{TORTICOLIS_AIGU:35, CERV_COMMUNE:30, NCB:20, WHIPLASH:25}},
+      {key:'mecanique_c', lbl:'Mécanique (aggravée par mouvement, soulagée au repos)',
+        desc:"Aggravée par les mouvements, la posture prolongée, soulagée par le repos",
+        score:{CERV_COMMUNE:25, CERV_CHRONIQUE:30, SYND_FACETTAIRE_C:25, ARTHROSE_CERV:25}},
+      {key:'fin_journee_c', lbl:'En fin de journée de travail',
+        desc:"Aggravée en fin de journée de travail, soulagée par le repos et changement de position",
+        score:{CERV_CHRONIQUE:50}},
+      {key:'inflammatoire_c', lbl:'Inflammatoire (raideur matinale, nocturne)',
+        desc:"Raideur matinale > 30 min, réveils nocturnes en 2e partie de nuit, amélioration au mouvement",
+        score:{SPONDYLARTHRITE_C:55}},
+      {key:'permanent_c', lbl:'Permanente ou évolution > 3 mois',
+        desc:"Douleur persistante, peu d'amélioration nette, évolution prolongée",
+        score:{CERV_CHRONIQUE:40, ARTHROSE_CERV:25, SPONDYLARTHRITE_C:15}}
+    ]
+  }
+};
+
+// Circuits de 5 tests par pathologie
+const CIRCUITS = {
+  CERV_COMMUNE:        ['amplitudes_cervicales','spurling','extension_rotation_c','horaire_inflammatoire_c','anamnese_posturale'],
+  CERV_CHRONIQUE:      ['amplitudes_cervicales','anamnese_posturale','extension_rotation_c','spurling','horaire_inflammatoire_c'],
+  TORTICOLIS_AIGU:     ['amplitudes_cervicales','extension_rotation_c','spurling','anamnese_trauma','palp_facettes_c'],
+  SYND_FACETTAIRE_C:   ['extension_rotation_c','palp_facettes_c','spurling','amplitudes_cervicales','horaire_inflammatoire_c'],
+  NCB:                 ['spurling','distraction_cervicale','testing_c5_c8','hoffmann','extension_rotation_c'],
+  ARTHROSE_CERV:       ['amplitudes_cervicales','palp_facettes_c','extension_rotation_c','spurling','hoffmann'],
+  MYELOPATHIE_CERV:    ['hoffmann','babinski_marche','testing_c5_c8','amplitudes_cervicales','spurling'],
+  WHIPLASH:            ['anamnese_trauma','amplitudes_cervicales','spurling','testing_c5_c8','extension_rotation_c'],
+  SPONDYLARTHRITE_C:   ['horaire_inflammatoire_c','schober_cervical','amplitudes_cervicales','palp_facettes_c','extension_rotation_c']
+};
+
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR ==========
+// ========== ÉTAT ==========
+const PATHO_LIST = Object.keys(P);
+let scores = {};
+let history = [];
+let mecaKey = null;
+let testsToRun = [];
+let testIdx = 0;
+let currentStep = 'MECANISME';
+let selectedVigs = new Set();
+
+function init(){
+  scores = {};
+  PATHO_LIST.forEach(p => scores[p] = 0);
+  history = [];
+  mecaKey = null;
+  testsToRun = [];
+  testIdx = 0;
+  currentStep = 'MECANISME';
+  selectedVigs = new Set();
+}
+
+function addScore(delta){
+  for(const k in delta){
+    if(k in scores) scores[k] += delta[k];
+  }
+}
+
+function ranked(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+}
+
+function top1(){ return ranked()[0]; }
+
+function top3WithScores(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+}
+
+// ========== LOGIQUE TESTS ADAPTATIFS ==========
+// Règle : 5 tests max
+// - Test POS  → continuer le circuit du top1 actuel (confirmation)
+// - Test NÉG  → proposer un test d\'une AUTRE famille clinique
+
+const MAX_TESTS = 5;
+
+function buildInitialQueue(){
+  const t1 = top1();
+  return [...(CIRCUITS[t1] || [])].slice(0, MAX_TESTS);
+}
+
+function applyTest(tKey, positive){
+  const t = TESTS[tKey];
+  if(!t) return;
+  const delta = positive ? t.affects_pos : t.affects_neg;
+  addScore(delta);
+  history.push({test:tKey, name:t.name, result:positive ? '✅':'❌'});
+}
+
+function nextTestAdaptive(currentFamily, positive, previousTop1){
+  // Tests déjà faits (jamais reproposés)
+  const done = new Set(testsToRun.slice(0, testIdx));
+  const newTop1 = top1();
+  
+  if(positive){
+    // POS : continuer circuit du top1 actuel (confirmation)
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+    return null;
+  }
+  
+  // NEG :
+  // Cas 1 : top1 INCHANGÉ → continuer le circuit du top1 (poursuite logique, ex: cluster Laslett pour SI)
+  if(newTop1 === previousTop1){
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+  }
+  
+  // Cas 2 : top1 a CHANGÉ → proposer le test #1 de la nouvelle patho top1
+  // (qui sera presque toujours d'une famille différente)
+  // On parcourt le ranking pour trouver le 1er candidat de famille différente
+  for(const patho of ranked()){
+    const cands = CIRCUITS[patho];
+    if(!cands || !cands.length) continue;
+    for(const candTest of cands){
+      if(done.has(candTest)) continue;
+      const candFamily = (TESTS[candTest] || {}).family;
+      if(candFamily && candFamily !== currentFamily) return candTest;
+    }
+  }
+  
+  // Fallback : n\'importe quel test non fait
+  for(const patho of ranked()){
+    for(const t of (CIRCUITS[patho] || [])){
+      if(!done.has(t)) return t;
+    }
+  }
+  return null;
+}
+
+function testResult(positive){
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t) return;
+  
+  // Capturer top1 AVANT d\'appliquer le résultat
+  const previousTop1 = top1();
+  
+  applyTest(tKey, positive);
+  const currentFamily = t.family;
+  testIdx++;
+  
+  // Si pas encore atteint MAX, choisir le prochain test
+  if(testIdx < MAX_TESTS){
+    const nextT = nextTestAdaptive(currentFamily, positive, previousTop1);
+    if(nextT){
+      // Remplacer le prochain prévu (ou l\'insérer)
+      if(testIdx < testsToRun.length){
+        testsToRun[testIdx] = nextT;
+      } else {
+        testsToRun.push(nextT);
+      }
+    }
+  }
+  
+  renderStep();
+}
+
+// ========== RENDERING ==========
+function pickChoice(stepKey, item){
+  addScore(item.score);
+  history.push({step:stepKey, label:item.lbl});
+  
+  if(stepKey === 'MECANISME'){
+    mecaKey = item.key;
+    currentStep = 'AGE';
+  } else if(stepKey === 'AGE'){
+    currentStep = 'TABLEAU';
+  } else if(stepKey === 'HORAIRE'){
+    testsToRun = buildInitialQueue();
+    testIdx = 0;
+    currentStep = 'TESTS';
+  }
+  renderStep();
+}
+
+function toggleVig(vid){
+  if(selectedVigs.has(vid)){
+    selectedVigs.delete(vid);
+  } else {
+    if(selectedVigs.size >= 3) return;
+    selectedVigs.add(vid);
+  }
+  renderStep();
+}
+
+function validateTableau(){
+  if(selectedVigs.size === 0) return;
+  selectedVigs.forEach(vid => {
+    addScore(VIGNETTES[vid].score);
+    history.push({step:'TABLEAU', label:VIGNETTES[vid].lbl});
+  });
+  currentStep = 'HORAIRE';
+  renderStep();
+}
+
+function skipTest(){
+  testIdx++;
+  if(testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+  }
+  renderStep();
+}
+
+function reset(){
+  init();
+  renderStep();
+}
+
+function goBack(){
+  // Retour à l\'étape précédente — simple
+  if(currentStep === 'AGE') currentStep = 'MECANISME';
+  else if(currentStep === 'TABLEAU') currentStep = 'AGE';
+  else if(currentStep === 'HORAIRE') currentStep = 'TABLEAU';
+  else if(currentStep === 'TESTS' && testIdx > 0){
+    testIdx--;
+    // Annuler le dernier test (pas le scoring pour simplifier, juste revenir au test)
+  } else if(currentStep === 'TESTS' && testIdx === 0){
+    currentStep = 'HORAIRE';
+  } else if(currentStep === 'RESULT'){
+    currentStep = 'TESTS';
+    testIdx = Math.max(0, MAX_TESTS - 1);
+  }
+  renderStep();
+}
+
+
+// ========== RENDU ==========
+// ========== HELPERS RENDU ==========
+function backBtn(){
+  if(currentStep === 'MECANISME') return '';
+  return `<button class="btn-back" onclick="goBack()">← Modifier</button>`;
+}
+
+function breadcrumbHTML(){
+  if(!history.length) return '';
+  const items = history.slice(-4).map(h => `<span class="bc-item">${(h.label||h.test||'').slice(0,30)}</span>`).join(' › ');
+  return `<div class="breadcrumb">${items}</div>`;
+}
+
+function stepIndicator(currentIdx){
+  const steps = ['Mécanisme', 'Profil', 'Tableau', 'Horaire', 'Examen'];
+  return `<div class="step-ind">
+    ${steps.map((s,i) => `<div class="si-item ${i===currentIdx?'active':''} ${i<currentIdx?'done':''}">${i+1}. ${s}</div>`).join('')}
+  </div>`;
+}
+
+// ========== ÉTAPE CHOIX (Mécanisme, Âge, Horaire) ==========
+function renderChoice(stepKey, stepIdx){
+  const c = CHOICES[stepKey];
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(stepIdx)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">${c.tag}</div>
+      <h2 class="card-q">${c.q}</h2>
+      <div class="choices">
+        ${c.items.map(it => `
+          <button class="choice" onclick="pickChoice('${stepKey}', CHOICES['${stepKey}'].items.find(x=>x.key==='${it.key}'))">
+            <div class="choice-lbl">${it.lbl}</div>
+            <div class="choice-desc">${it.desc}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TABLEAU CLINIQUE (multi-vignettes) ==========
+function renderTableau(){
+  const vigs = (MECA_VIGS[mecaKey] || Object.keys(VIGNETTES));
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(2)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 3 · Tableau clinique</div>
+      <h2 class="card-q">Cochez ce qui correspond au patient</h2>
+      <div class="card-hint">Maximum 3 cases cochables.</div>
+      <div class="vig-grid">
+        ${vigs.map(vid => {
+          const v = VIGNETTES[vid];
+          const sel = selectedVigs.has(vid);
+          return `<div class="vig ${sel?'vig-sel':''}" onclick="toggleVig('${vid}')">
+            <div class="vig-chk">${sel?'☑':'☐'}</div>
+            <div class="vig-body">
+              <div class="vig-lbl">${v.lbl}</div>
+              <div class="vig-desc">${v.desc}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="card-foot">
+        <span class="foot-info">${selectedVigs.size===0?'Aucune sélection':selectedVigs.size+'/3 coché'+(selectedVigs.size>1?'s':'')}</span>
+        <button class="btn-primary" ${selectedVigs.size===0?'disabled':''} onclick="validateTableau()">Confirmer →</button>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TESTS ==========
+function renderTests(){
+  if(testIdx >= testsToRun.length || testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+    renderStep();
+    return;
+  }
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t){
+    testIdx++;
+    renderTests();
+    return;
+  }
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(4)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 5 · Examen clinique (${testIdx+1}/${MAX_TESTS})</div>
+      <div class="test-name">${t.name}</div>
+      <div class="test-fam"><span class="test-badge">${t.badge}</span> Famille : ${t.family}</div>
+      <div class="test-desc">${t.desc}</div>
+      <div class="test-section">
+        <strong>Technique</strong>
+        <div>${t.how}</div>
+      </div>
+      <div class="test-section">
+        <strong>Interprétation</strong>
+        <div>✅ <strong>Positif :</strong> ${t.pos}</div>
+        <div>❌ <strong>Négatif :</strong> ${t.neg}</div>
+      </div>
+      <div class="test-btns">
+        <button class="btn-pos" onclick="testResult(true)">✅ Positif</button>
+        <button class="btn-neg" onclick="testResult(false)">❌ Négatif</button>
+      </div>
+      ${testIdx > 0 ? `<button class="btn-skip" onclick="skipTest()">Passer ce test →</button>` : ''}
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+
+
+// ========== ÉTAPE RÉSULTAT ==========
+function renderResult(){
+  const top = top3WithScores();
+  const total = top.reduce((s,[,sc]) => s + Math.max(0,sc), 0) || 1;
+  const main = top[0];
+  const alts = top.slice(1);
+  const mainP = P[main[0]];
+  const mainProb = Math.round(100 * Math.max(0, main[1]) / total);
+  
+  const alertHTML = mainP.alert ? `
+    <div class="alert-box alert-${mainP.alert.type}">
+      <span style="font-size:16px">${mainP.alert.type === 'red' ? '🚨' : '⚠️'}</span>
+      <span>${mainP.alert.text}</span>
+    </div>` : '';
+  
+  // Sections détaillées
+  const imagingItems = (mainP.imaging || []).map(i => 
+    `<div class="fi"><strong>${i.t}</strong>${i.d ? `<span>${i.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const treatmentItems = (mainP.treatment || []).map(t => 
+    `<div class="fi"><strong>${t.t}</strong>${t.d ? `<span>${t.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const exercisesItems = (mainP.exercises || []).map(e => 
+    `<div class="fi"><strong>${e.t}</strong>${e.d ? `<span>${e.d}</span>` : ''}</div>`
+  ).join('') + (mainP.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${mainP.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  
+  const referralItems = (mainP.referral || []).map(r => `
+    <div class="ref-tag ${r.p ? 'p' : 's'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p ? '→ ' : ''}${r.who}</div>
+        ${r.why ? `<div class="ref-why">${r.why}</div>` : ''}
+      </div>
+      <span class="ref-b">${r.p ? 'Prioritaire' : 'Si besoin'}</span>
+    </div>`).join('');
+  
+  // Sources
+  const sourcesHTML = mainP.sources?.length ? `
+    <div class="sources-row">
+      <span class="src-lbl">📚 Sources</span>
+      ${mainP.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('')}
+    </div>` : '';
+  
+  // Encart Signes de gravité (severity)
+  const severityHTML = mainP.severity ? `
+    <div class="severity-card">
+      <div class="severity-head">🔍 ${mainP.severity.title}</div>
+      <div class="severity-body">${mainP.severity.text}</div>
+    </div>` : '';
+  
+  // Encart Pièges diagnostiques (pitfall)
+  const pitfallHTML = mainP.pitfall ? `
+    <div class="pitfall-card">
+      <div class="pitfall-head">💡 À considérer aussi</div>
+      <div class="pitfall-body">${mainP.pitfall.text}</div>
+      ${(mainP.pitfall.modules || []).length ? `
+      <div class="pitfall-modules">
+        ${mainP.pitfall.modules.map(m => `<span class="pitfall-chip">→ Module ${m}</span>`).join('')}
+      </div>` : ''}
+    </div>` : '';
+  
+  // Alternatifs
+  const altCardsHTML = alts.map(([pid, sc]) => {
+    const p = P[pid];
+    const prob = Math.round(100 * Math.max(0, sc) / total);
+    return `<div class="alt-card" onclick="showModal('${pid}')">
+      <div class="alt-header">
+        <img src="images_pathologies/cervical.png" alt="" class="alt-ic-img" />
+        <div class="alt-name">${p.name}</div>
+        <div class="alt-pct">${prob}%</div>
+      </div>
+      <div class="alt-bar"><div class="alt-fill" style="width:${prob}%"></div></div>
+      <div class="alt-key">
+        <strong>Éléments clés</strong>
+        ${(p.keys || []).slice(0,2).join(' · ')}
+      </div>
+      <div class="alt-hint">Appuyer pour la fiche complète →</div>
+    </div>`;
+  }).join('');
+  
+  const html = `
+    ${stepIndicator(5)}
+    ${breadcrumbHTML()}
+    <div class="result-wrap">
+      
+      <!-- DIAGNOSTIC PRINCIPAL -->
+      <div class="diag-card">
+        <div class="diag-top">
+          <div class="diag-head">
+            <img src="images_pathologies/cervical.png" alt="" class="diag-icon-img" />
+            <div>
+              <span class="rank-badge">Diagnostic principal</span>
+              <div class="diag-name">${mainP.name}</div>
+              <div class="diag-pop">${mainP.pop}</div>
+            </div>
+          </div>
+          <div class="prob-wrap">
+            <div class="prob-pct">${mainProb}%</div>
+            <div class="prob-label">Probabilité</div>
+            <div class="prob-bar"><div class="prob-fill" style="width:${mainProb}%"></div></div>
+          </div>
+        </div>
+        
+        <div class="fiche">
+          ${alertHTML}
+          <div class="fiche-grid">
+            <div class="fiche-sec">
+              <div class="sec-title sec-img">🔬 Imagerie</div>
+              ${imagingItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ex">💪 Exercices</div>
+              ${exercisesItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-rx">💊 Traitement</div>
+              ${treatmentItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ref">🏥 Orientation</div>
+              ${referralItems || '<div class="fi-empty">—</div>'}
+            </div>
+          </div>
+          ${severityHTML}
+          ${pitfallHTML}
+          ${sourcesHTML}
+        </div>
+      </div>
+      
+      <!-- DIAGNOSTICS ALTERNATIFS -->
+      <div class="section-sep">Diagnostics alternatifs à considérer</div>
+      <div class="alt-cards">${altCardsHTML}</div>
+      
+      <div class="disclaimer">
+        ⚠️ <strong>Outil d'aide à la décision clinique</strong> — Les probabilités sont indicatives et basées sur le profil sélectionné. Non substitutif au jugement médical. Sources : HAS, EULAR, sociétés savantes.
+      </div>
+      
+      <div class="actions">
+        <button class="btn-primary" onclick="reset()">↺ Nouveau cas</button>
+        <button class="btn-back" onclick="goBack()">← Modifier les réponses</button>
+      </div>
+      
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="if(event.target.id==='modal') closeModal()">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+  
+  // Animer les barres
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill, .alt-fill').forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => el.style.width = target));
+    });
+  }, 50);
+}
+
+function showModal(pid){
+  const p = P[pid];
+  const imagingHTML = (p.imaging || []).map(i => `<div class="fi"><strong>${i.t}</strong>${i.d?`<span>${i.d}</span>`:''}</div>`).join('');
+  const treatmentHTML = (p.treatment || []).map(t => `<div class="fi"><strong>${t.t}</strong>${t.d?`<span>${t.d}</span>`:''}</div>`).join('');
+  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  const referralHTML = (p.referral || []).map(r => `
+    <div class="ref-tag ${r.p?'p':'s'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p?'→ ':''}${r.who}</div>
+        ${r.why?`<div class="ref-why">${r.why}</div>`:''}
+      </div>
+      <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
+    </div>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-head">
+      <img src="images_pathologies/cervical.png" alt="" class="modal-icon-img" />
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div class="modal-pop">${p.pop}</div>
+      </div>
+    </div>
+    ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
+    <div class="fiche-grid modal-fiche">
+      <div class="fiche-sec">
+        <div class="sec-title sec-img">🔬 Imagerie</div>
+        ${imagingHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ex">💪 Exercices</div>
+        ${exercisesHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-rx">💊 Traitement</div>
+        ${treatmentHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ref">🏥 Orientation</div>
+        ${referralHTML || '<div class="fi-empty">—</div>'}
+      </div>
+    </div>
+    <div class="sources-row modal-sources">
+      <span class="src-lbl">📚 Sources</span>
+      ${sourcesHTML}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+
+// ========== DISPATCHER ==========
+function renderStep(){
+  if(currentStep === 'MECANISME') renderChoice('MECANISME', 0);
+  else if(currentStep === 'AGE') renderChoice('AGE', 1);
+  else if(currentStep === 'TABLEAU') renderTableau();
+  else if(currentStep === 'HORAIRE') renderChoice('HORAIRE', 3);
+  else if(currentStep === 'TESTS') renderTests();
+  else if(currentStep === 'RESULT') renderResult();
+}
+
+// ========== INIT ==========
+init();
+renderStep();
+
+
+
+
+
+</script>
+</body>
+</html>

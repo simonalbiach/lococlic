@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>LocoClic — Accès</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    color: #1e293b;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  .login-card {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 40px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+    text-align: center;
+    animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: none; }
+  }
+  
+  .logo-wrap {
+    margin-bottom: 24px;
+  }
+  
+  .logo-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    margin: 0 auto;
+    display: block;
+    object-fit: cover;
+    box-shadow: 0 4px 16px rgba(30, 58, 95, 0.15);
+  }
+  
+  .brand {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #1e3a5f 0%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .tagline {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+  
+  h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e3a5f;
+    margin-bottom: 8px;
+  }
+  
+  .subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 28px;
+  }
+  
+  .field {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  input[type="password"], input[type="text"] {
+    width: 100%;
+    padding: 16px 56px 16px 20px;
+    font-size: 16px;
+    font-family: inherit;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    outline: none;
+    transition: all 0.2s;
+    background: white;
+    color: #1e3a5f;
+  }
+  
+  input:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+  }
+  
+  input::placeholder {
+    color: #94a3b8;
+  }
+  
+  .toggle-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    color: #64748b;
+    transition: all 0.15s;
+  }
+  
+  .toggle-btn:hover {
+    color: #10b981;
+    background: #f0fdf4;
+  }
+  
+  .toggle-btn svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-family: inherit;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(30, 58, 95, 0.25);
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(30, 58, 95, 0.3);
+    filter: brightness(1.05);
+  }
+  
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+  
+  .error-msg {
+    display: none;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  
+  .error-msg.show {
+    display: block;
+    animation: shake 0.4s;
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  
+  .footer {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.6;
+  }
+  
+  .footer strong {
+    color: #475569;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="logo-wrap">
+    <img src="images/logo.png" alt="LocoClic" class="logo-img">
+    <div class="brand">LocoClic</div>
+    <div class="tagline">Outil d'aide à la décision clinique<br>Appareil locomoteur</div>
+  </div>
+  
+  <h1>Accès réservé</h1>
+  <p class="subtitle">Saisissez votre code d'accès pour continuer</p>
+  
+  <div class="error-msg" id="errorMsg">
+    Code invalide. Vérifiez la saisie et réessayez.
+  </div>
+  
+  <form id="loginForm" onsubmit="return checkAccess(event)">
+    <div class="field">
+      <input 
+        type="password" 
+        id="codeInput" 
+        placeholder="••••••••••" 
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        autofocus
+        required
+      >
+      <button type="button" class="toggle-btn" onclick="togglePassword()" aria-label="Afficher le code">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+    </div>
+    
+    <button type="submit" class="submit-btn">Entrer</button>
+  </form>
+  
+  <div class="footer">
+    Accès individuel · Ne partagez pas votre code.<br>
+    Pour obtenir un accès, contactez <strong>l'administrateur LocoClic</strong>.
+  </div>
+</div>
+
+<script>
+// ============================================================
+// LISTE DES CODES D'ACCÈS VALIDES
+// Modifie cette liste pour ajouter / retirer des codes
+// ============================================================
+const VALID_CODES = [
+  'simon-2026',
+  'betatest',
+  'drlecoz',
+  'droheix',
+  'drkostka'
+];
+
+// Durée de validité de la session (en jours)
+const SESSION_DURATION_DAYS = 7;
+
+// ============================================================
+// LOGIQUE D'AUTHENTIFICATION
+// ============================================================
+
+// Si déjà connecté, redirection vers l'app
+(function checkExistingSession() {
+  try {
+    const session = localStorage.getItem('lococlic_session');
+    if (session) {
+      const data = JSON.parse(session);
+      if (data.expires && Date.now() < data.expires) {
+        // Session valide → redirection
+        window.location.href = 'index.html';
+        return;
+      } else {
+        // Session expirée → nettoyer
+        localStorage.removeItem('lococlic_session');
+      }
+    }
+  } catch(e) {
+    localStorage.removeItem('lococlic_session');
+  }
+})();
+
+function checkAccess(event) {
+  event.preventDefault();
+  
+  const input = document.getElementById('codeInput');
+  const errorMsg = document.getElementById('errorMsg');
+  const code = input.value.trim();
+  
+  if (VALID_CODES.includes(code)) {
+    // Code valide : créer la session
+    const session = {
+      code: code,
+      expires: Date.now() + (SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000)
+    };
+    localStorage.setItem('lococlic_session', JSON.stringify(session));
+    
+    // Redirection
+    window.location.href = 'index.html';
+  } else {
+    // Code invalide
+    errorMsg.classList.add('show');
+    input.value = '';
+    input.focus();
+    
+    // Cacher l'erreur après 4 secondes
+    setTimeout(() => errorMsg.classList.remove('show'), 4000);
+  }
+  
+  return false;
+}
+
+function togglePassword() {
+  const input = document.getElementById('codeInput');
+  input.type = input.type === 'password' ? 'text' : 'password';
+  input.focus();
+}
+</script>
+
+</body>
+</html>

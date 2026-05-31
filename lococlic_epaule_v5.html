@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocoClic — Épaule v5</title>
+<style>
+
+
+:root {
+  --bg: #f5f3ee;           /* fond crème */
+  --bg-card: #ffffff;       /* cartes blanches */
+  --bg-hover: #f0ede5;      /* survol crème plus foncé */
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a2332;          /* texte sombre principal */
+  --text-dim: #4a5468;      /* texte secondaire */
+  --text-mute: #8a92a0;     /* texte tertiaire */
+  --accent: #2563a8;        /* bleu marine accent */
+  --accent-dim: #1d4d85;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;        /* or plus sombre pour contraste */
+  --navy: #0f2a44;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 16px;
+  line-height: 1.5;
+}
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.header .badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  padding: 3px 10px;
+  background: var(--accent);
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* === STEP INDICATOR === */
+.step-ind {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.si-item {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 8px;
+  background: #fafaf7;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: center;
+}
+.si-item.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+.si-item.done {
+  background: rgba(37, 99, 168, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* === BREADCRUMB === */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.bc-item { font-style: italic; }
+
+/* === BTN BACK === */
+.btn-back {
+  background: white;
+  color: var(--text-dim);
+  border: 1.5px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.btn-back:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.card-tag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-q {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-hint {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+
+/* === CHOICES (Mécanisme, Âge, Horaire) === */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice {
+  width: 100%;
+  text-align: left;
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.choice:hover {
+  background: rgba(37,99,168,0.06);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.choice-lbl {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.choice-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+/* === VIGNETTES === */
+.vig-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .vig-grid { grid-template-columns: 1fr 1fr; }
+}
+.vig {
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.vig:hover { background: rgba(37,99,168,0.06); border-color: var(--accent); }
+.vig-sel {
+  background: rgba(22,163,74,0.08);
+  border-color: var(--green);
+}
+.vig-chk {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.vig-lbl {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.vig-desc {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.foot-info {
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  box-shadow: 0 2px 8px rgba(37,99,168,0.25);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary:not(:disabled):hover { filter: brightness(1.1); }
+
+/* === TESTS === */
+.test-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+.test-fam {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.test-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.test-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.test-section {
+  margin: 14px 0;
+}
+.test-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.test-section div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.test-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn-pos, .btn-neg {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-pos {
+  background: var(--green);
+  color: white;
+}
+.btn-neg {
+  background: var(--red);
+  color: white;
+}
+.btn-pos:hover, .btn-neg:hover { filter: brightness(1.1); }
+.btn-skip {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* === RÉSULTAT === */
+.result-main {
+  border: 2px solid var(--accent);
+  background: linear-gradient(180deg, rgba(93,141,240,0.08), var(--bg-card));
+}
+.result-tag {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.result-icon { font-size: 36px; }
+.result-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+.result-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.result-score {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.result-section {
+  margin: 14px 0;
+}
+.result-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+.sources {
+  list-style: none;
+  font-size: 12px;
+}
+.sources li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sources li:last-child { border: none; }
+.sources a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.sources a:hover { text-decoration: underline; }
+
+/* === ALTS === */
+.alts {
+  margin-top: 18px;
+}
+.alts-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.alt {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alt:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+.alt-icon { font-size: 24px; }
+.alt-body { flex: 1; }
+.alt-name { font-weight: 600; font-size: 14px; }
+.alt-pop { font-size: 11px; color: var(--text-mute); }
+.alt-score {
+  font-weight: 700;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+
+.btn-reset {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+.btn-reset:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,42,68,0.55);
+  z-index: 100;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  padding: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  font-size: 24px;
+  cursor: pointer;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-icon { font-size: 32px; }
+.modal-name { font-size: 17px; font-weight: 700; }
+.modal-pop { font-size: 12px; color: var(--text-mute); }
+.modal-section {
+  margin: 12px 0;
+}
+.modal-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.modal-section > div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.modal-section ul {
+  list-style: none;
+  font-size: 12px;
+}
+.modal-section ul li {
+  padding: 3px 0;
+}
+.modal-section ul a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+
+.key-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.key-tag { display:inline-block; background:rgba(93,141,240,0.15); color:var(--accent); padding:3px 10px; border-radius:12px; font-size:11px; }
+.bullets { list-style:none; padding-left:0; font-size:14px; line-height:1.7; }
+.bullets li { padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.bullets li:last-child { border:none; }
+.result-info { flex:1; }
+.result-prob-wrap { text-align:right; }
+.result-prob { font-size:28px; font-weight:800; color:var(--accent); line-height:1; }
+.result-score { font-size:11px; color:var(--text-mute); margin-top:2px; }
+.alt-right { text-align:right; }
+.alt-prob { font-weight:700; font-size:17px; color:var(--accent); }
+.alt-score { font-size:10px; color:var(--text-mute); }
+.modal-section ul { list-style:none; padding-left:0; font-size:13px; line-height:1.6; }
+.modal-section ul li { padding:3px 0; }
+.modal-section ul a { color:var(--accent); text-decoration:none; }
+
+/* ===== FICHE RÉSULTAT — sections distinctes ===== */
+.result-wrap { animation: fu 0.4s ease both; }
+@keyframes fu { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+.diag-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(37,99,168,0.12);
+}
+
+.diag-top {
+  background: linear-gradient(135deg, rgba(37,99,168,0.10), rgba(37,99,168,0.03));
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.diag-head { display:flex; align-items:center; gap:12px; flex:1; }
+.diag-icon { font-size: 32px; }
+.rank-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.diag-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.diag-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-wrap { text-align: right; min-width:88px; }
+.prob-pct {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.prob-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.prob-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.fiche { background: var(--bg-card); }
+
+.alert-box {
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+
+
+
+
+
+
+
+.fi:last-child { margin-bottom: 0; }
+
+
+
+
+.ref-tag {
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+  background: rgba(167,139,250,0.18);
+  border: 1px solid rgba(167,139,250,0.2);
+}
+.ref-tag.s {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border);
+}
+.ref-info { flex: 1; }
+.ref-who {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ref-why {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.ref-b {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: rgba(109,40,217,0.15);
+  color: #6d28d9;
+}
+.ref-tag.s .ref-b {
+  background: var(--bg-hover);
+  color: var(--text-mute);
+}
+
+.sources-row {
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.025);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.src-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.src-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(37,99,168,0.08);
+  border: 1px solid rgba(37,99,168,0.3);
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.src-chip:hover {
+  background: rgba(37,99,168,0.18);
+}
+
+.section-sep {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 22px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.alt-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .alt-cards { grid-template-columns: 1fr; }
+}
+.alt-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.alt-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+.alt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.alt-ic { font-size: 22px; }
+.alt-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.alt-pct {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-mute);
+}
+.alt-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.alt-fill {
+  height: 100%;
+  background: var(--text-mute);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.alt-key {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.alt-key strong {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 3px;
+}
+.alt-hint {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-align: right;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.actions .btn-primary, .actions .btn-back { flex: 1; min-width: 140px; }
+
+/* Modal fiche */
+.modal-fiche { 
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.modal-sources {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+
+/* === FICHE GRID — sections fortement distinctes === */
+.fiche-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  padding: 2px;
+}
+@media (max-width: 600px) {
+  .fiche-grid { grid-template-columns: 1fr; }
+}
+
+.fiche-sec {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: none;
+  position: relative;
+}
+
+/* Bandeau coloré en haut de chaque section */
+.fiche-sec::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* === COULEURS PAR SECTION === */
+/* Imagerie — bleu */
+.fiche-sec:nth-child(1) {
+  background: linear-gradient(180deg, rgba(94,177,255,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(1)::before { background: #5eb1ff; }
+
+/* Exercices — vert */
+.fiche-sec:nth-child(2) {
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(2)::before { background: #4ade80; }
+
+/* Traitement — jaune/or */
+.fiche-sec:nth-child(3) {
+  background: linear-gradient(180deg, rgba(251,191,36,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(3)::before { background: #fbbf24; }
+
+/* Orientation — violet */
+.fiche-sec:nth-child(4) {
+  background: linear-gradient(180deg, rgba(167,139,250,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(4)::before { background: #a78bfa; }
+
+/* sec-title plus visible */
+.sec-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+.sec-img { color: #1e6db8; }
+.sec-ex  { color: #15803d; }
+.sec-rx  { color: #b45309; }
+.sec-ref { color: #6d28d9; }
+
+/* Items plus aérés et visibles */
+.fi {
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 10px 8px 12px;
+  border-left: 3px solid;
+  margin-bottom: 8px;
+  background: rgba(0,0,0,0.025);
+  border-radius: 0 6px 6px 0;
+}
+.fi:last-child { margin-bottom: 0; }
+.fiche-sec:nth-child(1) .fi { border-left-color: rgba(94,177,255,0.4); }
+.fiche-sec:nth-child(2) .fi { border-left-color: rgba(74,222,128,0.4); }
+.fiche-sec:nth-child(3) .fi { border-left-color: rgba(251,191,36,0.4); }
+.fiche-sec:nth-child(4) .fi { border-left-color: rgba(167,139,250,0.4); }
+
+.fi strong {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+.fi span {
+  color: var(--text-dim);
+  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+}
+.fi-empty {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* === REFERRAL TAGS spécifiques (dans section orientation) === */
+.fiche-sec:nth-child(4) .ref-tag {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.disclaimer { background: #fef3c7; border: 2px solid #f59e0b; border-radius: 9px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #000000; line-height: 1.6; }
+.disclaimer strong { color: #991b1b; font-weight: 800; }
+
+
+  .alt-ic-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .diag-icon-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.15);
+  }
+  .modal-icon-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  color: #1e3a5f;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s;
+" onmouseover="this.style.background='#1e3a5f';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#1e3a5f';">
+  ← Accueil
+</a>
+
+
+<div class="app">
+  <div class="header">
+    <h1>LocoClic — Épaule</h1>
+    <div class="badge">v5 · clinique adaptatif</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+// ========== PATHOLOGIES ==========
+const P = {
+  TEND_SUS_EPINEUX: {
+    id:'TEND_SUS_EPINEUX', name:'Tendinopathie sus épineux', icon:'🟡', pop:'40–70 ans',
+    desc:'Douleur latérale',
+    alert:null,
+    imaging:[{t:'Aucune',d:''},{t:'Echographie',d:''},{t:'IRM si doute rupture',d:''}],
+    treatment:[{t:'Adaptation des activités',d:''},{t:'DOLIPRANE',d:''},{t:'AINS',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique en abduction',d:''},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/01_tendinopathie_sus_epineux.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgie si volumineuse calcification ou rupture',why:'',p:true}],
+    sources:[{l:'HAS 2023 — Conduite diagnostique épaule douloureuse non traumatique',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'SOFEC — Société Française de l\'Épaule et du Coude',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'NICE CKS — Shoulder pain',u:'https://cks.nice.org.uk/topics/shoulder-pain/'},{l:'Cochrane Library — Rotator cuff disorders',u:'https://www.cochranelibrary.com/'}],
+    keys:['Douleur latérale','Horaire mixte , douleurs nocturnes','Douleur palpation latérale et antérieure (main sur la hanche)','Test de Jobe positif( résistance sur bras , début abduction)','Autres tests négatifs']
+  },
+  BURSITE_SOUS_ACRO: {
+    id:'BURSITE_SOUS_ACRO', name:'Bursite sous acromiale', icon:'🟢', pop:'40–70 ans',
+    desc:'Douleur latérale',
+    alert:null,
+    imaging:[{t:'Radiographies',d:''},{t:'Echographie',d:''}],
+    treatment:[{t:'AINS',d:''},{t:'Glaçage',d:''},{t:'Infiltration cortisonée',d:''},{t:'Kinésithérapie',d:''},{t:'Adaptation activités',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique en rotation externe',d:''},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/02_bursite_sous_acromiale.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Rhumatologue',why:'',p:true}],
+    sources:[{l:'HAS 2023 — Épaule douloureuse non traumatique',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'SOFEC — Recommandations épaule',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'NICE CKS — Shoulder pain',u:'https://cks.nice.org.uk/topics/shoulder-pain/'},{l:'Cochrane — Subacromial pain syndrome',u:'https://www.cochranelibrary.com/'}],
+    keys:['Douleur latérale','Douleur élévation','Douleur abduction','Douleur nocturne ( appui +)','Test neer positif','Test Hawkins positif']
+  },
+  CONFLIT_SOUS_ACRO: {
+    id:'CONFLIT_SOUS_ACRO', name:'Conflit sous-acromial', icon:'🟡', pop:'35- 70 ans',
+    desc:'Douleur latérale',
+    alert:null,
+    imaging:[{t:'Radiographies',d:''},{t:'Echographie',d:''}],
+    treatment:[{t:'AINS',d:''},{t:'Antalgiques',d:''},{t:'Kinésithérapie',d:''},{t:'Infiltration sous-acromiale',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique en abduction',d:''},{t:'Étirement de la capsule postérieure',d:''}],ficheExercice:'lococlic_fiches_patient/03_conflit_sous_acromial.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Rhumatologue',why:'',p:true}],
+    sources:[{l:'HAS 2023 — Syndrome douloureux sub-acromial (terminologie)',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'SOFEC — Syndrome douloureux sub-acromial',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'NICE CKS — Shoulder pain',u:'https://cks.nice.org.uk/topics/shoulder-pain/'},{l:'Cochrane — Subacromial decompression',u:'https://www.cochranelibrary.com/'}],
+    keys:['Douleur latérale','Douleur élévation','Douleur abduction','Mouvements répétitifs','Test neer positif','Test Hawkins positif']
+  },
+  CAPSULITE: {
+    id:'CAPSULITE', name:'Capsulite rétractile', icon:'🔵', pop:'40-70 ans',
+    desc:'Post traumatique',
+    alert:null,
+    imaging:[{t:'Radiographies ( Normales )',d:''}],
+    treatment:[{t:'AINS',d:''},{t:'DOLIPRANE',d:''},{t:'Kinésithérapie',d:''},{t:'Infiltration capsulaire cortisonée',d:''},{t:'Hydrodistension',d:''}],
+    exercises:[{t:'Pendule de Codman',d:''},{t:'Marche du mur',d:''},{t:'Étirement en rotation externe (bâton)',d:''},{t:'Étirement en rotation interne (main derrière le dos)',d:''}],ficheExercice:'lococlic_fiches_patient/04_capsulite_retractile.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Rhumatologue',why:'',p:true},{who:'Chirurgien orthopédique ( arthrodistension )',why:'',p:true}],
+    sources:[{l:'HAS 2023 — Épaule douloureuse non traumatique',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'SOFEC — Capsulite rétractile',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'JOSPT CPG — Adhesive capsulitis',u:'https://www.jospt.org/'},{l:'NICE CKS — Frozen shoulder',u:'https://cks.nice.org.uk/topics/shoulder-pain/management/frozen-shoulder/'}],
+    keys:['Post traumatique','Post chirurgical','Raideur globale','Rotation externe limitée','Douleur en abduction','Limitations passives et actives']
+  },
+  ARTHROSE_GH: {
+    id:'ARTHROSE_GH', name:'Arthrose gléno-humérale', icon:'🟤', pop:'> 60 ans',
+    desc:'Dérouillage matinal',
+    alert:null,
+    imaging:[{t:'Radiographies',d:''}],
+    treatment:[{t:'Antalgiques',d:''},{t:'kinésithérapie',d:''},{t:'Infiltration intra-articulaire',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique coiffe globale (RE + RI)',d:''},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/05_arthrose_gleno_humerale.html',
+    referral:[{who:'Rhumatologue',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
+    sources:[{l:'HAS — Arthrose : prise en charge',u:'https://www.has-sante.fr/jcms/c_272123/fr/rechercher'},{l:'AAOS OrthoInfo — Glenohumeral osteoarthritis',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'},{l:'SOFEC — Arthrose gléno-humérale',u:'https://www.sofcot.fr/cnp-cot/sofec'}],
+    keys:['Dérouillage matinal','Douleur rotation externe','Limitations mobilité passive']
+  },
+  RUPTURE_COIFFE: {
+    id:'RUPTURE_COIFFE', name:'Rupture massive de coiffe', icon:'🔴', pop:'> 50 ans',
+    desc:'Impotence / perte de force abduction',
+    alert:null,
+    imaging:[{t:'Echographie +/- IRM',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Antalgie',d:''},{t:'Chirurgie',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique du deltoïde antérieur',d:''},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/06_rupture_massive_coiffe.html',
+    referral:[{who:'Chirurgien orthopédique',why:'',p:true}],
+    sources:[{l:'HAS 2023 — Tendinopathies coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'SOFEC — Ruptures de la coiffe des rotateurs',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'AAOS OrthoInfo — Rotator cuff tears',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'},{l:'Cochrane — Surgery for rotator cuff tears',u:'https://www.cochranelibrary.com/'}],
+    keys:['Impotence / perte de force abduction','Brutal','Limitation mobilité active','Signe du Clairon','Pas de limitation mobilité passive','Peu ou pas de douleur']
+  },
+  CALCIFICATION: {
+    id:'CALCIFICATION', name:'Résorption calcique', icon:'⚡', pop:'40 à 60 ans , Femmes',
+    desc:'Phase aigüe:',
+    alert:null,
+    imaging:[{t:'Radiographies',d:''},{t:'Echographie (localisation)',d:''}],
+    treatment:[{t:'Phase aigüe:',d:''},{t:'Antalgie',d:''},{t:'AINS',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Phase chronique:',d:''},{t:'Kinésithérapie',d:''},{t:'Arthroscopie',d:''},{t:'Trituration',d:''},{t:'Chirurgie :',d:''},{t:'Si échec',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique en abduction',d:''},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/07_resorption_calcique.html',
+    referral:[{who:'Rhumatologue/ médecin du sport (traitement médical), infiltration',why:'',p:true},{who:'Radiologue interventionnel (trituration, lavage)',why:'',p:true},{who:'Chirurgien orthopédique ( si échec )',why:'',p:true}],
+    sources:[{l:'HAS 2023 — Épaule douloureuse — calcifications',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'SOFEC — Tendinopathies calcifiantes',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'Cochrane — Calcific tendinitis treatments',u:'https://www.cochranelibrary.com/'}],
+    keys:['Phase aigüe:','Impotence active','limitations mouvements passifs','Brutal ou rapidement progressif','Phase chronique:','Douleur type Tendinopathie sus-épineux et/ou conflit sous acromial']
+  },
+  TEND_BICEPS: {
+    id:'TEND_BICEPS', name:'Tendinopathie biceps brachial', icon:'🟣', pop:'30-60 ans',
+    desc:'Douleur antérieure',
+    alert:null,
+    imaging:[{t:'Aucune',d:''},{t:'Echographie',d:''}],
+    treatment:[{t:'Antalgie',d:''},{t:'Kinésithérapie',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique du biceps',d:''},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/08_tendinopathie_biceps.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgie si désinsertion distale',why:'',p:true}],
+    sources:[{l:'HAS 2023 — Épaule douloureuse non traumatique',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'SOFEC — Pathologie du biceps brachial',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'AAOS OrthoInfo — Biceps tendinitis',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'},{l:'NICE CKS — Shoulder pain',u:'https://cks.nice.org.uk/topics/shoulder-pain/'}],
+    keys:['Douleur antérieure','Mouvements répétitifs','Douleur portage','Palm up test positif','Yergason test positif','Douleur palpation gouttière bicipitale']
+  },
+  SLAP: {
+    id:'SLAP', name:'Lésion SLAP', icon:'🟠', pop:'20 - 40 ans  - Sport lancer',
+    desc:'Douleur profonde antérieure',
+    alert:null,
+    imaging:[{t:'Arthroscanner',d:''},{t:'Arthro IRM',d:''}],
+    treatment:[{t:'Antalgie',d:''},{t:'Kinésithérapie',d:''},{t:'Chirurgie',d:''},{t:'Infiltration Cortisonée',d:''},{t:'Infiltration PRP',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique biceps + coiffe',d:''},{t:'Étirement de la capsule postérieure',d:''}],ficheExercice:'lococlic_fiches_patient/09_lesion_slap.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
+    sources:[{l:'SOFEC — Lésions du bourrelet glénoïdien (SLAP)',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'AAOS OrthoInfo — SLAP tears',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'},{l:'JOSPT — SLAP lesions diagnosis',u:'https://www.jospt.org/'}],
+    keys:['Douleur profonde antérieure','Claquement','Perte de force lancer','O’brien test positif','Palm up test positif','Crank test positif ( compression et rotation interne et externe )']
+  },
+  INSTAB_ANT: {
+    id:'INSTAB_ANT', name:'Instabilité antérieure', icon:'🔴', pop:'20–40 ans  -Sportif',
+    desc:'Antécédent de luxation antéro-inférieure',
+    alert:null,
+    imaging:[{t:'IRM',d:''},{t:'Arthroscanner',d:''},{t:'Arthro-IRM',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Si récidive immobilisation fonction douleur',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement des rotateurs en position de sécurité',d:''},{t:'Proprioception sur ballon contre mur',d:''}],ficheExercice:'lococlic_fiches_patient/10_instabilite_anterieure.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgie orthopédique',why:'',p:true}],
+    sources:[{l:'SOFEC — Instabilité antérieure de l\'épaule',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'AAOS OrthoInfo — Shoulder instability',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'},{l:'JOSPT — Shoulder instability rehabilitation',u:'https://www.jospt.org/'},{l:'NICE CKS — Shoulder pain',u:'https://cks.nice.org.uk/topics/shoulder-pain/'}],
+    keys:['Antécédent de luxation antéro-inférieure','Instabilité','Appréhension','Apprehension test positif','Relocation test positif','Load and shift test (tiroir)']
+  },
+  INSTAB_POST: {
+    id:'INSTAB_POST', name:'Instabilité postérieure', icon:'🔴', pop:'20–40 ans  - Haltérophilie - Lutte',
+    desc:'Antécédent de luxation',
+    alert:null,
+    imaging:[{t:'Arthoscanner',d:''},{t:'Arthro-IRM',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration cortisonée',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement prioritaire des rotateurs externes',d:''},{t:'Proprioception sur ballon contre mur',d:''}],ficheExercice:'lococlic_fiches_patient/11_instabilite_posterieure.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgie',why:'',p:true}],
+    sources:[{l:'SOFEC — Instabilité postérieure de l\'épaule',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'AAOS OrthoInfo — Posterior shoulder instability',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'},{l:'JOSPT — Posterior instability',u:'https://www.jospt.org/'}],
+    keys:['Antécédent de luxation','Antécédent traumatisme hyper-extension','Douleur postérieure','Instabilité poussée','Jerk test positif','Stress test postérieur ( Test d’appréhension postérieure )']
+  },
+  ENTORSE_ACR_CLAV: {
+    id:'ENTORSE_ACR_CLAV', name:'Entorse acromio-claviculaire', icon:'🟠', pop:'20–40 ans  -Rugby   -Judo',
+    desc:'Douleur supérieure',
+    alert:null,
+    imaging:[{t:'Radiographies',d:''}],
+    treatment:[{t:'Classification Rockwood:',d:''},{t:'Grade I à II : Dujarrier ou anneaux 1 à 2 semaines',d:''},{t:'Grade III : Dujarrier 2 à 3 semaine ou chirurgie',d:''},{t:'Grade IV ou + : Chirurgical',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement trapèzes (haussement + Y allongé)',d:''},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/12_entorse_acromio_claviculaire.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique si grade > 4',why:'',p:true}],
+    sources:[{l:'ESSKA — Recommandations disjonctions acromio-claviculaires',u:'https://www.esska.org/'},{l:'SOFEC — Disjonctions acromio-claviculaires',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'AAOS OrthoInfo — AC joint injuries',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'},{l:'HAS — Traumatologie de l\'épaule',u:'https://www.has-sante.fr/jcms/c_272123/fr/rechercher'}],
+    keys:['Douleur supérieure','Traumatisme direct','Impotence modérée','Douleur palpation pôle supérieur ( acromion )','Douleur Cross arm test','Recherche touche de piano']
+  },
+  CONFLIT_CORACOIDE: {
+    id:'CONFLIT_CORACOIDE', name:'Conflit coracoïdien', icon:'🟣', pop:'30 -50 ans',
+    desc:'Douleur antérieure , profonde',
+    alert:null,
+    imaging:[{t:'Radiographies',d:''},{t:'Echographie',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'AINS',d:''},{t:'Infiltration corticostéroïdes',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique sous-scapulaire en R2',d:''},{t:'Étirement pectoral (ouverture thoracique)',d:''}],ficheExercice:'lococlic_fiches_patient/13_conflit_coracoidien.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique si échec',why:'',p:true}],
+    sources:[{l:'SOFEC — Conflit coracoïdien',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'HAS 2023 — Épaule douloureuse (causes antérieures)',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'AAOS OrthoInfo — Shoulder impingement',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'}],
+    keys:['Douleur antérieure , profonde','Progressive','Douleur à la palpation de la coracoïde','Douleur en flexion, adduction et rotation interne','Test passif en répétant les mouvements de flexion, adduction et rotation interne']
+  },
+  TEND_SOUS_SCAP: {
+    id:'TEND_SOUS_SCAP', name:'Tendinopathie sous scapulaire', icon:'🟡', pop:'> 40 ans',
+    desc:'Douleur antérieure',
+    alert:null,
+    imaging:[{t:'Echographie',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Antalgie',d:''},{t:'AINS',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique sous-scapulaire en R2',d:''},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/14_tendinopathie_sous_scapulaire.html',
+    referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'HAS 2023 — Tendinopathies coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'SOFEC — Tendinopathie du sous-scapulaire',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'AAOS OrthoInfo — Subscapularis tears',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'},{l:'JOSPT — Subscapularis clinical tests',u:'https://www.jospt.org/'}],
+    keys:['Douleur antérieure','Progressive','Post chirurgie','Douleur et faiblesse rotation interne ( RE2)','Douleur palpation insertion antérieure sous-scapulaire','Rotation interne lag sign']
+  },
+  DEFILE: {
+    id:'DEFILE', name:'Syndrome du défilé', icon:'⚡', pop:'30-50 ans , posture',
+    desc:'Paresthésies de la main et dans le bras',
+    alert:null,
+    imaging:[{t:'Echographie dynamique',d:''},{t:'ENMG',d:''},{t:'Angioscanner (si doute lésion vasculaire)',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Chirurgie décompression',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des scalènes et ouverture du défilé',d:''},{t:'Mobilisation neurale du nerf médian (slider doux)',d:''}],ficheExercice:'lococlic_fiches_patient/15_syndrome_defile.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Kinésithérapeute spécialisé',why:'',p:true},{who:'Chirurgien ( si vasculaire )',why:'',p:true}],
+    sources:[{l:'Société Française de Chirurgie Vasculaire — Défilé thoraco-brachial',u:'https://www.sfcvasc.fr/'},{l:'HAS — Syndrome du défilé thoraco-cervico-brachial',u:'https://www.has-sante.fr/jcms/c_272123/fr/rechercher'},{l:'AAOS OrthoInfo — Thoracic outlet syndrome',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'},{l:'Cochrane — Thoracic outlet syndrome',u:'https://www.cochranelibrary.com/'}],
+    keys:['Paresthésies de la main et dans le bras','Localisation imprécise','Douleur antérieure','Sensation de gêne','Posture répétée','Augmente à l’effort si vasculaire']
+  },
+  GIRD: {
+    id:'GIRD', name:'Syndrome GIRD', icon:'🔵', pop:'20-40 ans , sport lancer (baseball, handball, tennis , water polo)',
+    desc:'Perte de rotation interne glénoïdaux-humérale> 20 ° par rapport autre coté',
+    alert:null,
+    imaging:[{t:'IRM : Epaississement capsulaire postérieur',d:''},{t:'Echographie : Rétraction capsule postérieure',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration corticostéroïdes capsule postérieure',d:''},{t:'Chirurgie ( si échec médical )',d:''}],
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Sleeper stretch',d:''},{t:'Étirement de la capsule postérieure (cross-body)',d:''}],ficheExercice:'lococlic_fiches_patient/16_syndrome_gird.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique ( si échec médical )',why:'',p:true}],
+    sources:[{l:'SOFEC — Pathologies de l\'épaule du sportif lanceur',u:'https://www.sofcot.fr/cnp-cot/sofec'},{l:'JOSPT — GIRD diagnosis and management',u:'https://www.jospt.org/'},{l:'AAOS OrthoInfo — Overhead athlete shoulder',u:'https://orthoinfo.aaos.org/en/diseases--conditions/shoulder/'}],
+    keys:['Perte de rotation interne glénoïdaux-humérale> 20 ° par rapport autre coté','Augmentation rotation externe','Douleur postérieure lors lancer /service','Mesure des rotations interne et externe','Douleur à l’étirement de la capsule postérieure en rotation interne forcée']
+  }
+};
+
+// ========== TESTS CLINIQUES ==========
+const TESTS = {
+  jobe: {
+    name:'Test de Jobe', family:'SUS_EPINEUX', badge:'SUS',
+    desc:"Test de référence du tendon du sus-épineux",
+    how:"Bras à 90° d'abduction, 30° d'antépulsion, pouce vers le bas (rotation interne complète). Le patient résiste à une pression descendante exercée par l'examinateur.",
+    pos:"Douleur ou faiblesse — atteinte du sus-épineux (tendinopathie, rupture partielle)",
+    neg:"Pas de douleur ni faiblesse — sus-épineux intact",
+    affects_pos:{TEND_SUS_EPINEUX:45, RUPTURE_COIFFE:25, CONFLIT_SOUS_ACRO:15}, 
+    affects_neg:{TEND_SUS_EPINEUX:-25, RUPTURE_COIFFE:-15}
+  },
+  clairon: {
+    name:'Signe du clairon', family:'SUS_EPINEUX', badge:'SUS',
+    desc:"Test d'atteinte du sus-épineux et de l'infra-épineux",
+    how:"Le patient amène la main à la bouche. Si rupture massive de la coiffe ou tendinopathie sévère, le patient surélève le coude pour compenser (signe du clairon positif).",
+    pos:"Le coude se surélève — atteinte importante de la coiffe postéro-supérieure",
+    neg:"Le coude reste en position normale",
+    affects_pos:{RUPTURE_COIFFE:35, TEND_SUS_EPINEUX:15}, 
+    affects_neg:{RUPTURE_COIFFE:-15}
+  },
+  neer: {
+    name:'Test de Neer', family:'CONFLIT', badge:'CONF',
+    desc:"Test du conflit sous-acromial",
+    how:"Examinateur stabilise la scapula du patient. Élévation antérieure passive maximale du bras en pronation (pouce vers le bas).",
+    pos:"Douleur dans l'arc 70-120° — conflit sous-acromial probable",
+    neg:"Mouvement non douloureux",
+    affects_pos:{CONFLIT_SOUS_ACRO:38, BURSITE_SOUS_ACRO:35, TEND_SUS_EPINEUX:15}, 
+    affects_neg:{CONFLIT_SOUS_ACRO:-25, BURSITE_SOUS_ACRO:-15}
+  },
+  hawkins: {
+    name:'Test de Hawkins-Kennedy', family:'CONFLIT', badge:'CONF',
+    desc:"Test sensible du conflit sous-acromial",
+    how:"Bras à 90° d'antépulsion, coude à 90° de flexion. Rotation interne passive forcée.",
+    pos:"Douleur antéro-supérieure — conflit sous-acromial",
+    neg:"Indolore",
+    affects_pos:{CONFLIT_SOUS_ACRO:36, BURSITE_SOUS_ACRO:32, TEND_SUS_EPINEUX:12}, 
+    affects_neg:{CONFLIT_SOUS_ACRO:-22, BURSITE_SOUS_ACRO:-12}
+  },
+  palm_up: {
+    name:'Palm-up test (Speed)', family:'BICEPS', badge:'BIC',
+    desc:"Test du tendon du long biceps",
+    how:"Bras à 90° d'antépulsion, coude tendu, supination (paume vers le haut). Pression descendante contrariée.",
+    pos:"Douleur sur la coulisse bicipitale — tendinopathie biceps",
+    neg:"Indolore",
+    affects_pos:{TEND_BICEPS:45, SLAP:15}, 
+    affects_neg:{TEND_BICEPS:-25}
+  },
+  yergason: {
+    name:'Test de Yergason', family:'BICEPS', badge:'BIC',
+    desc:"Test spécifique du long biceps",
+    how:"Coude à 90° contre le corps, avant-bras en pronation. Le patient effectue une supination contrariée.",
+    pos:"Douleur sur la coulisse bicipitale — tendinopathie ou subluxation du biceps",
+    neg:"Indolore",
+    affects_pos:{TEND_BICEPS:42, SLAP:12}, 
+    affects_neg:{TEND_BICEPS:-22}
+  },
+  obrien: {
+    name:"Test d'O'Brien (Active Compression)", family:'SLAP', badge:'SLAP',
+    desc:"Test SLAP et atteinte AC",
+    how:"Bras à 90° d'antépulsion, 10° d'adduction, coude tendu, pouce vers le bas. Résistance vers le bas. Puis répéter pouce vers le haut.",
+    pos:"Douleur PROFONDE (intra-articulaire) en pronation, atténuée en supination → SLAP. Douleur sur le sommet de l'épaule → AC",
+    neg:"Indolore",
+    affects_pos:{SLAP:40, ENTORSE_ACR_CLAV:20, TEND_BICEPS:10}, 
+    affects_neg:{SLAP:-20}
+  },
+  crank: {
+    name:'Crank test', family:'SLAP', badge:'SLAP',
+    desc:"Test SLAP par compression-rotation",
+    how:"Bras à 160° d'élévation, coude à 90° de flexion. Compression axiale forcée + rotations alternées du bras.",
+    pos:"Douleur ou claquement reproduit — lésion du labrum supérieur (SLAP)",
+    neg:"Indolore",
+    affects_pos:{SLAP:38, INSTAB_ANT:10}, 
+    affects_neg:{SLAP:-20}
+  },
+  apprehension: {
+    name:"Test d'appréhension antérieure", family:'INSTAB', badge:'INST',
+    desc:"Test d'instabilité antérieure de l'épaule",
+    how:"Patient en décubitus dorsal. Bras à 90° d'abduction, coude à 90° de flexion. Rotation externe progressive passive du bras.",
+    pos:"Appréhension franche du patient (pas seulement douleur) — instabilité antérieure",
+    neg:"Pas d'appréhension",
+    affects_pos:{INSTAB_ANT:50, SLAP:10}, 
+    affects_neg:{INSTAB_ANT:-30}
+  },
+  relocation: {
+    name:'Test de relocation (Jobe)', family:'INSTAB', badge:'INST',
+    desc:"Confirme l'instabilité antérieure",
+    how:"Après test d'appréhension positif, appliquer une pression POSTÉRIEURE sur la tête humérale (en relocant l'articulation).",
+    pos:"Disparition de l'appréhension/douleur — instabilité antérieure confirmée",
+    neg:"Persiste",
+    affects_pos:{INSTAB_ANT:42, SLAP:8}, 
+    affects_neg:{INSTAB_ANT:-22}
+  },
+  jerk: {
+    name:'Test du jerk', family:'INSTAB_POST', badge:'INST',
+    desc:"Test d'instabilité postérieure",
+    how:"Patient assis. Bras à 90° d'antépulsion, coude fléchi, en adduction et rotation interne. Compression axiale.",
+    pos:"Claquement audible + reproduction d'une subluxation postérieure",
+    neg:"Indolore",
+    affects_pos:{INSTAB_POST:50}, 
+    affects_neg:{INSTAB_POST:-25}
+  },
+  cross_arm: {
+    name:'Cross-arm test (adduction horizontale forcée)', family:'AC', badge:'AC',
+    desc:"Test de l'articulation acromio-claviculaire",
+    how:"Bras à 90° d'antépulsion. Adduction horizontale forcée (porter la main vers l'épaule opposée).",
+    pos:"Douleur localisée sur la pointe de l'épaule (AC) — atteinte AC",
+    neg:"Indolore",
+    affects_pos:{ENTORSE_ACR_CLAV:50}, 
+    affects_neg:{ENTORSE_ACR_CLAV:-25}
+  },
+  paxinos_test: {
+    name:'Test de Paxinos', family:'AC', badge:'AC',
+    desc:"Test de palpation-pression AC",
+    how:"L'examinateur place son pouce sur la face postéro-latérale de l'acromion, et son index sur la clavicule médiane. Compression simultanée.",
+    pos:"Douleur reproduite sur l'AC — atteinte AC",
+    neg:"Indolore",
+    affects_pos:{ENTORSE_ACR_CLAV:45}, 
+    affects_neg:{ENTORSE_ACR_CLAV:-22}
+  },
+  lift_off: {
+    name:'Lift-off test (Gerber)', family:'SOUS_SCAP', badge:'SUB',
+    desc:"Test spécifique du sous-scapulaire",
+    how:"Dos de la main du patient placé sur la région lombaire. Demander de décoller activement la main du dos.",
+    pos:"Incapacité à décoller la main ou faiblesse — rupture/tendinopathie du sous-scapulaire",
+    neg:"Décollement normal",
+    affects_pos:{TEND_SOUS_SCAP:45, RUPTURE_COIFFE:20}, 
+    affects_neg:{TEND_SOUS_SCAP:-25}
+  },
+  bear_hug: {
+    name:'Bear-hug test', family:'SOUS_SCAP', badge:'SUB',
+    desc:"Test sensible du sous-scapulaire",
+    how:"Main du patient sur l'épaule controlatérale, coude en avant. Le patient résiste à une élévation du coude.",
+    pos:"Faiblesse ou douleur — tendinopathie/rupture du sous-scapulaire",
+    neg:"Force normale",
+    affects_pos:{TEND_SOUS_SCAP:42}, 
+    affects_neg:{TEND_SOUS_SCAP:-22}
+  },
+  belly_press: {
+    name:'Belly-press test', family:'SOUS_SCAP', badge:'SUB',
+    desc:"Test du sous-scapulaire (si lift-off impossible)",
+    how:"Paume sur le ventre, coude en avant. Demander de pousser sur le ventre sans bouger le coude en arrière.",
+    pos:"Coude bascule en arrière (le patient compense par extension d'épaule) — sous-scapulaire faible",
+    neg:"Coude maintenu en avant",
+    affects_pos:{TEND_SOUS_SCAP:40}, 
+    affects_neg:{TEND_SOUS_SCAP:-20}
+  },
+  ri_abd_contrariee: {
+    name:'Rotation interne contrariée bras en abduction', family:'SOUS_SCAP', badge:'SUB',
+    desc:"Test ciblant le sous-scapulaire",
+    how:"Bras à 90° d'abduction, coude à 90°. Demander une rotation interne contre résistance.",
+    pos:"Faiblesse ou douleur antérieure — tendinopathie sous-scapulaire",
+    neg:"Force normale",
+    affects_pos:{TEND_SOUS_SCAP:38, CONFLIT_CORACOIDE:10}, 
+    affects_neg:{TEND_SOUS_SCAP:-20}
+  },
+  adson: {
+    name:"Test d'Adson", family:'DEFILE', badge:'TOS',
+    desc:"Test du défilé thoraco-brachial (compression vasculo-nerveuse)",
+    how:"Patient assis. Bras le long du corps. Palper le pouls radial. Faire tourner la tête du côté atteint, en extension cervicale + inspiration profonde retenue.",
+    pos:"Diminution/abolition du pouls radial OU reproduction des paresthésies — défilé probable",
+    neg:"Pouls et symptômes inchangés",
+    affects_pos:{DEFILE:40}, 
+    affects_neg:{DEFILE:-20}
+  },
+  roos_test: {
+    name:'Test de Roos (EAST)', family:'DEFILE', badge:'TOS',
+    desc:"Test sensible du défilé thoraco-brachial",
+    how:"Les deux bras à 90° d'abduction, coudes fléchis à 90°. Ouverture/fermeture lente des poings pendant 3 minutes.",
+    pos:"Apparition de paresthésies, lourdeur, pâleur ou douleur du bras AVANT 3 min — défilé probable",
+    neg:"Tenue 3 min sans symptôme",
+    affects_pos:{DEFILE:45}, 
+    affects_neg:{DEFILE:-25}
+  },
+  wright_test: {
+    name:'Test de Wright (hyperabduction)', family:'DEFILE', badge:'TOS',
+    desc:"Test du défilé en hyperabduction",
+    how:"Patient assis. Bras en abduction à 180° (mains au-dessus de la tête), rotation externe. Palper le pouls radial.",
+    pos:"Diminution/abolition du pouls OU paresthésies — défilé",
+    neg:"Pouls et symptômes inchangés",
+    affects_pos:{DEFILE:40}, 
+    affects_neg:{DEFILE:-20}
+  },
+  gird_mesure: {
+    name:'Mesure GIRD (rotation interne)', family:'GIRD', badge:'GIRD',
+    desc:"Mesure du déficit de rotation interne glénohumérale",
+    how:"Patient en décubitus dorsal. Scapula stabilisée. Bras à 90° d'abduction. Mesurer la rotation interne passive. Comparer avec côté opposé.",
+    pos:"Déficit de RI > 20° par rapport au côté opposé — GIRD (Glenohumeral Internal Rotation Deficit)",
+    neg:"RI symétrique ou déficit < 20°",
+    affects_pos:{GIRD:50, INSTAB_POST:10}, 
+    affects_neg:{GIRD:-30}
+  },
+  sleeper_stretch: {
+    name:'Sleeper stretch test', family:'GIRD', badge:'GIRD',
+    desc:"Test fonctionnel d'étirement capsulaire postérieur (GIRD)",
+    how:"Patient en décubitus latéral, côté atteint dessous. Bras à 90° d'abduction. L'examinateur effectue une rotation interne passive.",
+    pos:"Limitation et douleur postérieure — raccourcissement capsulaire postérieur (GIRD)",
+    neg:"Amplitude normale",
+    affects_pos:{GIRD:42}, 
+    affects_neg:{GIRD:-20}
+  },
+  re_passive_limitee: {
+    name:'Rotation externe passive limitée', family:'PASSIVE', badge:'PASS',
+    desc:"Test de capsulite et arthrose glénohumérale",
+    how:"Coude à 90°, bras le long du corps. L'examinateur effectue une rotation externe passive. Comparer côté opposé.",
+    pos:"Limitation > 50% par rapport au côté sain — capsulite rétractile probable",
+    neg:"RE passive normale (capsulite peu probable)",
+    affects_pos:{CAPSULITE:50, ARTHROSE_GH:30}, 
+    affects_neg:{CAPSULITE:-30, ARTHROSE_GH:-15}
+  },
+  signe_portillon: {
+    name:'Signe du portillon (drop-arm test)', family:'COIFFE', badge:'COIF',
+    desc:"Test de rupture massive de la coiffe",
+    how:"Élever passivement le bras à 90° d'abduction puis lâcher. Demander au patient de tenir la position puis de descendre lentement.",
+    pos:"Chute brutale du bras ou incapacité à tenir — rupture massive de la coiffe",
+    neg:"Tenue active possible",
+    affects_pos:{RUPTURE_COIFFE:55, TEND_SUS_EPINEUX:10}, 
+    affects_neg:{RUPTURE_COIFFE:-30}
+  },
+  coracoid_palpation: {
+    name:'Palpation du processus coracoïde', family:'CORACOIDE', badge:'COR',
+    desc:"Palpation directe du processus coracoïde",
+    how:"Palper directement le processus coracoïde (2 cm sous la clavicule, médial). Comparer côté opposé.",
+    pos:"Douleur exquise reproduisant les symptômes — conflit coracoïdien",
+    neg:"Palpation indolore",
+    affects_pos:{CONFLIT_CORACOIDE:50, TEND_BICEPS:10}, 
+    affects_neg:{CONFLIT_CORACOIDE:-25}
+  },
+  coracoid_impingement: {
+    name:'Coracoid impingement test (Gerber)', family:'CORACOIDE', badge:'COR',
+    desc:"Test spécifique du conflit coracoïdien",
+    how:"Bras en flexion 90°, adduction horizontale forcée + rotation interne. Reproduit la compression entre la coracoïde et le petit tubercule.",
+    pos:"Douleur antérieure profonde reproduite — conflit coracoïdien probable",
+    neg:"Indolore",
+    affects_pos:{CONFLIT_CORACOIDE:45, TEND_SOUS_SCAP:15}, 
+    affects_neg:{CONFLIT_CORACOIDE:-22}
+  }
+};
+
+// ========== VIGNETTES + CHOIX + CIRCUITS ==========
+const VIGNETTES = {
+  loc_ac: {
+    id:'loc_ac', lbl:'⬆️ Pointe de l\'épaule (AC)',
+    desc:"Sommet de l'épaule, sur l'articulation acromio-claviculaire — typique d'une entorse AC",
+    score:{ENTORSE_ACR_CLAV:50}
+  },
+  loc_ant: {
+    id:'loc_ant', lbl:'🔻 Face antérieure',
+    desc:"Devant l'épaule, irradiation deltoïdien antérieur",
+    score:{CONFLIT_CORACOIDE:35, TEND_BICEPS:28, TEND_SOUS_SCAP:25, INSTAB_ANT:15, SLAP:10}
+  },
+  loc_lat: {
+    id:'loc_lat', lbl:'↔️ Face latérale (V deltoïdien)',
+    desc:'Face latérale en V deltoïdien',
+    score:{BURSITE_SOUS_ACRO:42, CONFLIT_SOUS_ACRO:35, TEND_SUS_EPINEUX:32, CALCIFICATION:15}
+  },
+  loc_post: {
+    id:'loc_post', lbl:'◀️ Face postérieure',
+    desc:"Face postérieure de l'épaule",
+    score:{INSTAB_POST:42, GIRD:30, CAPSULITE:15}
+  },
+  pres_instab_force: {
+    id:'pres_instab_force', lbl:'😰 Sensation d\'instabilité ou luxation',
+    desc:"Sensation d'épaule qui part à un mouvement précis — instabilité antérieure ou postérieure",
+    score:{INSTAB_ANT:50, INSTAB_POST:35, SLAP:15}
+  },
+  pres_raideur: {
+    id:'pres_raideur', lbl:'🔒 Épaule raide (active ET passive)',
+    desc:'Limitation ACTIVE ET PASSIVE des amplitudes',
+    score:{CAPSULITE:50, ARTHROSE_GH:35}
+  },
+  pres_crise: {
+    id:'pres_crise', lbl:'⚡ Crise hyperalgique brutale',
+    desc:'Douleur très intense brutale, parfois nocturne, sans trauma',
+    score:{CALCIFICATION:55, BURSITE_SOUS_ACRO:15}
+  },
+  pres_paresth: {
+    id:'pres_paresth', lbl:'⚡ Paresthésies bras levé',
+    desc:'Fourmillements ou lourdeur du bras en position bras levé',
+    score:{DEFILE:55}
+  }
+};
+
+const MECA_VIGS = {
+  trauma:    ['loc_ac','loc_ant','loc_post','pres_instab_force'],
+  surcharge: ['loc_lat','loc_ant','loc_post','pres_instab_force','pres_paresth'],
+  raideur:   ['loc_lat','loc_post','pres_raideur'],
+  crise:     ['loc_lat','loc_ant','pres_crise']
+};
+
+const CHOICES = {
+  MECANISME: {
+    tag:'Étape 1 · Mécanisme', q:"Comment la douleur est-elle apparue ?",
+    items:[
+      {key:'trauma', lbl:'Traumatisme aigu',
+        desc:"Chute, choc direct ou mouvement brutal de l'épaule",
+        score:{ENTORSE_ACR_CLAV:35, INSTAB_ANT:30, SLAP:20, INSTAB_POST:15, RUPTURE_COIFFE:15}},
+      {key:'surcharge', lbl:'Surcharge mécanique sportive',
+        desc:"Sport overhead (natation, tennis, lancer), surcharge professionnelle, gestes répétés",
+        score:{TEND_SUS_EPINEUX:25, CONFLIT_SOUS_ACRO:25, BURSITE_SOUS_ACRO:25, TEND_BICEPS:20, TEND_SOUS_SCAP:20, GIRD:25, SLAP:15, DEFILE:15}},
+      {key:'raideur', lbl:'Installation progressive avec raideur',
+        desc:"Apparition lente, raideur croissante, parfois sans douleur initiale",
+        score:{CAPSULITE:40, ARTHROSE_GH:30, GIRD:15}},
+      {key:'crise', lbl:'Crise hyperalgique brutale',
+        desc:"Apparition très brutale, douleur intense souvent nocturne, sans traumatisme",
+        score:{CALCIFICATION:50, BURSITE_SOUS_ACRO:25}}
+    ]
+  },
+  AGE: {
+    tag:'Étape 2 · Profil patient', q:'Profil clinique du patient ?',
+    items:[
+      {key:'jeune_sport', lbl:'< 35 ans, sportif overhead',
+        desc:'Natation, tennis, hand, volley, lancer — sportif avec geste répétitif au-dessus de la tête',
+        score:{INSTAB_ANT:30, SLAP:25, GIRD:30, DEFILE:15, TEND_BICEPS:15}},
+      {key:'jeune', lbl:'< 35 ans, peu ou pas sportif',
+        desc:'Activité modérée',
+        score:{INSTAB_ANT:20, DEFILE:10, ENTORSE_ACR_CLAV:10}},
+      {key:'a35_60', lbl:'35-60 ans',
+        desc:'Adulte actif, professionnel manuel ou sportif récréatif',
+        score:{TEND_SUS_EPINEUX:22, CONFLIT_SOUS_ACRO:22, BURSITE_SOUS_ACRO:25, TEND_BICEPS:16, CAPSULITE:20, CALCIFICATION:15, TEND_SOUS_SCAP:15, CONFLIT_CORACOIDE:20}},
+      {key:'a60p', lbl:'> 60 ans',
+        desc:'Sénior',
+        score:{RUPTURE_COIFFE:30, ARTHROSE_GH:30, CAPSULITE:20, TEND_SUS_EPINEUX:15}}
+    ]
+  },
+  HORAIRE: {
+    tag:'Étape 4 · Horaire douloureux', q:"Quel est le caractère et l'horaire de la douleur ?",
+    items:[
+      {key:'mec', lbl:'Mécanique pur',
+        desc:'Effort → douleur, repos → soulagement',
+        score:{CONFLIT_SOUS_ACRO:18, TEND_SUS_EPINEUX:15, TEND_BICEPS:15, TEND_SOUS_SCAP:15, ARTHROSE_GH:15, GIRD:12}},
+      {key:'mixte', lbl:'Mixte (mécanique + nocturne)',
+        desc:'Effort + douleur nocturne en se couchant sur le côté atteint',
+        score:{BURSITE_SOUS_ACRO:32, TEND_SUS_EPINEUX:22, CONFLIT_SOUS_ACRO:20, RUPTURE_COIFFE:20, CAPSULITE:15}},
+      {key:'effort', lbl:'À un effort précis',
+        desc:'Reproductible à un mouvement précis (lancer, armé du tennis, etc.)',
+        score:{INSTAB_ANT:25, SLAP:20, GIRD:18, ENTORSE_ACR_CLAV:15, TEND_BICEPS:12}},
+      {key:'inflam', lbl:'Inflammatoire (nocturne ++, hyperalgique)',
+        desc:'Réveil nocturne, douleur intense, peu calmée par le repos',
+        score:{CALCIFICATION:35, BURSITE_SOUS_ACRO:18, CAPSULITE:15}}
+    ]
+  }
+};
+
+const CIRCUITS = {
+  TEND_SUS_EPINEUX:    ['jobe','neer','palm_up','re_passive_limitee','signe_portillon'],
+  BURSITE_SOUS_ACRO:   ['neer','hawkins','jobe','re_passive_limitee','palm_up'],
+  CONFLIT_SOUS_ACRO:   ['neer','hawkins','jobe','re_passive_limitee','palm_up'],
+  CAPSULITE:           ['re_passive_limitee','neer','jobe','obrien','palm_up'],
+  ARTHROSE_GH:         ['re_passive_limitee','neer','jobe','hawkins','palm_up'],
+  RUPTURE_COIFFE:      ['signe_portillon','jobe','clairon','lift_off','neer'],
+  CALCIFICATION:       ['neer','hawkins','jobe','palm_up','re_passive_limitee'],
+  TEND_BICEPS:         ['palm_up','yergason','neer','obrien','jobe'],
+  SLAP:                ['obrien','crank','apprehension','palm_up','jobe'],
+  INSTAB_ANT:          ['apprehension','relocation','obrien','jobe','palm_up'],
+  INSTAB_POST:         ['jerk','apprehension','gird_mesure','obrien','palm_up'],
+  ENTORSE_ACR_CLAV:    ['cross_arm','paxinos_test','obrien','neer','jobe'],
+  CONFLIT_CORACOIDE:   ['coracoid_impingement','coracoid_palpation','ri_abd_contrariee','neer','palm_up'],
+  TEND_SOUS_SCAP:      ['lift_off','bear_hug','belly_press','ri_abd_contrariee','neer'],
+  DEFILE:              ['roos_test','adson','wright_test','jobe','palm_up'],
+  GIRD:                ['gird_mesure','sleeper_stretch','jerk','obrien','jobe']
+};
+
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR ==========
+// ========== ÉTAT ==========
+const PATHO_LIST = Object.keys(P);
+let scores = {};
+let history = [];
+let mecaKey = null;
+let testsToRun = [];
+let testIdx = 0;
+let currentStep = 'MECANISME';
+let selectedVigs = new Set();
+
+function init(){
+  scores = {};
+  PATHO_LIST.forEach(p => scores[p] = 0);
+  history = [];
+  mecaKey = null;
+  testsToRun = [];
+  testIdx = 0;
+  currentStep = 'MECANISME';
+  selectedVigs = new Set();
+}
+
+function addScore(delta){
+  for(const k in delta){
+    if(k in scores) scores[k] += delta[k];
+  }
+}
+
+function ranked(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+}
+
+function top1(){ return ranked()[0]; }
+
+function top3WithScores(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+}
+
+// ========== LOGIQUE TESTS ADAPTATIFS ==========
+// Règle : 5 tests max
+// - Test POS  → continuer le circuit du top1 actuel (confirmation)
+// - Test NÉG  → proposer un test d\'une AUTRE famille clinique
+
+const MAX_TESTS = 5;
+
+function buildInitialQueue(){
+  const t1 = top1();
+  return [...(CIRCUITS[t1] || [])].slice(0, MAX_TESTS);
+}
+
+function applyTest(tKey, positive){
+  const t = TESTS[tKey];
+  if(!t) return;
+  const delta = positive ? t.affects_pos : t.affects_neg;
+  addScore(delta);
+  history.push({test:tKey, name:t.name, result:positive ? '✅':'❌'});
+}
+
+function nextTestAdaptive(currentFamily, positive){
+  // Tests déjà faits (jamais reproposés)
+  const done = new Set(testsToRun.slice(0, testIdx));
+  
+  if(positive){
+    // POS : continuer circuit du top1 actuel
+    const cands = CIRCUITS[top1()] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+    return null;
+  }
+  
+  // NEG : trouver patho dont le test #1 a une famille DIFFÉRENTE
+  for(const patho of ranked()){
+    const cands = CIRCUITS[patho];
+    if(!cands || !cands.length) continue;
+    for(const candTest of cands){
+      if(done.has(candTest)) continue;
+      const candFamily = (TESTS[candTest] || {}).family;
+      if(candFamily && candFamily !== currentFamily) return candTest;
+    }
+  }
+  
+  // Fallback : n\'importe quel test non fait
+  for(const patho of ranked()){
+    for(const t of (CIRCUITS[patho] || [])){
+      if(!done.has(t)) return t;
+    }
+  }
+  return null;
+}
+
+function testResult(positive){
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t) return;
+  
+  applyTest(tKey, positive);
+  const currentFamily = t.family;
+  testIdx++;
+  
+  // Si pas encore atteint MAX, choisir le prochain test
+  if(testIdx < MAX_TESTS){
+    const nextT = nextTestAdaptive(currentFamily, positive);
+    if(nextT){
+      // Remplacer le prochain prévu (ou l\'insérer)
+      if(testIdx < testsToRun.length){
+        testsToRun[testIdx] = nextT;
+      } else {
+        testsToRun.push(nextT);
+      }
+    }
+  }
+  
+  renderStep();
+}
+
+// ========== RENDERING ==========
+function pickChoice(stepKey, item){
+  addScore(item.score);
+  history.push({step:stepKey, label:item.lbl});
+  
+  if(stepKey === 'MECANISME'){
+    mecaKey = item.key;
+    currentStep = 'AGE';
+  } else if(stepKey === 'AGE'){
+    currentStep = 'TABLEAU';
+  } else if(stepKey === 'HORAIRE'){
+    testsToRun = buildInitialQueue();
+    testIdx = 0;
+    currentStep = 'TESTS';
+  }
+  renderStep();
+}
+
+function toggleVig(vid){
+  if(selectedVigs.has(vid)){
+    selectedVigs.delete(vid);
+  } else {
+    if(selectedVigs.size >= 3) return;
+    selectedVigs.add(vid);
+  }
+  renderStep();
+}
+
+function validateTableau(){
+  if(selectedVigs.size === 0) return;
+  selectedVigs.forEach(vid => {
+    addScore(VIGNETTES[vid].score);
+    history.push({step:'TABLEAU', label:VIGNETTES[vid].lbl});
+  });
+  currentStep = 'HORAIRE';
+  renderStep();
+}
+
+function skipTest(){
+  testIdx++;
+  if(testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+  }
+  renderStep();
+}
+
+function reset(){
+  init();
+  renderStep();
+}
+
+function goBack(){
+  // Retour à l\'étape précédente — simple
+  if(currentStep === 'AGE') currentStep = 'MECANISME';
+  else if(currentStep === 'TABLEAU') currentStep = 'AGE';
+  else if(currentStep === 'HORAIRE') currentStep = 'TABLEAU';
+  else if(currentStep === 'TESTS' && testIdx > 0){
+    testIdx--;
+    // Annuler le dernier test (pas le scoring pour simplifier, juste revenir au test)
+  } else if(currentStep === 'TESTS' && testIdx === 0){
+    currentStep = 'HORAIRE';
+  } else if(currentStep === 'RESULT'){
+    currentStep = 'TESTS';
+    testIdx = Math.max(0, MAX_TESTS - 1);
+  }
+  renderStep();
+}
+
+
+// ========== RENDU ==========
+// ========== HELPERS RENDU ==========
+function backBtn(){
+  if(currentStep === 'MECANISME') return '';
+  return `<button class="btn-back" onclick="goBack()">← Modifier</button>`;
+}
+
+function breadcrumbHTML(){
+  if(!history.length) return '';
+  const items = history.slice(-4).map(h => `<span class="bc-item">${(h.label||h.test||'').slice(0,30)}</span>`).join(' › ');
+  return `<div class="breadcrumb">${items}</div>`;
+}
+
+function stepIndicator(currentIdx){
+  const steps = ['Mécanisme', 'Profil', 'Tableau', 'Horaire', 'Examen'];
+  return `<div class="step-ind">
+    ${steps.map((s,i) => `<div class="si-item ${i===currentIdx?'active':''} ${i<currentIdx?'done':''}">${i+1}. ${s}</div>`).join('')}
+  </div>`;
+}
+
+// ========== ÉTAPE CHOIX (Mécanisme, Âge, Horaire) ==========
+function renderChoice(stepKey, stepIdx){
+  const c = CHOICES[stepKey];
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(stepIdx)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">${c.tag}</div>
+      <h2 class="card-q">${c.q}</h2>
+      <div class="choices">
+        ${c.items.map(it => `
+          <button class="choice" onclick="pickChoice('${stepKey}', CHOICES['${stepKey}'].items.find(x=>x.key==='${it.key}'))">
+            <div class="choice-lbl">${it.lbl}</div>
+            <div class="choice-desc">${it.desc}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TABLEAU CLINIQUE (multi-vignettes) ==========
+function renderTableau(){
+  const vigs = (MECA_VIGS[mecaKey] || Object.keys(VIGNETTES));
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(2)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 3 · Tableau clinique</div>
+      <h2 class="card-q">Cochez ce qui correspond au patient</h2>
+      <div class="card-hint">Maximum 3 cases cochables.</div>
+      <div class="vig-grid">
+        ${vigs.map(vid => {
+          const v = VIGNETTES[vid];
+          const sel = selectedVigs.has(vid);
+          return `<div class="vig ${sel?'vig-sel':''}" onclick="toggleVig('${vid}')">
+            <div class="vig-chk">${sel?'☑':'☐'}</div>
+            <div class="vig-body">
+              <div class="vig-lbl">${v.lbl}</div>
+              <div class="vig-desc">${v.desc}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="card-foot">
+        <span class="foot-info">${selectedVigs.size===0?'Aucune sélection':selectedVigs.size+'/3 coché'+(selectedVigs.size>1?'s':'')}</span>
+        <button class="btn-primary" ${selectedVigs.size===0?'disabled':''} onclick="validateTableau()">Confirmer →</button>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TESTS ==========
+function renderTests(){
+  if(testIdx >= testsToRun.length || testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+    renderStep();
+    return;
+  }
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t){
+    testIdx++;
+    renderTests();
+    return;
+  }
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(4)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 5 · Examen clinique (${testIdx+1}/${MAX_TESTS})</div>
+      <div class="test-name">${t.name}</div>
+      <div class="test-fam"><span class="test-badge">${t.badge}</span> Famille : ${t.family}</div>
+      <div class="test-desc">${t.desc}</div>
+      <div class="test-section">
+        <strong>Technique</strong>
+        <div>${t.how}</div>
+      </div>
+      <div class="test-section">
+        <strong>Interprétation</strong>
+        <div>✅ <strong>Positif :</strong> ${t.pos}</div>
+        <div>❌ <strong>Négatif :</strong> ${t.neg}</div>
+      </div>
+      <div class="test-btns">
+        <button class="btn-pos" onclick="testResult(true)">✅ Positif</button>
+        <button class="btn-neg" onclick="testResult(false)">❌ Négatif</button>
+      </div>
+      ${testIdx > 0 ? `<button class="btn-skip" onclick="skipTest()">Passer ce test →</button>` : ''}
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+
+
+// ========== ÉTAPE RÉSULTAT ==========
+function renderResult(){
+  const top = top3WithScores();
+  const total = top.reduce((s,[,sc]) => s + Math.max(0,sc), 0) || 1;
+  const main = top[0];
+  const alts = top.slice(1);
+  const mainP = P[main[0]];
+  const mainProb = Math.round(100 * Math.max(0, main[1]) / total);
+  
+  const alertHTML = mainP.alert ? `
+    <div class="alert-box alert-${mainP.alert.type}">
+      <span style="font-size:16px">${mainP.alert.type === 'red' ? '🚨' : '⚠️'}</span>
+      <span>${mainP.alert.text}</span>
+    </div>` : '';
+  
+  // Sections détaillées
+  const imagingItems = (mainP.imaging || []).map(i => 
+    `<div class="fi"><strong>${i.t}</strong>${i.d ? `<span>${i.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const treatmentItems = (mainP.treatment || []).map(t => 
+    `<div class="fi"><strong>${t.t}</strong>${t.d ? `<span>${t.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const exercisesItems = (mainP.exercises || []).map(e => 
+    `<div class="fi"><strong>${e.t}</strong>${e.d ? `<span>${e.d}</span>` : ''}</div>`
+  ).join('') + (mainP.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${mainP.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  
+  const referralItems = (mainP.referral || []).map(r => `
+    <div class="ref-tag ${r.p ? 'p' : 's'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p ? '→ ' : ''}${r.who}</div>
+        ${r.why ? `<div class="ref-why">${r.why}</div>` : ''}
+      </div>
+      <span class="ref-b">${r.p ? 'Prioritaire' : 'Si besoin'}</span>
+    </div>`).join('');
+  
+  // Sources
+  const sourcesHTML = mainP.sources?.length ? `
+    <div class="sources-row">
+      <span class="src-lbl">📚 Sources</span>
+      ${mainP.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('')}
+    </div>` : '';
+  
+  // Alternatifs
+  const altCardsHTML = alts.map(([pid, sc]) => {
+    const p = P[pid];
+    const prob = Math.round(100 * Math.max(0, sc) / total);
+    return `<div class="alt-card" onclick="showModal('${pid}')">
+      <div class="alt-header">
+        <img src="images_pathologies/epaule.png" alt="" class="alt-ic-img" />
+        <div class="alt-name">${p.name}</div>
+        <div class="alt-pct">${prob}%</div>
+      </div>
+      <div class="alt-bar"><div class="alt-fill" style="width:${prob}%"></div></div>
+      <div class="alt-key">
+        <strong>Éléments clés</strong>
+        ${(p.keys || []).slice(0,2).join(' · ')}
+      </div>
+      <div class="alt-hint">Appuyer pour la fiche complète →</div>
+    </div>`;
+  }).join('');
+  
+  const html = `
+    ${stepIndicator(5)}
+    ${breadcrumbHTML()}
+    <div class="result-wrap">
+      
+      <!-- DIAGNOSTIC PRINCIPAL -->
+      <div class="diag-card">
+        <div class="diag-top">
+          <div class="diag-head">
+            <img src="images_pathologies/epaule.png" alt="" class="diag-icon-img" />
+            <div>
+              <span class="rank-badge">Diagnostic principal</span>
+              <div class="diag-name">${mainP.name}</div>
+              <div class="diag-pop">${mainP.pop}</div>
+            </div>
+          </div>
+          <div class="prob-wrap">
+            <div class="prob-pct">${mainProb}%</div>
+            <div class="prob-label">Probabilité</div>
+            <div class="prob-bar"><div class="prob-fill" style="width:${mainProb}%"></div></div>
+          </div>
+        </div>
+        
+        <div class="fiche">
+          ${alertHTML}
+          <div class="fiche-grid">
+            <div class="fiche-sec">
+              <div class="sec-title sec-img">🔬 Imagerie</div>
+              ${imagingItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ex">💪 Exercices</div>
+              ${exercisesItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-rx">💊 Traitement</div>
+              ${treatmentItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ref">🏥 Orientation</div>
+              ${referralItems || '<div class="fi-empty">—</div>'}
+            </div>
+          </div>
+          ${sourcesHTML}
+        </div>
+      </div>
+      
+      <!-- DIAGNOSTICS ALTERNATIFS -->
+      <div class="section-sep">Diagnostics alternatifs à considérer</div>
+      <div class="alt-cards">${altCardsHTML}</div>
+      
+      <div class="disclaimer">
+        ⚠️ <strong>Outil d'aide à la décision clinique</strong> — Les probabilités sont indicatives et basées sur le profil sélectionné. Non substitutif au jugement médical. Sources : HAS, EULAR, sociétés savantes.
+      </div>
+      
+      <div class="actions">
+        <button class="btn-primary" onclick="reset()">↺ Nouveau cas</button>
+        <button class="btn-back" onclick="goBack()">← Modifier les réponses</button>
+      </div>
+      
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="if(event.target.id==='modal') closeModal()">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+  
+  // Animer les barres
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill, .alt-fill').forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => el.style.width = target));
+    });
+  }, 50);
+}
+
+function showModal(pid){
+  const p = P[pid];
+  const imagingHTML = (p.imaging || []).map(i => `<div class="fi"><strong>${i.t}</strong>${i.d?`<span>${i.d}</span>`:''}</div>`).join('');
+  const treatmentHTML = (p.treatment || []).map(t => `<div class="fi"><strong>${t.t}</strong>${t.d?`<span>${t.d}</span>`:''}</div>`).join('');
+  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  const referralHTML = (p.referral || []).map(r => `
+    <div class="ref-tag ${r.p?'p':'s'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p?'→ ':''}${r.who}</div>
+        ${r.why?`<div class="ref-why">${r.why}</div>`:''}
+      </div>
+      <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
+    </div>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-head">
+      <img src="images_pathologies/epaule.png" alt="" class="modal-icon-img" />
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div class="modal-pop">${p.pop}</div>
+      </div>
+    </div>
+    ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
+    <div class="fiche-grid modal-fiche">
+      <div class="fiche-sec">
+        <div class="sec-title sec-img">🔬 Imagerie</div>
+        ${imagingHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ex">💪 Exercices</div>
+        ${exercisesHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-rx">💊 Traitement</div>
+        ${treatmentHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ref">🏥 Orientation</div>
+        ${referralHTML || '<div class="fi-empty">—</div>'}
+      </div>
+    </div>
+    <div class="sources-row modal-sources">
+      <span class="src-lbl">📚 Sources</span>
+      ${sourcesHTML}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+
+// ========== DISPATCHER ==========
+function renderStep(){
+  if(currentStep === 'MECANISME') renderChoice('MECANISME', 0);
+  else if(currentStep === 'AGE') renderChoice('AGE', 1);
+  else if(currentStep === 'TABLEAU') renderTableau();
+  else if(currentStep === 'HORAIRE') renderChoice('HORAIRE', 3);
+  else if(currentStep === 'TESTS') renderTests();
+  else if(currentStep === 'RESULT') renderResult();
+}
+
+// ========== INIT ==========
+init();
+renderStep();
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocoClic — Main & Poignet v5</title>
+<style>
+
+
+
+:root {
+  --bg: #f5f3ee;           /* fond crème */
+  --bg-card: #ffffff;       /* cartes blanches */
+  --bg-hover: #f0ede5;      /* survol crème plus foncé */
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a2332;          /* texte sombre principal */
+  --text-dim: #4a5468;      /* texte secondaire */
+  --text-mute: #8a92a0;     /* texte tertiaire */
+  --accent: #2563a8;        /* bleu marine accent */
+  --accent-dim: #1d4d85;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;        /* or plus sombre pour contraste */
+  --navy: #0f2a44;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 16px;
+  line-height: 1.5;
+}
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.header .badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  padding: 3px 10px;
+  background: var(--accent);
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* === STEP INDICATOR === */
+.step-ind {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.si-item {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 8px;
+  background: #fafaf7;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: center;
+}
+.si-item.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+.si-item.done {
+  background: rgba(37, 99, 168, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* === BREADCRUMB === */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.bc-item { font-style: italic; }
+
+/* === BTN BACK === */
+.btn-back {
+  background: white;
+  color: var(--text-dim);
+  border: 1.5px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.btn-back:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.card-tag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-q {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-hint {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+
+/* === CHOICES (Mécanisme, Âge, Horaire) === */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice {
+  width: 100%;
+  text-align: left;
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.choice:hover {
+  background: rgba(37,99,168,0.06);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.choice-lbl {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.choice-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+/* === VIGNETTES === */
+.vig-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .vig-grid { grid-template-columns: 1fr 1fr; }
+}
+.vig {
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.vig:hover { background: rgba(37,99,168,0.06); border-color: var(--accent); }
+.vig-sel {
+  background: rgba(22,163,74,0.08);
+  border-color: var(--green);
+}
+.vig-chk {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.vig-lbl {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.vig-desc {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.foot-info {
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  box-shadow: 0 2px 8px rgba(37,99,168,0.25);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary:not(:disabled):hover { filter: brightness(1.1); }
+
+/* === TESTS === */
+.test-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+.test-fam {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.test-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.test-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.test-section {
+  margin: 14px 0;
+}
+.test-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.test-section div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.test-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn-pos, .btn-neg {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-pos {
+  background: var(--green);
+  color: white;
+}
+.btn-neg {
+  background: var(--red);
+  color: white;
+}
+.btn-pos:hover, .btn-neg:hover { filter: brightness(1.1); }
+.btn-skip {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* === RÉSULTAT === */
+.result-main {
+  border: 2px solid var(--accent);
+  background: linear-gradient(180deg, rgba(93,141,240,0.08), var(--bg-card));
+}
+.result-tag {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.result-icon { font-size: 36px; }
+.result-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+.result-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.result-score {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.result-section {
+  margin: 14px 0;
+}
+.result-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+.sources {
+  list-style: none;
+  font-size: 12px;
+}
+.sources li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sources li:last-child { border: none; }
+.sources a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.sources a:hover { text-decoration: underline; }
+
+/* === ALTS === */
+.alts {
+  margin-top: 18px;
+}
+.alts-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.alt {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alt:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+.alt-icon { font-size: 24px; }
+.alt-body { flex: 1; }
+.alt-name { font-weight: 600; font-size: 14px; }
+.alt-pop { font-size: 11px; color: var(--text-mute); }
+.alt-score {
+  font-weight: 700;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+
+.btn-reset {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+.btn-reset:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,42,68,0.55);
+  z-index: 100;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  padding: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  font-size: 24px;
+  cursor: pointer;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-icon { font-size: 32px; }
+.modal-name { font-size: 17px; font-weight: 700; }
+.modal-pop { font-size: 12px; color: var(--text-mute); }
+.modal-section {
+  margin: 12px 0;
+}
+.modal-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.modal-section > div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.modal-section ul {
+  list-style: none;
+  font-size: 12px;
+}
+.modal-section ul li {
+  padding: 3px 0;
+}
+.modal-section ul a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+
+.key-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.key-tag { display:inline-block; background:rgba(93,141,240,0.15); color:var(--accent); padding:3px 10px; border-radius:12px; font-size:11px; }
+.bullets { list-style:none; padding-left:0; font-size:14px; line-height:1.7; }
+.bullets li { padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.bullets li:last-child { border:none; }
+.result-info { flex:1; }
+.result-prob-wrap { text-align:right; }
+.result-prob { font-size:28px; font-weight:800; color:var(--accent); line-height:1; }
+.result-score { font-size:11px; color:var(--text-mute); margin-top:2px; }
+.alt-right { text-align:right; }
+.alt-prob { font-weight:700; font-size:17px; color:var(--accent); }
+.alt-score { font-size:10px; color:var(--text-mute); }
+.modal-section ul { list-style:none; padding-left:0; font-size:13px; line-height:1.6; }
+.modal-section ul li { padding:3px 0; }
+.modal-section ul a { color:var(--accent); text-decoration:none; }
+
+/* ===== FICHE RÉSULTAT — sections distinctes ===== */
+.result-wrap { animation: fu 0.4s ease both; }
+@keyframes fu { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+.diag-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(37,99,168,0.12);
+}
+
+.diag-top {
+  background: linear-gradient(135deg, rgba(37,99,168,0.10), rgba(37,99,168,0.03));
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.diag-head { display:flex; align-items:center; gap:12px; flex:1; }
+.diag-icon { font-size: 32px; }
+.rank-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.diag-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.diag-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-wrap { text-align: right; min-width:88px; }
+.prob-pct {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.prob-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.prob-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.fiche { background: var(--bg-card); }
+
+.alert-box {
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+
+
+
+
+
+
+
+.fi:last-child { margin-bottom: 0; }
+
+
+
+
+.ref-tag {
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+  background: rgba(167,139,250,0.18);
+  border: 1px solid rgba(167,139,250,0.2);
+}
+.ref-tag.s {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border);
+}
+.ref-info { flex: 1; }
+.ref-who {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ref-why {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.ref-b {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: rgba(109,40,217,0.15);
+  color: #6d28d9;
+}
+.ref-tag.s .ref-b {
+  background: var(--bg-hover);
+  color: var(--text-mute);
+}
+
+.sources-row {
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.025);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.src-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.src-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(37,99,168,0.08);
+  border: 1px solid rgba(37,99,168,0.3);
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.src-chip:hover {
+  background: rgba(37,99,168,0.18);
+}
+
+.section-sep {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 22px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.alt-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .alt-cards { grid-template-columns: 1fr; }
+}
+.alt-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.alt-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+.alt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.alt-ic { font-size: 22px; }
+.alt-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.alt-pct {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-mute);
+}
+.alt-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.alt-fill {
+  height: 100%;
+  background: var(--text-mute);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.alt-key {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.alt-key strong {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 3px;
+}
+.alt-hint {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-align: right;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.actions .btn-primary, .actions .btn-back { flex: 1; min-width: 140px; }
+
+/* Modal fiche */
+.modal-fiche { 
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.modal-sources {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+
+/* === FICHE GRID — sections fortement distinctes === */
+.fiche-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  padding: 2px;
+}
+@media (max-width: 600px) {
+  .fiche-grid { grid-template-columns: 1fr; }
+}
+
+.fiche-sec {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: none;
+  position: relative;
+}
+
+/* Bandeau coloré en haut de chaque section */
+.fiche-sec::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* === COULEURS PAR SECTION === */
+/* Imagerie — bleu */
+.fiche-sec:nth-child(1) {
+  background: linear-gradient(180deg, rgba(94,177,255,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(1)::before { background: #5eb1ff; }
+
+/* Exercices — vert */
+.fiche-sec:nth-child(2) {
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(2)::before { background: #4ade80; }
+
+/* Traitement — jaune/or */
+.fiche-sec:nth-child(3) {
+  background: linear-gradient(180deg, rgba(251,191,36,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(3)::before { background: #fbbf24; }
+
+/* Orientation — violet */
+.fiche-sec:nth-child(4) {
+  background: linear-gradient(180deg, rgba(167,139,250,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(4)::before { background: #a78bfa; }
+
+/* sec-title plus visible */
+.sec-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+.sec-img { color: #1e6db8; }
+.sec-ex  { color: #15803d; }
+.sec-rx  { color: #b45309; }
+.sec-ref { color: #6d28d9; }
+
+/* Items plus aérés et visibles */
+.fi {
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 10px 8px 12px;
+  border-left: 3px solid;
+  margin-bottom: 8px;
+  background: rgba(0,0,0,0.025);
+  border-radius: 0 6px 6px 0;
+}
+.fi:last-child { margin-bottom: 0; }
+.fiche-sec:nth-child(1) .fi { border-left-color: rgba(94,177,255,0.4); }
+.fiche-sec:nth-child(2) .fi { border-left-color: rgba(74,222,128,0.4); }
+.fiche-sec:nth-child(3) .fi { border-left-color: rgba(251,191,36,0.4); }
+.fiche-sec:nth-child(4) .fi { border-left-color: rgba(167,139,250,0.4); }
+
+.fi strong {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+.fi span {
+  color: var(--text-dim);
+  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+}
+.fi-empty {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* === REFERRAL TAGS spécifiques (dans section orientation) === */
+.fiche-sec:nth-child(4) .ref-tag {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.disclaimer { background: #fef3c7; border: 2px solid #f59e0b; border-radius: 9px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #000000; line-height: 1.6; }
+.disclaimer strong { color: #991b1b; font-weight: 800; }
+
+/* === Encart Signes de gravité === */
+.severity-card {
+  background: linear-gradient(135deg, #fff1f2 0%, #fef3c7 100%);
+  border: 1.5px solid #f59e0b;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.15);
+}
+.severity-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b45309;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.severity-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+}
+
+/* === Encart Pièges diagnostiques === */
+.pitfall-card {
+  background: linear-gradient(135deg, #ecfdf5 0%, #cffafe 100%);
+  border: 1.5px solid #06b6d4;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(6, 182, 212, 0.12);
+}
+.pitfall-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0e7490;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.pitfall-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+  margin-bottom: 10px;
+}
+.pitfall-modules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pitfall-chip {
+  display: inline-block;
+  background: #fff;
+  color: #0e7490;
+  border: 1px solid #67e8f9;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+  .alt-ic-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .diag-icon-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.15);
+  }
+  .modal-icon-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  color: #1e3a5f;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s;
+" onmouseover="this.style.background='#1e3a5f';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#1e3a5f';">
+  ← Accueil
+</a>
+
+
+<div class="app">
+  <div class="header">
+    <h1>LocoClic — Main & Poignet</h1>
+    <div class="badge">v5 · clinique adaptatif</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+// ========== PATHOLOGIES ==========
+const P = {
+  CANAL_CARPIEN: {
+    id:'CANAL_CARPIEN', name:'Syndrome du canal carpien', icon:'⚡', pop:"Femme 40-60 ans, métier manuel répétitif, grossesse, diabète, hypothyroïdie, IMC élevé",
+    desc:"Compression du nerf médian dans le canal carpien. Paresthésies/engourdissements/brûlures dans les 3 premiers doigts et la moitié radiale du 4e (territoire du médian) — souvent NOCTURNES réveillant le patient (signe quasi pathognomonique). Aggravé par flexion prolongée du poignet (conduite, livre, téléphone). Évolution : maladresse, faiblesse pince pouce-index, amyotrophie thénar tardive.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:'Diagnostic clinique (Phalen + Tinel + paresthésies nocturnes)'},
+      {t:'Échographie du nerf médian',d:"Mesure de la section transversale du nerf au défilé carpien (> 9-10 mm² compatible)"},
+      {t:'EMG (électroneuromyogramme)',d:"Référence pour confirmer, grader la sévérité, éliminer atteinte plus proximale (cervicale, rond pronateur)"}
+    ],
+    treatment:[
+      {t:'Attelle de repos nocturne',d:'Poignet en position neutre — première intention, 4-6 semaines, port nocturne ± diurne'},
+      {t:"Adaptation du poste de travail",d:'Ergonomie clavier/souris, pauses régulières, éviter flexions prolongées'},
+      {t:'Infiltration de corticoïde',d:"Sous échoguidage idéalement — 1-2 infiltrations si échec attelle"},
+      {t:'Chirurgie de neurolyse',d:"Section du ligament annulaire antérieur — si échec médical 3-6 mois, formes sévères (déficit moteur, amyotrophie)"},
+      {t:'Recherche cause sous-jacente',d:'Diabète, hypothyroïdie, grossesse, polyarthrite — à dépister'}
+    ],
+    exercises:[{t:'Mobilisation neurale du nerf médian',d:''},{t:'Étirement des fléchisseurs de l\'avant-bras',d:''},{t:'Étirement des extenseurs de l\'avant-bras',d:''},{t:'Mobilisation globale du poignet',d:''}],ficheExercice:'lococlic_fiches_patient/main_01_canal_carpien.html',
+    severity:{
+      title:"Signes de gravité",
+      text:"<strong>Inspecter l'éminence thénar</strong> — une amyotrophie (creux thénarien, perte du relief) signe une compression évoluée et oriente vers la chirurgie."
+    },
+    referral:[
+      {who:'Chirurgien de la main',why:"Si échec conservateur ou forme sévère (déficit moteur, amyotrophie)",p:true},
+      {who:'Médecin du sport',why:"Si origine sportive (cyclisme, escalade, sport raquette) — adaptation du geste",p:false},
+      {who:"Médecin du travail",why:"Adaptation du poste si origine professionnelle",p:false}
+    ],
+    pitfall:{
+      modules:['coude','rachis'],
+      text:"Si paresthésies atypiques (4e-5e doigts, douleur ascendante) ou tests classiques négatifs : penser à une compression plus proximale du médian au coude (lacertus fibrosus, rond pronateur) ou à une névralgie cervico-brachiale C6 — voir module coude et rachis cervical (double crush syndrome)."
+    },
+    sources:[
+      {l:'Padua et al. 2016 — Carpal tunnel diagnosis (Lancet Neurol)',u:'https://pubmed.ncbi.nlm.nih.gov/27751557/'},
+      {l:'AAOS 2016 — Carpal tunnel syndrome CPG',u:'https://pubmed.ncbi.nlm.nih.gov/26839156/'},
+      {l:'Wipperman & Goerl 2016 — Carpal tunnel (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/28075090/'},
+      {l:'HAS — Syndrome du canal carpien',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Paresthésies nocturnes','3 premiers doigts','Phalen positif','Tinel médian','Canal carpien']
+  },
+  DE_QUERVAIN: {
+    id:'DE_QUERVAIN', name:'Tendinopathie de De Quervain', icon:'🟤', pop:"Femme 30-50 ans, mère jeune (portage bébé), métier répétitif, sport raquette, post-partum",
+    desc:"Ténosynovite du 1er compartiment des extenseurs (long abducteur et court extenseur du pouce) à la styloïde radiale. Douleur progressive à la base du pouce sur le bord radial du poignet, exacerbée par la pince et les mouvements de pronation/inclinaison ulnaire. Tuméfaction localisée parfois palpable.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (Finkelstein positif)"},
+      {t:"Échographie",d:'Épaississement de la gaine, hyperhémie, parfois septum dans le compartiment'},
+      {t:"Radiographie",d:'Si suspicion arthrose associée (rhizarthrose à différencier)'}
+    ],
+    treatment:[
+      {t:"Attelle thumb spica",d:"Immobilisation du pouce et du poignet — 3-4 semaines, première intention"},
+      {t:"Adaptation des gestes",d:'Réduire le portage du bébé bras tendus, le travail à la souris, le sport raquette'},
+      {t:'Kinésithérapie',d:"Excentrique long abducteur/court extenseur, glissements tendineux après phase aiguë"},
+      {t:"Antalgiques simples (paracétamol)",d:"Éviter AINS et glaçage prolongés — retardent la cicatrisation tendineuse"},
+      {t:'Infiltration de corticoïde',d:"Sous échoguidage dans la gaine — si échec attelle (Se 80%)"},
+      {t:'Chirurgie',d:"Ouverture de la gaine du 1er compartiment — si échec médical 3-6 mois"}
+    ],
+    exercises:[{t:'Étirement des tendons du pouce (Finkelstein doux)',d:''},{t:'Renforcement isométrique du pouce (extension/abduction)',d:''},{t:'Étirement des extenseurs de l\'avant-bras',d:''},{t:'Mobilisation globale du poignet',d:''}],ficheExercice:'lococlic_fiches_patient/main_02_de_quervain.html',
+    referral:[
+      {who:'Médecin du sport',why:"Si non amélioration et sportif — programme de rééducation",p:true},
+      {who:'Chirurgien de la main',why:"Si échec médical prolongé",p:false}
+    ],
+    pitfall:{
+      modules:['coude'],
+      text:"Tendinopathie de De Quervain et épicondylalgie latérale peuvent coexister chez le sportif de raquette ou le travailleur sur écran — penser à examiner aussi le coude (module coude)."
+    },
+    sources:[
+      {l:'Wu et al. 2018 — De Quervain treatment meta-analysis (J Hand Surg Eur)',u:'https://pubmed.ncbi.nlm.nih.gov/29117775/'},
+      {l:'Goel & Abzug 2015 — De Quervain (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/25841764/'},
+      {l:'Ashraf & Devireddy 2014 — De Quervain treatments (Orthop Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/24744840/'},
+      {l:'HAS — Tendinopathies du membre supérieur',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Base du pouce','Finkelstein','Mère jeune','Styloïde radiale','De Quervain']
+  },
+  RHIZARTHROSE: {
+    id:'RHIZARTHROSE', name:'Rhizarthrose (arthrose trapézo-métacarpienne)', icon:'🦴', pop:'Femme > 50 ans, ménopause, hérédité, ATCD micro-traumatismes répétés',
+    desc:"Arthrose de l'articulation trapézo-métacarpienne (TMC). Douleur progressive à la base du pouce, exacerbée par les mouvements de pince (ouvrir un bocal, tourner une clé). Tuméfaction quadrangulaire de la base du pouce avec subluxation dorso-radiale (déformation en Z dans les formes évoluées). Évolution chronique avec poussées congestives.",
+    imaging:[
+      {t:"Radiographie main face/profil/incidence Kapandji",d:"Examen de référence — pincement TMC, ostéophytes, subluxation, kystes sous-chondraux (classification Eaton)"},
+      {t:"Échographie",d:"Si poussée inflammatoire — épanchement, synovite"}
+    ],
+    treatment:[
+      {t:"Orthèse de repos thumb spica",d:"Première intention — port nocturne ± diurne pendant les poussées"},
+      {t:'Adaptation des gestes',d:"Outils ergonomiques (ouvre-bocaux, gros manches), éviter les pinces fortes"},
+      {t:'Antalgiques + AINS topiques',d:'Paracétamol, AINS topique (gel) en poussée'},
+      {t:'Kinésithérapie',d:"Renforcement musculature péri-articulaire, mobilisations douces"},
+      {t:'Infiltration de corticoïde',d:"Dans l'articulation TMC — si poussée hyperalgique malgré orthèse"},
+      {t:'Chirurgie',d:"Trapézectomie ± ligamentoplastie ou prothèse TMC — si forme évoluée et invalidante après échec médical"}
+    ],
+    exercises:[{t:'Renforcement de l\'opposant du pouce (pince pouce-doigts)',d:''},{t:'Mobilisation douce du pouce',d:''},{t:'Étirement de l\'adducteur du pouce',d:''},{t:'Renforcement des intrinsèques de la main',d:''}],ficheExercice:'lococlic_fiches_patient/main_03_rhizarthrose.html',
+    referral:[
+      {who:'Rhumatologue',why:"Si polyarthrose / poussées congestives multiples / suspicion de PR (diagnostic différentiel)",p:true},
+      {who:'Chirurgien de la main',why:"Si forme évoluée invalidante après échec médical (trapézectomie / prothèse TMC)",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"⚠️ Penser à éliminer une polyarthrite rhumatoïde (PR) — surtout si : raideur matinale > 1h, gonflement articulaire chaud, atteinte bilatérale et symétrique (MCP/IPP +++), terrain familial. Bilan biologique de débrouillage : CRP, FR, anti-CCP, NFS, ± radiographies des mains et pieds (face). Avis rhumatologique si suspicion."
+    },
+    sources:[
+      {l:'Kloppenburg et al. 2019 — EULAR hand OA recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/30154087/'},
+      {l:'Spaans et al. 2015 — Conservative thumb CMC OA meta-analysis (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/25819334/'},
+      {l:'Sodha et al. 2005 — Diagnosis CMC OA (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/15820639/'},
+      {l:'HAS — Arthrose digitale',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Base du pouce','Grinding positif','Femme ménopausée','Pince douloureuse','Rhizarthrose']
+  },
+  DOIGT_RESSAUT: {
+    id:'DOIGT_RESSAUT', name:'Doigt à ressaut', icon:'🟡', pop:'Femme 40-60 ans, métier manuel répétitif, diabète, polyarthrite, hypothyroïdie',
+    desc:"Ténosynovite sténosante du fléchisseur à la poulie A1 (en regard de la tête métacarpienne). Blocage du doigt en flexion avec ressaut audible/palpable lors de l'extension active ou passive. Nodule palpable en regard de la poulie A1. Évolution par poussées, peut aboutir à un blocage complet en flexion.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (ressaut + nodule palpable A1)"},
+      {t:"Échographie",d:'Si doute — épaississement du tendon, hyperhémie, nodule'}
+    ],
+    treatment:[
+      {t:"Orthèse de doigt en extension nocturne",d:"3-6 semaines — limite la flexion forcée et les ressauts"},
+      {t:'Adaptation des gestes',d:"Éviter les préhensions fortes répétées, ergonomie du poste"},
+      {t:'Antalgiques simples',d:"Paracétamol en poussée"},
+      {t:'Infiltration de corticoïde',d:"Sous échoguidage en regard de la poulie A1 — Se 60-90%, peut nécessiter 2 infiltrations"},
+      {t:'Chirurgie',d:"Section de la poulie A1 — si échec infiltrations ou récidive multiple"}
+    ],
+    exercises:[{t:'Mobilisation du tendon fléchisseur',d:''},{t:'Étirement des fléchisseurs du doigt',d:''},{t:'Renforcement des intrinsèques de la main',d:''},{t:'Glissement tendineux des doigts',d:''}],ficheExercice:'lococlic_fiches_patient/main_04_doigt_ressaut.html',
+    referral:[
+      {who:'Rhumatologue',why:"Pour infiltration sous échoguidage de la poulie A1",p:true},
+      {who:'Médecin du sport',why:"Pour infiltration sous échoguidage et programme de rééducation",p:true},
+      {who:'Chirurgien de la main',why:"Si échec des infiltrations ou récidive multiple — section de la poulie A1",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"⚠️ Penser à éliminer une polyarthrite rhumatoïde — surtout si plusieurs doigts atteints simultanément ou bilatéralement, ou si signes inflammatoires associés (raideur matinale > 1h, gonflement articulaire). Bilan : CRP, FR, anti-CCP."
+    },
+    sources:[
+      {l:'Huisstede et al. 2018 — Trigger finger treatments systematic review (J Hand Surg Eur)',u:'https://pubmed.ncbi.nlm.nih.gov/29463198/'},
+      {l:'Peters-Veluthamaningal et al. 2009 — Corticosteroid trigger finger Cochrane',u:'https://pubmed.ncbi.nlm.nih.gov/19160320/'},
+      {l:'Lunsford et al. 2019 — Trigger finger meta-analysis (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/31043326/'},
+      {l:'HAS — Doigt à ressaut',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Ressaut','Blocage flexion','Nodule A1','Métier manuel','Doigt à ressaut']
+  },
+  KYSTE_SYNO: {
+    id:'KYSTE_SYNO', name:'Kyste synovial du poignet', icon:'🔵', pop:'20-40 ans, femmes > hommes, sportif (gymnastique, escalade)',
+    desc:"Tuméfaction kystique liquidienne issue d'une articulation ou d'une gaine tendineuse, typiquement dorsale du poignet (60-70% — région scapho-lunaire) ou palmaire (20-30% — sur l'artère radiale). Tuméfaction ferme, indolore au repos, parfois douloureuse à l'extension forcée du poignet ou à la pression directe. Variation de volume au cours du temps. Transillumination positive (signe utile).",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (transillumination)"},
+      {t:"Échographie",d:'Confirme la nature liquidienne du kyste, élimine une tumeur solide'},
+      {t:'IRM',d:"Si kyste profond, atypique, ou récidivant après chirurgie"}
+    ],
+    treatment:[
+      {t:"Abstention si asymptomatique",d:"Régression spontanée dans 30-50% des cas — explication et réassurance"},
+      {t:"Adaptation des gestes",d:"Éviter les hyperextensions forcées du poignet"},
+      {t:"Aspiration à l'aiguille",d:"Sous écho-guidage idéalement — récidive fréquente (60-80%)"},
+      {t:"Chirurgie d'exérèse",d:"Si gêne fonctionnelle marquée, récidive après aspiration, doute diagnostique — récidive 5-10%"}
+    ],
+    exercises:[{t:'Mobilisation globale du poignet',d:''},{t:'Étirement des fléchisseurs de l\'avant-bras',d:''},{t:'Étirement des extenseurs de l\'avant-bras',d:''},{t:'Renforcement isométrique du poignet',d:''}],ficheExercice:'lococlic_fiches_patient/main_05_kyste_synovial.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation clinique, aspiration sous écho-guidage et suivi",p:true},
+      {who:'Rhumatologue',why:"Évaluation clinique, aspiration sous écho-guidage et suivi",p:true},
+      {who:'Chirurgien de la main',why:"Si exérèse nécessaire (gêne fonctionnelle marquée, récidive après aspiration)",p:false}
+    ],
+    sources:[
+      {l:'Suen et al. 2013 — Aspiration vs surgery dorsal ganglion meta-analysis (Hand Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/24369769/'},
+      {l:'Head et al. 2015 — Wrist ganglia treatments review (J Hand Surg Eur)',u:'https://pubmed.ncbi.nlm.nih.gov/25319586/'},
+      {l:'Meena & Gupta 2014 — Dorsal wrist ganglion (J Clin Orthop Trauma)',u:'https://pubmed.ncbi.nlm.nih.gov/25983497/'},
+      {l:'HAS — Kystes synoviaux',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Tuméfaction dorsale','Transillumination','Sport hyperextension','Kyste scapho-lunaire','Synovial']
+  },
+  ARTHROSE_IP: {
+    id:'ARTHROSE_IP', name:"Arthrose interphalangienne (Heberden / Bouchard)", icon:'🦴', pop:'Femme > 50 ans, ménopause, hérédité familiale, ATCD micro-traumatismes',
+    desc:"Arthrose des articulations interphalangiennes distales (IPD = nœuds de Heberden, les plus fréquents) et/ou proximales (IPP = nœuds de Bouchard). Tuméfactions nodulaires dures, parfois douloureuses en poussée, principalement aux 2e et 3e doigts. Déformation progressive, déviations latérales (souvent symétriques). Possibles kystes mucoïdes dorsaux. Évolution par poussées congestives.",
+    imaging:[
+      {t:"Radiographie des mains",d:"Examen de référence — pincement IPD/IPP, ostéophytes, géodes sous-chondrales, déviations latérales"}
+    ],
+    treatment:[
+      {t:'Antalgiques + AINS topiques',d:'Paracétamol, gel AINS — première intention en poussée'},
+      {t:"Adaptation des gestes",d:'Outils ergonomiques, ouverture facilitée, éviter pinces fortes répétées'},
+      {t:'Kinésithérapie / ergothérapie',d:"Préservation de la mobilité, orthèses sur mesure pour les poussées"},
+      {t:"Application de chaleur ou bains chauds",d:'Soulage les raideurs matinales'},
+      {t:'Infiltration locale',d:"En poussée hyperalgique (rare en pratique pour les IPP/IPD)"}
+    ],
+    exercises:[{t:'Mobilisation douce du doigt',d:''},{t:'Renforcement des intrinsèques de la main',d:''},{t:'Étirement des fléchisseurs du doigt',d:''},{t:'Glissement tendineux des doigts',d:''}],ficheExercice:'lococlic_fiches_patient/main_06_arthrose_ip.html',
+    referral:[
+      {who:'Rhumatologue',why:"Si polyarthrose sévère, doute avec arthrite inflammatoire (PR, rhumatisme psoriasique)",p:true}
+    ],
+    pitfall:{
+      modules:[],
+      text:"⚠️ Penser à éliminer une polyarthrite rhumatoïde (PR) — surtout si : raideur matinale > 1h, gonflement articulaire chaud, atteinte bilatérale et symétrique (MCP/IPP +++, l'arthrose touche plutôt les IPD), terrain familial. Le rhumatisme psoriasique peut aussi mimer une arthrose digitale — chercher psoriasis cutané/unguéal. Bilan : CRP, FR, anti-CCP, ± radiographies."
+    },
+    sources:[
+      {l:'Kloppenburg et al. 2019 — EULAR hand OA recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/30154087/'},
+      {l:'Marshall et al. 2018 — Hand osteoarthritis (Nat Rev Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/30152479/'},
+      {l:'Kjeken et al. 2011 — Hand OA disability (Arthritis Care Res)',u:'https://pubmed.ncbi.nlm.nih.gov/21834083/'},
+      {l:'HAS — Arthrose digitale',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Heberden IPD','Bouchard IPP','Femme ménopausée','Nodules durs','Polyarthrose']
+  },
+  CANAL_GUYON: {
+    id:'CANAL_GUYON', name:"Syndrome du canal de Guyon (compression nerf cubital)", icon:'⚡', pop:'30-50 ans, cyclistes, métier manuel répétitif, compression directe (canne, vibrations)',
+    desc:"Compression du nerf cubital (ulnaire) dans le canal de Guyon au poignet (entre os pisiforme et hamatum). Paresthésies des 4e et 5e doigts (territoire ulnaire distal au poignet — ÉPARGNE le dos de la main, contrairement à la compression au coude). Selon localisation : sensitive pure (paresthésies seules), motrice pure (faiblesse intrinsèques), ou mixte. Faiblesse pince pouce-index (signe de Froment), atrophie thénar postérieure dans les formes évoluées.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique"},
+      {t:'Échographie nerf cubital',d:"Recherche cause compressive (kyste, anomalie musculaire, anévrysme de l'artère ulnaire)"},
+      {t:'EMG',d:"Référence pour confirmer, localiser (Guyon vs coude), grader la sévérité"}
+    ],
+    treatment:[
+      {t:'Éviction de la compression',d:"Adaptation poste de travail, gants matelassés pour cycliste, éviter compressions directes"},
+      {t:'Attelle de repos',d:"Poignet en position neutre — port nocturne"},
+      {t:'Infiltration de corticoïde',d:"Si échec mesures conservatrices — sous échoguidage"},
+      {t:'Chirurgie de neurolyse',d:"Décompression du canal de Guyon — si échec médical ou cause mécanique objectivée (kyste)"}
+    ],
+    exercises:[{t:'Mobilisation neurale du nerf cubital',d:''},{t:'Étirement des fléchisseurs de l\'avant-bras',d:''},{t:'Renforcement des intrinsèques de la main',d:''},{t:'Étirement des extenseurs de l\'avant-bras',d:''}],ficheExercice:'lococlic_fiches_patient/main_07_canal_guyon.html',
+    severity:{
+      title:"Signes de gravité",
+      text:"<strong>Inspecter les espaces inter-métacarpiens dorsaux</strong> — un creusement (fonte des interosseux/lombricaux) ± griffe ulnaire signe une compression évoluée et oriente vers la chirurgie."
+    },
+    referral:[
+      {who:'Médecin du sport',why:"Si origine cycliste ou sportive — adaptation du geste, ergonomie du guidon, gants rembourrés",p:true},
+      {who:'Chirurgien de la main',why:"Si échec conservateur ou compression mécanique objectivée",p:false}
+    ],
+    pitfall:{
+      modules:['coude','rachis'],
+      text:"Une compression cubitale plus proximale (cubital au coude) ou une névralgie cervico-brachiale C8 peut mimer ou aggraver les symptômes (double crush syndrome). Si paresthésies dorsales de la main associées ou tests Guyon négatifs : explorer le coude et le rachis cervical."
+    },
+    sources:[
+      {l:'Caliandro et al. 2016 — Ulnar neuropathy at elbow Cochrane',u:'https://pubmed.ncbi.nlm.nih.gov/27815936/'},
+      {l:'Aleem et al. 2015 — Ulnar nerve at elbow (Hand Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/26043200/'},
+      {l:'Andrews et al. 2018 — Cubital tunnel review (J Bone Joint Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/29642007/'},
+      {l:'HAS — Compression nerf cubital',u:'https://www.has-sante.fr'}
+    ],
+    keys:['4e-5e doigts','Cycliste','Froment','Pisiforme-hamatum','Canal de Guyon']
+  },
+  DUPUYTREN: {
+    id:'DUPUYTREN', name:'Maladie de Dupuytren', icon:'🟤', pop:'Homme > 50 ans, origine nord-européenne, hérédité familiale, diabète, alcool, tabac',
+    desc:"Fibromatose de l'aponévrose palmaire. Nodules indurés palpables dans la paume (souvent 4e et 5e rayons), évoluant en brides longitudinales qui rétractent progressivement les doigts en flexion (flessum irréductible IPP et MCP). Évolution lente sur années. Diathèse de Dupuytren (forme agressive) : atteinte bilatérale, jeune, plantaire (Ledderhose), pénienne (La Peyronie).",
+    imaging:[
+      {t:"Pas d'imagerie nécessaire en première intention",d:'Diagnostic clinique (nodules + brides palmaires)'},
+      {t:"Échographie",d:"Optionnelle — précise l'épaisseur et l'extension des brides"}
+    ],
+    treatment:[
+      {t:"Abstention si asymptomatique",d:"Stade 1 nodulaire isolé sans rétraction — surveillance"},
+      {t:'Adaptation des gestes',d:"Éviter traumatismes répétés sur les brides"},
+      {t:"Aponévrotomie à l'aiguille",d:"Section percutanée des brides — récidive 50% à 5 ans, peu invasive"},
+      {t:'Injection de collagénase',d:"Alternative à l\'aponévrotomie — disponibilité limitée en France"},
+      {t:'Chirurgie (aponévrectomie)',d:"Référence pour les formes évoluées — flessum digital > 30°, retentissement fonctionnel"}
+    ],
+    exercises:[{t:'Étirement de l\'aponévrose palmaire',d:''},{t:'Mobilisation passive des doigts en extension',d:''},{t:'Renforcement des intrinsèques de la main',d:''},{t:'Massage de l\'aponévrose palmaire',d:''}],ficheExercice:'lococlic_fiches_patient/main_08_dupuytren.html',
+    referral:[
+      {who:'Chirurgien de la main',why:"Pour évaluation et décision thérapeutique (aponévrotomie ou chirurgie)",p:true}
+    ],
+    sources:[
+      {l:'Nydick et al. 2013 — Collagenase Dupuytren systematic review (Plast Reconstr Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/23508056/'},
+      {l:'Hindocha et al. 2009 — Epidemiology Dupuytren (Hand Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/19767017/'},
+      {l:'Henry 2014 — Dupuytren contracture (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/25068405/'},
+      {l:'HAS — Maladie de Dupuytren',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Nodules palmaires','Brides','Rétraction doigt','Homme > 50 ans','Dupuytren']
+  },
+  RUPTURE_BAND: {
+    id:'RUPTURE_BAND', name:'Rupture des bandelettes sagittales (doigt du boxeur)', icon:'🥊', pop:'20-40 ans, boxeur, rugby, traumatisme MCP en flexion forcée',
+    desc:"Rupture de la bandelette sagittale du tendon extenseur au niveau de l'articulation métacarpo-phalangienne (souvent 3e doigt). Luxation/subluxation latérale du tendon extenseur dans la gouttière inter-métacarpienne lors de la flexion active. Douleur dorsale en regard de la tête métacarpienne, ressaut perceptible lors de la flexion-extension. Limitation de l'extension active complète.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (observation visuelle de la luxation tendineuse)"},
+      {t:"Échographie dynamique",d:"Confirme la luxation du tendon lors de la flexion active — examen de choix"},
+      {t:'IRM',d:"Si bilan préopératoire ou suspicion de lésion associée"}
+    ],
+    treatment:[
+      {t:"Attelle de blocage MCP en extension",d:"4-6 semaines en première intention si lésion < 3 semaines — autorise flexion IPP/IPD"},
+      {t:'Antalgiques simples',d:"Paracétamol — éviter AINS prolongés"},
+      {t:'Chirurgie de réparation',d:"Si échec de l\'attelle ou lésion chronique > 3 semaines — suture/plastie de la bandelette"}
+    ],
+    exercises:[{t:'Mobilisation du doigt en extension contrôlée',d:''},{t:'Renforcement des extenseurs du doigt',d:''},{t:'Renforcement des intrinsèques de la main',d:''},{t:'Glissement tendineux des doigts',d:''}],ficheExercice:'lococlic_fiches_patient/main_09_rupture_bandelette.html',
+    referral:[
+      {who:'Chirurgien de la main',why:"Avis pour décision thérapeutique (attelle vs chirurgie)",p:true},
+      {who:'Médecin du sport',why:'Pour les sportifs — encadrement de la reprise',p:false}
+    ],
+    sources:[
+      {l:'Catalano et al. 2011 — Sagittal band injuries (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/21920676/'},
+      {l:'Rayan & Murray 1994 — Classification sagittal band injury (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/8201185/'},
+      {l:'Hame & Melone 2000 — Sagittal band closed treatment (Hand Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/10955211/'},
+      {l:'HAS — Traumatologie de la main',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Boxeur','Luxation tendon','MCP','Bandelette sagittale','Doigt du boxeur']
+  },
+  TEND_FLECH: {
+    id:'TEND_FLECH', name:'Tendinopathie des fléchisseurs des doigts', icon:'🟠', pop:"20-50 ans, métier manuel répétitif, sport préhension forte (escalade ++), musicien",
+    desc:"Tendinopathie des fléchisseurs (superficiel et profond) des doigts, souvent au niveau des poulies digitales (notamment poulie A2 chez l'escalader) ou au canal digital. Douleur palmaire à la pression, exacerbée par les préhensions fortes (poignée, doigts crochetés). Possible nodule palpable. À différencier du doigt à ressaut (tendinopathie sténosante avec ressaut audible).",
+    alert:{type:'yellow',text:"Chez l'escalader : penser à une rupture de poulie A2 (gonflement face palmaire base P1, perte de force en doigts crochetés) — référer si suspicion."},
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique"},
+      {t:"Échographie",d:"Examen de choix — épaississement tendineux, ténosynovite, rupture de poulie"},
+      {t:'IRM',d:"Si rupture de poulie suspectée ou bilan préopératoire"}
+    ],
+    treatment:[
+      {t:"Adaptation des gestes",d:"Réduction temporaire des préhensions fortes (escalade, vélo, port de charge), pauses"},
+      {t:'Kinésithérapie',d:"Excentrique des fléchisseurs, glissements tendineux, étirements"},
+      {t:"Antalgiques simples (paracétamol)",d:"Éviter AINS prolongés et glaçage — retardent cicatrisation"},
+      {t:"Strapping poulie A2",d:"Pour l'escalader — décharge mécanique pendant la reprise"},
+      {t:'Infiltration de corticoïde',d:"Échoguidée — si échec médical (à utiliser avec parcimonie sur les tendons fléchisseurs)"},
+      {t:'Chirurgie',d:"Rare — si rupture de poulie symptomatique"}
+    ],
+    exercises:[{t:'Étirement des fléchisseurs du doigt',d:''},{t:'Renforcement isométrique des fléchisseurs',d:''},{t:'Glissement tendineux des doigts',d:''},{t:'Mobilisation globale du poignet',d:''}],ficheExercice:'lococlic_fiches_patient/main_10_tendinopathie_flechisseurs.html',
+    referral:[
+      {who:'Médecin du sport',why:"Pour le sportif (escalader ++) — programme de rééducation et reprise",p:true},
+      {who:'Chirurgien de la main',why:"Si rupture de poulie ou échec médical prolongé",p:false}
+    ],
+    sources:[
+      {l:'Vagy et al. 2022 — Climbing finger pulley injuries (Sports Health)',u:'https://pubmed.ncbi.nlm.nih.gov/34751054/'},
+      {l:'Crowley 2012 — Flexor tendon climbing injuries (Hand Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/22117961/'},
+      {l:'Schöffl et al. 2018 — Climbing-related injuries (Curr Sports Med Rep)',u:'https://pubmed.ncbi.nlm.nih.gov/30334855/'},
+      {l:'HAS — Tendinopathies du membre supérieur',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Préhension','Escalade','Poulie A2','Fléchisseurs','Tendinopathie']
+  },
+  KIENBOCK: {
+    id:'KIENBOCK', name:"Maladie de Kienböck (nécrose du lunatum)", icon:'🚨', pop:'20-40 ans, homme > femme, métier manuel avec vibrations, ATCD traumatisme du poignet',
+    desc:"Ostéonécrose aseptique du lunatum (semi-lunaire). Douleur progressive dorsale du poignet, parfois post-traumatique, exacerbée par les mouvements du poignet. Limitation de la flexion-extension. Tuméfaction dorsale modérée. Force de préhension diminuée. Évolution en 4 stades (classification Lichtman) : Stade I (radio normale, IRM œdème) → Stade IV (arthrose pancarpien).",
+    alert:{type:'yellow',text:"Diagnostic souvent retardé — penser à la nécrose du lunatum devant toute douleur dorsale chronique du poignet sans cause évidente, surtout chez un homme jeune avec ATCD traumatique. IRM en première intention si suspicion."},
+    imaging:[
+      {t:'Radiographie poignet face/profil',d:"Stades précoces souvent NORMALE. Stades évolués : condensation puis fragmentation/aplatissement du lunatum"},
+      {t:'IRM poignet',d:"Examen de référence pour les stades précoces — œdème du lunatum (hyposignal T1, hypersignal T2)"}
+    ],
+    treatment:[
+      {t:"Repos relatif + immobilisation",d:"Attelle de poignet — première intention en stades précoces"},
+      {t:"Antalgiques simples (paracétamol)",d:"Éviter AINS prolongés"},
+      {t:"Adaptation des gestes",d:"Éviter les vibrations, les charges lourdes, les sports impactant le poignet"},
+      {t:'Chirurgie',d:"Décompression / ostéotomie de raccourcissement du radius (stades précoces) ou arthrodèse / prothèse (stades évolués)"}
+    ],
+    exercises:[{t:'Repos relatif et immobilisation selon avis',d:''},{t:'Mobilisation douce du poignet',d:''},{t:'Renforcement isométrique du poignet',d:''},{t:'Mobilisation globale du poignet',d:''}],ficheExercice:'lococlic_fiches_patient/main_11_kienbock.html',
+    referral:[
+      {who:'Chirurgien de la main',why:"Bilan complet + décision thérapeutique (souvent chirurgicale)",p:true},
+      {who:'Médecin du sport',why:"Évaluation des facteurs déclenchants et adaptation du geste sportif",p:false}
+    ],
+    sources:[
+      {l:'Lutsky & Beredjiklian 2012 — Kienbock disease (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/22999386/'},
+      {l:'Beredjiklian 2009 — Kienbock disease (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/19121757/'},
+      {l:'Lichtman et al. 2017 — Kienbock disease update (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28538048/'},
+      {l:'HAS — Pathologies du poignet',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Lunatum','Douleur dorsale','Homme jeune','Nécrose','Kienböck']
+  },
+  INSTAB_SL: {
+    id:'INSTAB_SL', name:"Instabilité scapho-lunaire", icon:'⚠️', pop:'Sportif (jeune), ATCD chute paume tendue, escalade, sports de raquette',
+    desc:"Lésion du ligament scapho-lunaire après chute sur la paume tendue ou hyperextension forcée du poignet. Douleur dorsale du poignet localisée au point scapho-lunaire (entre tubercule de Lister et base 3e métacarpien). Sensation de craquement, dérobement, lâchage à l'effort. Diminution de la force de préhension. Évolution possible vers une arthrose SLAC wrist (Scapho-Lunate Advanced Collapse) si méconnue.",
+    alert:{type:'yellow',text:"Souvent méconnue en aiguë — toute douleur dorsale du poignet persistante > 3 semaines après chute paume tendue doit faire évoquer une lésion scapho-lunaire. Risque d'arthrose SLAC wrist en cas de retard."},
+    imaging:[
+      {t:"Radiographie poignet face/profil + clichés dynamiques (en charge / poing serré)",d:"Cherche un écart scapho-lunaire > 3 mm en charge (signe de Terry-Thomas), bascule du scaphoïde"},
+      {t:'IRM ou arthroscanner',d:"Référence pour confirmer la rupture du ligament scapho-lunaire et grader la sévérité"}
+    ],
+    treatment:[
+      {t:"Immobilisation initiale",d:"Attelle de poignet 4-6 semaines si lésion partielle ou doute diagnostique"},
+      {t:'Adaptation des gestes',d:"Éviter hyperextensions, ports de charge importants"},
+      {t:'Antalgiques simples',d:"Paracétamol — éviter AINS prolongés"},
+      {t:'Chirurgie',d:"Réparation ligamentaire arthroscopique (lésion récente) ou ligamentoplastie (lésion chronique) — référence pour les lésions instables"}
+    ],
+    exercises:[{t:'Renforcement isométrique du poignet',d:''},{t:'Mobilisation globale du poignet',d:''},{t:'Renforcement des intrinsèques de la main',d:''},{t:'Mobilisation douce du poignet',d:''}],ficheExercice:'lococlic_fiches_patient/main_12_instabilite_sl.html',
+    referral:[
+      {who:'Chirurgien de la main',why:"Bilan complet + décision thérapeutique (souvent chirurgicale si instabilité confirmée)",p:true},
+      {who:'Médecin du sport',why:"Évaluation pour la reprise sportive et adaptation du geste",p:true}
+    ],
+    sources:[
+      {l:'Andersson et al. 2018 — Scapholunate ligament injuries (J Hand Surg Eur)',u:'https://pubmed.ncbi.nlm.nih.gov/29402155/'},
+      {l:'Kitay & Wolfe 2012 — Scapholunate instability (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/22841142/'},
+      {l:'Garcia-Elias et al. 2006 — Scapholunate ligament classification (J Hand Surg Br)',u:'https://pubmed.ncbi.nlm.nih.gov/16777296/'},
+      {l:'HAS — Pathologies traumatiques du poignet',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Chute paume','Point scapho-lunaire','Watson positif','Sportif','Instabilité SL']
+  },
+  LESION_LCU: {
+    id:'LESION_LCU', name:"Lésion du LCU du pouce (pouce du skieur)", icon:'⛷️', pop:'Sportif (ski +++, sport de raquette, sport de balle), traumatisme aigu en hyperabduction du pouce',
+    desc:"Lésion partielle ou totale du ligament collatéral ulnaire (LCU) de l'articulation métacarpo-phalangienne du pouce, classiquement provoquée par une chute à ski avec le pouce coincé dans la dragonne (hyperabduction forcée). Douleur médiale de la MCP du pouce, œdème, ecchymose, instabilité en valgus. Forme particulière : lésion de Stener (extrémité distale du ligament déplacée au-dessus de l'aponévrose de l'adducteur), qui empêche la cicatrisation spontanée et impose la chirurgie.",
+    alert:{type:'yellow',text:"Toute lésion du LCU avec laxité franche en valgus stress (> 30° d'ouverture ou > 15° de différence avec le côté sain) doit faire suspecter une lésion de Stener — IRM systématique et avis chirurgical sous 7-10 jours pour décider d'une réparation."},
+    imaging:[
+      {t:"Radiographie pouce face + profil",d:"Première intention — éliminer une fracture-arrachement de la base de P1 du pouce (fragment osseux) ou une luxation"},
+      {t:"Échographie dynamique",d:"Examen de référence en première ligne — visualise la rupture du LCU, recherche la lésion de Stener (interposition de l'adducteur)"},
+      {t:"IRM main",d:"Si doute échographique ou bilan préopératoire — confirme la lésion de Stener (or-standard)"}
+    ],
+    treatment:[
+      {t:"Immobilisation par attelle thumb spica",d:"Lésion partielle (laxité < 15° vs côté sain) — 4-6 semaines en position de protection du LCU"},
+      {t:"Antalgiques simples (paracétamol)",d:"En phase aiguë — éviter AINS prolongés"},
+      {t:"Glaçage les 48 premières heures",d:"15 min × 4-6/jour pour limiter l'œdème en phase aiguë (sauf contre-indication)"},
+      {t:"Chirurgie de réparation ligamentaire",d:"Indiquée d'emblée si lésion de Stener ou laxité totale > 30° — suture/réinsertion ligamentaire dans les 7-10 jours"},
+      {t:"Rééducation après immobilisation",d:"Mobilisation progressive, renforcement de la pince — kinésithérapie"}
+    ],
+    exercises:[{t:'Immobilisation initiale puis mobilisation progressive',d:''},{t:'Renforcement isométrique du pouce (adduction/opposition)',d:''},{t:'Renforcement de l\'opposant du pouce',d:''},{t:'Étirement de l\'adducteur du pouce',d:''}],ficheExercice:'lococlic_fiches_patient/main_13_lcu_pouce.html',
+    referral:[
+      {who:'Chirurgien de la main',why:"Avis sous 7-10 jours pour décision thérapeutique (chirurgie si Stener ou laxité totale)",p:true},
+      {who:'Médecin du sport',why:"Encadrement de la rééducation et de la reprise sportive",p:true}
+    ],
+    pitfall:{
+      modules:[],
+      text:"Ne pas confondre avec une simple entorse banale du pouce — toujours quantifier la laxité en valgus stress (comparer aux 2 côtés) et orienter rapidement vers l'imagerie. Une lésion de Stener méconnue évolue vers une instabilité chronique et une arthrose précoce de la MCP."
+    },
+    sources:[
+      {l:'Madan et al. 2014 — Skier\'s thumb (Hand Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/24875505/'},
+      {l:'Avery et al. 2015 — UCL thumb injuries diagnosis treatment (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/26433842/'},
+      {l:'Mahajan & Rhemrev 2013 — Rupture UCL thumb (Open Access J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/24379706/'},
+      {l:'HAS — Traumatologie de la main',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Pouce skieur','Valgus stress','Stener','MCP pouce','LCU']
+  }
+};
+
+// ========== TESTS CLINIQUES ==========
+const TESTS = {
+  // === FAMILLE CANAL CARPIEN (médian) ===
+  phalen: {
+    name:"Test de Phalen", family:'CANAL_CARP', badge:'CCA',
+    desc:"Test de provocation du canal carpien",
+    how:"Patient assis. Demander au patient de placer le dos des mains face à face, poignets en flexion maximale, coudes à hauteur des épaules. Maintenir la position pendant 60 secondes.",
+    pos:"Apparition ou aggravation des paresthésies dans le territoire du médian (3 premiers doigts) avant 60 secondes — canal carpien",
+    neg:"Pas de paresthésie déclenchée",
+    affects_pos:{CANAL_CARPIEN:55}, affects_neg:{CANAL_CARPIEN:-25}
+  },
+  tinel_median: {
+    name:"Tinel du nerf médian", family:'CANAL_CARP', badge:'CCA',
+    desc:"Test de percussion du nerf médian au poignet",
+    how:"Percussion par 2-3 coups secs avec les doigts sur la face palmaire du poignet, en regard du canal carpien (ligne du pli de flexion du poignet).",
+    pos:"Paresthésies électriques irradiant vers les 3 premiers doigts — atteinte du nerf médian",
+    neg:"Pas de paresthésie déclenchée",
+    affects_pos:{CANAL_CARPIEN:45}, affects_neg:{CANAL_CARPIEN:-20}
+  },
+
+  // === FAMILLE DE QUERVAIN ===
+  finkelstein: {
+    name:"Test de Finkelstein", family:'DE_QUERVAIN', badge:'DQV',
+    desc:"Test du 1er compartiment des extenseurs (long abducteur, court extenseur du pouce)",
+    how:"Patient assis. Le pouce est replié dans la paume puis enfermé dans les autres doigts (poing fermé sur le pouce). L'examinateur incline la main en déviation ulnaire passive.",
+    pos:"Douleur vive sur la styloïde radiale — tendinopathie de De Quervain",
+    neg:"Indolore",
+    affects_pos:{DE_QUERVAIN:55}, affects_neg:{DE_QUERVAIN:-25}
+  },
+  palp_styloide: {
+    name:"Palpation de la styloïde radiale", family:'DE_QUERVAIN', badge:'DQV',
+    desc:"Palpation directe du 1er compartiment des extenseurs",
+    how:"Palpation du bord radial du poignet en regard de la styloïde radiale. Recherche d'un point douloureux exquis, d'un épaississement, parfois d'un nodule.",
+    pos:"Douleur exquise reproductible sur la gaine du 1er compartiment — De Quervain",
+    neg:"Indolore",
+    affects_pos:{DE_QUERVAIN:40}, affects_neg:{DE_QUERVAIN:-18}
+  },
+
+  // === FAMILLE RHIZARTHROSE (TMC) ===
+  grinding_test: {
+    name:"Grinding test (test de meulage)", family:'TMC', badge:'TMC',
+    desc:"Test de l'articulation trapézo-métacarpienne",
+    how:"L'examinateur saisit le métacarpien du pouce et exerce une compression axiale + rotation/circumduction de l'articulation TMC.",
+    pos:"Douleur reproductible à la base du pouce ± crépitations — rhizarthrose",
+    neg:"Indolore et silencieux",
+    affects_pos:{RHIZARTHROSE:55, DE_QUERVAIN:5}, affects_neg:{RHIZARTHROSE:-25}
+  },
+  palp_tmc: {
+    name:"Palpation de l'articulation TMC", family:'TMC', badge:'TMC',
+    desc:"Palpation directe de la base du pouce",
+    how:"Palpation de l'interligne trapézo-métacarpienne (face dorsale et palmaire de la base du pouce). Tester aussi la pince forte (saisir/tordre).",
+    pos:"Douleur exquise à la base du pouce, tuméfaction quadrangulaire — rhizarthrose",
+    neg:"Indolore",
+    affects_pos:{RHIZARTHROSE:40, DE_QUERVAIN:5}, affects_neg:{RHIZARTHROSE:-18}
+  },
+
+  // === FAMILLE DOIGT À RESSAUT (poulie A1) ===
+  ressaut_obs: {
+    name:"Observation du ressaut (doigt à ressaut)", family:'RESSAUT', badge:'RSS',
+    desc:"Mise en évidence du ressaut digital",
+    how:"Demander au patient de fléchir activement et complètement le doigt suspect puis de l'étendre lentement. Observer (et palper) un ressaut, un blocage, ou un saut brusque lors de l'extension.",
+    pos:"Ressaut audible/palpable ou blocage en flexion lors de l'extension — doigt à ressaut",
+    neg:"Mouvement fluide sans ressaut",
+    affects_pos:{DOIGT_RESSAUT:60}, affects_neg:{DOIGT_RESSAUT:-30}
+  },
+  palp_a1: {
+    name:"Palpation de la poulie A1", family:'RESSAUT', badge:'RSS',
+    desc:"Palpation du nodule de la poulie A1",
+    how:"Palpation de la face palmaire en regard de la tête métacarpienne du doigt concerné. Rechercher un nodule, un épaississement, une douleur exquise.",
+    pos:"Nodule palpable + douleur exquise sur la poulie A1 — doigt à ressaut",
+    neg:"Indolore, pas de nodule",
+    affects_pos:{DOIGT_RESSAUT:45}, affects_neg:{DOIGT_RESSAUT:-20}
+  },
+
+  // === FAMILLE KYSTE / TUMÉFACTION ===
+  transillumination: {
+    name:"Transillumination de la tuméfaction", family:'KYSTE', badge:'KYS',
+    desc:"Test différenciation kyste liquidien vs masse solide",
+    how:"Dans une pièce sombre, placer une source lumineuse ponctuelle (lampe de poche, otoscope) directement contre la tuméfaction.",
+    pos:"Tuméfaction transilluminée (lumière diffuse) — contenu liquidien, kyste synovial",
+    neg:"Pas de transillumination — masse solide, à explorer",
+    affects_pos:{KYSTE_SYNO:55}, affects_neg:{KYSTE_SYNO:-25}
+  },
+  palp_kyste: {
+    name:"Palpation et mobilisation du kyste", family:'KYSTE', badge:'KYS',
+    desc:"Caractéristiques palpatoires d'un kyste synovial",
+    how:"Palpation du kyste : fluctuation, mobilité limitée, indolore au repos. Tester la douleur en extension forcée du poignet.",
+    pos:"Tuméfaction fluctuante, ferme, mobile, indolore au repos — kyste synovial",
+    neg:"Tuméfaction dure, fixe, douloureuse — éliminer autre étiologie",
+    affects_pos:{KYSTE_SYNO:45}, affects_neg:{KYSTE_SYNO:-20}
+  },
+
+  // === FAMILLE ARTHROSE IP (Heberden / Bouchard) ===
+  palp_ipd_ipp: {
+    name:"Palpation des IPD/IPP", family:'IP', badge:'IPD',
+    desc:"Recherche de nodules de Heberden (IPD) et Bouchard (IPP)",
+    how:"Palpation systématique de chaque articulation interphalangienne distale (IPD) et proximale (IPP) des doigts. Rechercher : nodules durs latéraux, déformations, déviations latérales, douleur en poussée.",
+    pos:"Nodules durs aux IPD (Heberden) ± IPP (Bouchard), parfois douloureux — arthrose digitale",
+    neg:"Articulations souples, pas de nodule",
+    affects_pos:{ARTHROSE_IP:55}, affects_neg:{ARTHROSE_IP:-25}
+  },
+
+  // === FAMILLE CANAL GUYON (ulnaire au poignet) ===
+  tinel_guyon: {
+    name:"Tinel au canal de Guyon", family:'GUYON', badge:'GYN',
+    desc:"Test de provocation du nerf ulnaire au poignet",
+    how:"Percussion par 2-3 coups secs avec les doigts sur le canal de Guyon (face antérieure du poignet, en dedans, entre os pisiforme et hamatum).",
+    pos:"Paresthésies électriques irradiant vers les 4e-5e doigts (face palmaire UNIQUEMENT — épargne le dos de la main) — Guyon",
+    neg:"Pas de paresthésie déclenchée",
+    affects_pos:{CANAL_GUYON:55}, affects_neg:{CANAL_GUYON:-25}
+  },
+  froment: {
+    name:"Signe de Froment", family:'GUYON', badge:'GYN',
+    desc:"Test fonctionnel de l'adducteur du pouce (nerf ulnaire)",
+    how:"Demander au patient de tenir une feuille de papier entre le pouce et l'index, l'examinateur tire la feuille.",
+    pos:"Le patient fléchit la phalange distale du pouce pour maintenir la prise (compensation par le long fléchisseur du pouce — nerf médian) — atteinte ulnaire motrice",
+    neg:"Pouce reste tendu, prise maintenue par adducteur",
+    affects_pos:{CANAL_GUYON:50}, affects_neg:{CANAL_GUYON:-22}
+  },
+
+  // === FAMILLE DUPUYTREN ===
+  table_top: {
+    name:"Hueston table top test", family:'DUPUYTREN', badge:'DUP',
+    desc:"Test de retentissement fonctionnel de la maladie de Dupuytren",
+    how:"Demander au patient de poser sa main à plat sur la table, paume contre la surface, doigts en extension complète.",
+    pos:"Impossibilité de poser la main complètement à plat (flessum digital) — Dupuytren avec retentissement (indication chirurgicale relative)",
+    neg:"Main posée à plat sans gêne",
+    affects_pos:{DUPUYTREN:60}, affects_neg:{DUPUYTREN:-30}
+  },
+  palp_brides: {
+    name:"Palpation des nodules et brides palmaires", family:'DUPUYTREN', badge:'DUP',
+    desc:"Examen clinique de la paume",
+    how:"Palpation systématique de la paume et de la base des doigts (notamment 4e et 5e). Rechercher : nodules indurés, brides longitudinales, peau adhérente.",
+    pos:"Nodules palmaires indurés ± brides longitudinales (souvent 4e-5e rayons) — Dupuytren",
+    neg:"Paume souple, sans nodule",
+    affects_pos:{DUPUYTREN:55}, affects_neg:{DUPUYTREN:-25}
+  },
+
+  // === FAMILLE RUPTURE BANDELETTE (MCP) ===
+  obs_luxation: {
+    name:"Observation de la luxation tendineuse", family:'BAND', badge:'BAN',
+    desc:"Test du tendon extenseur à la MCP",
+    how:"Demander au patient de fermer le poing puis de l'ouvrir lentement. Observer le tendon extenseur sur le dos des MCP : tend-il à se luxer latéralement dans la gouttière inter-métacarpienne ?",
+    pos:"Luxation/subluxation latérale visible du tendon extenseur lors de la flexion — rupture de la bandelette sagittale",
+    neg:"Tendon stable sur la tête métacarpienne",
+    affects_pos:{RUPTURE_BAND:60}, affects_neg:{RUPTURE_BAND:-30}
+  },
+  ext_active_mcp: {
+    name:"Extension active de la MCP", family:'BAND', badge:'BAN',
+    desc:"Test d'efficacité de l'extenseur",
+    how:"Demander au patient d'étendre activement et complètement la MCP du doigt suspect (sans aide de la main controlatérale).",
+    pos:"Extension incomplète ou impossible ± douleur dorsale — atteinte de l'extenseur (rupture bandelette ou tendon)",
+    neg:"Extension complète et indolore",
+    affects_pos:{RUPTURE_BAND:45}, affects_neg:{RUPTURE_BAND:-20}
+  },
+
+  // === FAMILLE FLÉCHISSEURS ===
+  palp_flech: {
+    name:"Palpation des fléchisseurs", family:'FLECH', badge:'FLE',
+    desc:"Examen des tendons fléchisseurs",
+    how:"Palpation systématique du trajet des tendons fléchisseurs sur la face palmaire des doigts et de la paume. Rechercher : douleur exquise, épaississement, nodule, crépitations.",
+    pos:"Douleur reproductible sur le trajet des fléchisseurs ± nodule, crépitations — tendinopathie des fléchisseurs",
+    neg:"Indolore, pas de nodule",
+    affects_pos:{TEND_FLECH:50}, affects_neg:{TEND_FLECH:-22}
+  },
+  prehension_contrariee: {
+    name:"Préhension contrariée (poing serré contre résistance)", family:'FLECH', badge:'FLE',
+    desc:"Test fonctionnel des fléchisseurs",
+    how:"Demander au patient de fermer le poing fortement. L'examinateur tente de fléchir/ouvrir les doigts crochetés en exerçant une traction.",
+    pos:"Douleur palmaire reproductible ± faiblesse — tendinopathie des fléchisseurs",
+    neg:"Force conservée, indolore",
+    affects_pos:{TEND_FLECH:45}, affects_neg:{TEND_FLECH:-20}
+  },
+
+  // === FAMILLE KIENBÖCK (lunatum) ===
+  palp_lunatum: {
+    name:"Palpation du lunatum", family:'LUNATUM', badge:'KIE',
+    desc:"Palpation directe du semi-lunaire",
+    how:"Palpation de la face dorsale du poignet en regard du lunatum (juste en distalité du tubercule de Lister, dans le creux scapho-lunaire). Demander une flexion-extension du poignet pour mobiliser le lunatum.",
+    pos:"Douleur exquise reproductible sur le lunatum, parfois tuméfaction dorsale — maladie de Kienböck",
+    neg:"Indolore",
+    affects_pos:{KIENBOCK:55}, affects_neg:{KIENBOCK:-25}
+  },
+  flex_ext_poignet: {
+    name:"Mobilisation flexion-extension du poignet", family:'LUNATUM', badge:'KIE',
+    desc:"Évaluation des amplitudes du poignet",
+    how:"Demander au patient de fléchir et d'étendre activement le poignet, puis évaluer passivement les amplitudes. Comparer avec côté sain.",
+    pos:"Limitation des amplitudes ± douleur dorsale reproductible (surtout en extension) — atteinte radio-carpien (Kienböck, arthrose)",
+    neg:"Amplitudes complètes et indolores",
+    affects_pos:{KIENBOCK:40, INSTAB_SL:15}, affects_neg:{KIENBOCK:-18}
+  },
+
+  // === FAMILLE INSTABILITÉ SCAPHO-LUNAIRE ===
+  watson_test: {
+    name:"Watson test (Scaphoid shift test)", family:'SL', badge:'SLT',
+    desc:"Test de l'instabilité scapho-lunaire",
+    how:"L'examinateur saisit le poignet du patient. Avec le pouce, applique une pression sur le tubercule du scaphoïde (face palmaire) tout en mobilisant le poignet de la déviation ulnaire vers la déviation radiale.",
+    pos:"Douleur dorsale + ressaut/claquement perceptible (signe de dyskinésie scapho-lunaire) — instabilité scapho-lunaire",
+    neg:"Indolore, pas de ressaut",
+    affects_pos:{INSTAB_SL:60}, affects_neg:{INSTAB_SL:-28}
+  },
+  palp_sl: {
+    name:"Palpation du point scapho-lunaire", family:'SL', badge:'SLT',
+    desc:"Palpation directe de l'interligne scapho-lunaire",
+    how:"Repérer le tubercule de Lister sur le dos du poignet. Le point scapho-lunaire se trouve immédiatement en distalité de ce tubercule. Palpation directe avec mouvements de flexion-extension du poignet.",
+    pos:"Douleur exquise reproductible sur le point scapho-lunaire après chute paume tendue — lésion scapho-lunaire",
+    neg:"Indolore",
+    affects_pos:{INSTAB_SL:50, KIENBOCK:10}, affects_neg:{INSTAB_SL:-22}
+  },
+  // === FAMILLE LCU POUCE ===
+  valgus_stress_pouce: {
+    name:"Test de stress en valgus de la MCP du pouce", family:'LCU', badge:'LCU',
+    desc:"Test de stabilité du ligament collatéral ulnaire du pouce",
+    how:"Patient assis. Stabiliser le métacarpien du pouce d'une main. De l'autre, appliquer un stress en valgus (déviation radiale) de la phalange proximale du pouce, MCP en extension PUIS en flexion 30°. Comparer toujours avec le côté sain.",
+    pos:"Laxité > 15° vs côté sain ou ouverture supérieure à 30° — lésion du LCU (lésion de Stener si laxité totale en flexion 30°)",
+    neg:"Pas de laxité, butée nette",
+    affects_pos:{LESION_LCU:60}, affects_neg:{LESION_LCU:-30}
+  },
+  palp_mcp_pouce: {
+    name:"Palpation de la MCP médiale du pouce", family:'LCU', badge:'LCU',
+    desc:"Palpation directe du LCU",
+    how:"Palpation de la face ulnaire de la MCP du pouce (côté de l'adducteur). Rechercher : douleur exquise, œdème, ecchymose, parfois fragment osseux palpable (arrachement osseux).",
+    pos:"Douleur exquise reproductible sur le LCU ± œdème/ecchymose — lésion du LCU",
+    neg:"Indolore",
+    affects_pos:{LESION_LCU:45}, affects_neg:{LESION_LCU:-20}
+  }
+};
+
+// ========== VIGNETTES + CHOIX + CIRCUITS ==========
+const VIGNETTES = {
+  // === LOCALISATIONS ===
+  loc_base_pouce: {
+    id:'loc_base_pouce', lbl:'🟤 Douleur à la base du pouce',
+    desc:'Douleur à la base du pouce à la pince',
+    score:{RHIZARTHROSE:45, DE_QUERVAIN:40}
+  },
+  loc_face_palm: {
+    id:'loc_face_palm', lbl:'⬇️ Douleur ou paresthésies face palmaire',
+    desc:'Douleur ou paresthésies palmaires',
+    score:{CANAL_CARPIEN:35, TEND_FLECH:35}
+  },
+  loc_paresth_3prem: {
+    id:'loc_paresth_3prem', lbl:'⚡ Paresthésies des 3 premiers doigts (et moitié 4e)',
+    desc:'Fourmillements pouce, index, majeur',
+    score:{CANAL_CARPIEN:55}
+  },
+  loc_paresth_4_5: {
+    id:'loc_paresth_4_5', lbl:'⚡ Paresthésies des 4e et 5e doigts',
+    desc:'Fourmillements 4e et 5e doigts',
+    score:{CANAL_GUYON:50}
+  },
+  loc_dorsale_poignet: {
+    id:'loc_dorsale_poignet', lbl:'⬆️ Douleur dorsale du poignet',
+    desc:'Douleur sur le dos du poignet',
+    score:{KYSTE_SYNO:35, KIENBOCK:30, INSTAB_SL:30}
+  },
+  loc_tumefaction_dos: {
+    id:'loc_tumefaction_dos', lbl:'🔵 Tuméfaction sur le dos du poignet',
+    desc:'Tuméfaction du dos du poignet',
+    score:{KYSTE_SYNO:60}
+  },
+  loc_ressaut_blocage: {
+    id:'loc_ressaut_blocage', lbl:'🟡 Blocage ou ressaut du doigt',
+    desc:"Blocage transitoire d'un doigt en flexion avec ressaut",
+    score:{DOIGT_RESSAUT:60}
+  },
+  loc_nodules_doigts: {
+    id:'loc_nodules_doigts', lbl:'🦴 Nodules durs aux articulations des doigts',
+    desc:'Nodules durs progressifs aux articulations des doigts',
+    score:{ARTHROSE_IP:55}
+  },
+  loc_bride_paume: {
+    id:'loc_bride_paume', lbl:'🟤 Bride ou nodule dans la paume',
+    desc:"Nodules et brides palmaires avec rétraction d'un doigt",
+    score:{DUPUYTREN:60}
+  },
+  loc_luxation_tendon: {
+    id:'loc_luxation_tendon', lbl:'🟠 Luxation visible du tendon extenseur',
+    desc:'Tendon extenseur qui saute latéralement sur MCP',
+    score:{RUPTURE_BAND:60}
+  },
+
+  // === PRÉSENTATIONS / CONTEXTE ===
+  pres_nocturne: {
+    id:'pres_nocturne', lbl:'🌙 Paresthésies / réveils nocturnes',
+    desc:'Réveils nocturnes avec besoin de secouer la main',
+    score:{CANAL_CARPIEN:50}
+  },
+  pres_chute_paume: {
+    id:'pres_chute_paume', lbl:"💥 ATCD de chute sur la paume tendue",
+    desc:'Douleur après chute paume tendue, persistant > 3 semaines',
+    score:{INSTAB_SL:45}
+  },
+  pres_metier_repet: {
+    id:'pres_metier_repet', lbl:'⚙️ Métier manuel répétitif / sport préhension',
+    desc:'Travail répétitif, portage bébé, sport préhension forte',
+    score:{CANAL_CARPIEN:20, DE_QUERVAIN:20, DOIGT_RESSAUT:20, TEND_FLECH:25}
+  },
+  pres_cycliste: {
+    id:'pres_cycliste', lbl:'🚴 Cycliste / vibrations / compression directe',
+    desc:'Cycliste, vibrations, compression directe du poignet',
+    score:{CANAL_GUYON:45}
+  },
+  pres_trauma_pouce: {
+    id:'pres_trauma_pouce', lbl:'⛷️ Traumatisme aigu du pouce (chute ski, sport de balle)',
+    desc:'Chute en hyperabduction du pouce (ski, sport de balle)',
+    score:{LESION_LCU:60}
+  }
+};
+
+const MECA_VIGS = {
+  surcharge:   ['loc_base_pouce','loc_face_palm','loc_ressaut_blocage','loc_paresth_3prem','pres_nocturne','pres_metier_repet','pres_cycliste','loc_paresth_4_5'],
+  trauma:      ['loc_dorsale_poignet','loc_luxation_tendon','pres_chute_paume','pres_trauma_pouce'],
+  progressif:  ['loc_base_pouce','loc_nodules_doigts','loc_bride_paume','loc_dorsale_poignet','loc_tumefaction_dos','loc_ressaut_blocage'],
+  neuro:       ['loc_paresth_3prem','loc_paresth_4_5','pres_nocturne','pres_cycliste']
+};
+
+const CHOICES = {
+  MECANISME: {
+    tag:'Étape 1 · Mécanisme', q:"Comment la douleur est-elle apparue ?",
+    items:[
+      {key:'surcharge', lbl:'Surcharge progressive (geste répétitif, métier, sport)',
+        desc:"Apparition progressive avec geste répétitif (clavier, outils, portage bébé, sport préhension)",
+        score:{CANAL_CARPIEN:25, DE_QUERVAIN:25, DOIGT_RESSAUT:25, TEND_FLECH:25, CANAL_GUYON:20}},
+      {key:'trauma', lbl:"Traumatisme aigu (chute, choc direct)",
+        desc:"Chute sur la paume, choc direct sur la main, mécanisme en hyperflexion ou hyperextension",
+        score:{INSTAB_SL:35, RUPTURE_BAND:35, LESION_LCU:35, KIENBOCK:15}},
+      {key:'progressif', lbl:'Installation progressive sans cause évidente',
+        desc:"Tuméfaction, nodules, brides, déformations apparues lentement, sans traumatisme déclenchant",
+        score:{RHIZARTHROSE:30, ARTHROSE_IP:30, DUPUYTREN:30, KYSTE_SYNO:25, KIENBOCK:20}},
+      {key:'neuro', lbl:'Paresthésies / faiblesse',
+        desc:"Fourmillements, engourdissements, faiblesse de la pince ou de la préhension",
+        score:{CANAL_CARPIEN:45, CANAL_GUYON:45}}
+    ]
+  },
+  AGE: {
+    tag:'Étape 2 · Profil', q:'Quel est le profil du patient ?',
+    items:[
+      {key:'jeune_sport', lbl:'< 35 ans, sportif ou actif',
+        desc:"Sport de raquette, escalade, sport de contact, métier manuel",
+        score:{TEND_FLECH:20, INSTAB_SL:18, RUPTURE_BAND:18, LESION_LCU:20, DE_QUERVAIN:15, KIENBOCK:10}},
+      {key:'a35_55_mere', lbl:'35-55 ans (mère jeune, travail répétitif)',
+        desc:"Femme post-partum, travail au clavier, portage bébé, gestes répétitifs",
+        score:{CANAL_CARPIEN:25, DE_QUERVAIN:25, DOIGT_RESSAUT:18, CANAL_GUYON:12}},
+      {key:'femme_50p', lbl:'Femme > 50 ans (ménopause)',
+        desc:"Femme ménopausée, contexte arthrosique, hérédité familiale d'arthrose",
+        score:{RHIZARTHROSE:35, ARTHROSE_IP:35, DOIGT_RESSAUT:15, CANAL_CARPIEN:15}},
+      {key:'homme_50p', lbl:'Homme > 50 ans',
+        desc:"Homme sénior, terrain dégénératif, origine nord-européenne",
+        score:{DUPUYTREN:35, KIENBOCK:15, ARTHROSE_IP:15}}
+    ]
+  },
+  HORAIRE: {
+    tag:'Étape 4 · Horaire', q:"Caractère et horaire de la douleur ?",
+    items:[
+      {key:'nocturne', lbl:'Paresthésies / douleurs nocturnes',
+        desc:"Réveils nocturnes avec besoin de secouer la main",
+        score:{CANAL_CARPIEN:35, CANAL_GUYON:15}},
+      {key:'mec_effort', lbl:"Mécanique à l'effort (pince, préhension, geste)",
+        desc:"Douleur reproduite par les gestes précis (pince, préhension forte) — tendinopathies, arthroses",
+        score:{DE_QUERVAIN:25, RHIZARTHROSE:25, TEND_FLECH:25, DOIGT_RESSAUT:15, ARTHROSE_IP:15}},
+      {key:'demarrage', lbl:'Au démarrage (raideur matinale)',
+        desc:"Douleur en début d'utilisation qui s'estompe progressivement — arthroses, doigt à ressaut",
+        score:{ARTHROSE_IP:25, RHIZARTHROSE:20, DOIGT_RESSAUT:20}},
+      {key:'permanent', lbl:'Permanent ou progressif sans rythme particulier',
+        desc:"Douleur ou gêne permanente, évolutive sans rythme particulier",
+        score:{KIENBOCK:25, INSTAB_SL:20, DUPUYTREN:15}}
+    ]
+  }
+};
+
+// Circuits de 5 tests par pathologie
+const CIRCUITS = {
+  CANAL_CARPIEN:  ['phalen','tinel_median','palp_a1','grinding_test','transillumination'],
+  DE_QUERVAIN:    ['finkelstein','palp_styloide','grinding_test','phalen','palp_a1'],
+  RHIZARTHROSE:   ['grinding_test','palp_tmc','finkelstein','palp_styloide','palp_ipd_ipp'],
+  DOIGT_RESSAUT:  ['ressaut_obs','palp_a1','grinding_test','palp_flech','phalen'],
+  KYSTE_SYNO:     ['transillumination','palp_kyste','watson_test','palp_lunatum','palp_sl'],
+  ARTHROSE_IP:    ['palp_ipd_ipp','grinding_test','palp_tmc','ressaut_obs','phalen'],
+  CANAL_GUYON:    ['tinel_guyon','froment','phalen','tinel_median','palp_a1'],
+  DUPUYTREN:      ['table_top','palp_brides','ressaut_obs','palp_a1','grinding_test'],
+  RUPTURE_BAND:   ['obs_luxation','ext_active_mcp','palp_a1','ressaut_obs','grinding_test'],
+  TEND_FLECH:     ['palp_flech','prehension_contrariee','ressaut_obs','palp_a1','phalen'],
+  KIENBOCK:       ['palp_lunatum','flex_ext_poignet','watson_test','palp_sl','transillumination'],
+  INSTAB_SL:      ['watson_test','palp_sl','flex_ext_poignet','palp_lunatum','transillumination'],
+  LESION_LCU:     ['valgus_stress_pouce','palp_mcp_pouce','grinding_test','palp_tmc','obs_luxation']
+};
+
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR ==========
+// ========== ÉTAT ==========
+const PATHO_LIST = Object.keys(P);
+let scores = {};
+let history = [];
+let mecaKey = null;
+let testsToRun = [];
+let testIdx = 0;
+let currentStep = 'MECANISME';
+let selectedVigs = new Set();
+
+function init(){
+  scores = {};
+  PATHO_LIST.forEach(p => scores[p] = 0);
+  history = [];
+  mecaKey = null;
+  testsToRun = [];
+  testIdx = 0;
+  currentStep = 'MECANISME';
+  selectedVigs = new Set();
+}
+
+function addScore(delta){
+  for(const k in delta){
+    if(k in scores) scores[k] += delta[k];
+  }
+}
+
+function ranked(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+}
+
+function top1(){ return ranked()[0]; }
+
+function top3WithScores(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+}
+
+// ========== LOGIQUE TESTS ADAPTATIFS ==========
+// Règle : 5 tests max
+// - Test POS  → continuer le circuit du top1 actuel (confirmation)
+// - Test NÉG  → proposer un test d\'une AUTRE famille clinique
+
+const MAX_TESTS = 5;
+
+function buildInitialQueue(){
+  const t1 = top1();
+  return [...(CIRCUITS[t1] || [])].slice(0, MAX_TESTS);
+}
+
+function applyTest(tKey, positive){
+  const t = TESTS[tKey];
+  if(!t) return;
+  const delta = positive ? t.affects_pos : t.affects_neg;
+  addScore(delta);
+  history.push({test:tKey, name:t.name, result:positive ? '✅':'❌'});
+}
+
+function nextTestAdaptive(currentFamily, positive, previousTop1){
+  // Tests déjà faits (jamais reproposés)
+  const done = new Set(testsToRun.slice(0, testIdx));
+  const newTop1 = top1();
+  
+  if(positive){
+    // POS : continuer circuit du top1 actuel (confirmation)
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+    return null;
+  }
+  
+  // NEG :
+  // Cas 1 : top1 INCHANGÉ → continuer le circuit du top1 (poursuite logique, ex: cluster Laslett pour SI)
+  if(newTop1 === previousTop1){
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+  }
+  
+  // Cas 2 : top1 a CHANGÉ → proposer le test #1 de la nouvelle patho top1
+  // (qui sera presque toujours d'une famille différente)
+  // On parcourt le ranking pour trouver le 1er candidat de famille différente
+  for(const patho of ranked()){
+    const cands = CIRCUITS[patho];
+    if(!cands || !cands.length) continue;
+    for(const candTest of cands){
+      if(done.has(candTest)) continue;
+      const candFamily = (TESTS[candTest] || {}).family;
+      if(candFamily && candFamily !== currentFamily) return candTest;
+    }
+  }
+  
+  // Fallback : n\'importe quel test non fait
+  for(const patho of ranked()){
+    for(const t of (CIRCUITS[patho] || [])){
+      if(!done.has(t)) return t;
+    }
+  }
+  return null;
+}
+
+function testResult(positive){
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t) return;
+  
+  // Capturer top1 AVANT d\'appliquer le résultat
+  const previousTop1 = top1();
+  
+  applyTest(tKey, positive);
+  const currentFamily = t.family;
+  testIdx++;
+  
+  // Si pas encore atteint MAX, choisir le prochain test
+  if(testIdx < MAX_TESTS){
+    const nextT = nextTestAdaptive(currentFamily, positive, previousTop1);
+    if(nextT){
+      // Remplacer le prochain prévu (ou l\'insérer)
+      if(testIdx < testsToRun.length){
+        testsToRun[testIdx] = nextT;
+      } else {
+        testsToRun.push(nextT);
+      }
+    }
+  }
+  
+  renderStep();
+}
+
+// ========== RENDERING ==========
+function pickChoice(stepKey, item){
+  addScore(item.score);
+  history.push({step:stepKey, label:item.lbl});
+  
+  if(stepKey === 'MECANISME'){
+    mecaKey = item.key;
+    currentStep = 'AGE';
+  } else if(stepKey === 'AGE'){
+    currentStep = 'TABLEAU';
+  } else if(stepKey === 'HORAIRE'){
+    testsToRun = buildInitialQueue();
+    testIdx = 0;
+    currentStep = 'TESTS';
+  }
+  renderStep();
+}
+
+function toggleVig(vid){
+  if(selectedVigs.has(vid)){
+    selectedVigs.delete(vid);
+  } else {
+    if(selectedVigs.size >= 3) return;
+    selectedVigs.add(vid);
+  }
+  renderStep();
+}
+
+function validateTableau(){
+  if(selectedVigs.size === 0) return;
+  selectedVigs.forEach(vid => {
+    addScore(VIGNETTES[vid].score);
+    history.push({step:'TABLEAU', label:VIGNETTES[vid].lbl});
+  });
+  currentStep = 'HORAIRE';
+  renderStep();
+}
+
+function skipTest(){
+  testIdx++;
+  if(testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+  }
+  renderStep();
+}
+
+function reset(){
+  init();
+  renderStep();
+}
+
+function goBack(){
+  // Retour à l\'étape précédente — simple
+  if(currentStep === 'AGE') currentStep = 'MECANISME';
+  else if(currentStep === 'TABLEAU') currentStep = 'AGE';
+  else if(currentStep === 'HORAIRE') currentStep = 'TABLEAU';
+  else if(currentStep === 'TESTS' && testIdx > 0){
+    testIdx--;
+    // Annuler le dernier test (pas le scoring pour simplifier, juste revenir au test)
+  } else if(currentStep === 'TESTS' && testIdx === 0){
+    currentStep = 'HORAIRE';
+  } else if(currentStep === 'RESULT'){
+    currentStep = 'TESTS';
+    testIdx = Math.max(0, MAX_TESTS - 1);
+  }
+  renderStep();
+}
+
+
+// ========== RENDU ==========
+// ========== HELPERS RENDU ==========
+function backBtn(){
+  if(currentStep === 'MECANISME') return '';
+  return `<button class="btn-back" onclick="goBack()">← Modifier</button>`;
+}
+
+function breadcrumbHTML(){
+  if(!history.length) return '';
+  const items = history.slice(-4).map(h => `<span class="bc-item">${(h.label||h.test||'').slice(0,30)}</span>`).join(' › ');
+  return `<div class="breadcrumb">${items}</div>`;
+}
+
+function stepIndicator(currentIdx){
+  const steps = ['Mécanisme', 'Profil', 'Tableau', 'Horaire', 'Examen'];
+  return `<div class="step-ind">
+    ${steps.map((s,i) => `<div class="si-item ${i===currentIdx?'active':''} ${i<currentIdx?'done':''}">${i+1}. ${s}</div>`).join('')}
+  </div>`;
+}
+
+// ========== ÉTAPE CHOIX (Mécanisme, Âge, Horaire) ==========
+function renderChoice(stepKey, stepIdx){
+  const c = CHOICES[stepKey];
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(stepIdx)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">${c.tag}</div>
+      <h2 class="card-q">${c.q}</h2>
+      <div class="choices">
+        ${c.items.map(it => `
+          <button class="choice" onclick="pickChoice('${stepKey}', CHOICES['${stepKey}'].items.find(x=>x.key==='${it.key}'))">
+            <div class="choice-lbl">${it.lbl}</div>
+            <div class="choice-desc">${it.desc}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TABLEAU CLINIQUE (multi-vignettes) ==========
+function renderTableau(){
+  const vigs = (MECA_VIGS[mecaKey] || Object.keys(VIGNETTES));
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(2)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 3 · Tableau clinique</div>
+      <h2 class="card-q">Cochez ce qui correspond au patient</h2>
+      <div class="card-hint">Maximum 3 cases cochables.</div>
+      <div class="vig-grid">
+        ${vigs.map(vid => {
+          const v = VIGNETTES[vid];
+          const sel = selectedVigs.has(vid);
+          return `<div class="vig ${sel?'vig-sel':''}" onclick="toggleVig('${vid}')">
+            <div class="vig-chk">${sel?'☑':'☐'}</div>
+            <div class="vig-body">
+              <div class="vig-lbl">${v.lbl}</div>
+              <div class="vig-desc">${v.desc}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="card-foot">
+        <span class="foot-info">${selectedVigs.size===0?'Aucune sélection':selectedVigs.size+'/3 coché'+(selectedVigs.size>1?'s':'')}</span>
+        <button class="btn-primary" ${selectedVigs.size===0?'disabled':''} onclick="validateTableau()">Confirmer →</button>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TESTS ==========
+function renderTests(){
+  if(testIdx >= testsToRun.length || testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+    renderStep();
+    return;
+  }
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t){
+    testIdx++;
+    renderTests();
+    return;
+  }
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(4)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 5 · Examen clinique (${testIdx+1}/${MAX_TESTS})</div>
+      <div class="test-name">${t.name}</div>
+      <div class="test-fam"><span class="test-badge">${t.badge}</span> Famille : ${t.family}</div>
+      <div class="test-desc">${t.desc}</div>
+      <div class="test-section">
+        <strong>Technique</strong>
+        <div>${t.how}</div>
+      </div>
+      <div class="test-section">
+        <strong>Interprétation</strong>
+        <div>✅ <strong>Positif :</strong> ${t.pos}</div>
+        <div>❌ <strong>Négatif :</strong> ${t.neg}</div>
+      </div>
+      <div class="test-btns">
+        <button class="btn-pos" onclick="testResult(true)">✅ Positif</button>
+        <button class="btn-neg" onclick="testResult(false)">❌ Négatif</button>
+      </div>
+      ${testIdx > 0 ? `<button class="btn-skip" onclick="skipTest()">Passer ce test →</button>` : ''}
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+
+
+// ========== ÉTAPE RÉSULTAT ==========
+function renderResult(){
+  const top = top3WithScores();
+  const total = top.reduce((s,[,sc]) => s + Math.max(0,sc), 0) || 1;
+  const main = top[0];
+  const alts = top.slice(1);
+  const mainP = P[main[0]];
+  const mainProb = Math.round(100 * Math.max(0, main[1]) / total);
+  
+  const alertHTML = mainP.alert ? `
+    <div class="alert-box alert-${mainP.alert.type}">
+      <span style="font-size:16px">${mainP.alert.type === 'red' ? '🚨' : '⚠️'}</span>
+      <span>${mainP.alert.text}</span>
+    </div>` : '';
+  
+  // Sections détaillées
+  const imagingItems = (mainP.imaging || []).map(i => 
+    `<div class="fi"><strong>${i.t}</strong>${i.d ? `<span>${i.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const treatmentItems = (mainP.treatment || []).map(t => 
+    `<div class="fi"><strong>${t.t}</strong>${t.d ? `<span>${t.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const exercisesItems = (mainP.exercises || []).map(e => 
+    `<div class="fi"><strong>${e.t}</strong>${e.d ? `<span>${e.d}</span>` : ''}</div>`
+  ).join('') + (mainP.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${mainP.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  
+  const referralItems = (mainP.referral || []).map(r => `
+    <div class="ref-tag ${r.p ? 'p' : 's'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p ? '→ ' : ''}${r.who}</div>
+        ${r.why ? `<div class="ref-why">${r.why}</div>` : ''}
+      </div>
+      <span class="ref-b">${r.p ? 'Prioritaire' : 'Si besoin'}</span>
+    </div>`).join('');
+  
+  // Sources
+  const sourcesHTML = mainP.sources?.length ? `
+    <div class="sources-row">
+      <span class="src-lbl">📚 Sources</span>
+      ${mainP.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('')}
+    </div>` : '';
+  
+  // Encart Signes de gravité (severity)
+  const severityHTML = mainP.severity ? `
+    <div class="severity-card">
+      <div class="severity-head">🔍 ${mainP.severity.title}</div>
+      <div class="severity-body">${mainP.severity.text}</div>
+    </div>` : '';
+  
+  // Encart Pièges diagnostiques (pitfall)
+  const pitfallHTML = mainP.pitfall ? `
+    <div class="pitfall-card">
+      <div class="pitfall-head">💡 À considérer aussi</div>
+      <div class="pitfall-body">${mainP.pitfall.text}</div>
+      ${(mainP.pitfall.modules || []).length ? `
+      <div class="pitfall-modules">
+        ${mainP.pitfall.modules.map(m => `<span class="pitfall-chip">→ Module ${m}</span>`).join('')}
+      </div>` : ''}
+    </div>` : '';
+  
+  // Alternatifs
+  const altCardsHTML = alts.map(([pid, sc]) => {
+    const p = P[pid];
+    const prob = Math.round(100 * Math.max(0, sc) / total);
+    return `<div class="alt-card" onclick="showModal('${pid}')">
+      <div class="alt-header">
+        <img src="images_pathologies/main.png" alt="" class="alt-ic-img" />
+        <div class="alt-name">${p.name}</div>
+        <div class="alt-pct">${prob}%</div>
+      </div>
+      <div class="alt-bar"><div class="alt-fill" style="width:${prob}%"></div></div>
+      <div class="alt-key">
+        <strong>Éléments clés</strong>
+        ${(p.keys || []).slice(0,2).join(' · ')}
+      </div>
+      <div class="alt-hint">Appuyer pour la fiche complète →</div>
+    </div>`;
+  }).join('');
+  
+  const html = `
+    ${stepIndicator(5)}
+    ${breadcrumbHTML()}
+    <div class="result-wrap">
+      
+      <!-- DIAGNOSTIC PRINCIPAL -->
+      <div class="diag-card">
+        <div class="diag-top">
+          <div class="diag-head">
+            <img src="images_pathologies/main.png" alt="" class="diag-icon-img" />
+            <div>
+              <span class="rank-badge">Diagnostic principal</span>
+              <div class="diag-name">${mainP.name}</div>
+              <div class="diag-pop">${mainP.pop}</div>
+            </div>
+          </div>
+          <div class="prob-wrap">
+            <div class="prob-pct">${mainProb}%</div>
+            <div class="prob-label">Probabilité</div>
+            <div class="prob-bar"><div class="prob-fill" style="width:${mainProb}%"></div></div>
+          </div>
+        </div>
+        
+        <div class="fiche">
+          ${alertHTML}
+          <div class="fiche-grid">
+            <div class="fiche-sec">
+              <div class="sec-title sec-img">🔬 Imagerie</div>
+              ${imagingItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ex">💪 Exercices</div>
+              ${exercisesItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-rx">💊 Traitement</div>
+              ${treatmentItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ref">🏥 Orientation</div>
+              ${referralItems || '<div class="fi-empty">—</div>'}
+            </div>
+          </div>
+          ${severityHTML}
+          ${pitfallHTML}
+          ${sourcesHTML}
+        </div>
+      </div>
+      
+      <!-- DIAGNOSTICS ALTERNATIFS -->
+      <div class="section-sep">Diagnostics alternatifs à considérer</div>
+      <div class="alt-cards">${altCardsHTML}</div>
+      
+      <div class="disclaimer">
+        ⚠️ <strong>Outil d'aide à la décision clinique</strong> — Les probabilités sont indicatives et basées sur le profil sélectionné. Non substitutif au jugement médical. Sources : HAS, EULAR, sociétés savantes.
+      </div>
+      
+      <div class="actions">
+        <button class="btn-primary" onclick="reset()">↺ Nouveau cas</button>
+        <button class="btn-back" onclick="goBack()">← Modifier les réponses</button>
+      </div>
+      
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="if(event.target.id==='modal') closeModal()">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+  
+  // Animer les barres
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill, .alt-fill').forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => el.style.width = target));
+    });
+  }, 50);
+}
+
+function showModal(pid){
+  const p = P[pid];
+  const imagingHTML = (p.imaging || []).map(i => `<div class="fi"><strong>${i.t}</strong>${i.d?`<span>${i.d}</span>`:''}</div>`).join('');
+  const treatmentHTML = (p.treatment || []).map(t => `<div class="fi"><strong>${t.t}</strong>${t.d?`<span>${t.d}</span>`:''}</div>`).join('');
+  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  const referralHTML = (p.referral || []).map(r => `
+    <div class="ref-tag ${r.p?'p':'s'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p?'→ ':''}${r.who}</div>
+        ${r.why?`<div class="ref-why">${r.why}</div>`:''}
+      </div>
+      <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
+    </div>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-head">
+      <img src="images_pathologies/main.png" alt="" class="modal-icon-img" />
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div class="modal-pop">${p.pop}</div>
+      </div>
+    </div>
+    ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
+    <div class="fiche-grid modal-fiche">
+      <div class="fiche-sec">
+        <div class="sec-title sec-img">🔬 Imagerie</div>
+        ${imagingHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ex">💪 Exercices</div>
+        ${exercisesHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-rx">💊 Traitement</div>
+        ${treatmentHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ref">🏥 Orientation</div>
+        ${referralHTML || '<div class="fi-empty">—</div>'}
+      </div>
+    </div>
+    <div class="sources-row modal-sources">
+      <span class="src-lbl">📚 Sources</span>
+      ${sourcesHTML}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+
+// ========== DISPATCHER ==========
+function renderStep(){
+  if(currentStep === 'MECANISME') renderChoice('MECANISME', 0);
+  else if(currentStep === 'AGE') renderChoice('AGE', 1);
+  else if(currentStep === 'TABLEAU') renderTableau();
+  else if(currentStep === 'HORAIRE') renderChoice('HORAIRE', 3);
+  else if(currentStep === 'TESTS') renderTests();
+  else if(currentStep === 'RESULT') renderResult();
+}
+
+// ========== INIT ==========
+init();
+renderStep();
+
+
+
+</script>
+</body>
+</html>

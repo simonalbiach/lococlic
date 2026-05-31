@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocoClic — Genou v5</title>
+<style>
+
+:root {
+  --bg: #f5f3ee;           /* fond crème */
+  --bg-card: #ffffff;       /* cartes blanches */
+  --bg-hover: #f0ede5;      /* survol crème plus foncé */
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a2332;          /* texte sombre principal */
+  --text-dim: #4a5468;      /* texte secondaire */
+  --text-mute: #8a92a0;     /* texte tertiaire */
+  --accent: #2563a8;        /* bleu marine accent */
+  --accent-dim: #1d4d85;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;        /* or plus sombre pour contraste */
+  --navy: #0f2a44;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 16px;
+  line-height: 1.5;
+}
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.header .badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  padding: 3px 10px;
+  background: var(--accent);
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* === STEP INDICATOR === */
+.step-ind {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.si-item {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 8px;
+  background: #fafaf7;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: center;
+}
+.si-item.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+.si-item.done {
+  background: rgba(37, 99, 168, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* === BREADCRUMB === */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.bc-item { font-style: italic; }
+
+/* === BTN BACK === */
+.btn-back {
+  background: white;
+  color: var(--text-dim);
+  border: 1.5px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.btn-back:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.card-tag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-q {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-hint {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+
+/* === CHOICES (Mécanisme, Âge, Horaire) === */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice {
+  width: 100%;
+  text-align: left;
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.choice:hover {
+  background: rgba(37,99,168,0.06);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.choice-lbl {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.choice-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+/* === VIGNETTES === */
+.vig-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .vig-grid { grid-template-columns: 1fr 1fr; }
+}
+.vig {
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.vig:hover { background: rgba(37,99,168,0.06); border-color: var(--accent); }
+.vig-sel {
+  background: rgba(22,163,74,0.08);
+  border-color: var(--green);
+}
+.vig-chk {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.vig-lbl {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.vig-desc {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.foot-info {
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  box-shadow: 0 2px 8px rgba(37,99,168,0.25);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary:not(:disabled):hover { filter: brightness(1.1); }
+
+/* === TESTS === */
+.test-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+.test-fam {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.test-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.test-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.test-section {
+  margin: 14px 0;
+}
+.test-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.test-section div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.test-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn-pos, .btn-neg {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-pos {
+  background: var(--green);
+  color: white;
+}
+.btn-neg {
+  background: var(--red);
+  color: white;
+}
+.btn-pos:hover, .btn-neg:hover { filter: brightness(1.1); }
+.btn-skip {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* === RÉSULTAT === */
+.result-main {
+  border: 2px solid var(--accent);
+  background: linear-gradient(180deg, rgba(93,141,240,0.08), var(--bg-card));
+}
+.result-tag {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.result-icon { font-size: 36px; }
+.result-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+.result-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.result-score {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.result-section {
+  margin: 14px 0;
+}
+.result-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+.sources {
+  list-style: none;
+  font-size: 12px;
+}
+.sources li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sources li:last-child { border: none; }
+.sources a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.sources a:hover { text-decoration: underline; }
+
+/* === ALTS === */
+.alts {
+  margin-top: 18px;
+}
+.alts-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.alt {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alt:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+.alt-icon { font-size: 24px; }
+.alt-body { flex: 1; }
+.alt-name { font-weight: 600; font-size: 14px; }
+.alt-pop { font-size: 11px; color: var(--text-mute); }
+.alt-score {
+  font-weight: 700;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+
+.btn-reset {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+.btn-reset:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,42,68,0.55);
+  z-index: 100;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  padding: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  font-size: 24px;
+  cursor: pointer;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-icon { font-size: 32px; }
+.modal-name { font-size: 17px; font-weight: 700; }
+.modal-pop { font-size: 12px; color: var(--text-mute); }
+.modal-section {
+  margin: 12px 0;
+}
+.modal-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.modal-section > div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.modal-section ul {
+  list-style: none;
+  font-size: 12px;
+}
+.modal-section ul li {
+  padding: 3px 0;
+}
+.modal-section ul a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+
+.key-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.key-tag { display:inline-block; background:rgba(93,141,240,0.15); color:var(--accent); padding:3px 10px; border-radius:12px; font-size:11px; }
+.bullets { list-style:none; padding-left:0; font-size:14px; line-height:1.7; }
+.bullets li { padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.bullets li:last-child { border:none; }
+.result-info { flex:1; }
+.result-prob-wrap { text-align:right; }
+.result-prob { font-size:28px; font-weight:800; color:var(--accent); line-height:1; }
+.result-score { font-size:11px; color:var(--text-mute); margin-top:2px; }
+.alt-right { text-align:right; }
+.alt-prob { font-weight:700; font-size:17px; color:var(--accent); }
+.alt-score { font-size:10px; color:var(--text-mute); }
+.modal-section ul { list-style:none; padding-left:0; font-size:13px; line-height:1.6; }
+.modal-section ul li { padding:3px 0; }
+.modal-section ul a { color:var(--accent); text-decoration:none; }
+
+/* ===== FICHE RÉSULTAT — sections distinctes ===== */
+.result-wrap { animation: fu 0.4s ease both; }
+@keyframes fu { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+.diag-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(37,99,168,0.12);
+}
+
+.diag-top {
+  background: linear-gradient(135deg, rgba(37,99,168,0.10), rgba(37,99,168,0.03));
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.diag-head { display:flex; align-items:center; gap:12px; flex:1; }
+.diag-icon { font-size: 32px; }
+.rank-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.diag-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.diag-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-wrap { text-align: right; min-width:88px; }
+.prob-pct {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.prob-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.prob-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.fiche { background: var(--bg-card); }
+
+.alert-box {
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+
+
+
+
+
+
+
+.fi:last-child { margin-bottom: 0; }
+
+
+
+
+.ref-tag {
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+  background: rgba(167,139,250,0.18);
+  border: 1px solid rgba(167,139,250,0.2);
+}
+.ref-tag.s {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border);
+}
+.ref-info { flex: 1; }
+.ref-who {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ref-why {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.ref-b {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: rgba(109,40,217,0.15);
+  color: #6d28d9;
+}
+.ref-tag.s .ref-b {
+  background: var(--bg-hover);
+  color: var(--text-mute);
+}
+
+.sources-row {
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.025);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.src-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.src-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(37,99,168,0.08);
+  border: 1px solid rgba(37,99,168,0.3);
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.src-chip:hover {
+  background: rgba(37,99,168,0.18);
+}
+
+.section-sep {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 22px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.alt-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .alt-cards { grid-template-columns: 1fr; }
+}
+.alt-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.alt-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+.alt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.alt-ic { font-size: 22px; }
+.alt-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.alt-pct {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-mute);
+}
+.alt-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.alt-fill {
+  height: 100%;
+  background: var(--text-mute);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.alt-key {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.alt-key strong {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 3px;
+}
+.alt-hint {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-align: right;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.actions .btn-primary, .actions .btn-back { flex: 1; min-width: 140px; }
+
+/* Modal fiche */
+.modal-fiche { 
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.modal-sources {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+
+/* === FICHE GRID — sections fortement distinctes === */
+.fiche-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  padding: 2px;
+}
+@media (max-width: 600px) {
+  .fiche-grid { grid-template-columns: 1fr; }
+}
+
+.fiche-sec {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: none;
+  position: relative;
+}
+
+/* Bandeau coloré en haut de chaque section */
+.fiche-sec::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* === COULEURS PAR SECTION === */
+/* Imagerie — bleu */
+.fiche-sec:nth-child(1) {
+  background: linear-gradient(180deg, rgba(94,177,255,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(1)::before { background: #5eb1ff; }
+
+/* Exercices — vert */
+.fiche-sec:nth-child(2) {
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(2)::before { background: #4ade80; }
+
+/* Traitement — jaune/or */
+.fiche-sec:nth-child(3) {
+  background: linear-gradient(180deg, rgba(251,191,36,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(3)::before { background: #fbbf24; }
+
+/* Orientation — violet */
+.fiche-sec:nth-child(4) {
+  background: linear-gradient(180deg, rgba(167,139,250,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(4)::before { background: #a78bfa; }
+
+/* sec-title plus visible */
+.sec-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+.sec-img { color: #1e6db8; }
+.sec-ex  { color: #15803d; }
+.sec-rx  { color: #b45309; }
+.sec-ref { color: #6d28d9; }
+
+/* Items plus aérés et visibles */
+.fi {
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 10px 8px 12px;
+  border-left: 3px solid;
+  margin-bottom: 8px;
+  background: rgba(0,0,0,0.025);
+  border-radius: 0 6px 6px 0;
+}
+.fi:last-child { margin-bottom: 0; }
+.fiche-sec:nth-child(1) .fi { border-left-color: rgba(94,177,255,0.4); }
+.fiche-sec:nth-child(2) .fi { border-left-color: rgba(74,222,128,0.4); }
+.fiche-sec:nth-child(3) .fi { border-left-color: rgba(251,191,36,0.4); }
+.fiche-sec:nth-child(4) .fi { border-left-color: rgba(167,139,250,0.4); }
+
+.fi strong {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+.fi span {
+  color: var(--text-dim);
+  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+}
+.fi-empty {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* === REFERRAL TAGS spécifiques (dans section orientation) === */
+.fiche-sec:nth-child(4) .ref-tag {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.disclaimer { background: #fef3c7; border: 2px solid #f59e0b; border-radius: 9px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #000000; line-height: 1.6; }
+.disclaimer strong { color: #991b1b; font-weight: 800; }
+
+  .alt-ic-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .diag-icon-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.15);
+  }
+  .modal-icon-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  color: #1e3a5f;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s;
+" onmouseover="this.style.background='#1e3a5f';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#1e3a5f';">
+  ← Accueil
+</a>
+
+
+<div class="app">
+  <div class="header">
+    <h1>LocoClic — Genou</h1>
+    <div class="badge">v5 · clinique adaptatif</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+// ========== PATHOLOGIES ==========
+const P = {
+  LCA: {
+    id:'LCA', name:'Entorse genou lésion LCA', icon:'🔴', pop:'15-35 ans',
+    desc:'Traumatisme sport pivot contact',
+    alert:null,
+    imaging:[{t:'Radiographies ( Urgence)',d:''},{t:'IRM',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Chirurgie',d:''}],
+    exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement des ischio-jambiers',d:''},{t:'Pont fessier',d:''},{t:'Proprioception sur une jambe',d:''}],ficheExercice:'lococlic_fiches_patient/genou_01_lca.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
+    sources:[{l:'HAS 2023 — Lésions du LCA : prise en charge',u:'https://www.has-sante.fr'},{l:'Filbay & Grindem 2019 — ACL injury (Best Pract Res Clin Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/30904099/'},{l:'Lange et al. 2020 — Lachman test diagnostic accuracy meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/30482774/'},{l:'Beard et al. 2022 — ACL Surgery vs Rehabilitation RCT (NEJM)',u:'https://pubmed.ncbi.nlm.nih.gov/35687326/'}],
+    keys:['Traumatisme sport pivot contact','Genou qui lâche','Instabilité','Epanchement','Hématome','Tiroir antérieur']
+  },
+  MENINT: {
+    id:'MENINT', name:'Ménisque interne', icon:'🟡', pop:'<40 (trauma) >40 ans (dégénératif)',
+    desc:'Douleurs rotations',
+    alert:null,
+    imaging:[{t:'IRM',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration cortisonée',d:''},{t:'Chirurgie si blocage ou instabilité importante',d:''}],
+    exercises:[{t:'Renforcement du quadriceps en chaîne fermée (mini-squats)',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_02_menisque_interne.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien si anse de seau avec blocage, sensation d’instabilité',why:'',p:true}],
+    sources:[{l:'HAS 2008 — Lésions méniscales (recommandations)',u:'https://www.has-sante.fr'},{l:'Smith et al. 2015 — Meniscal tests meta-analysis (Knee Surg Sports Traumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/24968764/'},{l:'Beaufils et al. 2017 — ESSKA meniscus consensus',u:'https://pubmed.ncbi.nlm.nih.gov/28210804/'},{l:'Thorlund et al. 2015 — Arthroscopic meniscectomy meta-analysis (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/26080045/'}],
+    keys:['Douleurs rotations','Aggravation position accroupie','Douleur grinding test rotation externe','Douleur squat unipodal avec rotation (test de Thessaly)','Douleur palpation interligne externe ( au dessus tête fibulaire)']
+  },
+  MENEXT: {
+    id:'MENEXT', name:'Ménisque externe', icon:'🟡', pop:'<40 (trauma) >40 ans (dégénératif)',
+    desc:'Douleurs rotations',
+    alert:null,
+    imaging:[{t:'IRM',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'infiltration cortisonée',d:''},{t:'chirurgie si blocage ou instabilité importante',d:''}],
+    exercises:[{t:'Renforcement du quadriceps en chaîne fermée (mini-squats)',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_03_menisque_externe.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgie si anse de seau avec blocage, sensation d’instabilité',why:'',p:true}],
+    sources:[{l:'HAS 2008 — Lésions méniscales',u:'https://www.has-sante.fr'},{l:'Smith et al. 2015 — Meniscal tests meta-analysis (KSSTA)',u:'https://pubmed.ncbi.nlm.nih.gov/24968764/'},{l:'Beaufils et al. 2017 — ESSKA meniscus consensus',u:'https://pubmed.ncbi.nlm.nih.gov/28210804/'},{l:'Kise et al. 2016 — Exercise vs surgery meniscal tear (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/27440192/'}],
+    keys:['Douleurs rotations','Douleur interligne interne','Douleur mécanique','Aggravation position accroupie','Douleur grinding test rotation interne','Douleur palpation interligne interne']
+  },
+  SFP: {
+    id:'SFP', name:'Syndrome fémoro-patellaire', icon:'🔵', pop:'15-35 ans',
+    desc:'Douleur antérieure',
+    alert:null,
+    imaging:[{t:'Radiographies si > 50 ans',d:''}],
+    treatment:[{t:'DOLIPRANE',d:''},{t:'AINS',d:''},{t:'Kinésithérapie',d:''},{t:'Podologie',d:''},{t:'Attelle Type ROTULIG',d:''}],
+    exercises:[{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Renforcement du vaste interne (squat mur avec élastique)',d:''},{t:'Étirement du quadriceps',d:''},{t:'Étirement de la bandelette ilio-tibiale (TFL)',d:''}],ficheExercice:'lococlic_fiches_patient/genou_04_sfp.html',
+    referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'Willy et al. 2019 — Patellofemoral Pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/31475628/'},{l:'Collins et al. 2018 — Patellofemoral pain consensus (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29925502/'},{l:'Crossley et al. 2016 — Patellofemoral pain Best Practice (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/27307502/'},{l:'Lack et al. 2015 — Hip strengthening meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/26416718/'}],
+    keys:['Douleur antérieure','Douleur montée et descente escaliers','Douleur mécanique','Position assise prolongée','Reprise du sport','Pronation excessive pied']
+  },
+  TENROT: {
+    id:'TENROT', name:'Tendinopathie rotulienne', icon:'🟣', pop:'15-30 ou 40-50 ans',
+    desc:'Reprise du sport',
+    alert:null,
+    imaging:[{t:'Echographie',d:''},{t:'Radiographies ( sujet jeune syndrome Osgood )',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration PRP',d:''}],
+    exercises:[{t:'Renforcement excentrique du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement du quadriceps',d:''},{t:'Étirement de la chaîne postérieure',d:''}],ficheExercice:'lococlic_fiches_patient/genou_05_tendinopathie_rotulienne.html',
+    referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'Malliaras et al. 2015 — Patellar tendinopathy CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/26471850/'},{l:'Mendonça et al. 2020 — Patellar tendinopathy treatments meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/31371343/'},{l:'Rio et al. 2015 — Isometric exercise patellar tendinopathy (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/25979840/'},{l:'HAS — Tendinopathies du sportif',u:'https://www.has-sante.fr'}],
+    keys:['Reprise du sport','Sport avec sauts/ sprints','Douleur aggravée par sauts et réceptions ++','Douleur mécanique','Douleur sous patellaire','Douleur descente']
+  },
+  HOFFITE: {
+    id:'HOFFITE', name:'Hoffite', icon:'🟠', pop:'20–50 ans',
+    desc:'Douleur mécanique',
+    alert:null,
+    imaging:[{t:'Aucune',d:''},{t:'Echographie',d:''}],
+    treatment:[{t:'Glaçage',d:''},{t:'AINS',d:''},{t:'Attelle ROTULIG',d:''},{t:'Kinésithérapie',d:''},{t:'Infiltration cortisonée',d:''}],
+    exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_06_hoffite.html',
+    referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'Dragoo et al. 2012 — Hoffa fat pad disorders (Sports Med Arthrosc Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/23211212/'},{l:'Larbi et al. 2014 — Hoffa fat pad MRI (Diagn Interv Imaging)',u:'https://pubmed.ncbi.nlm.nih.gov/24291388/'},{l:'Fontanella et al. 2022 — Infrapatellar fat pad review (Knee Surg Relat Res)',u:'https://pubmed.ncbi.nlm.nih.gov/35430802/'},{l:'HAS — Pathologies du genou du sportif',u:'https://www.has-sante.fr'}],
+    keys:['Douleur mécanique','Extension ( sauts , tirs )','Position assise prolongée','Sprints','Douleur palpation postérieure tendon patellaire (genou 90°)','Douleur extension rapide + compression digitale']
+  },
+  GONARTHROSE: {
+    id:'GONARTHROSE', name:'Arthrose fémoro-tibiale', icon:'🟤', pop:'>50 ans',
+    desc:'Douleurs flexion genou',
+    alert:null,
+    imaging:[{t:'Radiographies',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Podologie',d:''},{t:'Infiltration cortisonée',d:''},{t:'Infiltration acide hyaluronique',d:''},{t:'Chirurgie si grade 3 ou plus',d:''}],
+    exercises:[{t:'Renforcement du quadriceps contre résistance',d:''},{t:'Pont fessier',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Vélo d\'appartement (entretien sans impact)',d:''}],ficheExercice:'lococlic_fiches_patient/genou_07_gonarthrose.html',
+    referral:[{who:'Rhumatologue',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
+    sources:[{l:'HAS 2022 — Gonarthrose : prise en charge médicale',u:'https://www.has-sante.fr'},{l:'SFR 2020 — Recommandations pharmacologiques gonarthrose (Rev Rhum)',u:'https://pubmed.ncbi.nlm.nih.gov/32654769/'},{l:'Bannuru et al. 2019 — OARSI guidelines knee OA (Osteoarthritis Cartilage)',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'},{l:'Kolasinski et al. 2020 — ACR/AHF guideline OA (Arthritis Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/31908163/'}],
+    keys:['Douleurs flexion genou','Douleurs montée et descente escaliers','Douleur mécanique','Genu Varum / Valgum','Douleur interligne interne ou externe','Flexion et/ou extension limitée']
+  },
+  LLI: {
+    id:'LLI', name:'Entorse genou lésion Plan collatéral médial', icon:'🔴', pop:'20-40 ans',
+    desc:'Traumatisme en valgus',
+    alert:null,
+    imaging:[{t:'Radiographies ( Urgence)',d:''},{t:'IRM ( recherche lésion LCA associée )',d:''}],
+    treatment:[{t:'Glaçage et DOLIPRANE',d:''},{t:'Immobilisation avec attelle articulée ou attelle souple',d:''},{t:'Kinésithérapie grade I et II',d:''},{t:'Chirurgie si instabilité',d:''}],
+    exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement des adducteurs contre élastique',d:''},{t:'Pont fessier',d:''},{t:'Proprioception sur une jambe',d:''}],ficheExercice:'lococlic_fiches_patient/genou_08_lli.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
+    sources:[{l:'Phisitkul et al. 2006 — MCL injuries Cochrane analysis',u:'https://pubmed.ncbi.nlm.nih.gov/16518304/'},{l:'Laprade & Wijdicks 2012 — Medial knee ligament injuries (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/22301636/'},{l:'Encinas-Ullán & Rodríguez-Merchán 2018 — MCL injuries review (EFORT Open Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/30662763/'},{l:'HAS — Traumatologie du genou',u:'https://www.has-sante.fr'}],
+    keys:['Traumatisme en valgus','Douleur interne','Epanchement','Oedème','Hématome','Douleur valgisation']
+  },
+  PATTE_OIE: {
+    id:'PATTE_OIE', name:'Tendinopathie patte d’oie', icon:'🟡', pop:'> 40 ans - coureurs  - surpoids',
+    desc:'Genu valgum',
+    alert:null,
+    imaging:[{t:'Aucune',d:''},{t:'Echographie',d:''}],
+    treatment:[{t:'Glaçage',d:''},{t:'AINS',d:''},{t:'Adaptation charge entrainement',d:''},{t:'Kinésithérapie',d:''},{t:'Podologie',d:''},{t:'Infiltration locale cortisonée',d:''}],
+    exercises:[{t:'Renforcement excentrique des ischio-jambiers',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement des adducteurs',d:''},{t:'Étirement des ischio-jambiers',d:''}],ficheExercice:'lococlic_fiches_patient/genou_09_patte_oie.html',
+    referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'Alvarez-Nemegyei 2007 — Anserine bursitis/tendinitis RCT (Arthritis Rheum)',u:'https://pubmed.ncbi.nlm.nih.gov/17729241/'},{l:'Helfenstein & Kuromoto 2010 — Anserine syndrome review (Rev Bras Reumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/21125157/'},{l:'Imani et al. 2019 — Pes anserine bursitis ultrasound (J Ultrasound Med)',u:'https://pubmed.ncbi.nlm.nih.gov/30575074/'},{l:'HAS — Tendinopathies du genou',u:'https://www.has-sante.fr'}],
+    keys:['Genu valgum','Douleurs descente','Douleurs course','Pronation excessive pied','Douleur à palpation 5-6 cm médial sous interligne interne','Oedème local']
+  },
+  ESSUIE_GLACE: {
+    id:'ESSUIE_GLACE', name:'Syndrome de l’essuie glace', icon:'🟠', pop:'20-40 ans',
+    desc:'Douleur latérale',
+    alert:null,
+    imaging:[{t:'Aucune',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Podologie',d:''},{t:'AINS',d:''},{t:'Glaçage',d:''}],
+    exercises:[{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la bandelette ilio-tibiale (TFL)',d:''},{t:'Étirement du quadriceps',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_10_essuie_glace.html',
+    referral:[{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'Aderem & Louw 2015 — ITBS systematic review (BMC Musculoskelet Disord)',u:'https://pubmed.ncbi.nlm.nih.gov/26416646/'},{l:'Mucha et al. 2017 — ITBS treatment systematic review (J Sci Med Sport)',u:'https://pubmed.ncbi.nlm.nih.gov/27890479/'},{l:'Hutchinson et al. 2022 — ITBS clinical update (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/34810174/'},{l:'HAS — Pathologies du coureur',u:'https://www.has-sante.fr'}],
+    keys:['Douleur latérale','Douleur mécanique','Reproduite à la course','Sensation de frottement','Reproduit squat une jambe','Reprise du sport']
+  },
+  PLICA: {
+    id:'PLICA', name:'Plica synoviale', icon:'🔵', pop:'20–40 ans , Sportif',
+    desc:'Douleur antérieure et médiale',
+    alert:null,
+    imaging:[{t:'IRM',d:''},{t:'Echographie (possible)',d:''}],
+    treatment:[{t:'AINS',d:''},{t:'Kinésithérapie',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Chirurgie si échec traitement médical à 3-6 mois',d:''}],
+    exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement du quadriceps',d:''},{t:'Étirement de la chaîne postérieure',d:''}],ficheExercice:'lococlic_fiches_patient/genou_11_plica.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
+    sources:[{l:'Schindler 2014 — Synovial plicae of the knee (Knee Surg Sports Traumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/23404417/'},{l:'Casadei et al. 2019 — Mediopatellar plica review (Joints)',u:'https://pubmed.ncbi.nlm.nih.gov/30801064/'},{l:'Lyu & Hsu 2006 — Medial plica syndrome (J Bone Joint Surg Br)',u:'https://pubmed.ncbi.nlm.nih.gov/16798989/'},{l:'HAS — Pathologies arthroscopiques du genou',u:'https://www.has-sante.fr'}],
+    keys:['Douleur antérieure et médiale','Sensation d’accrochage et de ressaut, Pseudo-blocage','Douleur accentuée flexion/extension répétée','Douleur position assise prolongée','Test plica: genou flexion 30° rotation interne et pression médiale interligne fémoro-patellaire reproduit la douleur','Ressaut possible']
+  },
+  BURSITE_PREREROT: {
+    id:'BURSITE_PREREROT', name:'Bursite Pré-rotulienne', icon:'🟢', pop:'20-50 ans',
+    desc:'Traumatisme direct, appui prolongée',
+    alert:null,
+    imaging:[{t:'Aucune',d:''},{t:'Radiographies (recherche ostéophyte irritatif)',d:''},{t:'Bilan biologique',d:''},{t:'Ponction Diagnostique',d:''}],
+    treatment:[{t:'Glaçage',d:''},{t:'DOLIPRANE',d:''},{t:'AINS',d:''},{t:'Attelle pour éviter contact',d:''}],
+    exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_12_bursite_prerotulienne.html',
+    referral:[{who:'Rhumatologue',why:'',p:true},{who:'Médecin du sport',why:'',p:true}],
+    sources:[{l:'Aaron et al. 2011 — Prepatellar bursitis (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/21807915/'},{l:'Baumbach et al. 2014 — Prepatellar bursitis treatment (J Bone Joint Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/24430416/'},{l:'Khodaee 2017 — Common bursitis review (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/28925666/'},{l:'HAS — Pathologies périarticulaires',u:'https://www.has-sante.fr'}],
+    keys:['Traumatisme direct, appui prolongée','Oedème sous cutané','Douleur à la flexion genou','rechercher Horaire inflammatoire','Douleur à la palpation','Douleur à la flexion genou']
+  },
+  CANAL_HUNTER: {
+    id:'CANAL_HUNTER', name:'Canal de hunter', icon:'⚡', pop:'40-60 ans sportif , coureurs cyclistes, post chirurgie genou',
+    desc:'Douleurs et paresthésies face interne genou',
+    alert:null,
+    imaging:[{t:'ENMG',d:''},{t:'Echographie',d:''},{t:'Infiltration test anesthésique local',d:''}],
+    treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration échoguidée corticostéroïdes',d:''},{t:'Chirurgie',d:''}],
+    exercises:[{t:'Mobilisation neurale du nerf saphène',d:''},{t:'Étirement des adducteurs',d:''},{t:'Renforcement doux du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''}],ficheExercice:'lococlic_fiches_patient/genou_13_canal_hunter.html',
+    referral:[{who:'Médecin du sport',why:'',p:true},{who:'Rhumatologue',why:'',p:true},{who:'Chirurgie orthopédique ( libération nerveuse )',why:'',p:true}],
+    sources:[{l:'Carter et al. 2017 — Saphenous nerve entrapment (Am J Phys Med Rehabil)',u:'https://pubmed.ncbi.nlm.nih.gov/27819830/'},{l:'Tubbs et al. 2007 — Saphenous nerve anatomy (Clin Anat)',u:'https://pubmed.ncbi.nlm.nih.gov/17072872/'},{l:'Morganti et al. 2002 — Saphenous nerve entrapment review (Am J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/11912100/'},{l:'HAS — Neuropathies de compression',u:'https://www.has-sante.fr'}],
+    keys:['Douleurs et paresthésies face interne genou','Douleurs et paresthésies mollet','Douleur majorée à l’extension du genou','Douleur soulagée par la flexion','Tinel canal de Hunter positif','Test de Phalen genou (Flexion genou 30°+ compression)']
+  }
+};
+
+// ========== TESTS CLINIQUES ==========
+const TESTS = {
+  // === FAMILLE LCA ===
+  lachmann: {
+    name:'Test de Lachmann', family:'LCA', badge:'LCA',
+    desc:'Tiroir antérieur à 20-30° de flexion',
+    how:'Patient en décubitus dorsal, genou à 20-30°. Une main stabilise la cuisse, l\'autre tire le tibia vers l\'avant.',
+    pos:'Translation antérieure excessive avec arrêt mou ou absent — rupture LCA probable',
+    neg:'Arrêt dur franc — LCA probablement intact',
+    affects_pos:{LCA:50}, affects_neg:{LCA:-35}
+  },
+  pivot_shift: {
+    name:'Pivot shift test', family:'LCA', badge:'LCA',
+    desc:'Test de ressaut rotatoire — LCA',
+    how:'Genou en extension + valgus + rotation interne tibiale, puis flexion progressive. Recherche d\'un ressaut vers 20-30°.',
+    pos:'Ressaut perçu — rupture LCA confirmée',
+    neg:'Absence de ressaut — LCA probablement intact',
+    affects_pos:{LCA:45}, affects_neg:{LCA:-20}
+  },
+  tiroir_ant: {
+    name:'Tiroir antérieur', family:'LCA', badge:'LCA',
+    desc:'Tiroir antérieur à 90° de flexion',
+    how:'Genou fléchi à 90°, pied bloqué. Saisir le tibia avec les deux mains et tirer vers l\'avant.',
+    pos:'Translation antérieure > 5 mm — atteinte LCA possible',
+    neg:'Translation symétrique — LCA probablement intact',
+    affects_pos:{LCA:35}, affects_neg:{LCA:-15}
+  },
+  // === FAMILLE MÉNISQUE ===
+  thessaly: {
+    name:'Test de Thessaly', family:'MENISQUE', badge:'MEN',
+    desc:'Test fonctionnel méniscal en charge',
+    how:'Patient debout sur la jambe atteinte, genou à 20° de flexion. Rotation interne puis externe du genou.',
+    pos:'Douleur reproduite à l\'interligne — lésion méniscale probable',
+    neg:'Pas de douleur — lésion méniscale peu probable',
+    affects_pos:{MENINT:35, MENEXT:30}, affects_neg:{MENINT:-20, MENEXT:-18}
+  },
+  mcmurray: {
+    name:'Test de McMurray', family:'MENISQUE', badge:'MEN',
+    desc:'Test méniscal en rotation passive',
+    how:'Décubitus dorsal, genou en flexion maximale. Extension passive avec rotation externe (ménisque interne) ou rotation interne (ménisque externe).',
+    pos:'Claquement audible ou douleur reproduite à l\'interligne',
+    neg:'Pas de claquement ni douleur',
+    affects_pos:{MENINT:35, MENEXT:25}, affects_neg:{MENINT:-15, MENEXT:-10}
+  },
+  grinding_ext: {
+    name:"Grinding test (rotation EXTERNE)", family:'MENISQUE', badge:'MIN',
+    desc:'Compression méniscale + rotation externe — explore le ménisque INTERNE',
+    how:"Patient en procubitus, genou fléchi à 90°. Compression axiale du tibia vers le bas + rotation EXTERNE du pied. La rotation externe étire et comprime le ménisque interne.",
+    pos:"Douleur reproduite à l'interligne MÉDIAL — lésion du ménisque interne",
+    neg:"Pas de douleur médiale — ménisque interne probablement intact",
+    affects_pos:{MENINT:40, GONARTHROSE:10}, affects_neg:{MENINT:-22, MENEXT:-5}
+  },
+  grinding_int: {
+    name:"Grinding test (rotation INTERNE)", family:'MENISQUE', badge:'MEX',
+    desc:'Compression méniscale + rotation interne — explore le ménisque EXTERNE',
+    how:"Patient en procubitus, genou fléchi à 90°. Compression axiale du tibia vers le bas + rotation INTERNE du pied. La rotation interne étire et comprime le ménisque externe.",
+    pos:"Douleur reproduite à l'interligne LATÉRAL — lésion du ménisque externe",
+    neg:"Pas de douleur latérale — ménisque externe probablement intact",
+    affects_pos:{MENEXT:40, GONARTHROSE:8}, affects_neg:{MENEXT:-22, MENINT:-5}
+  },
+  ege_test: {
+    name:'Test de Ege', family:'MENISQUE', badge:'MEX',
+    desc:'Test méniscal spécifique externe en charge',
+    how:'Patient debout, pieds écartés. Squat avec rotation externe (ménisque interne) ou interne (ménisque externe).',
+    pos:'Douleur à l\'interligne externe en rotation interne — MENEXT',
+    neg:'Pas de douleur',
+    affects_pos:{MENEXT:40, MENINT:10}, affects_neg:{MENEXT:-25}
+  },
+  // === FAMILLE FÉMORO-PATELLAIRE ===
+  squat_unipodal: {
+    name:'Squat unipodal avec maintien latéral', family:'FP', badge:'SFP',
+    desc:'Test fonctionnel pour syndrome fémoro-patellaire',
+    how:'Patient debout sur la jambe atteinte. Squat lent jusqu\'à 60° de flexion, observer le valgus dynamique du genou.',
+    pos:'Douleur antérieure reproduite ± valgus dynamique — SFP probable',
+    neg:'Pas de douleur reproduite — SFP peu probable',
+    affects_pos:{SFP:45, HOFFITE:-5, TENROT:5}, affects_neg:{SFP:-30}
+  },
+  zohlen: {
+    name:'Test de Zohlen', family:'FP', badge:'SFP',
+    desc:'Compression rotulienne contre extension',
+    how:'Patient en décubitus dorsal, genou en extension. Plaquer la rotule vers le bas, demander une contraction du quadriceps.',
+    pos:'Douleur rétro-rotulienne — chondropathie/SFP',
+    neg:'Indolore — SFP peu probable',
+    affects_pos:{SFP:35, GONARTHROSE:15}, affects_neg:{SFP:-20, HOFFITE:-10}
+  },
+  rabot_patellaire: {
+    name:'Signe du rabot', family:'FP', badge:'FP',
+    desc:'Mobilisation rotulienne sur fémur — chondropathie/arthrose',
+    how:'Décubitus dorsal, genou en extension. Mobiliser la rotule sur le fémur (haut/bas) en cherchant un accrochage crépitant.',
+    pos:'Crépitations + douleur — chondropathie/arthrose fémoro-patellaire',
+    neg:'Glissement souple, indolore',
+    affects_pos:{GONARTHROSE:35, SFP:15}, affects_neg:{GONARTHROSE:-25, SFP:-10}
+  },
+  // === FAMILLE TENDON ===
+  palpation_tendon_rot: {
+    name:'Palpation du tendon rotulien', family:'TENDON', badge:'TEN',
+    desc:'Palpation pointe rotule et tendon',
+    how:'Décubitus dorsal, genou en légère flexion. Palpation de la pointe rotulienne et du tendon rotulien.',
+    pos:'Douleur exquise à la pointe rotulienne — tendinopathie rotulienne',
+    neg:'Palpation indolore — tendinopathie peu probable',
+    affects_pos:{TENROT:50}, affects_neg:{TENROT:-30}
+  },
+  ext_contrariee: {
+    name:'Extension contrariée', family:'TENDON', badge:'TEN',
+    desc:'Extension active contre résistance',
+    how:'Patient assis, genou fléchi. Demander extension active contre résistance manuelle.',
+    pos:'Douleur reproduite à la pointe rotulienne — tendinopathie',
+    neg:'Pas de douleur',
+    affects_pos:{TENROT:45}, affects_neg:{TENROT:-25}
+  },
+  // === FAMILLE HOFFA ===
+  hoffite_palpation: {
+    name:'Palpation graisse de Hoffa', family:'HOFFA', badge:'HOF',
+    desc:'Palpation des paquets adipeux + hyperextension',
+    how:'Décubitus dorsal, genou en extension. Palpation des paquets adipeux de part et d\'autre du tendon rotulien. Compléter par mise en hyperextension passive.',
+    pos:'Douleur sous-rotulienne reproduite — hoffite',
+    neg:'Indolore — hoffite peu probable',
+    affects_pos:{HOFFITE:50}, affects_neg:{HOFFITE:-30}
+  },
+  // === FAMILLE LIGAMENT COLLATÉRAL ===
+  valgus_stress: {
+    name:'Test en valgus', family:'LIGAMENT', badge:'LLI',
+    desc:'Mise en tension du LLI à 30° de flexion',
+    how:'Décubitus dorsal, genou à 30° de flexion. Stabiliser la cuisse, appliquer un valgus sur le tibia.',
+    pos:'Bâillement médial + douleur — entorse LLI',
+    neg:'Stabilité médiale — LLI intact',
+    affects_pos:{LLI:50}, affects_neg:{LLI:-30}
+  },
+  // === FAMILLE PATTE D\'OIE ===
+  palpation_patte_oie: {
+    name:"Palpation patte d'oie", family:'PATTE', badge:'POI',
+    desc:'Palpation 5-6 cm sous interligne médial',
+    how:"Décubitus dorsal, genou en flexion 30°. Palper en crochet 5-6 cm sous l'interligne articulaire interne, à la face antéro-médiale du tibia.",
+    pos:"Douleur vive reproduite — tendinopathie patte d'oie",
+    neg:'Indolore',
+    affects_pos:{PATTE_OIE:50}, affects_neg:{PATTE_OIE:-30}
+  },
+  // === FAMILLE TFL ===
+  noble_compression: {
+    name:'Test de Noble', family:'TFL', badge:'TFL',
+    desc:'Compression bandelette ilio-tibiale',
+    how:'Décubitus dorsal, genou à 30° de flexion. Comprimer le condyle fémoral externe 2 cm au-dessus de l\'interligne. Demander flexion-extension.',
+    pos:'Douleur reproduite — syndrome essuie-glace',
+    neg:'Indolore',
+    affects_pos:{ESSUIE_GLACE:50}, affects_neg:{ESSUIE_GLACE:-30}
+  },
+  // === FAMILLE PLICA ===
+  mediopatellar_plica: {
+    name:'Test de la plica médiopatellaire (MPP)', family:'PLICA', badge:'PLI',
+    desc:'Compression de la plica en flexion',
+    how:"Décubitus dorsal, genou à 0° puis flexion progressive. Appliquer une pression sur le bord médial de la rotule pendant la flexion.",
+    pos:'Ressaut ou douleur reproductible vers 30-45° — plica synoviale',
+    neg:'Pas de ressaut',
+    affects_pos:{PLICA:50}, affects_neg:{PLICA:-30}
+  },
+  // === FAMILLE BURSITE ===
+  palpation_bursite: {
+    name:'Palpation/inspection bursite pré-rotulienne', family:'BURSITE', badge:'BUR',
+    desc:'Inspection + palpation tuméfaction antérieure',
+    how:'Inspection genou : tuméfaction fluctuante en avant de la rotule. Palpation : tuméfaction superficielle, parfois chaude.',
+    pos:'Tuméfaction palpable fluctuante — bursite pré-rotulienne',
+    neg:'Pas de tuméfaction',
+    affects_pos:{BURSITE_PREREROT:55}, affects_neg:{BURSITE_PREREROT:-30}
+  },
+  // === FAMILLE NERF SAPHÈNE ===
+  tinel_hunter: {
+    name:'Signe de Tinel — canal de Hunter', family:'HUNTER', badge:'HUN',
+    desc:'Percussion au-dessus du condyle fémoral médial',
+    how:"Patient en décubitus dorsal. Percussion à la face médiale de la cuisse distale, 10 cm au-dessus du condyle fémoral médial.",
+    pos:'Décharge électrique / paresthésie face médiale — canal de Hunter',
+    neg:'Pas de paresthésie',
+    affects_pos:{CANAL_HUNTER:55}, affects_neg:{CANAL_HUNTER:-30}
+  }
+};
+
+// ========== VIGNETTES + CHOIX + CIRCUITS ==========
+const VIGNETTES = {
+  loc_ant:{
+    id:'loc_ant', lbl:'🔻 Douleur antérieure (rotule/tendon)',
+    desc:'Devant le genou, péri-rotulienne ou pointe inférieure',
+    score:{SFP:35, TENROT:30, HOFFITE:45, PLICA:20}
+  },
+  loc_med:{
+    id:'loc_med', lbl:'◀️ Douleur médiale',
+    desc:'Face interne du genou',
+    score:{MENINT:35, LLI:30, PATTE_OIE:30, CANAL_HUNTER:35, GONARTHROSE:12}
+  },
+  loc_lat:{
+    id:'loc_lat', lbl:'▶️ Douleur latérale',
+    desc:'Face externe du genou',
+    score:{ESSUIE_GLACE:35, MENEXT:30, SFP:30, GONARTHROSE:10}
+  },
+  loc_global:{
+    id:'loc_global', lbl:'🦴 Douleur diffuse / mécanique en charge',
+    desc:'Tout le genou, douleur diffuse à la marche prolongée',
+    score:{GONARTHROSE:45, MENINT:15, LCA:10}
+  },
+  pres_blocage:{
+    id:'pres_blocage', lbl:'🚫 Blocage ou ressaut',
+    desc:'Blocage articulaire, ressaut, accrochage en flexion-extension',
+    score:{MENINT:50, MENEXT:40, PLICA:45}
+  },
+  pres_instab:{
+    id:'pres_instab', lbl:'💫 Dérobement / instabilité',
+    desc:'Genou qui lâche ou qui part',
+    score:{LCA:55, LLI:15, MENINT:10}
+  },
+  pres_inflam:{
+    id:'pres_inflam', lbl:'🔥 Tuméfaction / chaleur localisée',
+    desc:'Gonflement visible, chaleur ± rougeur',
+    score:{BURSITE_PREREROT:55, HOFFITE:25, GONARTHROSE:15}
+  }
+};
+
+const MECA_VIGS = {
+  trauma:     ['loc_ant','loc_med','loc_lat','loc_global','pres_blocage','pres_instab','pres_inflam'],
+  surcharge:  ['loc_ant','loc_med','loc_lat','loc_global','pres_blocage','pres_inflam'],
+  progressif: ['loc_ant','loc_med','loc_lat','loc_global','pres_blocage','pres_inflam'],
+  inflam:     ['loc_ant','loc_med','loc_global','pres_inflam']
+};
+
+const CHOICES = {
+  MECANISME: {
+    tag:'Étape 1 · Mécanisme', q:"Comment la douleur est-elle apparue ?",
+    items:[
+      {key:'trauma', lbl:'Traumatisme aigu ou appui direct répété',
+        desc:'Choc, torsion, chute, hyperextension brutale, microtraumatismes répétés',
+        score:{LCA:25, MENINT:20, MENEXT:18, LLI:30, BURSITE_PREREROT:15}},
+      {key:'surcharge', lbl:'Surcharge progressive',
+        desc:"Effort sportif inhabituel, augmentation du volume d'entraînement, métier physique",
+        score:{SFP:25, TENROT:32, ESSUIE_GLACE:30, PATTE_OIE:20, HOFFITE:25, MENINT:10, MENEXT:8}},
+      {key:'progressif', lbl:'Installation progressive sans traumatisme',
+        desc:'Apparition lente, progressive, sans événement déclenchant identifié',
+        score:{GONARTHROSE:35, MENINT:15, MENEXT:12, PLICA:12, PATTE_OIE:15, CANAL_HUNTER:25}},
+      {key:'inflam', lbl:'Épisode inflammatoire',
+        desc:'Apparition rapide avec chaleur, rougeur, tuméfaction',
+        score:{BURSITE_PREREROT:30, GONARTHROSE:15, HOFFITE:18, MENINT:12}}
+    ]
+  },
+  AGE: {
+    tag:'Étape 2 · Profil patient', q:'Profil clinique du patient ?',
+    items:[
+      {key:'sport', lbl:'< 35 ans, sportif actif',
+        desc:'Sport régulier, pivot, sauts, course',
+        score:{LCA:20, MENINT:15, MENEXT:15, SFP:10, TENROT:22, LLI:12, ESSUIE_GLACE:10, PLICA:18, GONARTHROSE:-10}},
+      {key:'jeune', lbl:'< 35 ans, peu/pas sportif',
+        desc:'Activité physique modérée ou sédentaire',
+        score:{MENINT:10, SFP:12, LLI:8, PLICA:8, BURSITE_PREREROT:10, HOFFITE:8, GONARTHROSE:-15}},
+      {key:'a35_60', lbl:'35-60 ans',
+        desc:'Adulte actif ou sédentaire',
+        score:{MENINT:18, MENEXT:12, SFP:12, GONARTHROSE:10, PATTE_OIE:15, ESSUIE_GLACE:10, TENROT:10, HOFFITE:12, CANAL_HUNTER:10}},
+      {key:'a60p', lbl:'> 60 ans',
+        desc:'Sénior',
+        score:{GONARTHROSE:35, MENINT:15, MENEXT:10, PATTE_OIE:10}}
+    ]
+  },
+  HORAIRE: {
+    tag:'Étape 4 · Horaire douloureux', q:"Quel est le caractère et l'horaire de la douleur ?",
+    items:[
+      {key:'mec', lbl:'Mécanique pur',
+        desc:'Effort → douleur, repos → soulagement, pas de réveil nocturne',
+        score:{TENROT:20, SFP:20, ESSUIE_GLACE:20, PATTE_OIE:18, GONARTHROSE:15, HOFFITE:18, CANAL_HUNTER:10}},
+      {key:'mixte', lbl:'Mixte (mécanique + nocturne)',
+        desc:'Douleur effort ET nocturne (appui côté atteint)',
+        score:{GONARTHROSE:25, MENINT:15, MENEXT:12}},
+      {key:'effort', lbl:'Douleur à effort précis',
+        desc:'Reproductible à un geste spécifique (course, sauts, torsion)',
+        score:{TENROT:25, ESSUIE_GLACE:28, SFP:18, MENINT:15, MENEXT:15, LCA:12}},
+      {key:'inflam', lbl:'Inflammatoire ou gonflement visible',
+        desc:'Gonflement chaud, tuméfaction, ou raideur matinale prolongée',
+        score:{BURSITE_PREREROT:30, GONARTHROSE:20, PLICA:15, MENINT:10, HOFFITE:10}}
+    ]
+  }
+};
+
+// Circuit de 5 tests par pathologie — confirmation + discriminants vs confondantes
+// Règle : tests organisés en familles distinctes pour permettre la logique adaptative
+const CIRCUITS = {
+  LCA:              ['lachmann','pivot_shift','tiroir_ant','grinding_ext','valgus_stress'],
+  MENINT:           ['grinding_ext','mcmurray','thessaly','ege_test','valgus_stress'],
+  MENEXT:           ['grinding_int','ege_test','mcmurray','thessaly','noble_compression'],
+  SFP:              ['squat_unipodal','zohlen','rabot_patellaire','palpation_tendon_rot','hoffite_palpation'],
+  TENROT:           ['palpation_tendon_rot','ext_contrariee','squat_unipodal','zohlen','hoffite_palpation'],
+  HOFFITE:          ['hoffite_palpation','squat_unipodal','zohlen','palpation_tendon_rot','palpation_bursite'],
+  GONARTHROSE:      ['rabot_patellaire','grinding_ext','thessaly','valgus_stress','palpation_patte_oie'],
+  LLI:              ['valgus_stress','lachmann','grinding_ext','mcmurray','palpation_patte_oie'],
+  PATTE_OIE:        ['palpation_patte_oie','valgus_stress','grinding_ext','rabot_patellaire','tinel_hunter'],
+  ESSUIE_GLACE:     ['noble_compression','grinding_int','zohlen','ege_test','valgus_stress'],
+  PLICA:            ['mediopatellar_plica','zohlen','grinding_ext','squat_unipodal','hoffite_palpation'],
+  BURSITE_PREREROT: ['palpation_bursite','zohlen','hoffite_palpation','palpation_tendon_rot','ext_contrariee'],
+  CANAL_HUNTER:     ['tinel_hunter','palpation_patte_oie','valgus_stress','grinding_ext','rabot_patellaire']
+};
+
+// ========== MOTEUR ==========
+// ========== ÉTAT ==========
+const PATHO_LIST = Object.keys(P);
+let scores = {};
+let history = [];
+let mecaKey = null;
+let testsToRun = [];
+let testIdx = 0;
+let currentStep = 'MECANISME';
+let selectedVigs = new Set();
+
+function init(){
+  scores = {};
+  PATHO_LIST.forEach(p => scores[p] = 0);
+  history = [];
+  mecaKey = null;
+  testsToRun = [];
+  testIdx = 0;
+  currentStep = 'MECANISME';
+  selectedVigs = new Set();
+}
+
+function addScore(delta){
+  for(const k in delta){
+    if(k in scores) scores[k] += delta[k];
+  }
+}
+
+function ranked(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+}
+
+function top1(){ return ranked()[0]; }
+
+function top3WithScores(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+}
+
+// ========== LOGIQUE TESTS ADAPTATIFS ==========
+// Règle : 5 tests max
+// - Test POS  → continuer le circuit du top1 actuel (confirmation)
+// - Test NÉG  → proposer un test d\'une AUTRE famille clinique
+
+const MAX_TESTS = 5;
+
+function buildInitialQueue(){
+  const t1 = top1();
+  return [...(CIRCUITS[t1] || [])].slice(0, MAX_TESTS);
+}
+
+function applyTest(tKey, positive){
+  const t = TESTS[tKey];
+  if(!t) return;
+  const delta = positive ? t.affects_pos : t.affects_neg;
+  addScore(delta);
+  history.push({test:tKey, name:t.name, result:positive ? '✅':'❌'});
+}
+
+function nextTestAdaptive(currentFamily, positive){
+  // Tests déjà faits (jamais reproposés)
+  const done = new Set(testsToRun.slice(0, testIdx));
+  
+  if(positive){
+    // POS : continuer circuit du top1 actuel
+    const cands = CIRCUITS[top1()] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+    return null;
+  }
+  
+  // NEG : trouver patho dont le test #1 a une famille DIFFÉRENTE
+  for(const patho of ranked()){
+    const cands = CIRCUITS[patho];
+    if(!cands || !cands.length) continue;
+    for(const candTest of cands){
+      if(done.has(candTest)) continue;
+      const candFamily = (TESTS[candTest] || {}).family;
+      if(candFamily && candFamily !== currentFamily) return candTest;
+    }
+  }
+  
+  // Fallback : n\'importe quel test non fait
+  for(const patho of ranked()){
+    for(const t of (CIRCUITS[patho] || [])){
+      if(!done.has(t)) return t;
+    }
+  }
+  return null;
+}
+
+function testResult(positive){
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t) return;
+  
+  applyTest(tKey, positive);
+  const currentFamily = t.family;
+  testIdx++;
+  
+  // Si pas encore atteint MAX, choisir le prochain test
+  if(testIdx < MAX_TESTS){
+    const nextT = nextTestAdaptive(currentFamily, positive);
+    if(nextT){
+      // Remplacer le prochain prévu (ou l\'insérer)
+      if(testIdx < testsToRun.length){
+        testsToRun[testIdx] = nextT;
+      } else {
+        testsToRun.push(nextT);
+      }
+    }
+  }
+  
+  renderStep();
+}
+
+// ========== RENDERING ==========
+function pickChoice(stepKey, item){
+  addScore(item.score);
+  history.push({step:stepKey, label:item.lbl});
+  
+  if(stepKey === 'MECANISME'){
+    mecaKey = item.key;
+    currentStep = 'AGE';
+  } else if(stepKey === 'AGE'){
+    currentStep = 'TABLEAU';
+  } else if(stepKey === 'HORAIRE'){
+    testsToRun = buildInitialQueue();
+    testIdx = 0;
+    currentStep = 'TESTS';
+  }
+  renderStep();
+}
+
+function toggleVig(vid){
+  if(selectedVigs.has(vid)){
+    selectedVigs.delete(vid);
+  } else {
+    if(selectedVigs.size >= 3) return;
+    selectedVigs.add(vid);
+  }
+  renderStep();
+}
+
+function validateTableau(){
+  if(selectedVigs.size === 0) return;
+  selectedVigs.forEach(vid => {
+    addScore(VIGNETTES[vid].score);
+    history.push({step:'TABLEAU', label:VIGNETTES[vid].lbl});
+  });
+  currentStep = 'HORAIRE';
+  renderStep();
+}
+
+function skipTest(){
+  testIdx++;
+  if(testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+  }
+  renderStep();
+}
+
+function reset(){
+  init();
+  renderStep();
+}
+
+function goBack(){
+  // Retour à l\'étape précédente — simple
+  if(currentStep === 'AGE') currentStep = 'MECANISME';
+  else if(currentStep === 'TABLEAU') currentStep = 'AGE';
+  else if(currentStep === 'HORAIRE') currentStep = 'TABLEAU';
+  else if(currentStep === 'TESTS' && testIdx > 0){
+    testIdx--;
+    // Annuler le dernier test (pas le scoring pour simplifier, juste revenir au test)
+  } else if(currentStep === 'TESTS' && testIdx === 0){
+    currentStep = 'HORAIRE';
+  } else if(currentStep === 'RESULT'){
+    currentStep = 'TESTS';
+    testIdx = Math.max(0, MAX_TESTS - 1);
+  }
+  renderStep();
+}
+
+
+// ========== RENDU ==========
+// ========== HELPERS RENDU ==========
+function backBtn(){
+  if(currentStep === 'MECANISME') return '';
+  return `<button class="btn-back" onclick="goBack()">← Modifier</button>`;
+}
+
+function breadcrumbHTML(){
+  if(!history.length) return '';
+  const items = history.slice(-4).map(h => `<span class="bc-item">${(h.label||h.test||'').slice(0,30)}</span>`).join(' › ');
+  return `<div class="breadcrumb">${items}</div>`;
+}
+
+function stepIndicator(currentIdx){
+  const steps = ['Mécanisme', 'Profil', 'Tableau', 'Horaire', 'Examen'];
+  return `<div class="step-ind">
+    ${steps.map((s,i) => `<div class="si-item ${i===currentIdx?'active':''} ${i<currentIdx?'done':''}">${i+1}. ${s}</div>`).join('')}
+  </div>`;
+}
+
+// ========== ÉTAPE CHOIX (Mécanisme, Âge, Horaire) ==========
+function renderChoice(stepKey, stepIdx){
+  const c = CHOICES[stepKey];
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(stepIdx)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">${c.tag}</div>
+      <h2 class="card-q">${c.q}</h2>
+      <div class="choices">
+        ${c.items.map(it => `
+          <button class="choice" onclick="pickChoice('${stepKey}', CHOICES['${stepKey}'].items.find(x=>x.key==='${it.key}'))">
+            <div class="choice-lbl">${it.lbl}</div>
+            <div class="choice-desc">${it.desc}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TABLEAU CLINIQUE (multi-vignettes) ==========
+function renderTableau(){
+  const vigs = (MECA_VIGS[mecaKey] || Object.keys(VIGNETTES));
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(2)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 3 · Tableau clinique</div>
+      <h2 class="card-q">Cochez ce qui correspond au patient</h2>
+      <div class="card-hint">Maximum 3 cases cochables.</div>
+      <div class="vig-grid">
+        ${vigs.map(vid => {
+          const v = VIGNETTES[vid];
+          const sel = selectedVigs.has(vid);
+          return `<div class="vig ${sel?'vig-sel':''}" onclick="toggleVig('${vid}')">
+            <div class="vig-chk">${sel?'☑':'☐'}</div>
+            <div class="vig-body">
+              <div class="vig-lbl">${v.lbl}</div>
+              <div class="vig-desc">${v.desc}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="card-foot">
+        <span class="foot-info">${selectedVigs.size===0?'Aucune sélection':selectedVigs.size+'/3 coché'+(selectedVigs.size>1?'s':'')}</span>
+        <button class="btn-primary" ${selectedVigs.size===0?'disabled':''} onclick="validateTableau()">Confirmer →</button>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TESTS ==========
+function renderTests(){
+  if(testIdx >= testsToRun.length || testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+    renderStep();
+    return;
+  }
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t){
+    testIdx++;
+    renderTests();
+    return;
+  }
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(4)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 5 · Examen clinique (${testIdx+1}/${MAX_TESTS})</div>
+      <div class="test-name">${t.name}</div>
+      <div class="test-fam"><span class="test-badge">${t.badge}</span> Famille : ${t.family}</div>
+      <div class="test-desc">${t.desc}</div>
+      <div class="test-section">
+        <strong>Technique</strong>
+        <div>${t.how}</div>
+      </div>
+      <div class="test-section">
+        <strong>Interprétation</strong>
+        <div>✅ <strong>Positif :</strong> ${t.pos}</div>
+        <div>❌ <strong>Négatif :</strong> ${t.neg}</div>
+      </div>
+      <div class="test-btns">
+        <button class="btn-pos" onclick="testResult(true)">✅ Positif</button>
+        <button class="btn-neg" onclick="testResult(false)">❌ Négatif</button>
+      </div>
+      ${testIdx > 0 ? `<button class="btn-skip" onclick="skipTest()">Passer ce test →</button>` : ''}
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+
+
+// ========== ÉTAPE RÉSULTAT ==========
+function renderResult(){
+  const top = top3WithScores();
+  const total = top.reduce((s,[,sc]) => s + Math.max(0,sc), 0) || 1;
+  const main = top[0];
+  const alts = top.slice(1);
+  const mainP = P[main[0]];
+  const mainProb = Math.round(100 * Math.max(0, main[1]) / total);
+  
+  const alertHTML = mainP.alert ? `
+    <div class="alert-box alert-${mainP.alert.type}">
+      <span style="font-size:16px">${mainP.alert.type === 'red' ? '🚨' : '⚠️'}</span>
+      <span>${mainP.alert.text}</span>
+    </div>` : '';
+  
+  // Sections détaillées
+  const imagingItems = (mainP.imaging || []).map(i => 
+    `<div class="fi"><strong>${i.t}</strong>${i.d ? `<span>${i.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const treatmentItems = (mainP.treatment || []).map(t => 
+    `<div class="fi"><strong>${t.t}</strong>${t.d ? `<span>${t.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const exercisesItems = (mainP.exercises || []).map(e => 
+    `<div class="fi"><strong>${e.t}</strong>${e.d ? `<span>${e.d}</span>` : ''}</div>`
+  ).join('') + (mainP.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${mainP.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  
+  const referralItems = (mainP.referral || []).map(r => `
+    <div class="ref-tag ${r.p ? 'p' : 's'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p ? '→ ' : ''}${r.who}</div>
+        ${r.why ? `<div class="ref-why">${r.why}</div>` : ''}
+      </div>
+      <span class="ref-b">${r.p ? 'Prioritaire' : 'Si besoin'}</span>
+    </div>`).join('');
+  
+  // Sources
+  const sourcesHTML = mainP.sources?.length ? `
+    <div class="sources-row">
+      <span class="src-lbl">📚 Sources</span>
+      ${mainP.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('')}
+    </div>` : '';
+  
+  // Alternatifs
+  const altCardsHTML = alts.map(([pid, sc]) => {
+    const p = P[pid];
+    const prob = Math.round(100 * Math.max(0, sc) / total);
+    return `<div class="alt-card" onclick="showModal('${pid}')">
+      <div class="alt-header">
+        <img src="images_pathologies/genou.png" alt="" class="alt-ic-img" />
+        <div class="alt-name">${p.name}</div>
+        <div class="alt-pct">${prob}%</div>
+      </div>
+      <div class="alt-bar"><div class="alt-fill" style="width:${prob}%"></div></div>
+      <div class="alt-key">
+        <strong>Éléments clés</strong>
+        ${(p.keys || []).slice(0,2).join(' · ')}
+      </div>
+      <div class="alt-hint">Appuyer pour la fiche complète →</div>
+    </div>`;
+  }).join('');
+  
+  const html = `
+    ${stepIndicator(5)}
+    ${breadcrumbHTML()}
+    <div class="result-wrap">
+      
+      <!-- DIAGNOSTIC PRINCIPAL -->
+      <div class="diag-card">
+        <div class="diag-top">
+          <div class="diag-head">
+            <img src="images_pathologies/genou.png" alt="" class="diag-icon-img" />
+            <div>
+              <span class="rank-badge">Diagnostic principal</span>
+              <div class="diag-name">${mainP.name}</div>
+              <div class="diag-pop">${mainP.pop}</div>
+            </div>
+          </div>
+          <div class="prob-wrap">
+            <div class="prob-pct">${mainProb}%</div>
+            <div class="prob-label">Probabilité</div>
+            <div class="prob-bar"><div class="prob-fill" style="width:${mainProb}%"></div></div>
+          </div>
+        </div>
+        
+        <div class="fiche">
+          ${alertHTML}
+          <div class="fiche-grid">
+            <div class="fiche-sec">
+              <div class="sec-title sec-img">🔬 Imagerie</div>
+              ${imagingItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ex">💪 Exercices</div>
+              ${exercisesItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-rx">💊 Traitement</div>
+              ${treatmentItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ref">🏥 Orientation</div>
+              ${referralItems || '<div class="fi-empty">—</div>'}
+            </div>
+          </div>
+          ${sourcesHTML}
+        </div>
+      </div>
+      
+      <!-- DIAGNOSTICS ALTERNATIFS -->
+      <div class="section-sep">Diagnostics alternatifs à considérer</div>
+      <div class="alt-cards">${altCardsHTML}</div>
+      
+      <div class="disclaimer">
+        ⚠️ <strong>Outil d'aide à la décision clinique</strong> — Les probabilités sont indicatives et basées sur le profil sélectionné. Non substitutif au jugement médical. Sources : HAS, EULAR, sociétés savantes.
+      </div>
+      
+      <div class="actions">
+        <button class="btn-primary" onclick="reset()">↺ Nouveau cas</button>
+        <button class="btn-back" onclick="goBack()">← Modifier les réponses</button>
+      </div>
+      
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="if(event.target.id==='modal') closeModal()">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+  
+  // Animer les barres
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill, .alt-fill').forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => el.style.width = target));
+    });
+  }, 50);
+}
+
+function showModal(pid){
+  const p = P[pid];
+  const imagingHTML = (p.imaging || []).map(i => `<div class="fi"><strong>${i.t}</strong>${i.d?`<span>${i.d}</span>`:''}</div>`).join('');
+  const treatmentHTML = (p.treatment || []).map(t => `<div class="fi"><strong>${t.t}</strong>${t.d?`<span>${t.d}</span>`:''}</div>`).join('');
+  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  const referralHTML = (p.referral || []).map(r => `
+    <div class="ref-tag ${r.p?'p':'s'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p?'→ ':''}${r.who}</div>
+        ${r.why?`<div class="ref-why">${r.why}</div>`:''}
+      </div>
+      <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
+    </div>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-head">
+      <img src="images_pathologies/genou.png" alt="" class="modal-icon-img" />
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div class="modal-pop">${p.pop}</div>
+      </div>
+    </div>
+    ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
+    <div class="fiche-grid modal-fiche">
+      <div class="fiche-sec">
+        <div class="sec-title sec-img">🔬 Imagerie</div>
+        ${imagingHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ex">💪 Exercices</div>
+        ${exercisesHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-rx">💊 Traitement</div>
+        ${treatmentHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ref">🏥 Orientation</div>
+        ${referralHTML || '<div class="fi-empty">—</div>'}
+      </div>
+    </div>
+    <div class="sources-row modal-sources">
+      <span class="src-lbl">📚 Sources</span>
+      ${sourcesHTML}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+
+// ========== DISPATCHER ==========
+function renderStep(){
+  if(currentStep === 'MECANISME') renderChoice('MECANISME', 0);
+  else if(currentStep === 'AGE') renderChoice('AGE', 1);
+  else if(currentStep === 'TABLEAU') renderTableau();
+  else if(currentStep === 'HORAIRE') renderChoice('HORAIRE', 3);
+  else if(currentStep === 'TESTS') renderTests();
+  else if(currentStep === 'RESULT') renderResult();
+}
+
+// ========== INIT ==========
+init();
+renderStep();
+
+</script>
+</body>
+</html>

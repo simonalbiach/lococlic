@@ -1,0 +1,2374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocoClic — Pied v5</title>
+<style>
+
+
+
+
+:root {
+  --bg: #f5f3ee;           /* fond crème */
+  --bg-card: #ffffff;       /* cartes blanches */
+  --bg-hover: #f0ede5;      /* survol crème plus foncé */
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.18);
+  --text: #1a2332;          /* texte sombre principal */
+  --text-dim: #4a5468;      /* texte secondaire */
+  --text-mute: #8a92a0;     /* texte tertiaire */
+  --accent: #2563a8;        /* bleu marine accent */
+  --accent-dim: #1d4d85;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;        /* or plus sombre pour contraste */
+  --navy: #0f2a44;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 16px;
+  line-height: 1.5;
+}
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.header .badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  padding: 3px 10px;
+  background: var(--accent);
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* === STEP INDICATOR === */
+.step-ind {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.si-item {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 8px;
+  background: #fafaf7;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: center;
+}
+.si-item.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+.si-item.done {
+  background: rgba(37, 99, 168, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* === BREADCRUMB === */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.bc-item { font-style: italic; }
+
+/* === BTN BACK === */
+.btn-back {
+  background: white;
+  color: var(--text-dim);
+  border: 1.5px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.btn-back:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.card-tag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-q {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-hint {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+
+/* === CHOICES (Mécanisme, Âge, Horaire) === */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice {
+  width: 100%;
+  text-align: left;
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.choice:hover {
+  background: rgba(37,99,168,0.06);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.choice-lbl {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.choice-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+/* === VIGNETTES === */
+.vig-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .vig-grid { grid-template-columns: 1fr 1fr; }
+}
+.vig {
+  background: #fafaf7;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.vig:hover { background: rgba(37,99,168,0.06); border-color: var(--accent); }
+.vig-sel {
+  background: rgba(22,163,74,0.08);
+  border-color: var(--green);
+}
+.vig-chk {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.vig-lbl {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.vig-desc {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.foot-info {
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  box-shadow: 0 2px 8px rgba(37,99,168,0.25);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary:not(:disabled):hover { filter: brightness(1.1); }
+
+/* === TESTS === */
+.test-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+.test-fam {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.test-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.test-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.test-section {
+  margin: 14px 0;
+}
+.test-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.test-section div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.test-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn-pos, .btn-neg {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.btn-pos {
+  background: var(--green);
+  color: white;
+}
+.btn-neg {
+  background: var(--red);
+  color: white;
+}
+.btn-pos:hover, .btn-neg:hover { filter: brightness(1.1); }
+.btn-skip {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* === RÉSULTAT === */
+.result-main {
+  border: 2px solid var(--accent);
+  background: linear-gradient(180deg, rgba(93,141,240,0.08), var(--bg-card));
+}
+.result-tag {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.result-icon { font-size: 36px; }
+.result-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+.result-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.result-score {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.result-section {
+  margin: 14px 0;
+}
+.result-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+.sources {
+  list-style: none;
+  font-size: 12px;
+}
+.sources li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sources li:last-child { border: none; }
+.sources a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.sources a:hover { text-decoration: underline; }
+
+/* === ALTS === */
+.alts {
+  margin-top: 18px;
+}
+.alts-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.alt {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alt:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+.alt-icon { font-size: 24px; }
+.alt-body { flex: 1; }
+.alt-name { font-weight: 600; font-size: 14px; }
+.alt-pop { font-size: 11px; color: var(--text-mute); }
+.alt-score {
+  font-weight: 700;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+
+.btn-reset {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+.btn-reset:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,42,68,0.55);
+  z-index: 100;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  padding: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  font-size: 24px;
+  cursor: pointer;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-icon { font-size: 32px; }
+.modal-name { font-size: 17px; font-weight: 700; }
+.modal-pop { font-size: 12px; color: var(--text-mute); }
+.modal-section {
+  margin: 12px 0;
+}
+.modal-section strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.modal-section > div {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.modal-section ul {
+  list-style: none;
+  font-size: 12px;
+}
+.modal-section ul li {
+  padding: 3px 0;
+}
+.modal-section ul a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+
+.key-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.key-tag { display:inline-block; background:rgba(93,141,240,0.15); color:var(--accent); padding:3px 10px; border-radius:12px; font-size:11px; }
+.bullets { list-style:none; padding-left:0; font-size:14px; line-height:1.7; }
+.bullets li { padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.bullets li:last-child { border:none; }
+.result-info { flex:1; }
+.result-prob-wrap { text-align:right; }
+.result-prob { font-size:28px; font-weight:800; color:var(--accent); line-height:1; }
+.result-score { font-size:11px; color:var(--text-mute); margin-top:2px; }
+.alt-right { text-align:right; }
+.alt-prob { font-weight:700; font-size:17px; color:var(--accent); }
+.alt-score { font-size:10px; color:var(--text-mute); }
+.modal-section ul { list-style:none; padding-left:0; font-size:13px; line-height:1.6; }
+.modal-section ul li { padding:3px 0; }
+.modal-section ul a { color:var(--accent); text-decoration:none; }
+
+/* ===== FICHE RÉSULTAT — sections distinctes ===== */
+.result-wrap { animation: fu 0.4s ease both; }
+@keyframes fu { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+.diag-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(37,99,168,0.12);
+}
+
+.diag-top {
+  background: linear-gradient(135deg, rgba(37,99,168,0.10), rgba(37,99,168,0.03));
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.diag-head { display:flex; align-items:center; gap:12px; flex:1; }
+.diag-icon { font-size: 32px; }
+.rank-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.diag-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.diag-pop {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-wrap { text-align: right; min-width:88px; }
+.prob-pct {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.prob-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 3px;
+}
+.prob-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.prob-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.fiche { background: var(--bg-card); }
+
+.alert-box {
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.alert-red { background: #fee2e2; border: 1px solid #dc2626; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-yellow { background: #fef3c7; border: 1px solid #d97706; border-left: 4px solid #d97706; color: #92400e; }
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+@media (max-width: 600px) {
+  
+}
+
+
+
+
+
+
+
+
+
+.fi:last-child { margin-bottom: 0; }
+
+
+
+
+.ref-tag {
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+  background: rgba(167,139,250,0.18);
+  border: 1px solid rgba(167,139,250,0.2);
+}
+.ref-tag.s {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--border);
+}
+.ref-info { flex: 1; }
+.ref-who {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ref-why {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.ref-b {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: rgba(109,40,217,0.15);
+  color: #6d28d9;
+}
+.ref-tag.s .ref-b {
+  background: var(--bg-hover);
+  color: var(--text-mute);
+}
+
+.sources-row {
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.025);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.src-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.src-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(37,99,168,0.08);
+  border: 1px solid rgba(37,99,168,0.3);
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.src-chip:hover {
+  background: rgba(37,99,168,0.18);
+}
+
+.section-sep {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin: 22px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.alt-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .alt-cards { grid-template-columns: 1fr; }
+}
+.alt-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.alt-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+.alt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.alt-ic { font-size: 22px; }
+.alt-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.alt-pct {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-mute);
+}
+.alt-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.alt-fill {
+  height: 100%;
+  background: var(--text-mute);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.alt-key {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+.alt-key strong {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 3px;
+}
+.alt-hint {
+  font-size: 10px;
+  color: var(--text-mute);
+  text-align: right;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.actions .btn-primary, .actions .btn-back { flex: 1; min-width: 140px; }
+
+/* Modal fiche */
+.modal-fiche { 
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.modal-sources {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+
+
+/* === FICHE GRID — sections fortement distinctes === */
+.fiche-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  padding: 2px;
+}
+@media (max-width: 600px) {
+  .fiche-grid { grid-template-columns: 1fr; }
+}
+
+.fiche-sec {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: none;
+  position: relative;
+}
+
+/* Bandeau coloré en haut de chaque section */
+.fiche-sec::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* === COULEURS PAR SECTION === */
+/* Imagerie — bleu */
+.fiche-sec:nth-child(1) {
+  background: linear-gradient(180deg, rgba(94,177,255,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(1)::before { background: #5eb1ff; }
+
+/* Exercices — vert */
+.fiche-sec:nth-child(2) {
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(2)::before { background: #4ade80; }
+
+/* Traitement — jaune/or */
+.fiche-sec:nth-child(3) {
+  background: linear-gradient(180deg, rgba(251,191,36,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(3)::before { background: #fbbf24; }
+
+/* Orientation — violet */
+.fiche-sec:nth-child(4) {
+  background: linear-gradient(180deg, rgba(167,139,250,0.18), var(--bg-card) 40%);
+}
+.fiche-sec:nth-child(4)::before { background: #a78bfa; }
+
+/* sec-title plus visible */
+.sec-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+.sec-img { color: #1e6db8; }
+.sec-ex  { color: #15803d; }
+.sec-rx  { color: #b45309; }
+.sec-ref { color: #6d28d9; }
+
+/* Items plus aérés et visibles */
+.fi {
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 10px 8px 12px;
+  border-left: 3px solid;
+  margin-bottom: 8px;
+  background: rgba(0,0,0,0.025);
+  border-radius: 0 6px 6px 0;
+}
+.fi:last-child { margin-bottom: 0; }
+.fiche-sec:nth-child(1) .fi { border-left-color: rgba(94,177,255,0.4); }
+.fiche-sec:nth-child(2) .fi { border-left-color: rgba(74,222,128,0.4); }
+.fiche-sec:nth-child(3) .fi { border-left-color: rgba(251,191,36,0.4); }
+.fiche-sec:nth-child(4) .fi { border-left-color: rgba(167,139,250,0.4); }
+
+.fi strong {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+.fi span {
+  color: var(--text-dim);
+  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+}
+.fi-empty {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-style: italic;
+  padding: 4px 8px;
+}
+
+/* === REFERRAL TAGS spécifiques (dans section orientation) === */
+.fiche-sec:nth-child(4) .ref-tag {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.disclaimer { background: #fef3c7; border: 2px solid #f59e0b; border-radius: 9px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #000000; line-height: 1.6; }
+.disclaimer strong { color: #991b1b; font-weight: 800; }
+
+/* === Encart Signes de gravité === */
+.severity-card {
+  background: linear-gradient(135deg, #fff1f2 0%, #fef3c7 100%);
+  border: 1.5px solid #f59e0b;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.15);
+}
+.severity-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b45309;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.severity-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+}
+
+/* === Encart Pièges diagnostiques === */
+.pitfall-card {
+  background: linear-gradient(135deg, #ecfdf5 0%, #cffafe 100%);
+  border: 1.5px solid #06b6d4;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 18px 0 14px;
+  box-shadow: 0 1px 3px rgba(6, 182, 212, 0.12);
+}
+.pitfall-head {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0e7490;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.pitfall-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1a2332;
+  margin-bottom: 10px;
+}
+.pitfall-modules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pitfall-chip {
+  display: inline-block;
+  background: #fff;
+  color: #0e7490;
+  border: 1px solid #67e8f9;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+
+  .alt-ic-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .diag-icon-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(30,58,95,0.15);
+  }
+  .modal-icon-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<a href="index.html" style="
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  color: #1e3a5f;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s;
+" onmouseover="this.style.background='#1e3a5f';this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#1e3a5f';">
+  ← Accueil
+</a>
+
+
+<div class="app">
+  <div class="header">
+    <h1>LocoClic — Pied</h1>
+    <div class="badge">v5 · clinique adaptatif</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+// ========== PATHOLOGIES ==========
+const P = {
+  FASCIITE_PLANT: {
+    id:'FASCIITE_PLANT', name:'Fasciite plantaire (épine calcanéenne)', icon:'🦶', pop:'40-60 ans, IMC élevé, marche prolongée, sportif coureur, station debout professionnelle',
+    desc:"Enthésopathie d'insertion du fascia plantaire sur le calcanéum médial. Douleur typique au premier appui du matin, soulagée après quelques pas puis revenant après marche prolongée.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (douleur insertion calcanéenne médiale)"},
+      {t:'Échographie plantaire',d:"Épaississement du fascia (> 4 mm), hyperhémie — confirme et grade"},
+      {t:'Radiographie pied de profil',d:"Recherche d'épine calcanéenne (peu corrélée à la sévérité), élimine autre cause osseuse"}
+    ],
+    treatment:[
+      {t:"Étirements du fascia et du mollet",d:"Plusieurs fois par jour — pierre angulaire du traitement"},
+      {t:"Adaptation des chaussures",d:"Talonnette amortissante, semelle souple avec soutien voûte interne, éviter pieds nus"},
+      {t:"Antalgiques simples (paracétamol)",d:"En cas de douleur — éviter AINS prolongés (retardent cicatrisation enthésique)"},
+      {t:"Modification de l'activité",d:"Réduire temporairement la course, marche prolongée, station debout"},
+      {t:"Kinésithérapie",d:"Étirements supervisés, ondes de choc, taping plantaire"},
+      {t:'Infiltration de corticoïde',d:"Sous échoguidage — si échec > 3-6 mois, à utiliser avec parcimonie (risque de rupture du fascia)"},
+      {t:'Orthèses plantaires',d:"Sur mesure par podologue si trouble statique associé"}
+    ],
+    exercises:[{t:'Étirement de la fascia plantaire (rouleau ou balle)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/pied_01_fasciite_plantaire.html',
+    referral:[
+      {who:'Médecin du sport',why:"Si origine sportive ou non résolution — programme de rééducation et ondes de choc",p:true},
+      {who:'Rhumatologue',why:"Si forme bilatérale, atypique ou contexte inflammatoire (suspicion spondylarthrite)",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"⚠️ Si forme bilatérale, raideur matinale > 30 min, atteinte d'autres enthèses (Achille, ischio, etc.) ou ATCD personnel/familial de psoriasis, uvéite ou MICI : penser à une spondylarthrite (enthésopathie inflammatoire). Bilan : CRP, HLA-B27, radio bassin (sacro-iliaques)."
+    },
+    sources:[
+      {l:'Trojian & Tucker 2019 — Plantar fasciitis (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/31361104/'},
+      {l:'Sullivan et al. 2015 — Plantar heel pain CPG (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/25549231/'},
+      {l:'Petraglia et al. 2017 — Plantar fasciitis (Muscles Ligaments Tendons J)',u:'https://pubmed.ncbi.nlm.nih.gov/29051915/'},
+      {l:'HAS — Talalgies plantaires',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Premier appui matinal','Insertion calcanéenne médiale','Coureur','Étirements','Fasciite']
+  },
+  TALALGIE_POST: {
+    id:'TALALGIE_POST', name:'Talalgie postérieure (Achille / Haglund / bursite)', icon:'🦵', pop:'30-60 ans, coureur, port de chaussures avec contrefort rigide, déformation de Haglund',
+    desc:"Douleur postérieure du talon. Plusieurs entités possibles : enthésopathie d'insertion d'Achille, maladie de Haglund (exostose postéro-supérieure du calcanéum) avec bursite rétro-calcanéenne ou bursite sous-cutanée.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique"},
+      {t:'Radiographie cheville profil',d:"Recherche déformation de Haglund, calcifications d'insertion"},
+      {t:'Échographie',d:"Visualise l'insertion d'Achille, bursites, calcifications, néovascularisation"},
+      {t:'IRM',d:"Si doute persistant ou bilan préopératoire"}
+    ],
+    treatment:[
+      {t:"Adaptation des chaussures",d:"Éviter contrefort rigide, talonnette légère pour décharger l'insertion"},
+      {t:'Kinésithérapie excentrique',d:"Protocole d'Alfredson adapté à l'insertion (sur plan) — pierre angulaire"},
+      {t:"Étirements du mollet",d:"Gastrocnémien et soléaire — 30 sec × 3 plusieurs fois/jour"},
+      {t:"Antalgiques simples (paracétamol)",d:"En cas de douleur — éviter AINS prolongés et glaçage (retardent cicatrisation)"},
+      {t:"Modification de l'activité",d:"Réduire temporairement la course, marche prolongée"},
+      {t:'Ondes de choc',d:"Référence après échec du traitement initial > 3 mois"},
+      {t:'Chirurgie',d:"Résection de Haglund ± peignage tendineux si forme évoluée résistante"}
+    ],
+    exercises:[{t:'Renforcement excentrique du mollet (protocole Alfredson)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/pied_02_talalgie_posterieure.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation, ondes de choc, programme de rééducation",p:true},
+      {who:'Chirurgien orthopédique (pied)',why:"Si forme évoluée résistante > 6 mois (résection de Haglund)",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"⚠️ Penser à une spondylarthrite si talalgies bilatérales, raideur matinale > 30 min, atteinte d'autres enthèses ou ATCD de psoriasis, uvéite, MICI. Bilan : CRP, HLA-B27, radio bassin."
+    },
+    sources:[
+      {l:'Chimenti et al. 2017 — Insertional Achilles tendinopathy (Phys Ther Sport)',u:'https://pubmed.ncbi.nlm.nih.gov/28063681/'},
+      {l:'Vaishya et al. 2016 — Haglund syndrome review (Cureus)',u:'https://pubmed.ncbi.nlm.nih.gov/27818884/'},
+      {l:'Habets et al. 2017 — Eccentric exercise insertional Achilles (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/27286897/'},
+      {l:'HAS — Tendinopathies du membre inférieur',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Insertion Achille','Haglund','Bursite rétro-calcanéenne','Coureur','Talalgie postérieure']
+  },
+  APOPHYSITE_CALCA: {
+    id:'APOPHYSITE_CALCA', name:'Maladie de Sever (apophysite calcanéenne)', icon:'🧒', pop:'Enfant 8-14 ans (pic 10-12 ans), sport pivot/course (foot, basket, athlétisme), période de croissance',
+    desc:"Apophysite du noyau d'ossification du calcanéum. Douleur postéro-inférieure du talon à l'effort (course, sauts), soulagée par le repos. Évolution favorable spontanée à la fin de la croissance.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (squeeze test positif)"},
+      {t:'Radiographie pied profil',d:"Seulement si tableau atypique — visualise éventuelle fragmentation/sclérose du noyau d'ossification"}
+    ],
+    treatment:[
+      {t:"Repos relatif sportif",d:"Réduction (pas arrêt complet) de l'activité déclenchante — adaptation par paliers"},
+      {t:"Talonnettes amortissantes",d:"De 1-1,5 cm dans les deux chaussures (sport et ville) — pendant 3-6 mois"},
+      {t:"Étirements du mollet et du fascia",d:"Quotidien — encadré par kiné si nécessaire"},
+      {t:"Antalgiques simples (paracétamol)",d:"Si douleur importante — éviter AINS prolongés"},
+      {t:"Glaçage 10-15 min après l'effort",d:"En phase douloureuse — antalgique"},
+      {t:"Information et réassurance",d:"Évolution favorable spontanée à la fin de la croissance"}
+    ],
+    exercises:[{t:'Renforcement du mollet progressif',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Repos sportif relatif',d:''}],ficheExercice:'lococlic_fiches_patient/pied_03_sever.html',
+    referral:[
+      {who:'Médecin du sport',why:"Encadrement de la reprise sportive et du programme d'étirements",p:true}
+    ],
+    sources:[
+      {l:"James et al. 2016 — Sever's disease (Phys Sports Med)",u:'https://pubmed.ncbi.nlm.nih.gov/27121275/'},
+      {l:"Smith & Varacallo 2024 — Sever's disease (StatPearls)",u:'https://www.ncbi.nlm.nih.gov/books/NBK441928/'},
+      {l:'Wiegerinck et al. 2014 — Treatment heel pain children (Eur J Pediatr)',u:'https://pubmed.ncbi.nlm.nih.gov/24985126/'},
+      {l:'HAS — Pathologies pédiatriques sportives',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Enfant 8-14 ans','Squeeze calcanéum','Course','Croissance','Sever']
+  },
+  FRACT_STRESS_META: {
+    id:'FRACT_STRESS_META', name:'Fracture de stress métatarsienne', icon:'⚠️', pop:'Coureur (augmentation brutale du volume), militaire (fracture de marche), femme avec triade de la sportive, 20-50 ans',
+    desc:"Fracture de stress par hypersollicitation, le plus souvent sur la diaphyse du 2e métatarsien (fracture de marche), parfois 5e (zone de Jones). Douleur progressive de l'avant-pied à l'effort, puis permanente. Risque de fracture complète si méconnue.",
+    alert:{type:'yellow',text:"Toute douleur métatarsienne d'apparition progressive chez un coureur ou militaire après augmentation d'activité doit faire évoquer une fracture de stress. Décharge immédiate (botte de marche) et IRM en urgence relative si forte suspicion clinique avec radio normale."},
+    imaging:[
+      {t:'Radiographie pied face/profil/oblique',d:"Première intention — souvent normale en phase précoce (signes radiologiques à 2-3 semaines : trait de fracture, cal osseux)"},
+      {t:'IRM pied',d:"Examen de référence — œdème médullaire visible dès le premier jour (sensibilité 100%)"},
+      {t:'Scintigraphie osseuse',d:"Alternative si IRM contre-indiquée — hyperfixation"}
+    ],
+    treatment:[
+      {t:"Décharge complète immédiate",d:"Botte de marche ou plâtre pour 4-6 semaines — première intention"},
+      {t:"Antalgiques simples (paracétamol)",d:"En phase douloureuse — éviter AINS (retardent consolidation osseuse)"},
+      {t:"Bilan facteurs de risque",d:"Triade de la sportive (aménorrhée, troubles alimentaires, ostéoporose), erreurs d'entraînement"},
+      {t:"Reprise sportive très progressive",d:"Après cicatrisation (6-8 semaines minimum) — encadrée"},
+      {t:'Chirurgie',d:"Si fracture de Jones (5e méta, zone à risque de pseudarthrose) ou fracture déplacée"}
+    ],
+    exercises:[{t:'Repos relatif et protection',d:''},{t:'Renforcement des intrinsèques du pied (post phase aiguë)',d:''},{t:'Reprise progressive de l\'activité',d:''},{t:'Avis spécialisé indispensable',d:''}],ficheExercice:'lococlic_fiches_patient/pied_04_fracture_stress_metatarsienne.html',
+    referral:[
+      {who:'Médecin du sport',why:"Bilan complet, recherche facteurs de risque et encadrement de la reprise",p:true},
+      {who:'Chirurgien orthopédique (pied)',why:"Si fracture de Jones (5e méta, dreaded black line), déplacée ou pseudarthrose",p:false}
+    ],
+    sources:[
+      {l:'Mandell et al. 2017 — Stress fractures foot (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28937451/'},
+      {l:'Welck et al. 2017 — Stress fractures foot ankle (Injury)',u:'https://pubmed.ncbi.nlm.nih.gov/28442183/'},
+      {l:'Mayer et al. 2014 — Stress fractures lower extremity (Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/24604483/'},
+      {l:'HAS — Pathologies osseuses sportives',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Coureur','2e métatarsien','Fracture de marche','Douleur exquise','Stress métatarsien']
+  },
+  ARTHROSE_NAVIC: {
+    id:'ARTHROSE_NAVIC', name:"Douleurs naviculaires (arthrose talo-naviculaire / médio-tarse)", icon:'🦴', pop:"Adulte 40-65 ans (dégénératif ou post-traumatique), femme 40+ avec pied plat acquis, adolescent sportif (os accessoire)",
+    desc:"Douleurs médiales ou dorsales du médio-pied. Plusieurs entités regroupées : arthrose talo-naviculaire (dégénérative ou post-traumatique chez l'adulte ++), dysfonction du tibial postérieur (femme 40+ avec affaissement de la voûte), os naviculaire accessoire douloureux (adolescent sportif). Douleur mécanique à la marche, parfois raideur, saillie médiale palpable.",
+    imaging:[
+      {t:'Radiographie pied face/profil/oblique en charge',d:"Recherche os naviculaire accessoire (type I, II, III), évalue alignement statique"},
+      {t:'Échographie',d:"Évalue l'intégrité du tendon tibial postérieur, recherche ténosynovite"},
+      {t:'IRM pied',d:"Référence — œdème osseux de l'os accessoire, atteinte tendineuse tibial postérieur (épaississement, fissures, rupture)"}
+    ],
+    treatment:[
+      {t:"Orthèses plantaires",d:"Avec soutien de la voûte interne — première intention (pied plat acquis ou os accessoire)"},
+      {t:"Adaptation des chaussures",d:"Tige montante, soutien interne, éviter chaussures plates"},
+      {t:"Kinésithérapie",d:"Renforcement excentrique du tibial postérieur, étirements, proprioception"},
+      {t:"Antalgiques simples (paracétamol)",d:"En cas de poussée douloureuse — éviter AINS prolongés"},
+      {t:"Immobilisation par botte de marche",d:"3-6 semaines si poussée hyperalgique ou ténosynovite aiguë"},
+      {t:"Chirurgie",d:"Résection de l'os accessoire si échec conservateur ; reconstruction du tibial postérieur si pied plat évolué"}
+    ],
+    exercises:[{t:'Renforcement du tibial antérieur',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Mobilisation du médiopied',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''}],ficheExercice:'lococlic_fiches_patient/pied_05_arthrose_talo_naviculaire.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation et programme de rééducation, ondes de choc si tendinopathie",p:true},
+      {who:'Rhumatologue',why:"Bilan d'arthrose, infiltration sous échoguidage si poussée hyperalgique",p:true}
+    ],
+    sources:[
+      {l:'Yasui et al. 2017 — Talonavicular osteoarthritis (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/28452242/'},
+      {l:'Bowring & Chockalingam 2010 — Adult acquired flatfoot (Foot)',u:'https://pubmed.ncbi.nlm.nih.gov/20961751/'},
+      {l:'Kohls-Gatzoulis et al. 2004 — Tibialis posterior dysfunction (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/15217877/'},
+      {l:'Knapik et al. 2019 — Accessory navicular review (Foot Ankle Spec)',u:'https://pubmed.ncbi.nlm.nih.gov/30141342/'}
+    ],
+    keys:['Médio-pied médial','Arthrose talo-naviculaire','Os naviculaire','Tibial postérieur','Pied plat']
+  },
+  NEVROME_MORTON: {
+    id:'NEVROME_MORTON', name:"Névrome de Morton / bursite intermétatarsienne", icon:'⚡', pop:'Femme 40-60 ans (3-4× plus que homme), port de chaussures étroites/talons hauts, marche prolongée',
+    desc:"Compression mécanique dans l'espace intermétatarsien (typiquement 3e espace, entre 3e et 4e orteil) regroupant deux entités souvent associées : le névrome de Morton (neurinome fibreux du nerf interdigital plantaire) et la bursite intermétatarsienne. Douleurs en éclair, brûlures, paresthésies vers les orteils adjacents, exacerbées par les chaussures étroites, soulagées au déchaussage. L'échographie permet de différencier les 2 entités.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (Mulder positif, paresthésies orteils adjacents)"},
+      {t:"Échographie avant-pied",d:"Examen de choix — différencie névrome (hypoéchogène fusiforme > 5 mm) de bursite intermétatarsienne (collection anéchogène)"},
+      {t:'IRM avant-pied',d:"Si doute ou bilan préopératoire"}
+    ],
+    treatment:[
+      {t:"Adaptation des chaussures",d:"Chaussures larges à bout rond, talons bas (< 3 cm) — première intention"},
+      {t:"Orthèses plantaires avec barre rétro-capitale",d:"Décharge mécanique du 3e espace — sur mesure par podologue"},
+      {t:"Antalgiques simples (paracétamol)",d:"En cas de douleur — éviter AINS prolongés"},
+      {t:'Infiltration de corticoïde',d:"Sous échoguidage dans le 3e espace — si échec mesures conservatrices"},
+      {t:"Alcoolisation échoguidée",d:"Alternative à l'infiltration — destruction du neurinome"},
+      {t:'Chirurgie',d:"Neurectomie ou décompression — si échec du traitement médical"}
+    ],
+    exercises:[{t:'Étirement des intrinsèques (écartement des orteils)',d:''},{t:'Massage avec ouverture de l\'avant-pied (balle de tennis)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''}],ficheExercice:'lococlic_fiches_patient/pied_06_morton.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation et infiltration sous échoguidage",p:true},
+      {who:'Rhumatologue',why:"Alternative pour infiltration sous échoguidage",p:true},
+      {who:'Chirurgien orthopédique (pied)',why:"Si échec médical — neurectomie ou décompression",p:false}
+    ],
+    sources:[
+      {l:'Bhatia & Thomson 2020 — Mortons neuroma (J Clin Orthop Trauma)',u:'https://pubmed.ncbi.nlm.nih.gov/32684682/'},
+      {l:'Pace et al. 2010 — Mortons neuroma diagnosis (Foot Ankle Spec)',u:'https://pubmed.ncbi.nlm.nih.gov/20023281/'},
+      {l:'Studler et al. 2008 — Intermetatarsal bursitis MRI (Radiology)',u:'https://pubmed.ncbi.nlm.nih.gov/18372475/'},
+      {l:'HAS — Pathologies de l\'avant-pied',u:'https://www.has-sante.fr'}
+    ],
+    keys:['3e espace','Mulder','Femme talons','Bursite intermétatarsienne','Morton']
+  },
+  METATARS_MEC: {
+    id:'METATARS_MEC', name:'Métatarsalgies mécaniques', icon:'🦶', pop:'40-60 ans, troubles statiques du pied (pied creux, hallux valgus, raccourcissement Achille), marche prolongée, surpoids',
+    desc:"Douleurs plantaires de l'avant-pied par surcharge mécanique des têtes métatarsiennes (2e et 3e ++). Souvent associée à un trouble statique (pied creux antérieur, hallux valgus). Durillons plantaires sous les têtes douloureuses.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (douleurs reproductibles à la palpation des têtes, durillons)"},
+      {t:'Radiographie pied face/profil en charge',d:"Évalue alignement statique, longueur métatarsienne (formule), arthrose MTP, signe de transfert de charge"},
+      {t:'Échographie',d:"Élimine névrome de Morton, lésion plaque plantaire, bursite intermétatarsienne associée"}
+    ],
+    treatment:[
+      {t:"Orthèses plantaires",d:"Avec barre rétro-capitale ou appui rétro-capital pour décharger les têtes — première intention"},
+      {t:"Adaptation des chaussures",d:"Larges, à bout rond, semelle souple avec amorti, talons bas"},
+      {t:"Antalgiques simples (paracétamol)",d:"En cas de douleur — éviter AINS prolongés"},
+      {t:"Kinésithérapie",d:"Étirements de la chaîne postérieure, renforcement intrinsèques, mobilisations MTP"},
+      {t:"Soins de pédicurie",d:"Pour les durillons et hyperkératoses plantaires"},
+      {t:'Chirurgie',d:"Si trouble statique majeur (ostéotomies de raccourcissement métatarsien) — après échec conservateur"}
+    ],
+    exercises:[{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des releveurs du pied',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/pied_07_metatarsalgies.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation des troubles statiques et programme de rééducation",p:true},
+      {who:'Rhumatologue',why:"Si suspicion d'atteinte inflammatoire des MTP (PR à éliminer)",p:false},
+      {who:'Chirurgien orthopédique (pied)',why:"Si trouble statique majeur invalidant après échec conservateur",p:false}
+    ],
+    pitfall:{
+      modules:[],
+      text:"⚠️ Atteinte des MTP très fréquente dans la polyarthrite rhumatoïde (PR) — surtout si gonflement articulaire, raideur matinale > 30 min, atteinte symétrique bilatérale. Le squeeze test plantaire douloureux à la compression des têtes MTP est très sensible. Bilan : CRP, FR, anti-CCP, radio pieds face."
+    },
+    sources:[
+      {l:'Espinosa et al. 2010 — Metatarsalgia (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/20675621/'},
+      {l:'Maceira & Monteagudo 2014 — Mechanical metatarsalgia (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/25129351/'},
+      {l:'Federer et al. 2018 — Conservative treatment metatarsalgia (Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/29409262/'},
+      {l:'HAS — Pathologies de l\'avant-pied',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Avant-pied plantaire','Têtes métatarsiennes','Durillons','Trouble statique','Métatarsalgie']
+  },
+  HALLUX_VALGUS: {
+    id:'HALLUX_VALGUS', name:'Hallux valgus', icon:'🦶', pop:'Femme > 40 ans (sex ratio 9/1), terrain familial, port de chaussures étroites/talons hauts, pied plat',
+    desc:'Déviation latérale du gros orteil avec saillie médiale (exostose, « oignon »), souvent inflammée par frottement (bursite). Évolution progressive avec retentissement esthétique, fonctionnel, et déformation des orteils latéraux.',
+    imaging:[
+      {t:'Radiographie pied face/profil en charge',d:"Examen de référence — mesure de l'angle hallux valgus (> 15°), angle intermétatarsien (> 9°), évaluation arthrose MTP1"},
+      {t:'Échographie',d:"Si bursite associée — épanchement et inflammation"}
+    ],
+    treatment:[
+      {t:"Adaptation des chaussures",d:"Larges à bout rond, talons bas — première intention systématique"},
+      {t:"Orthèses plantaires",d:"Décharge de l'avant-pied, correction d'éventuel trouble statique associé"},
+      {t:"Orthoplastie (séparateur d'orteil)",d:"En silicone, soulage le frottement et limite l'aggravation"},
+      {t:"Antalgiques simples (paracétamol) et AINS topiques",d:"En cas de poussée inflammatoire de la bursite"},
+      {t:"Soins de pédicurie",d:"Pour les hyperkératoses et frottements"},
+      {t:'Chirurgie',d:"Ostéotomies correctrices (chevron, Scarf, etc.) — si retentissement fonctionnel marqué, échec conservateur, déformation évolutive"}
+    ],
+    exercises:[{t:'Étirement de l\'adducteur du gros orteil',d:''},{t:'Renforcement de l\'abducteur du gros orteil',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Mobilisation de la MTP du gros orteil',d:''}],ficheExercice:'lococlic_fiches_patient/pied_08_hallux_valgus.html',
+    referral:[
+      {who:'Chirurgien orthopédique (pied)',why:"Si retentissement fonctionnel ou déformation évolutive — pour évaluation chirurgicale",p:true}
+    ],
+    sources:[
+      {l:'Wülker & Mittag 2012 — Treatment of hallux valgus (Dtsch Arztebl Int)',u:'https://pubmed.ncbi.nlm.nih.gov/22989961/'},
+      {l:'Ferrari et al. 2009 — Hallux valgus surgery (Cochrane)',u:'https://pubmed.ncbi.nlm.nih.gov/19370600/'},
+      {l:'Nix et al. 2010 — Prevalence hallux valgus (J Foot Ankle Res)',u:'https://pubmed.ncbi.nlm.nih.gov/20868524/'},
+      {l:'HAS — Hallux valgus',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Déviation gros orteil','Exostose médiale','Femme chaussures étroites','Bursite oignon','Hallux valgus']
+  },
+  HALLUX_RIGIDUS: {
+    id:'HALLUX_RIGIDUS', name:'Hallux rigidus (arthrose MTP du gros orteil)', icon:'🦴', pop:'40-60 ans, ATCD traumatiques ou microtraumatismes répétés (sport pivot, course), hérédité',
+    desc:'Arthrose de la métatarso-phalangienne du gros orteil. Douleur dorsale ou globale de la MTP1 à la marche, exacerbée par le déroulé du pas. Limitation progressive de la flexion dorsale, exostoses dorsales palpables.',
+    imaging:[
+      {t:'Radiographie pied face/profil en charge',d:"Examen de référence — pincement MTP1, ostéophytes dorsaux et marginaux, géodes sous-chondrales (classification de Coughlin)"}
+    ],
+    treatment:[
+      {t:"Adaptation des chaussures",d:"Semelle rigide avec amorti, basculement antérieur, éviter chaussures trop souples — première intention"},
+      {t:"Orthèses plantaires",d:"Avec barre rétro-capitale ou rigide sous MTP1 pour limiter l'extension douloureuse"},
+      {t:"Antalgiques + AINS topiques",d:"Paracétamol ± gel AINS en poussée"},
+      {t:"Kinésithérapie",d:"Mobilisations douces, étirements de la chaîne postérieure"},
+      {t:'Infiltration de corticoïde',d:"Sous échoguidage — si poussée hyperalgique"},
+      {t:'Chirurgie',d:"Cheilectomie (résection ostéophytes dorsaux) dans formes débutantes, arthrodèse MTP1 dans formes évoluées"}
+    ],
+    exercises:[{t:'Mobilisation de la MTP du gros orteil',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement de l\'abducteur du gros orteil',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''}],ficheExercice:'lococlic_fiches_patient/pied_09_hallux_rigidus.html',
+    referral:[
+      {who:'Rhumatologue',why:"Si poussée hyperalgique — pour infiltration ou diagnostic différentiel",p:true},
+      {who:'Chirurgien orthopédique (pied)',why:"Si forme évoluée invalidante après échec conservateur",p:false}
+    ],
+    sources:[
+      {l:'Anderson et al. 2018 — Hallux rigidus (Foot Ankle Spec)',u:'https://pubmed.ncbi.nlm.nih.gov/29291634/'},
+      {l:'Yee & Lau 2008 — Hallux rigidus current concepts (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/18524988/'},
+      {l:'Polzer et al. 2014 — Diagnosis treatment hallux rigidus (Dtsch Arztebl Int)',u:'https://pubmed.ncbi.nlm.nih.gov/25249295/'},
+      {l:'HAS — Arthrose du pied',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Gros orteil dorsal','Raideur extension','Ostéophytes dorsaux','Arthrose MTP1','Hallux rigidus']
+  },
+  SESAMOIDITE: {
+    id:'SESAMOIDITE', name:'Sésamoïdite', icon:'🟠', pop:'Sportif (course, danse, gymnaste), pied creux, surcharge sous-1ère MTP, 20-50 ans',
+    desc:'Douleur plantaire en regard des deux os sésamoïdes du gros orteil. Présentations possibles : sésamoïdite simple (surcharge), fracture de stress du sésamoïde, ostéonécrose. Douleur reproductible à la palpation directe.',
+    imaging:[
+      {t:'Radiographie pied face/profil + incidence sésamoïdienne axiale',d:"Première intention — visualise les 2 sésamoïdes, recherche fracture, bipartition (variante), condensation"},
+      {t:'IRM pied',d:"Examen de référence — œdème sésamoïdien (sésamoïdite, fracture stress), nécrose"},
+      {t:'Scintigraphie osseuse',d:"Alternative — hyperfixation"}
+    ],
+    treatment:[
+      {t:"Décharge sélective sous-1ère MTP",d:"Semelle avec décharge sésamoïdienne, talonnette modeste, éviter chaussures plates"},
+      {t:"Modification de l'activité",d:"Arrêt course/sauts/danse jusqu'à amélioration — 4-8 semaines"},
+      {t:"Antalgiques simples (paracétamol)",d:"En cas de douleur — éviter AINS prolongés"},
+      {t:"Immobilisation par botte de marche",d:"3-6 semaines si fracture de stress ou poussée hyperalgique"},
+      {t:"Kinésithérapie",d:"Mobilisation douce, étirements, reprise progressive"},
+      {t:'Chirurgie',d:"Sésamoïdectomie partielle — si échec conservateur prolongé ou nécrose"}
+    ],
+    exercises:[{t:'Repos relatif et protection',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Étirement du mollet',d:''},{t:'Mobilisation MTP douce (post phase aiguë)',d:''}],ficheExercice:'lococlic_fiches_patient/pied_10_sesamoidite.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation, encadrement de la reprise, ondes de choc si chronicité",p:true},
+      {who:'Chirurgien orthopédique (pied)',why:"Si échec conservateur prolongé > 6 mois — sésamoïdectomie",p:false}
+    ],
+    sources:[
+      {l:'Sims & Kurup 2014 — Sesamoid injuries (Bone Joint Lett)',u:'https://pubmed.ncbi.nlm.nih.gov/25232423/'},
+      {l:'Cohen 2009 — Sesamoiditis (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/19840752/'},
+      {l:'Sanders & Rathur 2008 — Sesamoid disorders MRI (Magn Reson Imaging Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/18234194/'},
+      {l:'HAS — Pathologies sportives du pied',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Sous-1ère MTP','Sésamoïdes','Coureur','Danseur','Sésamoïdite']
+  },
+  TURF_TOE: {
+    id:'TURF_TOE', name:'Turf toe (entorse plaque plantaire 1ère MTP)', icon:'🏈', pop:'Sportif sur surface dure (football américain, foot, basket, danse), traumatisme aigu en hyperextension du gros orteil',
+    desc:'Lésion du complexe capsulo-ligamentaire plantaire de la 1ère MTP, par hyperextension forcée du gros orteil (pied bloqué au sol, corps qui avance). Douleur immédiate, gonflement, ecchymose plantaire. Grade I à III.',
+    alert:{type:'yellow',text:"Forme sévère (grade III) avec rupture complète de la plaque plantaire — risque d'évolution vers hallux rigidus précoce. IRM systématique si laxité dorsale, ecchymose plantaire marquée ou douleur très importante."},
+    imaging:[
+      {t:'Radiographie pied face/profil',d:"Élimine fracture associée du sésamoïde, arrachement osseux à la base de P1"},
+      {t:'IRM pied',d:"Examen de référence — visualise la lésion de la plaque plantaire, arrachement, atteinte sésamoïdienne associée"}
+    ],
+    treatment:[
+      {t:"Repos sportif et glaçage 48-72h",d:"Phase aiguë — glace 15 min × 4-6/jour, surélévation"},
+      {t:"Immobilisation",d:"Strapping en flexion plantaire ou orthèse 2-6 semaines selon grade"},
+      {t:"Botte de marche en flexion plantaire",d:"Grade II-III — pendant 4-6 semaines"},
+      {t:"Antalgiques simples (paracétamol)",d:"En phase aiguë — éviter AINS prolongés"},
+      {t:"Kinésithérapie",d:"Mobilisations douces, renforcement, reprise progressive après immobilisation"},
+      {t:"Chirurgie",d:"Si grade III avec laxité résiduelle ou instabilité chronique — réparation de la plaque plantaire"},
+      {t:"Adaptation des chaussures à la reprise",d:"Semelle rigide ou turf toe plate (limite la dorsiflexion)"}
+    ],
+    exercises:[{t:'Repos relatif et immobilisation',d:''},{t:'Mobilisation MTP douce (post phase aiguë)',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Reprise progressive de l\'activité',d:''}],ficheExercice:'lococlic_fiches_patient/pied_11_turf_toe.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation initiale, classification, encadrement de la rééducation et reprise sportive",p:true},
+      {who:'Chirurgien orthopédique (pied)',why:"Si grade III, lésion sésamoïdienne associée ou instabilité chronique",p:false}
+    ],
+    sources:[
+      {l:'McCormick & Anderson 2010 — Turf toe (Sports Health)',u:'https://pubmed.ncbi.nlm.nih.gov/23015984/'},
+      {l:'Smith et al. 2017 — Turf toe injuries (Curr Rev Musculoskelet Med)',u:'https://pubmed.ncbi.nlm.nih.gov/28110391/'},
+      {l:'George et al. 2014 — Turf toe imaging treatment (Skeletal Radiol)',u:'https://pubmed.ncbi.nlm.nih.gov/24493058/'},
+      {l:'HAS — Traumatologie sportive du pied',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Hyperextension gros orteil','Sport surface dure','MTP1 plantaire','Plaque plantaire','Turf toe']
+  },
+  PLAQUE_PLANT: {
+    id:'PLAQUE_PLANT', name:'Lésion de la plaque plantaire (2e-3e MTP)', icon:'🟡', pop:'Femme 40-60 ans, port de chaussures étroites/talons hauts, surcharge mécanique, hallux valgus associé',
+    desc:"Atteinte dégénérative ou traumatique de la plaque plantaire des MTP latérales (2e ++). Douleur progressive plantaire dans l'espace concerné, exacerbée par marche et talons. Évolution possible vers déviation puis claw toe.",
+    imaging:[
+      {t:'Radiographie pied face en charge',d:"Recherche déviation de l'orteil, anomalie de longueur métatarsienne (index plus 2), signes indirects"},
+      {t:'Échographie',d:"Bonne sensibilité — visualise la lésion plaque plantaire, recherche névrome associé"},
+      {t:'IRM pied',d:"Référence — visualise précisément la lésion (classification de Nery)"}
+    ],
+    treatment:[
+      {t:"Adaptation des chaussures",d:"Larges à bout rond, talons bas, semelle souple"},
+      {t:"Orthèses plantaires",d:"Avec barre rétro-capitale décharge des MTP latérales — première intention"},
+      {t:"Strapping de l'orteil concerné",d:"En flexion plantaire — soulage la plaque plantaire"},
+      {t:"Antalgiques + AINS topiques",d:"En poussée douloureuse"},
+      {t:"Kinésithérapie",d:"Renforcement intrinsèques, mobilisations, étirements"},
+      {t:"Chirurgie",d:"Si forme évoluée invalidante après échec conservateur — réparation de la plaque ou ostéotomie de Weil"}
+    ],
+    exercises:[{t:'Repos relatif et protection (orthoplastie)',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Mobilisation MTP douce',d:''},{t:'Reprise progressive de l\'activité',d:''}],ficheExercice:'lococlic_fiches_patient/pied_12_plaque_plantaire.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation et programme de rééducation",p:true},
+      {who:'Chirurgien orthopédique (pied)',why:"Si forme évoluée invalidante après échec conservateur — réparation",p:false}
+    ],
+    sources:[
+      {l:'Nery et al. 2012 — Plantar plate injuries classification (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/22735278/'},
+      {l:'Coughlin et al. 2017 — Plantar plate review (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/28779812/'},
+      {l:'Bouché & Heit 2008 — Plantar plate dysfunction (J Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/18455667/'},
+      {l:'HAS — Pathologies de l\'avant-pied',u:'https://www.has-sante.fr'}
+    ],
+    keys:['2e MTP plantaire','Femme chaussures étroites','Claw toe','Lachman digital','Plaque plantaire']
+  },
+  TEND_FHL_PIED: {
+    id:'TEND_FHL_PIED', name:"Tendinopathie du long fléchisseur de l'hallux (portion distale)", icon:'🩰', pop:"Danseur classique (sur pointes ++), sportif en flexion plantaire répétée (coureur descente, gymnaste, footballeur), 20-45 ans",
+    desc:"Tendinopathie du long fléchisseur de l'hallux à sa portion distale au pied (trajet rétro-sésamoïdien et sous-MTP1). Douleur plantaire interne du gros orteil exacerbée par la flexion plantaire active de l'hallux, le déroulé du pas et les positions sur pointes. Parfois associée à un Hallux Limitus fonctionnel ou à une ténosynovite (crépitations à la mobilisation passive). Diagnostic différentiel proche de la sésamoïdite, avec laquelle elle peut coexister.",
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (douleur reproductible à la flexion contrariée de l'hallux)"},
+      {t:'Échographie pied',d:"Examen de choix — épaississement tendineux, ténosynovite, hyperhémie"},
+      {t:'IRM pied',d:"Si doute ou bilan préopératoire — visualise précisément la tendinopathie et les structures adjacentes"}
+    ],
+    treatment:[
+      {t:"Modification de l'activité",d:"Réduction temporaire de la danse sur pointes, course en descente, sauts — 4-8 semaines"},
+      {t:"Adaptation des chaussures",d:"Semelle rigide ou basculement antérieur pour limiter l'extension du gros orteil"},
+      {t:"Kinésithérapie",d:"Excentrique du long fléchisseur, étirements de la chaîne postérieure, glissements tendineux"},
+      {t:"Antalgiques simples (paracétamol)",d:"En cas de douleur — éviter AINS et glaçage prolongés (retardent la cicatrisation tendineuse)"},
+      {t:'Infiltration de corticoïde',d:"Échoguidée — à utiliser avec parcimonie sur un tendon en charge (risque de rupture)"},
+      {t:'Chirurgie',d:"Rare — si rupture tendineuse ou ténosynovite réfractaire (libération de la gaine)"}
+    ],
+    exercises:[{t:'Travail en fente progressif (FHL — iso → concentrique → excentrique)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Mobilisation de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/pied_13_tendinopathie_fhl_pied.html',
+    referral:[
+      {who:'Médecin du sport',why:"Évaluation, encadrement de la rééducation et reprise sportive (notamment danseurs)",p:true},
+      {who:'Rhumatologue',why:"Infiltration sous échoguidage si échec conservateur",p:false}
+    ],
+    sources:[
+      {l:'Michelson & Dunn 2005 — Tenosynovitis FHL dancers (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/15960914/'},
+      {l:'Sammarco & Cooper 1998 — FHL tendinitis in athletes (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/9617590/'},
+      {l:'Ribbans et al. 2012 — Hallux pathology dancers (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/22938648/'},
+      {l:'Hamilton 2008 — FHL ballet dancers (Clin Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18206571/'}
+    ],
+    keys:['Long fléchisseur hallux','Danseur sur pointes','Flexion contrariée','Trajet rétro-sésamoïdien','FHL distal']
+  }
+};
+
+// ========== TESTS CLINIQUES ==========
+const TESTS = {
+  // === FAMILLE FASCIITE PLANTAIRE ===
+  palp_inser_fascia: {
+    name:"Palpation de l'insertion calcanéenne du fascia", family:'FASCIA', badge:'FAS',
+    desc:"Palpation directe de l'insertion plantaire médiale du fascia",
+    how:"Patient assis, pied posé. Palpation directe de la face plantaire médiale du calcanéum, en regard de l'insertion du fascia plantaire (juste devant le coussinet adipeux du talon).",
+    pos:"Douleur exquise reproductible sur l'insertion calcanéenne médiale — fasciite plantaire",
+    neg:"Indolore",
+    affects_pos:{FASCIITE_PLANT:50}, affects_neg:{FASCIITE_PLANT:-22}
+  },
+  windlass_test: {
+    name:"Windlass test (extension passive du gros orteil)", family:'FASCIA', badge:'FAS',
+    desc:"Test de mise en tension du fascia plantaire",
+    how:"Patient debout en charge OU pied posé. L'examinateur réalise une dorsiflexion passive du gros orteil (extension de la MTP1) tout en maintenant la cheville en position neutre.",
+    pos:"Reproduction de la douleur plantaire à l'insertion calcanéenne — fasciite plantaire (test peu sensible mais spécifique)",
+    neg:"Indolore",
+    affects_pos:{FASCIITE_PLANT:40}, affects_neg:{FASCIITE_PLANT:-15}
+  },
+
+  // === FAMILLE TALALGIE POSTÉRIEURE ===
+  palp_inser_achille: {
+    name:"Palpation de l'insertion calcanéenne d'Achille", family:'TALON_POST', badge:'TPO',
+    desc:"Palpation directe de l'insertion postérieure du tendon d'Achille",
+    how:"Patient en décubitus ventral, pieds dans le vide. Palpation directe de l'insertion d'Achille sur le calcanéum (face postérieure), recherche aussi d'une exostose dorsale (Haglund) et d'une bursite rétro-calcanéenne.",
+    pos:"Douleur exquise reproductible sur l'insertion ± exostose dorsale ± empâtement rétro-calcanéen — talalgie postérieure",
+    neg:"Indolore",
+    affects_pos:{TALALGIE_POST:55}, affects_neg:{TALALGIE_POST:-25}
+  },
+  squeeze_calca: {
+    name:"Squeeze test calcanéen (compression latérale)", family:'CALCA', badge:'CAL',
+    desc:"Test de compression latérale du calcanéum",
+    how:"Patient assis ou allongé. L'examinateur applique une compression latérale ferme du calcanéum entre paume et doigts (latéral et médial simultanés).",
+    pos:"Douleur vive reproductible — apophysite calcanéenne (Sever) chez l'enfant, fracture de stress du calcanéum",
+    neg:"Indolore",
+    affects_pos:{APOPHYSITE_CALCA:60}, affects_neg:{APOPHYSITE_CALCA:-30}
+  },
+
+  // === FAMILLE FRACTURE DE STRESS MÉTATARSIENNE ===
+  palp_meta: {
+    name:"Palpation osseuse des métatarsiens", family:'META_OS', badge:'MET',
+    desc:"Palpation directe des diaphyses métatarsiennes",
+    how:"Palpation systématique de chaque métatarsien (de la base à la tête) sur leur face dorsale et plantaire. Comparer avec côté sain. Évaluer œdème, sensibilité osseuse exquise.",
+    pos:"Douleur exquise reproductible sur une diaphyse métatarsienne (typiquement 2e ou 5e) ± œdème — fracture de stress",
+    neg:"Indolore",
+    affects_pos:{FRACT_STRESS_META:55}, affects_neg:{FRACT_STRESS_META:-25}
+  },
+  percussion_meta: {
+    name:"Percussion / vibration des métatarsiens", family:'META_OS', badge:'MET',
+    desc:"Test de percussion osseuse à distance",
+    how:"Percussion douce et brève sur la tête du métatarsien suspect (ou test du diapason 128 Hz appliqué sur la diaphyse). Test indirect transmettant la vibration à toute la diaphyse.",
+    pos:"Reproduction de la douleur osseuse à distance du point de percussion — fracture de stress",
+    neg:"Indolore",
+    affects_pos:{FRACT_STRESS_META:45}, affects_neg:{FRACT_STRESS_META:-20}
+  },
+
+  // === FAMILLE OS NAVICULAIRE / TIBIAL POSTÉRIEUR ===
+  palp_naviculaire: {
+    name:"Palpation de l'os naviculaire", family:'NAVIC', badge:'NAV',
+    desc:"Palpation directe de la face médiale du médio-pied",
+    how:"Repérer la tubérosité du naviculaire (face médiale du médio-pied, à mi-chemin entre malléole médiale et 1ère MTP). Palpation directe, recherche douleur exquise, parfois saillie osseuse (os accessoire).",
+    pos:"Douleur exquise reproductible sur la tubérosité naviculaire ± saillie osseuse — os accessoire ou dysfonction tibial postérieur",
+    neg:"Indolore",
+    affects_pos:{ARTHROSE_NAVIC:55}, affects_neg:{ARTHROSE_NAVIC:-25}
+  },
+  single_heel_rise: {
+    name:"Test du single heel rise (élévation monopodale)", family:'TP', badge:'TPS',
+    desc:"Test fonctionnel du tibial postérieur",
+    how:"Patient debout, demander de monter sur la pointe d'un pied (unipodal) avec appui léger sur un mur. Observer si le talon part en INVERSION (rotation médiale) — normal — ou reste en valgus.",
+    pos:"Talon qui reste en valgus (pas d'inversion) ou impossibilité de monter sur la pointe — dysfonction du tibial postérieur",
+    neg:"Talon part en inversion, élévation possible et stable",
+    affects_pos:{ARTHROSE_NAVIC:50}, affects_neg:{ARTHROSE_NAVIC:-22}
+  },
+  essorage_mediotarse: {
+    name:"Test d'essorage du médio-tarse", family:'NAVIC', badge:'ESS',
+    desc:"Test de mise en tension passive de l'articulation talo-naviculaire et du Chopart",
+    how:"Patient assis, jambe pendante. Une main stabilise le talon (arrière-pied). L'autre saisit l'avant-pied et imprime un mouvement de torsion en rotation interne puis externe (mouvement d'essorage), comme pour essorer un linge, mobilisant l'interligne médio-tarse.",
+    pos:"Reproduction de la douleur de la face médiale du médio-pied — atteinte talo-naviculaire / Chopart",
+    neg:"Indolore",
+    affects_pos:{ARTHROSE_NAVIC:55}, affects_neg:{ARTHROSE_NAVIC:-25}
+  },
+
+  // === FAMILLE NÉVROME DE MORTON ===
+  mulder_test: {
+    name:"Test de Mulder (clic intermétatarsien)", family:'MORTON', badge:'MOR',
+    desc:"Test de compression de l'avant-pied",
+    how:"Patient assis, pied détendu. D'une main, comprimer l'avant-pied transversalement (médial-latéral) pour rapprocher les métatarsiens. De l'autre, appuyer dorsalement et plantairement dans l'espace intermétatarsien (typiquement 3e espace).",
+    pos:"Clic palpable + reproduction de la douleur en éclair vers les orteils adjacents — névrome de Morton",
+    neg:"Indolore, pas de clic",
+    affects_pos:{NEVROME_MORTON:60}, affects_neg:{NEVROME_MORTON:-28}
+  },
+  palp_espace_intermeta: {
+    name:"Palpation de l'espace intermétatarsien", family:'MORTON', badge:'MOR',
+    desc:"Palpation directe de l'espace nerveux",
+    how:"Patient assis. Palpation profonde de chaque espace intermétatarsien (entre 2e-3e, 3e-4e, 4e-5e orteil) par voie plantaire et dorsale. Comparer.",
+    pos:"Douleur exquise reproductible dans le 3e espace (le plus fréquent) ± paresthésies — Morton",
+    neg:"Indolore",
+    affects_pos:{NEVROME_MORTON:45}, affects_neg:{NEVROME_MORTON:-20}
+  },
+
+  // === FAMILLE MÉTATARSALGIES MÉCANIQUES ===
+  palp_tetes_meta: {
+    name:"Palpation plantaire des têtes métatarsiennes", family:'META_MEC', badge:'MEC',
+    desc:"Palpation systématique des têtes MTP par voie plantaire",
+    how:"Patient assis. Palpation systématique des 5 têtes métatarsiennes par voie plantaire (2e, 3e ++). Recherche durillons (hyperkératose), douleur exquise à la pression directe.",
+    pos:"Douleur reproductible sous les têtes 2e-3e métatarsiennes ± durillons plantaires — métatarsalgies mécaniques",
+    neg:"Indolore, pas de durillons",
+    affects_pos:{METATARS_MEC:50, PLAQUE_PLANT:15}, affects_neg:{METATARS_MEC:-22}
+  },
+
+  // === FAMILLE HALLUX VALGUS / RIGIDUS ===
+  obs_hallux: {
+    name:"Inspection du gros orteil et de la MTP1", family:'HALLUX', badge:'HAL',
+    desc:"Examen visuel du gros orteil et de l'articulation MTP1",
+    how:"Inspection : déviation latérale du gros orteil (hallux valgus), saillie médiale (exostose, bursite), exostoses dorsales (hallux rigidus). Évaluation de la mobilité passive de la MTP1 en flexion et extension. Comparer avec côté sain.",
+    pos:"Déviation latérale > 15° ± exostose médiale (hallux valgus) OU exostoses dorsales avec limitation de l'extension (hallux rigidus)",
+    neg:"Alignement normal, mobilité libre et indolore",
+    affects_pos:{HALLUX_VALGUS:55, HALLUX_RIGIDUS:30}, affects_neg:{HALLUX_VALGUS:-25}
+  },
+  mobilite_mtp1: {
+    name:"Mobilité passive en extension de la MTP1", family:'HALLUX', badge:'HAL',
+    desc:"Test de l'arthrose métatarso-phalangienne du gros orteil",
+    how:"Patient assis. Stabiliser le 1er métatarsien. Réaliser une dorsiflexion passive du gros orteil. Évaluer amplitude (normale 65-75°) et douleur reproduite.",
+    pos:"Limitation marquée de l'extension (< 30-40°) ± douleur dorsale reproductible — hallux rigidus",
+    neg:"Mobilité conservée et indolore",
+    affects_pos:{HALLUX_RIGIDUS:55, HALLUX_VALGUS:10}, affects_neg:{HALLUX_RIGIDUS:-25}
+  },
+
+  // === FAMILLE SÉSAMOÏDES ===
+  palp_sesamoides: {
+    name:"Palpation plantaire des sésamoïdes (sous-MTP1)", family:'SESAM', badge:'SES',
+    desc:"Palpation directe des os sésamoïdes",
+    how:"Patient assis, pied en flexion plantaire. Palpation plantaire directe juste en arrière de la tête du 1er métatarsien (sous-MTP1) — repérer les 2 sésamoïdes (médial et latéral) par mobilisation passive de la MTP1.",
+    pos:"Douleur exquise reproductible sur l'un des 2 sésamoïdes ± exacerbée par extension passive du gros orteil — sésamoïdite ou fracture stress",
+    neg:"Indolore",
+    affects_pos:{SESAMOIDITE:55}, affects_neg:{SESAMOIDITE:-25}
+  },
+
+  // === FAMILLE TURF TOE / PLAQUE PLANTAIRE ===
+  ext_passive_gros_orteil: {
+    name:"Extension passive du gros orteil (turf toe)", family:'TURF', badge:'TUR',
+    desc:"Test de mise en tension de la plaque plantaire de la MTP1",
+    how:"Patient assis. Stabiliser le 1er métatarsien. Réaliser une dorsiflexion passive forcée du gros orteil, comparer avec côté sain (laxité), reproduction de la douleur.",
+    pos:"Douleur plantaire vive de la MTP1 ± laxité dorsale (instabilité) — turf toe ou lésion plaque plantaire MTP1",
+    neg:"Indolore, butée nette",
+    affects_pos:{TURF_TOE:55}, affects_neg:{TURF_TOE:-25}
+  },
+  lachman_digital: {
+    name:"Lachman digital (test plaque plantaire MTP latérale)", family:'PLAQUE', badge:'PLP',
+    desc:"Test de stabilité dorso-plantaire de la base de P1",
+    how:"Patient assis. Stabiliser fermement la tête du métatarsien concerné (2e, 3e ou 4e). De l'autre main, mobiliser la base de la phalange proximale (P1) dans le plan dorso-plantaire. Comparer avec côté sain.",
+    pos:"Subluxation dorsale de la base de P1 > 50% ± douleur — lésion plaque plantaire",
+    neg:"Pas de mobilité dorso-plantaire anormale",
+    affects_pos:{PLAQUE_PLANT:60}, affects_neg:{PLAQUE_PLANT:-28}
+  },
+  flex_contrariee_hallux: {
+    name:"Flexion contrariée du gros orteil", family:'FHL', badge:'FHL',
+    desc:"Test fonctionnel du long fléchisseur de l'hallux",
+    how:"Patient assis. Stabiliser l'avant-pied. Demander au patient une flexion plantaire active et résistée du gros orteil (la phalange distale plie contre la résistance du pouce de l'examinateur).",
+    pos:"Reproduction de la douleur plantaire de l'hallux (trajet rétro-sésamoïdien ou sous-MTP1) ± crépitations à la mobilisation — tendinopathie du long fléchisseur de l'hallux",
+    neg:"Indolore, force conservée",
+    affects_pos:{TEND_FHL_PIED:55}, affects_neg:{TEND_FHL_PIED:-25}
+  },
+  palp_trajet_fhl: {
+    name:"Palpation du trajet du long fléchisseur de l'hallux", family:'FHL', badge:'FHL',
+    desc:"Palpation directe du tendon distal",
+    how:"Palpation plantaire du trajet du long fléchisseur de l'hallux (entre les 2 sésamoïdes et le long du bord médial du pied jusqu'à l'IP du gros orteil). Mobiliser passivement le gros orteil pour faire glisser le tendon sous le doigt.",
+    pos:"Douleur exquise reproductible sur le trajet ± crépitations à la mobilisation passive — tendinopathie du long fléchisseur",
+    neg:"Indolore",
+    affects_pos:{TEND_FHL_PIED:45}, affects_neg:{TEND_FHL_PIED:-20}
+  },
+  flexion_gros_orteil_contrariee: {
+    name:"Flexion contrariée du gros orteil", family:'FHL', badge:'FHL',
+    desc:"Test fonctionnel du long fléchisseur de l'hallux",
+    how:"Patient assis. Stabiliser le 1er métatarsien. Demander une flexion active et résistée de la phalange distale du gros orteil contre la main de l'examinateur (résistance sur la pulpe).",
+    pos:"Douleur plantaire reproductible de la MTP1 ou sous-1ère MTP ± faiblesse — tendinopathie du LFH distal",
+    neg:"Indolore, force conservée",
+    affects_pos:{TEND_FHL_PIED:55}, affects_neg:{TEND_FHL_PIED:-25}
+  }
+};
+
+// ========== VIGNETTES + CHOIX + CIRCUITS ==========
+const VIGNETTES = {
+  // === LOCALISATIONS ===
+  loc_talon_plant: {
+    id:'loc_talon_plant', lbl:'⬇️ Douleur du talon plantaire (sous le talon)',
+    desc:"Douleur de la face plantaire du talon, médiale ou centrale",
+    score:{FASCIITE_PLANT:55, APOPHYSITE_CALCA:25}
+  },
+  loc_talon_post: {
+    id:'loc_talon_post', lbl:'⬆️ Douleur du talon postérieur (Achille)',
+    desc:"Douleur de la face postérieure du talon, en regard d'Achille",
+    score:{TALALGIE_POST:55, APOPHYSITE_CALCA:30}
+  },
+  loc_medio_med: {
+    id:'loc_medio_med', lbl:'↔️ Douleur médiale du médio-pied',
+    desc:"Douleur de la face médiale du médio-pied",
+    score:{ARTHROSE_NAVIC:55}
+  },
+  loc_avant_plant: {
+    id:'loc_avant_plant', lbl:'⬇️ Douleur plantaire de l\'avant-pied',
+    desc:"Douleur sous l'avant-pied, sous les têtes métatarsiennes",
+    score:{METATARS_MEC:50, NEVROME_MORTON:25, FRACT_STRESS_META:25, SESAMOIDITE:20, PLAQUE_PLANT:25}
+  },
+  loc_avant_dors: {
+    id:'loc_avant_dors', lbl:'⬆️ Douleur dorsale de l\'avant-pied',
+    desc:"Douleur sur le dos de l'avant-pied",
+    score:{FRACT_STRESS_META:40, HALLUX_RIGIDUS:25}
+  },
+  loc_gros_orteil: {
+    id:'loc_gros_orteil', lbl:'🦶 Douleur du gros orteil ou MTP1',
+    desc:"Douleur sur ou autour de la 1ère métatarso-phalangienne",
+    score:{HALLUX_VALGUS:35, HALLUX_RIGIDUS:40, SESAMOIDITE:35, TURF_TOE:35, TEND_FHL_PIED:35}
+  },
+  loc_inter_orteils: {
+    id:'loc_inter_orteils', lbl:'⚡ Paresthésies / douleurs entre 2 orteils',
+    desc:'Douleurs en éclair ou paresthésies entre 2 orteils',
+    score:{NEVROME_MORTON:60}
+  },
+
+  // === PRÉSENTATIONS / CONTEXTE ===
+  pres_premier_pas: {
+    id:'pres_premier_pas', lbl:'🌅 Douleur au premier appui du matin',
+    desc:'Douleur intense au premier pas du matin ou après assise, soulagée après quelques pas',
+    score:{FASCIITE_PLANT:50}
+  },
+  pres_chaussures_etroites: {
+    id:'pres_chaussures_etroites', lbl:'👠 Aggravation par chaussures étroites / talons',
+    desc:'Aggravation par chaussures étroites ou talons, soulagée au déchaussage',
+    score:{NEVROME_MORTON:35, HALLUX_VALGUS:30, METATARS_MEC:25, PLAQUE_PLANT:25}
+  },
+  pres_aug_charge: {
+    id:'pres_aug_charge', lbl:'📈 Augmentation brutale du sport ou de la marche',
+    desc:'Augmentation récente du kilométrage de course, marche prolongée, militaire',
+    score:{FRACT_STRESS_META:45, FASCIITE_PLANT:25, SESAMOIDITE:25, TALALGIE_POST:20, TEND_FHL_PIED:25}
+  },
+  pres_enfant_sport: {
+    id:'pres_enfant_sport', lbl:'🧒 Enfant de 8-14 ans pratiquant un sport pivot',
+    desc:'Enfant 8-14 ans pratiquant un sport pivot (foot, basket, athlétisme)',
+    score:{APOPHYSITE_CALCA:60}
+  },
+  pres_trauma_aigu: {
+    id:'pres_trauma_aigu', lbl:'💥 Traumatisme aigu en hyperextension du gros orteil',
+    desc:'Gros orteil bloqué au sol, surface dure, hyperextension forcée',
+    score:{TURF_TOE:60}
+  },
+  pres_durillons: {
+    id:'pres_durillons', lbl:'🟡 Durillons plantaires visibles sous l\'avant-pied',
+    desc:'Hyperkératoses (cors) sous les têtes métatarsiennes — surcharge mécanique',
+    score:{METATARS_MEC:45}
+  },
+  pres_voute_affaissee: {
+    id:'pres_voute_affaissee', lbl:'⬇️ Affaissement progressif de la voûte interne',
+    desc:'Aplatissement progressif de la voûte interne, fatigabilité à la marche',
+    score:{ARTHROSE_NAVIC:55}
+  },
+  pres_pointes_flex: {
+    id:'pres_pointes_flex', lbl:"🩰 Danse sur pointes / flexion plantaire répétée",
+    desc:"Danseur classique (sur pointes), course en descente, gymnaste — flexion plantaire répétée du pied",
+    score:{TEND_FHL_PIED:55, SESAMOIDITE:20}
+  }
+};
+
+const MECA_VIGS = {
+  surcharge:   ['loc_talon_plant','loc_talon_post','loc_avant_plant','pres_premier_pas','pres_aug_charge','pres_pointes_flex'],
+  statique:    ['loc_medio_med','loc_avant_plant','loc_gros_orteil','pres_chaussures_etroites','pres_voute_affaissee','pres_durillons'],
+  trauma:      ['loc_gros_orteil','loc_avant_dors','pres_trauma_aigu','pres_aug_charge'],
+  enfant:      ['loc_talon_post','pres_enfant_sport'],
+  neuro:       ['loc_inter_orteils','loc_avant_plant','pres_chaussures_etroites']
+};
+
+const CHOICES = {
+  MECANISME: {
+    tag:'Étape 1 · Mécanisme', q:"Comment la douleur est-elle apparue ?",
+    items:[
+      {key:'surcharge', lbl:'Surcharge progressive (course, marche, station debout)',
+        desc:"Apparition progressive avec augmentation du kilométrage, marche prolongée, militaire, station debout professionnelle",
+        score:{FASCIITE_PLANT:30, TALALGIE_POST:25, FRACT_STRESS_META:30, SESAMOIDITE:25, METATARS_MEC:20, ARTHROSE_NAVIC:20, TEND_FHL_PIED:25}},
+      {key:'statique', lbl:'Lié à la statique du pied ou aux chaussures',
+        desc:"Trouble statique connu, déformation du pied, port de chaussures étroites ou à talons hauts",
+        score:{HALLUX_VALGUS:35, HALLUX_RIGIDUS:25, METATARS_MEC:30, PLAQUE_PLANT:25, ARTHROSE_NAVIC:25}},
+      {key:'trauma', lbl:"Traumatisme aigu",
+        desc:"Choc direct, mouvement brutal, ATCD d'entorse de cheville/pied",
+        score:{TURF_TOE:45, FRACT_STRESS_META:15, ARTHROSE_NAVIC:25}},
+      {key:'enfant', lbl:'Enfant en période de croissance',
+        desc:"Enfant 8-14 ans pratiquant un sport pivot ou avec douleurs liées à la croissance",
+        score:{APOPHYSITE_CALCA:60}},
+      {key:'neuro', lbl:'Paresthésies / douleurs en éclair',
+        desc:"Brûlures, fourmillements, douleurs en éclair, surtout aggravées par les chaussures",
+        score:{NEVROME_MORTON:55}}
+    ]
+  },
+  AGE: {
+    tag:'Étape 2 · Profil', q:'Quel est le profil du patient ?',
+    items:[
+      {key:'enfant', lbl:'Enfant 8-14 ans sportif',
+        desc:"Période de croissance, sport pivot ou course",
+        score:{APOPHYSITE_CALCA:30}},
+      {key:'sport_jeune', lbl:'Sportif < 40 ans (coureur, militaire)',
+        desc:"Coureur, militaire, danseur, gymnaste — surcharge sportive",
+        score:{FRACT_STRESS_META:25, SESAMOIDITE:20, TALALGIE_POST:18, ARTHROSE_NAVIC:18, TURF_TOE:18, TEND_FHL_PIED:22}},
+      {key:'a40_60', lbl:'20-60 ans, actif',
+        desc:"Tranche d'âge la plus exposée aux douleurs mécaniques et déformations",
+        score:{FASCIITE_PLANT:25, METATARS_MEC:20, HALLUX_VALGUS:20, HALLUX_RIGIDUS:20, NEVROME_MORTON:20, ARTHROSE_NAVIC:20}},
+      {key:'femme_40p', lbl:'Femme 40+ ans',
+        desc:"Femme 40+ ans, terrain pour déformations statiques et atteintes nerveuses",
+        score:{HALLUX_VALGUS:30, NEVROME_MORTON:30, METATARS_MEC:25, PLAQUE_PLANT:25}},
+      {key:'senior', lbl:'> 60 ans',
+        desc:"Sénior, terrain dégénératif, ATCD de marche prolongée",
+        score:{HALLUX_RIGIDUS:25, METATARS_MEC:20, HALLUX_VALGUS:20, ARTHROSE_NAVIC:25}}
+    ]
+  },
+  HORAIRE: {
+    tag:'Étape 4 · Horaire', q:"Caractère et horaire de la douleur ?",
+    items:[
+      {key:'premier_pas', lbl:'Douleur au premier appui du matin / dérouillage',
+        desc:"Douleur intense aux premiers pas, qui s'estompe après quelques minutes de marche",
+        score:{FASCIITE_PLANT:35}},
+      {key:'mec_marche', lbl:"Mécanique à la marche prolongée",
+        desc:"Douleur reproduite par la marche prolongée, soulagée au repos",
+        score:{METATARS_MEC:25, HALLUX_VALGUS:20, HALLUX_RIGIDUS:25, ARTHROSE_NAVIC:20, TALALGIE_POST:20}},
+      {key:'mec_effort', lbl:"À l'effort sportif (course, sauts)",
+        desc:"Douleur déclenchée par course, sauts, pivot, soulagée à l'arrêt",
+        score:{FRACT_STRESS_META:25, SESAMOIDITE:25, TALALGIE_POST:20, APOPHYSITE_CALCA:25}},
+      {key:'permanent', lbl:'Permanente, voire nocturne',
+        desc:"Douleur au repos et la nuit, signe d'évolution avancée",
+        score:{FRACT_STRESS_META:30, NEVROME_MORTON:15}}
+    ]
+  }
+};
+
+// Circuits de 5 tests par pathologie
+const CIRCUITS = {
+  FASCIITE_PLANT:     ['palp_inser_fascia','windlass_test','palp_inser_achille','squeeze_calca','palp_tetes_meta'],
+  TALALGIE_POST:      ['palp_inser_achille','squeeze_calca','palp_inser_fascia','windlass_test','palp_meta'],
+  APOPHYSITE_CALCA:   ['squeeze_calca','palp_inser_achille','palp_inser_fascia','windlass_test','palp_naviculaire'],
+  FRACT_STRESS_META:  ['palp_meta','percussion_meta','palp_tetes_meta','palp_sesamoides','mulder_test'],
+  ARTHROSE_NAVIC:    ['palp_naviculaire','essorage_mediotarse','single_heel_rise','palp_inser_fascia','palp_meta'],
+  NEVROME_MORTON:     ['mulder_test','palp_espace_intermeta','palp_tetes_meta','palp_meta','palp_sesamoides'],
+  METATARS_MEC:       ['palp_tetes_meta','mulder_test','lachman_digital','palp_meta','obs_hallux'],
+  HALLUX_VALGUS:      ['obs_hallux','mobilite_mtp1','palp_tetes_meta','palp_sesamoides','ext_passive_gros_orteil'],
+  HALLUX_RIGIDUS:     ['mobilite_mtp1','obs_hallux','palp_sesamoides','palp_tetes_meta','ext_passive_gros_orteil'],
+  SESAMOIDITE:        ['palp_sesamoides','ext_passive_gros_orteil','obs_hallux','mobilite_mtp1','palp_tetes_meta'],
+  TURF_TOE:           ['ext_passive_gros_orteil','palp_sesamoides','obs_hallux','mobilite_mtp1','palp_tetes_meta'],
+  PLAQUE_PLANT:       ['lachman_digital','palp_tetes_meta','mulder_test','palp_espace_intermeta','obs_hallux'],
+  TEND_FHL_PIED:      ['flexion_gros_orteil_contrariee','palp_sesamoides','obs_hallux','mobilite_mtp1','ext_passive_gros_orteil'],
+  TEND_FHL_PIED:      ['flex_contrariee_hallux','palp_trajet_fhl','palp_sesamoides','obs_hallux','ext_passive_gros_orteil']
+};
+
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR + RENDU ==========
+// ========== MOTEUR ==========
+// ========== ÉTAT ==========
+const PATHO_LIST = Object.keys(P);
+let scores = {};
+let history = [];
+let mecaKey = null;
+let testsToRun = [];
+let testIdx = 0;
+let currentStep = 'MECANISME';
+let selectedVigs = new Set();
+
+function init(){
+  scores = {};
+  PATHO_LIST.forEach(p => scores[p] = 0);
+  history = [];
+  mecaKey = null;
+  testsToRun = [];
+  testIdx = 0;
+  currentStep = 'MECANISME';
+  selectedVigs = new Set();
+}
+
+function addScore(delta){
+  for(const k in delta){
+    if(k in scores) scores[k] += delta[k];
+  }
+}
+
+function ranked(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+}
+
+function top1(){ return ranked()[0]; }
+
+function top3WithScores(){
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3);
+}
+
+// ========== LOGIQUE TESTS ADAPTATIFS ==========
+// Règle : 5 tests max
+// - Test POS  → continuer le circuit du top1 actuel (confirmation)
+// - Test NÉG  → proposer un test d\'une AUTRE famille clinique
+
+const MAX_TESTS = 5;
+
+function buildInitialQueue(){
+  const t1 = top1();
+  return [...(CIRCUITS[t1] || [])].slice(0, MAX_TESTS);
+}
+
+function applyTest(tKey, positive){
+  const t = TESTS[tKey];
+  if(!t) return;
+  const delta = positive ? t.affects_pos : t.affects_neg;
+  addScore(delta);
+  history.push({test:tKey, name:t.name, result:positive ? '✅':'❌'});
+}
+
+function nextTestAdaptive(currentFamily, positive, previousTop1){
+  // Tests déjà faits (jamais reproposés)
+  const done = new Set(testsToRun.slice(0, testIdx));
+  const newTop1 = top1();
+  
+  if(positive){
+    // POS : continuer circuit du top1 actuel (confirmation)
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+    return null;
+  }
+  
+  // NEG :
+  // Cas 1 : top1 INCHANGÉ → continuer le circuit du top1 (poursuite logique, ex: cluster Laslett pour SI)
+  if(newTop1 === previousTop1){
+    const cands = CIRCUITS[newTop1] || [];
+    for(const t of cands){
+      if(!done.has(t)) return t;
+    }
+  }
+  
+  // Cas 2 : top1 a CHANGÉ → proposer le test #1 de la nouvelle patho top1
+  // (qui sera presque toujours d'une famille différente)
+  // On parcourt le ranking pour trouver le 1er candidat de famille différente
+  for(const patho of ranked()){
+    const cands = CIRCUITS[patho];
+    if(!cands || !cands.length) continue;
+    for(const candTest of cands){
+      if(done.has(candTest)) continue;
+      const candFamily = (TESTS[candTest] || {}).family;
+      if(candFamily && candFamily !== currentFamily) return candTest;
+    }
+  }
+  
+  // Fallback : n\'importe quel test non fait
+  for(const patho of ranked()){
+    for(const t of (CIRCUITS[patho] || [])){
+      if(!done.has(t)) return t;
+    }
+  }
+  return null;
+}
+
+function testResult(positive){
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t) return;
+  
+  // Capturer top1 AVANT d\'appliquer le résultat
+  const previousTop1 = top1();
+  
+  applyTest(tKey, positive);
+  const currentFamily = t.family;
+  testIdx++;
+  
+  // Si pas encore atteint MAX, choisir le prochain test
+  if(testIdx < MAX_TESTS){
+    const nextT = nextTestAdaptive(currentFamily, positive, previousTop1);
+    if(nextT){
+      // Remplacer le prochain prévu (ou l\'insérer)
+      if(testIdx < testsToRun.length){
+        testsToRun[testIdx] = nextT;
+      } else {
+        testsToRun.push(nextT);
+      }
+    }
+  }
+  
+  renderStep();
+}
+
+// ========== RENDERING ==========
+function pickChoice(stepKey, item){
+  addScore(item.score);
+  history.push({step:stepKey, label:item.lbl});
+  
+  if(stepKey === 'MECANISME'){
+    mecaKey = item.key;
+    currentStep = 'AGE';
+  } else if(stepKey === 'AGE'){
+    currentStep = 'TABLEAU';
+  } else if(stepKey === 'HORAIRE'){
+    testsToRun = buildInitialQueue();
+    testIdx = 0;
+    currentStep = 'TESTS';
+  }
+  renderStep();
+}
+
+function toggleVig(vid){
+  if(selectedVigs.has(vid)){
+    selectedVigs.delete(vid);
+  } else {
+    if(selectedVigs.size >= 3) return;
+    selectedVigs.add(vid);
+  }
+  renderStep();
+}
+
+function validateTableau(){
+  if(selectedVigs.size === 0) return;
+  selectedVigs.forEach(vid => {
+    addScore(VIGNETTES[vid].score);
+    history.push({step:'TABLEAU', label:VIGNETTES[vid].lbl});
+  });
+  currentStep = 'HORAIRE';
+  renderStep();
+}
+
+function skipTest(){
+  testIdx++;
+  if(testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+  }
+  renderStep();
+}
+
+function reset(){
+  init();
+  renderStep();
+}
+
+function goBack(){
+  // Retour à l\'étape précédente — simple
+  if(currentStep === 'AGE') currentStep = 'MECANISME';
+  else if(currentStep === 'TABLEAU') currentStep = 'AGE';
+  else if(currentStep === 'HORAIRE') currentStep = 'TABLEAU';
+  else if(currentStep === 'TESTS' && testIdx > 0){
+    testIdx--;
+    // Annuler le dernier test (pas le scoring pour simplifier, juste revenir au test)
+  } else if(currentStep === 'TESTS' && testIdx === 0){
+    currentStep = 'HORAIRE';
+  } else if(currentStep === 'RESULT'){
+    currentStep = 'TESTS';
+    testIdx = Math.max(0, MAX_TESTS - 1);
+  }
+  renderStep();
+}
+
+
+// ========== RENDU ==========
+// ========== HELPERS RENDU ==========
+function backBtn(){
+  if(currentStep === 'MECANISME') return '';
+  return `<button class="btn-back" onclick="goBack()">← Modifier</button>`;
+}
+
+function breadcrumbHTML(){
+  if(!history.length) return '';
+  const items = history.slice(-4).map(h => `<span class="bc-item">${(h.label||h.test||'').slice(0,30)}</span>`).join(' › ');
+  return `<div class="breadcrumb">${items}</div>`;
+}
+
+function stepIndicator(currentIdx){
+  const steps = ['Mécanisme', 'Profil', 'Tableau', 'Horaire', 'Examen'];
+  return `<div class="step-ind">
+    ${steps.map((s,i) => `<div class="si-item ${i===currentIdx?'active':''} ${i<currentIdx?'done':''}">${i+1}. ${s}</div>`).join('')}
+  </div>`;
+}
+
+// ========== ÉTAPE CHOIX (Mécanisme, Âge, Horaire) ==========
+function renderChoice(stepKey, stepIdx){
+  const c = CHOICES[stepKey];
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(stepIdx)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">${c.tag}</div>
+      <h2 class="card-q">${c.q}</h2>
+      <div class="choices">
+        ${c.items.map(it => `
+          <button class="choice" onclick="pickChoice('${stepKey}', CHOICES['${stepKey}'].items.find(x=>x.key==='${it.key}'))">
+            <div class="choice-lbl">${it.lbl}</div>
+            <div class="choice-desc">${it.desc}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TABLEAU CLINIQUE (multi-vignettes) ==========
+function renderTableau(){
+  const vigs = (MECA_VIGS[mecaKey] || Object.keys(VIGNETTES));
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(2)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 3 · Tableau clinique</div>
+      <h2 class="card-q">Cochez ce qui correspond au patient</h2>
+      <div class="card-hint">Maximum 3 cases cochables.</div>
+      <div class="vig-grid">
+        ${vigs.map(vid => {
+          const v = VIGNETTES[vid];
+          const sel = selectedVigs.has(vid);
+          return `<div class="vig ${sel?'vig-sel':''}" onclick="toggleVig('${vid}')">
+            <div class="vig-chk">${sel?'☑':'☐'}</div>
+            <div class="vig-body">
+              <div class="vig-lbl">${v.lbl}</div>
+              <div class="vig-desc">${v.desc}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="card-foot">
+        <span class="foot-info">${selectedVigs.size===0?'Aucune sélection':selectedVigs.size+'/3 coché'+(selectedVigs.size>1?'s':'')}</span>
+        <button class="btn-primary" ${selectedVigs.size===0?'disabled':''} onclick="validateTableau()">Confirmer →</button>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ========== ÉTAPE TESTS ==========
+function renderTests(){
+  if(testIdx >= testsToRun.length || testIdx >= MAX_TESTS){
+    currentStep = 'RESULT';
+    renderStep();
+    return;
+  }
+  const tKey = testsToRun[testIdx];
+  const t = TESTS[tKey];
+  if(!t){
+    testIdx++;
+    renderTests();
+    return;
+  }
+  const html = `
+    ${backBtn()}
+    ${stepIndicator(4)}
+    ${breadcrumbHTML()}
+    <div class="card">
+      <div class="card-tag">Étape 5 · Examen clinique (${testIdx+1}/${MAX_TESTS})</div>
+      <div class="test-name">${t.name}</div>
+      <div class="test-fam"><span class="test-badge">${t.badge}</span> Famille : ${t.family}</div>
+      <div class="test-desc">${t.desc}</div>
+      <div class="test-section">
+        <strong>Technique</strong>
+        <div>${t.how}</div>
+      </div>
+      <div class="test-section">
+        <strong>Interprétation</strong>
+        <div>✅ <strong>Positif :</strong> ${t.pos}</div>
+        <div>❌ <strong>Négatif :</strong> ${t.neg}</div>
+      </div>
+      <div class="test-btns">
+        <button class="btn-pos" onclick="testResult(true)">✅ Positif</button>
+        <button class="btn-neg" onclick="testResult(false)">❌ Négatif</button>
+      </div>
+      ${testIdx > 0 ? `<button class="btn-skip" onclick="skipTest()">Passer ce test →</button>` : ''}
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+
+
+// ========== ÉTAPE RÉSULTAT ==========
+function renderResult(){
+  const top = top3WithScores();
+  const total = top.reduce((s,[,sc]) => s + Math.max(0,sc), 0) || 1;
+  const main = top[0];
+  const alts = top.slice(1);
+  const mainP = P[main[0]];
+  const mainProb = Math.round(100 * Math.max(0, main[1]) / total);
+  
+  const alertHTML = mainP.alert ? `
+    <div class="alert-box alert-${mainP.alert.type}">
+      <span style="font-size:16px">${mainP.alert.type === 'red' ? '🚨' : '⚠️'}</span>
+      <span>${mainP.alert.text}</span>
+    </div>` : '';
+  
+  // Sections détaillées
+  const imagingItems = (mainP.imaging || []).map(i => 
+    `<div class="fi"><strong>${i.t}</strong>${i.d ? `<span>${i.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const treatmentItems = (mainP.treatment || []).map(t => 
+    `<div class="fi"><strong>${t.t}</strong>${t.d ? `<span>${t.d}</span>` : ''}</div>`
+  ).join('');
+  
+  const exercisesItems = (mainP.exercises || []).map(e => 
+    `<div class="fi"><strong>${e.t}</strong>${e.d ? `<span>${e.d}</span>` : ''}</div>`
+  ).join('') + (mainP.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${mainP.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  
+  const referralItems = (mainP.referral || []).map(r => `
+    <div class="ref-tag ${r.p ? 'p' : 's'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p ? '→ ' : ''}${r.who}</div>
+        ${r.why ? `<div class="ref-why">${r.why}</div>` : ''}
+      </div>
+      <span class="ref-b">${r.p ? 'Prioritaire' : 'Si besoin'}</span>
+    </div>`).join('');
+  
+  // Sources
+  const sourcesHTML = mainP.sources?.length ? `
+    <div class="sources-row">
+      <span class="src-lbl">📚 Sources</span>
+      ${mainP.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('')}
+    </div>` : '';
+  
+  // Encart Signes de gravité (severity)
+  const severityHTML = mainP.severity ? `
+    <div class="severity-card">
+      <div class="severity-head">🔍 ${mainP.severity.title}</div>
+      <div class="severity-body">${mainP.severity.text}</div>
+    </div>` : '';
+  
+  // Encart Pièges diagnostiques (pitfall)
+  const pitfallHTML = mainP.pitfall ? `
+    <div class="pitfall-card">
+      <div class="pitfall-head">💡 À considérer aussi</div>
+      <div class="pitfall-body">${mainP.pitfall.text}</div>
+      ${(mainP.pitfall.modules || []).length ? `
+      <div class="pitfall-modules">
+        ${mainP.pitfall.modules.map(m => `<span class="pitfall-chip">→ Module ${m}</span>`).join('')}
+      </div>` : ''}
+    </div>` : '';
+  
+  // Alternatifs
+  const altCardsHTML = alts.map(([pid, sc]) => {
+    const p = P[pid];
+    const prob = Math.round(100 * Math.max(0, sc) / total);
+    return `<div class="alt-card" onclick="showModal('${pid}')">
+      <div class="alt-header">
+        <img src="images_pathologies/pied.png" alt="" class="alt-ic-img" />
+        <div class="alt-name">${p.name}</div>
+        <div class="alt-pct">${prob}%</div>
+      </div>
+      <div class="alt-bar"><div class="alt-fill" style="width:${prob}%"></div></div>
+      <div class="alt-key">
+        <strong>Éléments clés</strong>
+        ${(p.keys || []).slice(0,2).join(' · ')}
+      </div>
+      <div class="alt-hint">Appuyer pour la fiche complète →</div>
+    </div>`;
+  }).join('');
+  
+  const html = `
+    ${stepIndicator(5)}
+    ${breadcrumbHTML()}
+    <div class="result-wrap">
+      
+      <!-- DIAGNOSTIC PRINCIPAL -->
+      <div class="diag-card">
+        <div class="diag-top">
+          <div class="diag-head">
+            <img src="images_pathologies/pied.png" alt="" class="diag-icon-img" />
+            <div>
+              <span class="rank-badge">Diagnostic principal</span>
+              <div class="diag-name">${mainP.name}</div>
+              <div class="diag-pop">${mainP.pop}</div>
+            </div>
+          </div>
+          <div class="prob-wrap">
+            <div class="prob-pct">${mainProb}%</div>
+            <div class="prob-label">Probabilité</div>
+            <div class="prob-bar"><div class="prob-fill" style="width:${mainProb}%"></div></div>
+          </div>
+        </div>
+        
+        <div class="fiche">
+          ${alertHTML}
+          <div class="fiche-grid">
+            <div class="fiche-sec">
+              <div class="sec-title sec-img">🔬 Imagerie</div>
+              ${imagingItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ex">💪 Exercices</div>
+              ${exercisesItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-rx">💊 Traitement</div>
+              ${treatmentItems || '<div class="fi-empty">—</div>'}
+            </div>
+            <div class="fiche-sec">
+              <div class="sec-title sec-ref">🏥 Orientation</div>
+              ${referralItems || '<div class="fi-empty">—</div>'}
+            </div>
+          </div>
+          ${severityHTML}
+          ${pitfallHTML}
+          ${sourcesHTML}
+        </div>
+      </div>
+      
+      <!-- DIAGNOSTICS ALTERNATIFS -->
+      <div class="section-sep">Diagnostics alternatifs à considérer</div>
+      <div class="alt-cards">${altCardsHTML}</div>
+      
+      <div class="disclaimer">
+        ⚠️ <strong>Outil d'aide à la décision clinique</strong> — Les probabilités sont indicatives et basées sur le profil sélectionné. Non substitutif au jugement médical. Sources : HAS, EULAR, sociétés savantes.
+      </div>
+      
+      <div class="actions">
+        <button class="btn-primary" onclick="reset()">↺ Nouveau cas</button>
+        <button class="btn-back" onclick="goBack()">← Modifier les réponses</button>
+      </div>
+      
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="if(event.target.id==='modal') closeModal()">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+  
+  // Animer les barres
+  setTimeout(() => {
+    document.querySelectorAll('.prob-fill, .alt-fill').forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => el.style.width = target));
+    });
+  }, 50);
+}
+
+function showModal(pid){
+  const p = P[pid];
+  const imagingHTML = (p.imaging || []).map(i => `<div class="fi"><strong>${i.t}</strong>${i.d?`<span>${i.d}</span>`:''}</div>`).join('');
+  const treatmentHTML = (p.treatment || []).map(t => `<div class="fi"><strong>${t.t}</strong>${t.d?`<span>${t.d}</span>`:''}</div>`).join('');
+  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  const referralHTML = (p.referral || []).map(r => `
+    <div class="ref-tag ${r.p?'p':'s'}">
+      <div class="ref-info">
+        <div class="ref-who">${r.p?'→ ':''}${r.who}</div>
+        ${r.why?`<div class="ref-why">${r.why}</div>`:''}
+      </div>
+      <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
+    </div>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-head">
+      <img src="images_pathologies/pied.png" alt="" class="modal-icon-img" />
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div class="modal-pop">${p.pop}</div>
+      </div>
+    </div>
+    ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
+    <div class="fiche-grid modal-fiche">
+      <div class="fiche-sec">
+        <div class="sec-title sec-img">🔬 Imagerie</div>
+        ${imagingHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ex">💪 Exercices</div>
+        ${exercisesHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-rx">💊 Traitement</div>
+        ${treatmentHTML || '<div class="fi-empty">—</div>'}
+      </div>
+      <div class="fiche-sec">
+        <div class="sec-title sec-ref">🏥 Orientation</div>
+        ${referralHTML || '<div class="fi-empty">—</div>'}
+      </div>
+    </div>
+    <div class="sources-row modal-sources">
+      <span class="src-lbl">📚 Sources</span>
+      ${sourcesHTML}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+
+// ========== DISPATCHER ==========
+function renderStep(){
+  if(currentStep === 'MECANISME') renderChoice('MECANISME', 0);
+  else if(currentStep === 'AGE') renderChoice('AGE', 1);
+  else if(currentStep === 'TABLEAU') renderTableau();
+  else if(currentStep === 'HORAIRE') renderChoice('HORAIRE', 3);
+  else if(currentStep === 'TESTS') renderTests();
+  else if(currentStep === 'RESULT') renderResult();
+}
+
+// ========== INIT ==========
+init();
+renderStep();
+
+
+
+
+</script>
+</body>
+</html>

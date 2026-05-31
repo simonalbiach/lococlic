@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="auth-check.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocoClic — Aide diagnostique musculo-squelettique</title>
+<meta name="description" content="Outil d'aide au diagnostic des pathologies musculo-squelettiques pour le médecin généraliste. 11 modules anatomiques, plus de 130 pathologies couvertes.">
+
+<style>
+  /* ===== RESET & BASE ===== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+
+  /* ===== HEADER ===== */
+  .site-header {
+    background: white;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .logo-link { display: flex; align-items: center; gap: 12px; }
+  .logo-svg { width: 44px; height: 44px; flex-shrink: 0; }
+  .logo-img {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .logo-text {
+    display: flex; flex-direction: column;
+    line-height: 1.15;
+  }
+  .logo-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e3a5f;
+    letter-spacing: -0.5px;
+  }
+  .logo-tagline {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .main-nav {
+    display: flex;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .main-nav a {
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: #475569;
+    transition: all 0.15s;
+  }
+  .main-nav a:hover { background: #f1f5f9; color: #1e3a5f; }
+  .main-nav a.cta {
+    background: #1e3a5f;
+    color: white;
+  }
+  .main-nav a.cta:hover { background: #2c5f8d; }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+    color: white;
+    padding: 80px 24px 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+  .hero-brand {
+    font-size: clamp(56px, 11vw, 110px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #34d399 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 24px rgba(52, 211, 153, 0.15);
+  }
+  .hero-baseline {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    color: #ffffff;
+  }
+  .hero-baseline .accent { color: #34d399; }
+  .hero h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+  .hero h1 .accent { color: #34d399; }
+  .hero p.subtitle {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: #cbd5e1;
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-size: 30px;
+    font-weight: 800;
+    color: #34d399;
+    line-height: 1;
+  }
+  .hero-stat .lbl {
+    font-size: 12px;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+
+  /* ===== SECTION MODULES ===== */
+  .modules-section {
+    padding: 64px 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .section-header { text-align: center; margin-bottom: 48px; }
+  .section-tag {
+    display: inline-block;
+    padding: 4px 14px;
+    background: #dbeafe;
+    color: #1e3a5f;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .section-header h2 {
+    font-size: clamp(24px, 3vw, 34px);
+    color: #1e3a5f;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .section-header p {
+    color: #64748b;
+    font-size: 16px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ===== GRILLE MODULES ===== */
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .module-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+  .module-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: linear-gradient(90deg, var(--accent, #10b981), var(--accent2, #34d399));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .module-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(30,58,95,0.12);
+    border-color: var(--accent, #10b981);
+  }
+  .module-card:hover::before { opacity: 1; }
+  .module-card:hover .module-icon { transform: scale(1.08); }
+  .module-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    transition: transform 0.3s;
+    display: block;
+  }
+
+  .module-icon {
+    width: 96px; height: 96px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    font-size: 28px;
+    transition: transform 0.2s;
+    overflow: hidden;
+  }
+  .module-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin-bottom: 6px;
+  }
+  .module-meta {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 16px;
+    flex: 1;
+  }
+  .module-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent, #10b981);
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: auto;
+  }
+  .module-cta::after {
+    content: '→';
+    transition: transform 0.2s;
+  }
+  .module-card:hover .module-cta::after { transform: translateX(4px); }
+
+  /* ===== SECTION INFOS ===== */
+  .info-section {
+    background: white;
+    padding: 64px 24px;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .info-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+  }
+  .info-card {
+    text-align: center;
+    padding: 24px;
+  }
+  .info-icon {
+    width: 64px; height: 64px;
+    background: #dbeafe;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 32px;
+  }
+  .info-card h3 {
+    font-size: 18px;
+    color: #1e3a5f;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .info-card p {
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  /* ===== FOOTER ===== */
+  .site-footer {
+    background: #0f172a;
+    color: #94a3b8;
+    padding: 48px 24px 24px;
+    font-size: 14px;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #1e293b;
+  }
+  .footer-col h4 {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .footer-col p, .footer-col a { display: block; color: #94a3b8; margin-bottom: 8px; }
+  .footer-col a:hover { color: #34d399; }
+  .footer-disclaimer {
+    background: #1e293b;
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin-top: 24px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #cbd5e1;
+    border-left: 3px solid #f59e0b;
+  }
+  .footer-disclaimer strong { color: #fbbf24; }
+  .footer-bottom {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    font-size: 12px;
+    color: #64748b;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .main-nav { font-size: 13px; gap: 4px; }
+    .main-nav a { padding: 6px 10px; }
+    .hero { padding: 56px 20px 70px; }
+    .hero-stats { gap: 24px; }
+    .modules-section { padding: 48px 16px; }
+    .modules-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  }
+
+  /* ===== SEARCH SECTION ===== */
+  .search-section {
+    background: #ffffff;
+    padding: 56px 24px 40px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .search-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .search-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .search-wrap h2 {
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 800;
+    color: #1e3a5f;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .search-wrap p.search-desc {
+    color: #64748b;
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+  .search-box {
+    position: relative;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+  .search-input {
+    width: 100%;
+    padding: 18px 24px 18px 56px;
+    font-size: 17px;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    outline: none;
+    transition: all 0.2s;
+    background: white;
+    color: #1e3a5f;
+    font-family: inherit;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .search-input:focus {
+    border-color: #10b981;
+    box-shadow: 0 4px 24px rgba(16,185,129,0.15);
+  }
+  .search-input::placeholder { color: #94a3b8; }
+  .search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    pointer-events: none;
+  }
+  .search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    border: 1px solid #e2e8f0;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 50;
+    display: none;
+    text-align: left;
+  }
+  .search-results.open { display: block; }
+  .search-item {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.1s;
+  }
+  .search-item:last-child { border-bottom: none; }
+  .search-item:hover, .search-item.active {
+    background: #f0fdf4;
+  }
+  .search-item-name {
+    font-weight: 600;
+    color: #1e3a5f;
+    font-size: 15px;
+    flex: 1;
+  }
+  .search-item-module {
+    font-size: 12px;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .search-empty {
+    padding: 20px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+  }
+  .search-hint {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  @media (max-width: 640px) {
+    .search-section { padding: 40px 16px 32px; }
+    .search-input { font-size: 15px; padding: 16px 20px 16px 50px; }
+    .search-icon { left: 16px; font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo-link">
+      <!-- Logo : biceps contracté + flèche pointeur qui clique -->
+      <img src="images/logo.png" alt="LocoClic" class="logo-img">
+      <div class="logo-text">
+        <span class="logo-name">LocoClic</span>
+        <span class="logo-tagline">Diagnostic MSK</span>
+      </div>
+    </a>
+
+    <nav class="main-nav">
+      <a href="#modules">Modules</a>
+      <a href="#about">À propos</a>
+      <a href="#help">Aide</a>
+      <a href="#modules" class="cta">Commencer</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-brand">LOCOCLIC</h1>
+    <p class="hero-baseline">Un outil d'aide au diagnostic et à la prise en charge des pathologies <span class="accent">musculo-squelettiques</span></p>
+    <p class="subtitle">Pour le médecin généraliste. 11 modules anatomiques, plus de 130 pathologies, parcours en 5 étapes avec scoring probabiliste et tests cliniques adaptatifs.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">11</div>
+        <div class="lbl">Modules</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">137</div>
+        <div class="lbl">Pathologies</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">200+</div>
+        <div class="lbl">Tests cliniques</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">5</div>
+        <div class="lbl">Étapes / cas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SEARCH SECTION ===== -->
+<section class="search-section">
+  <div class="search-wrap">
+    <span class="search-tag">🎯 Diagnostic déjà connu ?</span>
+    <h2>Recherche directe par pathologie</h2>
+    <p class="search-desc">Accédez directement à la fiche pathologie complète avec exercices imprimables, sans passer par le parcours diagnostique</p>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="pathoSearch" placeholder="Ex : coxarthrose, canal carpien, fasciite plantaire..." autocomplete="off">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <p class="search-hint">💡 Sinon, choisissez un module ci-dessous pour démarrer un parcours diagnostique</p>
+  </div>
+</section>
+
+
+<!-- ===== MODULES ===== -->
+<section class="modules-section" id="modules">
+  <div class="section-header">
+    <span class="section-tag">Modules anatomiques</span>
+    <h2>Choisissez la région à explorer</h2>
+    <p>Chaque module propose un parcours guidé : mécanisme → profil → tableau → horaire → tests adaptatifs → diagnostic.</p>
+  </div>
+
+  <div class="modules-grid">
+
+    <!-- Épaule -->
+    <a href="lococlic_epaule_v5.html" class="module-card" style="--accent:#3b82f6;--accent2:#60a5fa;--bg:#dbeafe;">
+      <div class="module-icon"><img src="images_pathologies/epaule.png" alt="epaule" class="module-icon-img"></div>
+      <div class="module-name">Épaule</div>
+      <div class="module-meta">16 pathologies · 26 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Coude -->
+    <a href="lococlic_coude_v5.html" class="module-card" style="--accent:#06b6d4;--accent2:#22d3ee;--bg:#cffafe;">
+      <div class="module-icon"><img src="images_pathologies/coude.png" alt="coude" class="module-icon-img"></div>
+      <div class="module-name">Coude & Avant-bras</div>
+      <div class="module-meta">10 pathologies · 17 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Main -->
+    <a href="lococlic_main_v5.html" class="module-card" style="--accent:#0ea5e9;--accent2:#38bdf8;--bg:#e0f2fe;">
+      <div class="module-icon"><img src="images_pathologies/main.png" alt="main" class="module-icon-img"></div>
+      <div class="module-name">Main & Poignet</div>
+      <div class="module-meta">13 pathologies · 25 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Hanche -->
+    <a href="lococlic_hanche_v5.html" class="module-card" style="--accent:#8b5cf6;--accent2:#a78bfa;--bg:#ede9fe;">
+      <div class="module-icon"><img src="images_pathologies/hanche.png" alt="hanche" class="module-icon-img"></div>
+      <div class="module-name">Hanche</div>
+      <div class="module-meta">13 pathologies · 15 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Genou -->
+    <a href="lococlic_genou_v5.html" class="module-card" style="--accent:#10b981;--accent2:#34d399;--bg:#d1fae5;">
+      <div class="module-icon"><img src="images_pathologies/genou.png" alt="genou" class="module-icon-img"></div>
+      <div class="module-name">Genou</div>
+      <div class="module-meta">13 pathologies · 20 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Jambe -->
+    <a href="lococlic_jambe_v5.html" class="module-card" style="--accent:#14b8a6;--accent2:#2dd4bf;--bg:#ccfbf1;">
+      <div class="module-icon"><img src="images_pathologies/jambe.png" alt="jambe" class="module-icon-img"></div>
+      <div class="module-name">Jambe</div>
+      <div class="module-meta">15 pathologies · 24 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Cheville -->
+    <a href="lococlic_cheville_v5.html" class="module-card" style="--accent:#f59e0b;--accent2:#fbbf24;--bg:#fef3c7;">
+      <div class="module-icon"><img src="images_pathologies/cheville.png" alt="cheville" class="module-icon-img"></div>
+      <div class="module-name">Cheville</div>
+      <div class="module-meta">14 pathologies · 22 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Pied -->
+    <a href="lococlic_pied_v5.html" class="module-card" style="--accent:#f97316;--accent2:#fb923c;--bg:#ffedd5;">
+      <div class="module-icon"><img src="images_pathologies/pied.png" alt="pied" class="module-icon-img"></div>
+      <div class="module-name">Pied</div>
+      <div class="module-meta">13 pathologies · 20 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Cervical -->
+    <a href="lococlic_cervical_v5.html" class="module-card" style="--accent:#ec4899;--accent2:#f472b6;--bg:#fce7f3;">
+      <div class="module-icon"><img src="images_pathologies/cervical.png" alt="cervical" class="module-icon-img"></div>
+      <div class="module-name">Rachis cervical</div>
+      <div class="module-meta">9 pathologies · 12 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Dorsal -->
+    <a href="lococlic_dorsal_v5.html" class="module-card" style="--accent:#a855f7;--accent2:#c084fc;--bg:#f3e8ff;">
+      <div class="module-icon"><img src="images_pathologies/dorsal.png" alt="dorsal" class="module-icon-img"></div>
+      <div class="module-name">Rachis dorsal</div>
+      <div class="module-meta">11 pathologies · 15 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+    <!-- Lombaire -->
+    <a href="lococlic_lombaire_v5.html" class="module-card" style="--accent:#ef4444;--accent2:#f87171;--bg:#fee2e2;">
+      <div class="module-icon"><img src="images_pathologies/lombaire.png" alt="lombaire" class="module-icon-img"></div>
+      <div class="module-name">Rachis lombaire</div>
+      <div class="module-meta">10 pathologies · 13 tests cliniques</div>
+      <span class="module-cta">Ouvrir</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- ===== INFOS / PHILOSOPHIE ===== -->
+<section class="info-section" id="about">
+  <div class="info-inner">
+    <div class="info-card">
+      <div class="info-icon">🎯</div>
+      <h3>Parcours adaptatif</h3>
+      <p>Le moteur sélectionne les tests cliniques les plus pertinents en fonction des étapes précédentes et des résultats. 5 tests maximum par cas.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">📚</div>
+      <h3>Données probantes</h3>
+      <p>Chaque fiche pathologie cite 4 sources Pubmed ou HAS validées. Évidence médicale, pas de recommandations hors AMM.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">⚡</div>
+      <h3>Rapide & mobile</h3>
+      <p>Conçu pour la consultation MG : ergonomie pensée pour smartphone, sans inscription, sans connexion serveur. 100% en local.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">🛡️</div>
+      <h3>Red flags & pitfalls</h3>
+      <p>Chaque pathologie pertinente intègre les drapeaux rouges à dépister et les diagnostics différentiels à ne pas manquer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer" id="help">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-col">
+        <h4>LocoClic</h4>
+        <p>Aide au diagnostic des pathologies musculo-squelettiques pour le médecin généraliste.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="#modules">Modules anatomiques</a>
+        <a href="#about">À propos</a>
+        <a href="#help">Aide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Usage</h4>
+        <p>1. Sélectionner un module</p>
+        <p>2. Suivre les 5 étapes du parcours</p>
+        <p>3. Confirmer avec les tests cliniques</p>
+        <p>4. Consulter la fiche diagnostique</p>
+      </div>
+    </div>
+
+    <div class="footer-disclaimer">
+      <strong>⚠️ Avertissement médical</strong> — LocoClic est un outil d'aide à la décision clinique destiné aux professionnels de santé. Il ne remplace en aucun cas l'examen clinique complet, le jugement médical et la prise en compte du contexte global du patient. Les diagnostics proposés sont des hypothèses probabilistes à confirmer par l'examen et les explorations complémentaires appropriées. Les drapeaux rouges signalés doivent toujours être pris en compte.
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 LocoClic · Outil clinique en développement · Non destiné à un usage commercial
+    </div>
+  </div>
+</footer>
+
+
+<script>
+const PATHOLOGIES_DB = [{"id": "TEND_SUS_EPINEUX", "name": "Tendinopathie sus épineux", "module_name": "Épaule", "file": "fiches_pathologies/tend_sus_epineux_tendinopathie_sus_epineux.html"}, {"id": "BURSITE_SOUS_ACRO", "name": "Bursite sous acromiale", "module_name": "Épaule", "file": "fiches_pathologies/bursite_sous_acro_bursite_sous_acromiale.html"}, {"id": "CONFLIT_SOUS_ACRO", "name": "Conflit sous-acromial", "module_name": "Épaule", "file": "fiches_pathologies/conflit_sous_acro_conflit_sous_acromial.html"}, {"id": "CAPSULITE", "name": "Capsulite rétractile", "module_name": "Épaule", "file": "fiches_pathologies/capsulite_capsulite_retractile.html"}, {"id": "ARTHROSE_GH", "name": "Arthrose gléno-humérale", "module_name": "Épaule", "file": "fiches_pathologies/arthrose_gh_arthrose_gleno_humerale.html"}, {"id": "RUPTURE_COIFFE", "name": "Rupture massive de coiffe", "module_name": "Épaule", "file": "fiches_pathologies/rupture_coiffe_rupture_massive_de_coiffe.html"}, {"id": "CALCIFICATION", "name": "Résorption calcique", "module_name": "Épaule", "file": "fiches_pathologies/calcification_resorption_calcique.html"}, {"id": "TEND_BICEPS", "name": "Tendinopathie biceps brachial", "module_name": "Épaule", "file": "fiches_pathologies/tend_biceps_tendinopathie_biceps_brachial.html"}, {"id": "SLAP", "name": "Lésion SLAP", "module_name": "Épaule", "file": "fiches_pathologies/slap_lesion_slap.html"}, {"id": "INSTAB_ANT", "name": "Instabilité antérieure", "module_name": "Épaule", "file": "fiches_pathologies/instab_ant_instabilite_anterieure.html"}, {"id": "INSTAB_POST", "name": "Instabilité postérieure", "module_name": "Épaule", "file": "fiches_pathologies/instab_post_instabilite_posterieure.html"}, {"id": "ENTORSE_ACR_CLAV", "name": "Entorse acromio-claviculaire", "module_name": "Épaule", "file": "fiches_pathologies/entorse_acr_clav_entorse_acromio_claviculaire.html"}, {"id": "CONFLIT_CORACOIDE", "name": "Conflit coracoïdien", "module_name": "Épaule", "file": "fiches_pathologies/conflit_coracoide_conflit_coracoidien.html"}, {"id": "TEND_SOUS_SCAP", "name": "Tendinopathie sous scapulaire", "module_name": "Épaule", "file": "fiches_pathologies/tend_sous_scap_tendinopathie_sous_scapulaire.html"}, {"id": "DEFILE", "name": "Syndrome du défilé", "module_name": "Épaule", "file": "fiches_pathologies/defile_syndrome_du_defile.html"}, {"id": "GIRD", "name": "Syndrome GIRD", "module_name": "Épaule", "file": "fiches_pathologies/gird_syndrome_gird.html"}, {"id": "LCA", "name": "Entorse genou lésion LCA", "module_name": "Genou", "file": "fiches_pathologies/lca_entorse_genou_lesion_lca.html"}, {"id": "MENINT", "name": "Ménisque interne", "module_name": "Genou", "file": "fiches_pathologies/menint_menisque_interne.html"}, {"id": "MENEXT", "name": "Ménisque externe", "module_name": "Genou", "file": "fiches_pathologies/menext_menisque_externe.html"}, {"id": "SFP", "name": "Syndrome fémoro-patellaire", "module_name": "Genou", "file": "fiches_pathologies/sfp_syndrome_femoro_patellaire.html"}, {"id": "TENROT", "name": "Tendinopathie rotulienne", "module_name": "Genou", "file": "fiches_pathologies/tenrot_tendinopathie_rotulienne.html"}, {"id": "HOFFITE", "name": "Hoffite", "module_name": "Genou", "file": "fiches_pathologies/hoffite_hoffite.html"}, {"id": "GONARTHROSE", "name": "Arthrose fémoro-tibiale", "module_name": "Genou", "file": "fiches_pathologies/gonarthrose_arthrose_femoro_tibiale.html"}, {"id": "LLI", "name": "Entorse genou lésion Plan collatéral médial", "module_name": "Genou", "file": "fiches_pathologies/lli_entorse_genou_lesion_plan_collateral_medial.html"}, {"id": "PATTE_OIE", "name": "Tendinopathie patte d’oie", "module_name": "Genou", "file": "fiches_pathologies/patte_oie_tendinopathie_patte_d_oie.html"}, {"id": "ESSUIE_GLACE", "name": "Syndrome de l’essuie glace", "module_name": "Genou", "file": "fiches_pathologies/essuie_glace_syndrome_de_l_essuie_glace.html"}, {"id": "PLICA", "name": "Plica synoviale", "module_name": "Genou", "file": "fiches_pathologies/plica_plica_synoviale.html"}, {"id": "BURSITE_PREREROT", "name": "Bursite Pré-rotulienne", "module_name": "Genou", "file": "fiches_pathologies/bursite_prererot_bursite_pre_rotulienne.html"}, {"id": "CANAL_HUNTER", "name": "Canal de hunter", "module_name": "Genou", "file": "fiches_pathologies/canal_hunter_canal_de_hunter.html"}, {"id": "LOMB_COMMUNE", "name": "Lombalgie commune aiguë", "module_name": "Lombaire", "file": "fiches_pathologies/lomb_commune_lombalgie_commune_aigue.html"}, {"id": "LOMB_CHRONIQUE", "name": "Lombalgie chronique", "module_name": "Lombaire", "file": "fiches_pathologies/lomb_chronique_lombalgie_chronique.html"}, {"id": "SYND_FACETTAIRE", "name": "Syndrome facettaire lombaire", "module_name": "Lombaire", "file": "fiches_pathologies/synd_facettaire_syndrome_facettaire_lombaire.html"}, {"id": "SCIATIQUE", "name": "Lombo-sciatique (radiculalgie L5 ou S1)", "module_name": "Lombaire", "file": "fiches_pathologies/sciatique_lombo_sciatique_radiculalgie_l5_ou_s1.html"}, {"id": "CRURALGIE", "name": "Cruralgie (radiculalgie L3 ou L4)", "module_name": "Lombaire", "file": "fiches_pathologies/cruralgie_cruralgie_radiculalgie_l3_ou_l4.html"}, {"id": "CANAL_LOMBAIRE", "name": "Canal lombaire étroit", "module_name": "Lombaire", "file": "fiches_pathologies/canal_lombaire_canal_lombaire_etroit.html"}, {"id": "SACRO_ILIAQUE", "name": "Sacro-iliaque mécanique", "module_name": "Lombaire", "file": "fiches_pathologies/sacro_iliaque_sacro_iliaque_mecanique.html"}, {"id": "SPONDYLOLISTHESIS", "name": "Spondylolisthésis", "module_name": "Lombaire", "file": "fiches_pathologies/spondylolisthesis_spondylolisthesis.html"}, {"id": "LUMBAGO_AIGU", "name": "Lumbago aigu (contracture)", "module_name": "Lombaire", "file": "fiches_pathologies/lumbago_aigu_lumbago_aigu_contracture.html"}, {"id": "SPONDYLARTHRITE", "name": "Spondylarthrite axiale (à dépister)", "module_name": "Lombaire", "file": "fiches_pathologies/spondylarthrite_spondylarthrite_axiale_a_depister.html"}, {"id": "ENTORSE_LAT", "name": "Entorse latérale de cheville", "module_name": "Cheville", "file": "fiches_pathologies/entorse_lat_entorse_laterale_de_cheville.html"}, {"id": "ENTORSE_SOUS_TAL", "name": "Entorse sous-talienne", "module_name": "Cheville", "file": "fiches_pathologies/entorse_sous_tal_entorse_sous_talienne.html"}, {"id": "ENTORSE_CHOPART", "name": "Entorse du Chopart (médiotarse)", "module_name": "Cheville", "file": "fiches_pathologies/entorse_chopart_entorse_du_chopart_mediotarse.html"}, {"id": "ENTORSE_LISFRANC", "name": "Entorse du Lisfranc", "module_name": "Cheville", "file": "fiches_pathologies/entorse_lisfranc_entorse_du_lisfranc.html"}, {"id": "ENTORSE_MED", "name": "Entorse du ligament deltoïde (médiale)", "module_name": "Cheville", "file": "fiches_pathologies/entorse_med_entorse_du_ligament_deltoide_mediale.html"}, {"id": "CONFLIT_ANT", "name": "Conflit antérieur de cheville", "module_name": "Cheville", "file": "fiches_pathologies/conflit_ant_conflit_anterieur_de_cheville.html"}, {"id": "CONFLIT_POST", "name": "Syndrome carrefour postérieur (conflit postérieur)", "module_name": "Cheville", "file": "fiches_pathologies/conflit_post_syndrome_carrefour_posterieur_conflit_posterieur.html"}, {"id": "SINUS_TARSE", "name": "Syndrome sinus du tarse", "module_name": "Cheville", "file": "fiches_pathologies/sinus_tarse_syndrome_sinus_du_tarse.html"}, {"id": "OSTEOCHONDRITE", "name": "Ostéochondrite du dôme talien (OCD)", "module_name": "Cheville", "file": "fiches_pathologies/osteochondrite_osteochondrite_du_dome_talien_ocd.html"}, {"id": "TEND_ACHILLE", "name": "Tendinopathie achilléenne", "module_name": "Cheville", "file": "fiches_pathologies/tend_achille_tendinopathie_achilleenne.html"}, {"id": "TEND_FIBULAIRES", "name": "Tendinopathie des fibulaires", "module_name": "Cheville", "file": "fiches_pathologies/tend_fibulaires_tendinopathie_des_fibulaires.html"}, {"id": "TEND_TIB_POST", "name": "Tendinopathie du tibial postérieur", "module_name": "Cheville", "file": "fiches_pathologies/tend_tib_post_tendinopathie_du_tibial_posterieur.html"}, {"id": "FRACT_STRESS", "name": "Fracture de fatigue de cheville/pied", "module_name": "Cheville", "file": "fiches_pathologies/fract_stress_fracture_de_fatigue_de_cheville_pied.html"}, {"id": "NEURO_FIB", "name": "Neuropathie du nerf fibulaire commun", "module_name": "Cheville", "file": "fiches_pathologies/neuro_fib_neuropathie_du_nerf_fibulaire_commun.html"}, {"id": "COXARTHROSE", "name": "Coxarthrose", "module_name": "Hanche", "file": "fiches_pathologies/coxarthrose_coxarthrose.html"}, {"id": "CFA", "name": "Conflit fémoro-acétabulaire", "module_name": "Hanche", "file": "fiches_pathologies/cfa_conflit_femoro_acetabulaire.html"}, {"id": "LABRUM", "name": "Lésion labrale acétabulaire", "module_name": "Hanche", "file": "fiches_pathologies/labrum_lesion_labrale_acetabulaire.html"}, {"id": "OSTEONECROSE", "name": "Ostéonécrose de la tête fémorale", "module_name": "Hanche", "file": "fiches_pathologies/osteonecrose_osteonecrose_de_la_tete_femorale.html"}, {"id": "COXITE_MICRO", "name": "Coxite microcristalline", "module_name": "Hanche", "file": "fiches_pathologies/coxite_micro_coxite_microcristalline.html"}, {"id": "PUBALGIE", "name": "Pubalgie", "module_name": "Hanche", "file": "fiches_pathologies/pubalgie_pubalgie.html"}, {"id": "BURSITE_TROCH", "name": "Bursite trochantérienne", "module_name": "Hanche", "file": "fiches_pathologies/bursite_troch_bursite_trochanterienne.html"}, {"id": "TEND_MOY_FESS", "name": "Tendinopathie moyen fessier", "module_name": "Hanche", "file": "fiches_pathologies/tend_moy_fess_tendinopathie_moyen_fessier.html"}, {"id": "PIRIFORME", "name": "Syndrome du piriforme", "module_name": "Hanche", "file": "fiches_pathologies/piriforme_syndrome_du_piriforme.html"}, {"id": "TEND_IJ", "name": "Tendinopathie Ischios Jambiers", "module_name": "Hanche", "file": "fiches_pathologies/tend_ij_tendinopathie_ischios_jambiers.html"}, {"id": "CONFLIT_IF", "name": "Conflit Ischio-fémoral", "module_name": "Hanche", "file": "fiches_pathologies/conflit_if_conflit_ischio_femoral.html"}, {"id": "SACRO_ILIAQUE", "name": "Dysfonction sacro-iliaque", "module_name": "Hanche", "file": "fiches_pathologies/sacro_iliaque_dysfonction_sacro_iliaque.html"}, {"id": "FRACT_COL", "name": "Fracture de contrainte du col fémoral", "module_name": "Hanche", "file": "fiches_pathologies/fract_col_fracture_de_contrainte_du_col_femoral.html"}, {"id": "CANAL_CARPIEN", "name": "Syndrome du canal carpien", "module_name": "Main / Poignet", "file": "fiches_pathologies/canal_carpien_syndrome_du_canal_carpien.html"}, {"id": "DE_QUERVAIN", "name": "Tendinopathie de De Quervain", "module_name": "Main / Poignet", "file": "fiches_pathologies/de_quervain_tendinopathie_de_de_quervain.html"}, {"id": "RHIZARTHROSE", "name": "Rhizarthrose (arthrose trapézo-métacarpienne)", "module_name": "Main / Poignet", "file": "fiches_pathologies/rhizarthrose_rhizarthrose_arthrose_trapezo_metacarpienne.html"}, {"id": "DOIGT_RESSAUT", "name": "Doigt à ressaut", "module_name": "Main / Poignet", "file": "fiches_pathologies/doigt_ressaut_doigt_a_ressaut.html"}, {"id": "KYSTE_SYNO", "name": "Kyste synovial du poignet", "module_name": "Main / Poignet", "file": "fiches_pathologies/kyste_syno_kyste_synovial_du_poignet.html"}, {"id": "ARTHROSE_IP", "name": "Arthrose interphalangienne (Heberden / Bouchard)", "module_name": "Main / Poignet", "file": "fiches_pathologies/arthrose_ip_arthrose_interphalangienne_heberden_bouchard.html"}, {"id": "CANAL_GUYON", "name": "Syndrome du canal de Guyon (compression nerf cubital)", "module_name": "Main / Poignet", "file": "fiches_pathologies/canal_guyon_syndrome_du_canal_de_guyon_compression_nerf_cubital.html"}, {"id": "DUPUYTREN", "name": "Maladie de Dupuytren", "module_name": "Main / Poignet", "file": "fiches_pathologies/dupuytren_maladie_de_dupuytren.html"}, {"id": "RUPTURE_BAND", "name": "Rupture des bandelettes sagittales (doigt du boxeur)", "module_name": "Main / Poignet", "file": "fiches_pathologies/rupture_band_rupture_des_bandelettes_sagittales_doigt_du_boxeur.html"}, {"id": "TEND_FLECH", "name": "Tendinopathie des fléchisseurs des doigts", "module_name": "Main / Poignet", "file": "fiches_pathologies/tend_flech_tendinopathie_des_flechisseurs_des_doigts.html"}, {"id": "KIENBOCK", "name": "Maladie de Kienböck (nécrose du lunatum)", "module_name": "Main / Poignet", "file": "fiches_pathologies/kienbock_maladie_de_kienbock_necrose_du_lunatum.html"}, {"id": "INSTAB_SL", "name": "Instabilité scapho-lunaire", "module_name": "Main / Poignet", "file": "fiches_pathologies/instab_sl_instabilite_scapho_lunaire.html"}, {"id": "LESION_LCU", "name": "Lésion du LCU du pouce (pouce du skieur)", "module_name": "Main / Poignet", "file": "fiches_pathologies/lesion_lcu_lesion_du_lcu_du_pouce_pouce_du_skieur.html"}, {"id": "CERV_COMMUNE", "name": "Cervicalgie commune aiguë", "module_name": "Cervical", "file": "fiches_pathologies/cerv_commune_cervicalgie_commune_aigue.html"}, {"id": "CERV_CHRONIQUE", "name": "Cervicalgie chronique", "module_name": "Cervical", "file": "fiches_pathologies/cerv_chronique_cervicalgie_chronique.html"}, {"id": "TORTICOLIS_AIGU", "name": "Torticolis aigu (contracture)", "module_name": "Cervical", "file": "fiches_pathologies/torticolis_aigu_torticolis_aigu_contracture.html"}, {"id": "SYND_FACETTAIRE_C", "name": "Syndrome facettaire cervical", "module_name": "Cervical", "file": "fiches_pathologies/synd_facettaire_c_syndrome_facettaire_cervical.html"}, {"id": "NCB", "name": "Névralgie cervico-brachiale (NCB)", "module_name": "Cervical", "file": "fiches_pathologies/ncb_nevralgie_cervico_brachiale_ncb.html"}, {"id": "ARTHROSE_CERV", "name": "Cervicarthrose (uncarthrose / discarthrose)", "module_name": "Cervical", "file": "fiches_pathologies/arthrose_cerv_cervicarthrose_uncarthrose_discarthrose.html"}, {"id": "MYELOPATHIE_CERV", "name": "Myélopathie cervicarthrosique (à dépister)", "module_name": "Cervical", "file": "fiches_pathologies/myelopathie_cerv_myelopathie_cervicarthrosique_a_depister.html"}, {"id": "WHIPLASH", "name": "Whiplash / coup du lapin (cervicalgie post-traumatique)", "module_name": "Cervical", "file": "fiches_pathologies/whiplash_whiplash_coup_du_lapin_cervicalgie_post_traumatique.html"}, {"id": "SPONDYLARTHRITE_C", "name": "Atteinte cervicale d'une spondylarthrite (à dépister)", "module_name": "Cervical", "file": "fiches_pathologies/spondylarthrite_c_atteinte_cervicale_d_une_spondylarthrite_a_depister.html"}, {"id": "EPIC_LAT", "name": "Épicondylalgie latérale", "module_name": "Coude", "file": "fiches_pathologies/epic_lat_epicondylalgie_laterale.html"}, {"id": "EPIC_MED", "name": "Épicondylalgie médiale", "module_name": "Coude", "file": "fiches_pathologies/epic_med_epicondylalgie_mediale.html"}, {"id": "TEND_TRICEPS", "name": "Tendinopathie triceps brachial", "module_name": "Coude", "file": "fiches_pathologies/tend_triceps_tendinopathie_triceps_brachial.html"}, {"id": "AIE_CREPITANT", "name": "Ténosynovite crépitante de l'avant-bras (AIE crépitant)", "module_name": "Coude", "file": "fiches_pathologies/aie_crepitant_tenosynovite_crepitante_de_l_avant_bras_aie_crepitant.html"}, {"id": "HYGROMA", "name": "Hygroma olécrânien", "module_name": "Coude", "file": "fiches_pathologies/hygroma_hygroma_olecranien.html"}, {"id": "COMP_MEDIAN", "name": "Compression nerf médian lacertus", "module_name": "Coude", "file": "fiches_pathologies/comp_median_compression_nerf_median_lacertus.html"}, {"id": "COMP_CUB_COUDE", "name": "Compression nerf cubital au coude", "module_name": "Coude", "file": "fiches_pathologies/comp_cub_coude_compression_nerf_cubital_au_coude.html"}, {"id": "COMP_RADIAL", "name": "Compression du nerf radial à l'arcade de Frohse", "module_name": "Coude", "file": "fiches_pathologies/comp_radial_compression_du_nerf_radial_a_l_arcade_de_frohse.html"}, {"id": "SYND_LOGES_AB", "name": "Syndrome des loges chronique de l'avant-bras", "module_name": "Coude", "file": "fiches_pathologies/synd_loges_ab_syndrome_des_loges_chronique_de_l_avant_bras.html"}, {"id": "INSTAB_COUDE", "name": "Instabilité ligamentaire du coude", "module_name": "Coude", "file": "fiches_pathologies/instab_coude_instabilite_ligamentaire_du_coude.html"}, {"id": "DECHIRURE_GASTROC", "name": "Déchirure du gastrocnémien médial (tennis leg)", "module_name": "Jambe", "file": "fiches_pathologies/dechirure_gastroc_dechirure_du_gastrocnemien_medial_tennis_leg.html"}, {"id": "RUPTURE_ACHILLE", "name": "Rupture du tendon d'Achille", "module_name": "Jambe", "file": "fiches_pathologies/rupture_achille_rupture_du_tendon_d_achille.html"}, {"id": "TVP", "name": "Thrombose veineuse profonde (TVP)", "module_name": "Jambe", "file": "fiches_pathologies/tvp_thrombose_veineuse_profonde_tvp.html"}, {"id": "PERIOSTITE", "name": "Périostite tibiale", "module_name": "Jambe", "file": "fiches_pathologies/periostite_periostite_tibiale.html"}, {"id": "FRACT_STRESS_TIB", "name": "Fracture de fatigue du tibia", "module_name": "Jambe", "file": "fiches_pathologies/fract_stress_tib_fracture_de_fatigue_du_tibia.html"}, {"id": "SYND_LOGES", "name": "Syndrome des loges d'effort (chronic exertional compartment syndrome)", "module_name": "Jambe", "file": "fiches_pathologies/synd_loges_syndrome_des_loges_d_effort_chronic_exertional_compartment_syndrome.html"}, {"id": "TEND_ACHILLE_J", "name": "Tendinopathie achilléenne", "module_name": "Jambe", "file": "fiches_pathologies/tend_achille_j_tendinopathie_achilleenne.html"}, {"id": "TEND_TIB_POST", "name": "Tendinopathie tibial postérieur", "module_name": "Jambe", "file": "fiches_pathologies/tend_tib_post_tendinopathie_tibial_posterieur.html"}, {"id": "TEND_TIB_ANT", "name": "Tendinopathie du tibial antérieur", "module_name": "Jambe", "file": "fiches_pathologies/tend_tib_ant_tendinopathie_du_tibial_anterieur.html"}, {"id": "TEND_FHL", "name": "Tendinopathie long fléchisseur de l’hallux", "module_name": "Jambe", "file": "fiches_pathologies/tend_fhl_tendinopathie_long_flechisseur_de_l_hallux.html"}, {"id": "CLAUDICATION_VASC", "name": "Claudication intermittente (artériopathie)", "module_name": "Jambe", "file": "fiches_pathologies/claudication_vasc_claudication_intermittente_arteriopathie.html"}, {"id": "SYND_POPLITE", "name": "Syndrome artère poplitée piégée", "module_name": "Jambe", "file": "fiches_pathologies/synd_poplite_syndrome_artere_poplitee_piegee.html"}, {"id": "SYND_TUNNEL_TARSIEN", "name": "Syndrome du tunnel tarsien", "module_name": "Jambe", "file": "fiches_pathologies/synd_tunnel_tarsien_syndrome_du_tunnel_tarsien.html"}, {"id": "NERF_FIB_SUPERF", "name": "Syndrome d'irritation fibulaire superficiel", "module_name": "Jambe", "file": "fiches_pathologies/nerf_fib_superf_syndrome_d_irritation_fibulaire_superficiel.html"}, {"id": "NERF_FIB_PROF", "name": "Syndrome irritation nerf fibulaire profond", "module_name": "Jambe", "file": "fiches_pathologies/nerf_fib_prof_syndrome_irritation_nerf_fibulaire_profond.html"}, {"id": "FASCIITE_PLANT", "name": "Fasciite plantaire (épine calcanéenne)", "module_name": "Pied", "file": "fiches_pathologies/fasciite_plant_fasciite_plantaire_epine_calcaneenne.html"}, {"id": "TALALGIE_POST", "name": "Talalgie postérieure (Achille / Haglund / bursite)", "module_name": "Pied", "file": "fiches_pathologies/talalgie_post_talalgie_posterieure_achille_haglund_bursite.html"}, {"id": "APOPHYSITE_CALCA", "name": "Maladie de Sever (apophysite calcanéenne)", "module_name": "Pied", "file": "fiches_pathologies/apophysite_calca_maladie_de_sever_apophysite_calcaneenne.html"}, {"id": "FRACT_STRESS_META", "name": "Fracture de stress métatarsienne", "module_name": "Pied", "file": "fiches_pathologies/fract_stress_meta_fracture_de_stress_metatarsienne.html"}, {"id": "ARTHROSE_NAVIC", "name": "Douleurs naviculaires (arthrose talo-naviculaire / médio-tarse)", "module_name": "Pied", "file": "fiches_pathologies/arthrose_navic_douleurs_naviculaires_arthrose_talo_naviculaire_medio_tarse.html"}, {"id": "NEVROME_MORTON", "name": "Névrome de Morton / bursite intermétatarsienne", "module_name": "Pied", "file": "fiches_pathologies/nevrome_morton_nevrome_de_morton_bursite_intermetatarsienne.html"}, {"id": "METATARS_MEC", "name": "Métatarsalgies mécaniques", "module_name": "Pied", "file": "fiches_pathologies/metatars_mec_metatarsalgies_mecaniques.html"}, {"id": "HALLUX_VALGUS", "name": "Hallux valgus", "module_name": "Pied", "file": "fiches_pathologies/hallux_valgus_hallux_valgus.html"}, {"id": "HALLUX_RIGIDUS", "name": "Hallux rigidus (arthrose MTP du gros orteil)", "module_name": "Pied", "file": "fiches_pathologies/hallux_rigidus_hallux_rigidus_arthrose_mtp_du_gros_orteil.html"}, {"id": "SESAMOIDITE", "name": "Sésamoïdite", "module_name": "Pied", "file": "fiches_pathologies/sesamoidite_sesamoidite.html"}, {"id": "TURF_TOE", "name": "Turf toe (entorse plaque plantaire 1ère MTP)", "module_name": "Pied", "file": "fiches_pathologies/turf_toe_turf_toe_entorse_plaque_plantaire_1ere_mtp.html"}, {"id": "PLAQUE_PLANT", "name": "Lésion de la plaque plantaire (2e-3e MTP)", "module_name": "Pied", "file": "fiches_pathologies/plaque_plant_lesion_de_la_plaque_plantaire_2e_3e_mtp.html"}, {"id": "TEND_FHL_PIED", "name": "Tendinopathie du long fléchisseur de l'hallux (portion distale)", "module_name": "Pied", "file": "fiches_pathologies/tend_fhl_pied_tendinopathie_du_long_flechisseur_de_l_hallux_portion_distale.html"}, {"id": "DORS_COMMUNE", "name": "Dorsalgie commune mécanique", "module_name": "Dorsal", "file": "fiches_pathologies/dors_commune_dorsalgie_commune_mecanique.html"}, {"id": "DORS_CHRONIQUE", "name": "Dorsalgie chronique (incluant posture/sédentaire)", "module_name": "Dorsal", "file": "fiches_pathologies/dors_chronique_dorsalgie_chronique_incluant_posture_sedentaire.html"}, {"id": "SYND_FACETTAIRE_D", "name": "Syndrome articulaire postérieur dorsal", "module_name": "Dorsal", "file": "fiches_pathologies/synd_facettaire_d_syndrome_articulaire_posterieur_dorsal.html"}, {"id": "DOULEUR_COSTOVERTEBRALE", "name": "Douleur costo-vertébrale / blocage costal", "module_name": "Dorsal", "file": "fiches_pathologies/douleur_costovertebrale_douleur_costo_vertebrale_blocage_costal.html"}, {"id": "SYND_CYRIAX", "name": "Syndrome de Cyriax (slipping rib syndrome)", "module_name": "Dorsal", "file": "fiches_pathologies/synd_cyriax_syndrome_de_cyriax_slipping_rib_syndrome.html"}, {"id": "TIETZE", "name": "Syndrome de Tietze", "module_name": "Dorsal", "file": "fiches_pathologies/tietze_syndrome_de_tietze.html"}, {"id": "FRACT_VERTEBRE_OSTEOP", "name": "Fracture vertébrale ostéoporotique", "module_name": "Dorsal", "file": "fiches_pathologies/fract_vertebre_osteop_fracture_vertebrale_osteoporotique.html"}, {"id": "SCHEUERMANN", "name": "Maladie de Scheuermann (cyphose juvénile)", "module_name": "Dorsal", "file": "fiches_pathologies/scheuermann_maladie_de_scheuermann_cyphose_juvenile.html"}, {"id": "SYND_CHARNIERE_DL", "name": "Syndrome de la charnière dorso-lombaire (Maigne)", "module_name": "Dorsal", "file": "fiches_pathologies/synd_charniere_dl_syndrome_de_la_charniere_dorso_lombaire_maigne.html"}, {"id": "DISCOPATHIE_D", "name": "Discopathie dorsale", "module_name": "Dorsal", "file": "fiches_pathologies/discopathie_d_discopathie_dorsale.html"}, {"id": "SPONDYLARTHRITE_D", "name": "Atteinte dorsale d'une spondylarthrite (à dépister)", "module_name": "Dorsal", "file": "fiches_pathologies/spondylarthrite_d_atteinte_dorsale_d_une_spondylarthrite_a_depister.html"}];
+
+// Normalisation pour recherche (sans accents, lowercase)
+function normalize(s) {
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+const searchInput = document.getElementById('pathoSearch');
+const searchResults = document.getElementById('searchResults');
+let activeIndex = -1;
+let currentMatches = [];
+
+function renderResults(matches) {
+  currentMatches = matches;
+  activeIndex = -1;
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div class="search-empty">Aucune pathologie trouvée</div>';
+    searchResults.classList.add('open');
+    return;
+  }
+  searchResults.innerHTML = matches.slice(0, 12).map((p, i) => 
+    `<div class="search-item" data-index="${i}" onclick="goToPatho('${p.file}', '${p.id}')">
+       <span class="search-item-name">${p.name}</span>
+       <span class="search-item-module">${p.module_name}</span>
+     </div>`
+  ).join('');
+  searchResults.classList.add('open');
+}
+
+function goToPatho(file, id) {
+  window.location.href = file;
+}
+
+searchInput.addEventListener('input', function(e) {
+  const q = normalize(e.target.value.trim());
+  if (q.length < 2) {
+    searchResults.classList.remove('open');
+    return;
+  }
+  const matches = PATHOLOGIES_DB.filter(p => {
+    const nameNorm = normalize(p.name);
+    return nameNorm.includes(q);
+  });
+  // Trier : commence par le mot d'abord, puis contient
+  matches.sort((a, b) => {
+    const aStarts = normalize(a.name).startsWith(q) ? 0 : 1;
+    const bStarts = normalize(b.name).startsWith(q) ? 0 : 1;
+    if (aStarts !== bStarts) return aStarts - bStarts;
+    return a.name.localeCompare(b.name);
+  });
+  renderResults(matches);
+});
+
+// Navigation clavier
+searchInput.addEventListener('keydown', function(e) {
+  const items = searchResults.querySelectorAll('.search-item');
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    activeIndex = Math.min(activeIndex + 1, items.length - 1);
+    items.forEach((it, i) => it.classList.toggle('active', i === activeIndex));
+    if (items[activeIndex]) items[activeIndex].scrollIntoView({block: 'nearest'});
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    activeIndex = Math.max(activeIndex - 1, 0);
+    items.forEach((it, i) => it.classList.toggle('active', i === activeIndex));
+    if (items[activeIndex]) items[activeIndex].scrollIntoView({block: 'nearest'});
+  } else if (e.key === 'Enter' && activeIndex >= 0 && currentMatches[activeIndex]) {
+    e.preventDefault();
+    const p = currentMatches[activeIndex];
+    goToPatho(p.file, p.id);
+  } else if (e.key === 'Escape') {
+    searchResults.classList.remove('open');
+    searchInput.blur();
+  }
+});
+
+// Fermer les résultats si clic en dehors
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.search-box')) {
+    searchResults.classList.remove('open');
+  }
+});
+</script>
+
+</body>
+</html>
