@@ -308,6 +308,72 @@
     .fiche-grid { grid-template-columns: 1fr; }
   }
 </style>
+
+<style>
+  .red-flags-banner {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-left: 6px solid #dc2626;
+    border-radius: 0 14px 14px 0;
+    padding: 22px 26px;
+    margin: 24px 0 28px 0;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.12);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  .red-flags-banner .rf-title {
+    color: #991b1b;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    letter-spacing: -0.2px;
+  }
+  .red-flags-banner .rf-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 24px;
+  }
+  .red-flags-banner .rf-section strong {
+    display: block;
+    color: #7f1d1d;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .red-flags-banner .rf-section ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #7f1d1d;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .red-flags-banner .rf-section li {
+    margin-bottom: 3px;
+  }
+  .red-flags-banner .rf-footer {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(220, 38, 38, 0.3);
+    color: #991b1b;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: italic;
+  }
+  @media (max-width: 700px) {
+    .red-flags-banner { padding: 18px 18px; margin: 18px 0 22px 0; }
+    .red-flags-banner .rf-content { grid-template-columns: 1fr; gap: 12px; }
+    .red-flags-banner .rf-section ul { font-size: 12px; }
+  }
+  @media print {
+    .red-flags-banner { 
+      page-break-inside: avoid; 
+      background: #fef2f2 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+
 </head>
 <body>
 
@@ -336,6 +402,51 @@
 
 
 <main class="main-content">
+<!-- LOCOCLIC-REDFLAGS-INJECTED -->
+
+    <div class="red-flags-banner">
+      <div class="rf-title">🚩 Drapeaux rouges — Recherche systématique</div>
+      <div class="rf-content">
+        <div class="rf-section">
+          <strong>Néoplasiques / Infectieux</strong>
+          <ul>
+            <li>Antécédent de cancer (rachis dorsal = site métastatique fréquent)</li>
+            <li>Altération de l'état général, perte de poids, fièvre</li>
+            <li>Douleur nocturne, non mécanique, non soulagée par repos</li>
+            <li>Immunodépression, toxicomanie IV, sepsis</li>
+          </ul>
+        </div>
+        <div class="rf-section">
+          <strong>Fracture vertébrale</strong>
+          <ul>
+            <li>Femme ménopausée, homme > 70 ans</li>
+            <li>Corticothérapie au long cours, antécédent de fracture de fragilité</li>
+            <li>Perte de taille > 3 cm, cyphose progressive</li>
+            <li>Douleur brutale après effort minime (vertèbre tassée)</li>
+          </ul>
+        </div>
+        <div class="rf-section">
+          <strong>Neurologiques (urgents)</strong>
+          <ul>
+            <li>Déficit moteur ou sensitif des membres inférieurs</li>
+            <li>Syndrome médullaire, niveau sensitif</li>
+            <li>Troubles sphinctériens, anesthésie en selle</li>
+          </ul>
+        </div>
+        <div class="rf-section">
+          <strong>Viscérales (douleur projetée)</strong>
+          <ul>
+            <li>Douleur thoracique d'allure cardiaque (SCA, dissection aortique)</li>
+            <li>Pancréatite, ulcère perforé, cholécystite</li>
+            <li>Embolie pulmonaire, pleurésie</li>
+            <li>Dissection aortique : douleur transfixiante, asymétrie tensionnelle</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rf-footer">⚠️ La présence d'un seul de ces signes impose une exploration urgente.</div>
+    </div>
+
+
   <div class="fiche-grid">
     <div class="fiche-sec">
       <h2 class="sec-title"><span class="sec-icon">🔬</span> Imagerie</h2>
@@ -401,6 +512,46 @@
     ⚠️ <strong>Outil d'aide à la décision clinique</strong> · Cette fiche ne remplace pas le jugement clinique du médecin. Le diagnostic et la prise en charge restent de la responsabilité du praticien.
   </div>
 </main>
+
+
+<!-- LOCOCLIC-LEGAL-INJECTED -->
+<style>
+  .lococlic-footer {
+    background: #1e3a5f;
+    color: rgba(255,255,255,0.85);
+    padding: 20px 24px;
+    text-align: center;
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin-top: 24px;
+  }
+  .lococlic-footer nav a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    margin: 0 12px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .lococlic-footer nav a:hover { color: #10b981; }
+  .lococlic-footer .copyright { margin-top: 10px; opacity: 0.7; font-size: 12px; }
+  @media print {
+    .lococlic-footer { display: none; }
+  }
+  @media (max-width: 640px) {
+    .lococlic-footer { padding: 16px; }
+    .lococlic-footer nav a { display: inline-block; margin: 4px 8px; font-size: 12px; }
+  }
+</style>
+<footer class="lococlic-footer">
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/mentions-legales.html">Mentions légales</a>
+    <a href="/confidentialite.html">Confidentialité</a>
+    <a href="/cgu.html">CGU</a>
+    <a href="mailto:contact@lococlic.com">Contact</a>
+  </nav>
+  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+</footer>
 
 </body>
 </html>

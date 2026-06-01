@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Politique de confidentialité — LocoClic™</title>
+<meta name="description" content="Politique de confidentialité et protection des données personnelles de LocoClic. Aucune donnée patient collectée. Conforme RGPD.">
+<meta name="robots" content="index, follow">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  .top-bar {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  
+  .top-bar .brand {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    text-decoration: none;
+    color: white;
+  }
+  
+  .top-bar .brand .tm {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.8;
+    vertical-align: super;
+  }
+  
+  .top-bar nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  
+  .top-bar nav a:hover { opacity: 1; }
+  
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 48px 32px 64px 32px;
+  }
+  
+  .breadcrumb {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 24px;
+  }
+  
+  .breadcrumb a {
+    color: #10b981;
+    text-decoration: none;
+  }
+  
+  .breadcrumb a:hover { text-decoration: underline; }
+  
+  h1 {
+    font-size: 36px;
+    font-weight: 900;
+    color: #1e3a5f;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+  
+  .update-date {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .summary-box {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border-left: 4px solid #10b981;
+    padding: 24px 28px;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 40px;
+  }
+  
+  .summary-box h3 {
+    color: #065f46;
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+  
+  .summary-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .summary-box li {
+    padding: 4px 0;
+    color: #064e3b;
+    font-size: 14px;
+    padding-left: 24px;
+    position: relative;
+  }
+  
+  .summary-box li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: 800;
+  }
+  
+  h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e3a5f;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-left: 12px;
+    border-left: 4px solid #10b981;
+  }
+  
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    margin-bottom: 16px;
+    color: #334155;
+  }
+  
+  ul.styled {
+    margin: 16px 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  ul.styled li {
+    padding: 6px 0 6px 28px;
+    position: relative;
+    color: #334155;
+  }
+  
+  ul.styled li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: 800;
+  }
+  
+  strong { color: #1e3a5f; font-weight: 700; }
+  
+  a {
+    color: #10b981;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  a:hover { text-decoration: underline; }
+  
+  .highlight {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 16px 20px;
+    margin: 24px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: #92400e;
+  }
+  
+  .info-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  
+  .info-card dt {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    margin-bottom: 4px;
+    margin-top: 12px;
+    font-weight: 600;
+  }
+  
+  .info-card dt:first-child { margin-top: 0; }
+  
+  .info-card dd {
+    margin: 0;
+    color: #1e3a5f;
+    font-weight: 500;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  
+  table th {
+    background: #1e3a5f;
+    color: white;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  
+  table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    color: #334155;
+  }
+  
+  table tr:last-child td { border-bottom: none; }
+  
+  footer {
+    background: #1e3a5f;
+    color: rgba(255,255,255,0.85);
+    padding: 32px;
+    text-align: center;
+    font-size: 13px;
+    margin-top: 48px;
+  }
+  
+  footer a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    margin: 0 12px;
+  }
+  
+  footer a:hover { color: #10b981; }
+  
+  footer .copyright {
+    margin-top: 12px;
+    opacity: 0.7;
+    font-size: 12px;
+  }
+  
+  @media (max-width: 640px) {
+    .container { padding: 32px 20px 48px 20px; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 19px; }
+    .top-bar { padding: 14px 20px; }
+    .top-bar nav { display: none; }
+    table { font-size: 13px; }
+    table th, table td { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="/" class="brand">LocoClic<span class="tm">™</span></a>
+  <nav>
+    <a href="/">Accueil</a>
+  </nav>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="/">Accueil</a> &nbsp;›&nbsp; Politique de confidentialité
+  </div>
+  
+  <h1>Politique de confidentialité</h1>
+  <p class="subtitle">Engagement de transparence sur le traitement de vos données</p>
+  <p class="update-date">Dernière mise à jour : 1er juin 2026</p>
+  
+  <div class="summary-box">
+    <h3>🛡️ L'essentiel en un coup d'œil</h3>
+    <ul>
+      <li><strong>AUCUNE donnée patient</strong> n'est collectée ni stockée par LocoClic</li>
+      <li><strong>AUCUN compte utilisateur</strong> n'est créé sur nos serveurs</li>
+      <li>L'authentification utilise <strong>uniquement le navigateur</strong> de l'utilisateur (localStorage)</li>
+      <li>Aucune donnée n'est transmise à des tiers à des fins commerciales</li>
+      <li>Conforme au <strong>RGPD</strong> (Règlement Général sur la Protection des Données)</li>
+    </ul>
+  </div>
+  
+  <h2>1. Responsable du traitement</h2>
+  <div class="info-card">
+    <dl>
+      <dt>Responsable du traitement</dt>
+      <dd>Simon Albiach</dd>
+      <dt>Statut</dt>
+      <dd>Personne physique — Médecin, éditeur du site LocoClic</dd>
+      <dt>Email de contact</dt>
+      <dd><a href="mailto:confidentialite@lococlic.com">confidentialite@lococlic.com</a></dd>
+    </dl>
+  </div>
+  
+  <h2>2. Nature de LocoClic et absence de données patient</h2>
+  
+  <div class="highlight">
+    ⚠️ <strong>LocoClic est un outil d'aide à la décision pédagogique destiné aux professionnels de santé.</strong> 
+    Il ne collecte, ne stocke, ne traite et ne transmet <strong>aucune donnée concernant un patient</strong>. Les médecins utilisateurs n'y saisissent aucune information identifiante relative à leurs patients.
+  </div>
+  
+  <p>LocoClic ne fonctionne pas comme une base de données médicale ou un dossier patient informatisé. Il s'agit d'un parcours diagnostique interactif dont les réponses aux questions cliniques ne sont jamais enregistrées sur nos serveurs. À la fermeture du navigateur, toute la session diagnostique est effacée.</p>
+  
+  <h2>3. Données collectées</h2>
+  
+  <p>LocoClic limite la collecte de données à ce qui est strictement nécessaire au fonctionnement du service&nbsp;:</p>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Donnée</th>
+        <th>Finalité</th>
+        <th>Stockage</th>
+        <th>Durée</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Code d'accès</strong></td>
+        <td>Authentification de l'utilisateur autorisé</td>
+        <td>Navigateur (localStorage)</td>
+        <td>7 jours maximum</td>
+      </tr>
+      <tr>
+        <td><strong>Jeton de session</strong></td>
+        <td>Maintien de la connexion entre les pages</td>
+        <td>Navigateur (localStorage)</td>
+        <td>7 jours maximum</td>
+      </tr>
+      <tr>
+        <td><strong>Logs serveur techniques</strong></td>
+        <td>Sécurité, débogage, statistiques anonymes</td>
+        <td>Cloudflare (hébergeur)</td>
+        <td>Selon politique Cloudflare</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <h3>Détails techniques</h3>
+  
+  <p><strong>Le code d'accès et le jeton de session sont stockés uniquement sur l'appareil de l'utilisateur</strong>, dans le localStorage de son navigateur. Aucune base de données utilisateur n'existe sur nos serveurs. L'utilisateur peut à tout moment supprimer ces données en vidant le cache de son navigateur ou en se déconnectant.</p>
+  
+  <p>LocoClic n'utilise actuellement <strong>aucun outil de tracking publicitaire</strong>, <strong>aucun cookie tiers</strong>, <strong>aucune solution d'analytics comportementale</strong> (type Google Analytics, Meta Pixel, Hotjar, etc.).</p>
+  
+  <h2>4. Base légale du traitement</h2>
+  
+  <p>Le traitement des codes d'accès et des jetons de session est fondé sur&nbsp;:</p>
+  
+  <ul class="styled">
+    <li><strong>L'intérêt légitime</strong> du responsable du traitement à sécuriser l'accès à un outil professionnel réservé (article 6.1.f du RGPD)</li>
+    <li><strong>L'exécution d'un contrat</strong> ou de mesures précontractuelles avec les utilisateurs autorisés (article 6.1.b du RGPD)</li>
+  </ul>
+  
+  <h2>5. Destinataires des données</h2>
+  
+  <p>Les données techniques (logs serveur) sont accessibles uniquement à&nbsp;:</p>
+  
+  <ul class="styled">
+    <li>L'éditeur du site (Simon Albiach), pour les besoins de maintenance et de sécurité</li>
+    <li>Cloudflare, en tant qu'hébergeur, dans le cadre strict de la fourniture des services techniques</li>
+  </ul>
+  
+  <p><strong>Aucune donnée n'est revendue, partagée à des fins commerciales, ou transmise à des tiers non essentiels au fonctionnement du service.</strong></p>
+  
+  <h2>6. Transferts hors Union européenne</h2>
+  
+  <p>L'hébergeur Cloudflare est une société américaine disposant d'un réseau mondial de serveurs. Les logs techniques peuvent donc transiter par des serveurs situés hors de l'Union européenne. Cloudflare est certifié au cadre <strong>Data Privacy Framework (DPF) UE-États-Unis</strong> et applique des Clauses Contractuelles Types (CCT) garantissant un niveau de protection adéquat des données.</p>
+  
+  <h2>7. Sécurité des données</h2>
+  
+  <p>LocoClic met en œuvre des mesures techniques pour protéger les données traitées&nbsp;:</p>
+  
+  <ul class="styled">
+    <li>Connexion HTTPS chiffrée (TLS) sur l'ensemble du site</li>
+    <li>Authentification par code d'accès individuel</li>
+    <li>Hébergement sur infrastructure Cloudflare (CDN sécurisé, protection DDoS)</li>
+    <li>Aucun stockage centralisé de données utilisateur (architecture sans backend identifiant)</li>
+    <li>Mises à jour régulières du code source</li>
+  </ul>
+  
+  <h2>8. Vos droits (RGPD)</h2>
+  
+  <p>Conformément aux articles 15 à 22 du RGPD, vous disposez des droits suivants&nbsp;:</p>
+  
+  <ul class="styled">
+    <li><strong>Droit d'accès</strong> à vos données</li>
+    <li><strong>Droit de rectification</strong> de données inexactes</li>
+    <li><strong>Droit à l'effacement</strong> ("droit à l'oubli")</li>
+    <li><strong>Droit à la limitation</strong> du traitement</li>
+    <li><strong>Droit à la portabilité</strong> de vos données</li>
+    <li><strong>Droit d'opposition</strong> au traitement</li>
+    <li><strong>Droit de retirer votre consentement</strong> à tout moment</li>
+  </ul>
+  
+  <p>Compte tenu de la nature minimale des données traitées par LocoClic (uniquement un code d'accès stocké dans votre navigateur), l'exercice de la plupart de ces droits se fait simplement <strong>en vidant le cache de votre navigateur</strong> ou en vous déconnectant.</p>
+  
+  <p>Pour toute demande complémentaire, contactez&nbsp;:<br>
+  <a href="mailto:confidentialite@lococlic.com">confidentialite@lococlic.com</a></p>
+  
+  <p>Vous disposez également du droit d'introduire une réclamation auprès de la <strong>Commission Nationale de l'Informatique et des Libertés (CNIL)</strong>&nbsp;:<br>
+  <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a></p>
+  
+  <h2>9. Cookies</h2>
+  
+  <p>LocoClic n'utilise <strong>que des cookies strictement techniques nécessaires</strong> à son fonctionnement (jeton de session). Ces cookies sont exemptés de consentement préalable au titre de l'article 82 de la Loi Informatique et Libertés.</p>
+  
+  <p>Aucun cookie publicitaire, de mesure d'audience ou de tracking comportemental n'est utilisé.</p>
+  
+  <h2>10. Modifications de la politique</h2>
+  
+  <p>Cette politique de confidentialité peut être amenée à évoluer. La date de dernière mise à jour est indiquée en haut du document. Les utilisateurs seront informés de toute modification substantielle.</p>
+  
+  <h2>11. Contact</h2>
+  
+  <p>Pour toute question relative à la protection de vos données personnelles&nbsp;:<br>
+  <a href="mailto:confidentialite@lococlic.com">confidentialite@lococlic.com</a></p>
+  
+</div>
+
+<footer>
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/mentions-legales.html">Mentions légales</a>
+    <a href="/confidentialite.html">Confidentialité</a>
+    <a href="/cgu.html">CGU</a>
+    <a href="mailto:contact@lococlic.com">Contact</a>
+  </nav>
+  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+</footer>
+
+</body>
+</html>

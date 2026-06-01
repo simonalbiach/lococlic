@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conditions Générales d'Utilisation — LocoClic™</title>
+<meta name="description" content="Conditions générales d'utilisation de LocoClic, outil d'aide à la décision clinique réservé aux professionnels de santé.">
+<meta name="robots" content="index, follow">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  .top-bar {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  
+  .top-bar .brand {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    text-decoration: none;
+    color: white;
+  }
+  
+  .top-bar .brand .tm {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.8;
+    vertical-align: super;
+  }
+  
+  .top-bar nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  
+  .top-bar nav a:hover { opacity: 1; }
+  
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 48px 32px 64px 32px;
+  }
+  
+  .breadcrumb {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 24px;
+  }
+  
+  .breadcrumb a {
+    color: #10b981;
+    text-decoration: none;
+  }
+  
+  .breadcrumb a:hover { text-decoration: underline; }
+  
+  h1 {
+    font-size: 36px;
+    font-weight: 900;
+    color: #1e3a5f;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+  
+  .update-date {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .critical-warning {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-left: 6px solid #dc2626;
+    padding: 24px 28px;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 32px;
+  }
+  
+  .critical-warning h3 {
+    color: #991b1b;
+    font-size: 17px;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+  
+  .critical-warning p {
+    color: #7f1d1d;
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  
+  h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e3a5f;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-left: 12px;
+    border-left: 4px solid #10b981;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  
+  h2 .num {
+    color: #10b981;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    margin-bottom: 16px;
+    color: #334155;
+  }
+  
+  ul.styled {
+    margin: 16px 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  ul.styled li {
+    padding: 6px 0 6px 28px;
+    position: relative;
+    color: #334155;
+  }
+  
+  ul.styled li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: 800;
+  }
+  
+  strong { color: #1e3a5f; font-weight: 700; }
+  
+  a {
+    color: #10b981;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  a:hover { text-decoration: underline; }
+  
+  .warning-box {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 16px 20px;
+    margin: 24px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: #92400e;
+  }
+  
+  .warning-box strong { color: #78350f; }
+  
+  .info-block {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: #1e40af;
+  }
+  
+  .info-block strong { color: #1e3a8a; }
+  
+  footer {
+    background: #1e3a5f;
+    color: rgba(255,255,255,0.85);
+    padding: 32px;
+    text-align: center;
+    font-size: 13px;
+    margin-top: 48px;
+  }
+  
+  footer a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    margin: 0 12px;
+  }
+  
+  footer a:hover { color: #10b981; }
+  
+  footer .copyright {
+    margin-top: 12px;
+    opacity: 0.7;
+    font-size: 12px;
+  }
+  
+  @media (max-width: 640px) {
+    .container { padding: 32px 20px 48px 20px; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 19px; }
+    .top-bar { padding: 14px 20px; }
+    .top-bar nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="/" class="brand">LocoClic<span class="tm">™</span></a>
+  <nav>
+    <a href="/">Accueil</a>
+  </nav>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="/">Accueil</a> &nbsp;›&nbsp; Conditions Générales d'Utilisation
+  </div>
+  
+  <h1>Conditions Générales d'Utilisation</h1>
+  <p class="subtitle">Cadre d'utilisation de LocoClic™ pour les professionnels de santé</p>
+  <p class="update-date">Dernière mise à jour : 1er juin 2026</p>
+  
+  <div class="critical-warning">
+    <h3>⚠️ AVERTISSEMENT MÉDICO-LÉGAL IMPORTANT</h3>
+    <p><strong>LocoClic est un outil d'aide à la décision pédagogique destiné aux professionnels de santé. Il ne constitue PAS un dispositif médical au sens du Règlement (UE) 2017/745.</strong> 
+    Il ne remplace EN AUCUN CAS l'examen clinique, l'expertise et le jugement médical du praticien. <strong>La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient EXCLUSIVEMENT au médecin utilisateur</strong>. En utilisant LocoClic, vous reconnaissez avoir pris connaissance de cet avertissement et l'acceptez sans réserve.</p>
+  </div>
+  
+  <h2><span class="num">Article 1</span> Objet</h2>
+  
+  <p>Les présentes Conditions Générales d'Utilisation (ci-après "CGU") ont pour objet de définir les modalités d'accès et d'utilisation du site <strong>LocoClic</strong>, accessible à l'adresse <a href="https://lococlic.com">https://lococlic.com</a>, par les professionnels de santé autorisés.</p>
+  
+  <p>L'accès au site implique l'acceptation pleine et entière des présentes CGU. Si vous n'acceptez pas ces conditions, vous ne devez pas utiliser le service.</p>
+  
+  <h2><span class="num">Article 2</span> Définitions</h2>
+  
+  <ul class="styled">
+    <li><strong>LocoClic</strong>&nbsp;: désigne le site web et l'outil d'aide à la décision pédagogique.</li>
+    <li><strong>Éditeur</strong>&nbsp;: Simon Albiach, médecin, responsable de la publication.</li>
+    <li><strong>Utilisateur</strong>&nbsp;: tout professionnel de santé titulaire d'un code d'accès valide.</li>
+    <li><strong>Service</strong>&nbsp;: l'ensemble des fonctionnalités proposées par LocoClic.</li>
+  </ul>
+  
+  <h2><span class="num">Article 3</span> Nature du service</h2>
+  
+  <h3>3.1 Outil pédagogique, NON dispositif médical</h3>
+  
+  <p>LocoClic est un <strong>outil d'aide à la décision pédagogique</strong> destiné à accompagner le raisonnement clinique des médecins dans le domaine des pathologies musculo-squelettiques.</p>
+  
+  <p><strong>LocoClic ne constitue PAS un dispositif médical</strong> au sens du Règlement (UE) 2017/745 relatif aux dispositifs médicaux. Il n'est ni destiné à diagnostiquer une pathologie de manière autonome, ni à prescrire un traitement, ni à se substituer à l'évaluation clinique d'un praticien.</p>
+  
+  <h3>3.2 Fonctionnement</h3>
+  
+  <p>Le service propose un parcours diagnostique guidé en plusieurs étapes (mécanisme d'apparition, profil, présentation clinique, horaire, tests cliniques) aboutissant à un <strong>score probabiliste</strong> de pathologies envisageables. Ce score est basé sur les recommandations scientifiques publiées (notamment HAS, EULAR, sociétés savantes médicales).</p>
+  
+  <p>Les suggestions fournies sont <strong>indicatives et probabilistes</strong>. Elles ne représentent en aucun cas un diagnostic médical formel.</p>
+  
+  <h2><span class="num">Article 4</span> Conditions d'accès</h2>
+  
+  <h3>4.1 Public autorisé</h3>
+  
+  <p>L'accès à LocoClic est strictement réservé aux <strong>professionnels de santé diplômés et autorisés à exercer</strong>, notamment&nbsp;:</p>
+  
+  <ul class="styled">
+    <li>Médecins généralistes</li>
+    <li>Médecins du sport</li>
+    <li>Médecins spécialistes en rhumatologie, orthopédie, médecine physique et réadaptation</li>
+    <li>Internes en médecine en cours de formation</li>
+    <li>Étudiants en médecine, à des fins d'apprentissage encadré</li>
+  </ul>
+  
+  <p>L'utilisation par toute autre personne, et notamment par des patients ou le grand public, est <strong>formellement exclue</strong>.</p>
+  
+  <h3>4.2 Code d'accès individuel</h3>
+  
+  <p>L'accès se fait via un <strong>code d'accès individuel et confidentiel</strong> attribué par l'éditeur. Ce code est strictement personnel. Il ne doit être ni partagé, ni cédé, ni revendu à des tiers.</p>
+  
+  <p>L'utilisateur est responsable de la confidentialité de son code d'accès et de toute utilisation qui en serait faite.</p>
+  
+  <h3>4.3 Suspension de l'accès</h3>
+  
+  <p>L'éditeur se réserve le droit de suspendre ou résilier l'accès d'un utilisateur en cas de manquement aux présentes CGU, notamment en cas de partage de code, d'usage frauduleux ou de comportement contraire aux règles déontologiques médicales.</p>
+  
+  <h2><span class="num">Article 5</span> Responsabilités du médecin utilisateur</h2>
+  
+  <div class="warning-box">
+    ⚠️ Cet article est crucial. <strong>En tant que médecin utilisateur, vous conservez l'entière responsabilité médicale de vos actes diagnostiques et thérapeutiques.</strong>
+  </div>
+  
+  <h3>5.1 Responsabilité diagnostique exclusive</h3>
+  
+  <p>Le médecin utilisateur reconnaît et accepte que&nbsp;:</p>
+  
+  <ul class="styled">
+    <li>Les suggestions fournies par LocoClic sont <strong>indicatives et statistiques</strong> ;</li>
+    <li>Elles ne se substituent en aucun cas à l'<strong>examen clinique direct</strong> du patient ;</li>
+    <li>Elles ne dispensent pas de la réalisation d'examens complémentaires si nécessaire ;</li>
+    <li>Le <strong>diagnostic final</strong>, le <strong>plan thérapeutique</strong> et l'<strong>orientation du patient</strong> relèvent EXCLUSIVEMENT de la compétence et de la responsabilité du médecin utilisateur ;</li>
+    <li>L'utilisation de LocoClic doit s'inscrire dans une démarche clinique globale conforme aux <strong>règles de l'art médical</strong>, à la <strong>déontologie</strong> et aux <strong>recommandations en vigueur</strong>.</li>
+  </ul>
+  
+  <h3>5.2 Vérification des informations</h3>
+  
+  <p>Le médecin utilisateur s'engage à <strong>vérifier de manière critique</strong> toute information ou suggestion fournie par LocoClic au regard&nbsp;:</p>
+  
+  <ul class="styled">
+    <li>de son examen clinique du patient ;</li>
+    <li>du contexte médical global ;</li>
+    <li>des dernières recommandations médicales en vigueur ;</li>
+    <li>des éventuelles particularités du patient (comorbidités, traitements, etc.).</li>
+  </ul>
+  
+  <h3>5.3 Confidentialité patient</h3>
+  
+  <p>Le médecin utilisateur s'engage à <strong>ne jamais saisir d'informations directement identifiantes</strong> concernant un patient sur LocoClic (nom, prénom, date de naissance précise, numéro de sécurité sociale, etc.). LocoClic n'est pas conçu pour traiter de telles données et ne dispose pas du statut d'hébergeur de données de santé (HDS).</p>
+  
+  <h2><span class="num">Article 6</span> Limitation de responsabilité de l'éditeur</h2>
+  
+  <p>Dans toute la mesure permise par la loi, l'éditeur de LocoClic ne saurait être tenu responsable&nbsp;:</p>
+  
+  <ul class="styled">
+    <li>d'un <strong>diagnostic erroné</strong> ou retardé établi par un médecin utilisateur ;</li>
+    <li>d'un <strong>préjudice subi par un patient</strong> du fait d'une décision médicale prise par un médecin utilisateur, quel que soit le lien avec l'utilisation de LocoClic ;</li>
+    <li>d'une <strong>mauvaise interprétation</strong> des suggestions par l'utilisateur ;</li>
+    <li>de l'<strong>usage de LocoClic par une personne non habilitée</strong> à exercer la médecine ;</li>
+    <li>de <strong>interruptions, ralentissements ou indisponibilités</strong> du service, notamment pour des raisons de maintenance, d'évolution du site ou de force majeure ;</li>
+    <li>d'éventuelles <strong>erreurs ou omissions</strong> dans les contenus diffusés, malgré tous les efforts apportés à leur exactitude ;</li>
+    <li>de l'<strong>évolution des recommandations</strong> médicales pouvant rendre obsolètes certaines suggestions.</li>
+  </ul>
+  
+  <p>LocoClic est fourni <strong>"en l'état"</strong>, sans garantie expresse ou implicite de quelque nature que ce soit.</p>
+  
+  <h2><span class="num">Article 7</span> Propriété intellectuelle</h2>
+  
+  <h3>7.1 Marque</h3>
+  
+  <p><strong>LocoClic</strong> est une marque déposée auprès de l'INPI. Toute utilisation non autorisée de cette marque est strictement interdite.</p>
+  
+  <h3>7.2 Contenus</h3>
+  
+  <p>L'intégralité des contenus du site (textes, illustrations, algorithmes, scores, arbres décisionnels, fiches pathologies, fiches patient, code source) est protégée par le droit d'auteur et constitue la propriété exclusive de l'éditeur.</p>
+  
+  <p>Sont strictement interdites, sans autorisation écrite préalable&nbsp;:</p>
+  
+  <ul class="styled">
+    <li>la reproduction, totale ou partielle, des contenus ;</li>
+    <li>l'extraction, le scraping ou la copie automatisée du site ;</li>
+    <li>la diffusion ou la mise à disposition à des tiers ;</li>
+    <li>l'utilisation commerciale ou la revente ;</li>
+    <li>la création d'œuvres dérivées.</li>
+  </ul>
+  
+  <p>Les fiches patient sont mises à disposition pour <strong>impression et remise au patient</strong> à des fins exclusivement thérapeutiques dans le cadre de la pratique médicale de l'utilisateur autorisé.</p>
+  
+  <h2><span class="num">Article 8</span> Protection des données personnelles</h2>
+  
+  <p>LocoClic est conforme au Règlement Général sur la Protection des Données (RGPD). Pour plus de détails, consultez la <a href="/confidentialite.html">Politique de Confidentialité</a>.</p>
+  
+  <div class="info-block">
+    <strong>À retenir&nbsp;:</strong> LocoClic ne collecte AUCUNE donnée patient. Seul un code d'accès est traité, stocké localement dans le navigateur de l'utilisateur.
+  </div>
+  
+  <h2><span class="num">Article 9</span> Disponibilité du service</h2>
+  
+  <p>L'éditeur s'efforce de maintenir le site accessible 24h/24 et 7j/7, mais ne peut garantir une disponibilité absolue. Des interruptions peuvent survenir pour des raisons techniques, de maintenance ou indépendantes de sa volonté.</p>
+  
+  <p>L'éditeur ne saurait être tenu responsable d'aucun préjudice résultant d'une indisponibilité du service.</p>
+  
+  <h2><span class="num">Article 10</span> Évolutions du service et des CGU</h2>
+  
+  <p>L'éditeur se réserve le droit de faire évoluer le service à tout moment (ajout, modification, suppression de fonctionnalités, mise à jour des contenus médicaux).</p>
+  
+  <p>Les présentes CGU peuvent être modifiées à tout moment. La date de dernière mise à jour figure en haut du document. Les utilisateurs sont invités à consulter régulièrement cette page.</p>
+  
+  <h2><span class="num">Article 11</span> Résiliation</h2>
+  
+  <p>L'utilisateur peut cesser à tout moment d'utiliser le service en supprimant sa session (vider le cache du navigateur).</p>
+  
+  <p>L'éditeur peut résilier l'accès d'un utilisateur en cas de manquement aux présentes CGU, sans préavis ni indemnité.</p>
+  
+  <h2><span class="num">Article 12</span> Loi applicable et juridiction</h2>
+  
+  <p>Les présentes CGU sont soumises au <strong>droit français</strong>.</p>
+  
+  <p>En cas de litige, et après tentative de résolution amiable préalable, les <strong>tribunaux français seront seuls compétents</strong>.</p>
+  
+  <h2><span class="num">Article 13</span> Contact</h2>
+  
+  <p>Pour toute question relative aux présentes CGU&nbsp;:<br>
+  <a href="mailto:contact@lococlic.com">contact@lococlic.com</a></p>
+  
+</div>
+
+<footer>
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/mentions-legales.html">Mentions légales</a>
+    <a href="/confidentialite.html">Confidentialité</a>
+    <a href="/cgu.html">CGU</a>
+    <a href="mailto:contact@lococlic.com">Contact</a>
+  </nav>
+  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+</footer>
+
+</body>
+</html>
