@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>LocoClic — Accès</title>
+<title>lococlic™ — Accès</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
@@ -12,12 +12,21 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: #1e293b;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-wrapper {
+    flex: 1 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px;
-    color: #1e293b;
-    -webkit-font-smoothing: antialiased;
+    width: 100%;
   }
   
   .login-card {
@@ -198,10 +207,11 @@
 </head>
 <body>
 
+<div class="login-wrapper">
 <div class="login-card">
   <div class="logo-wrap">
-    <img src="images/logo.png" alt="LocoClic" class="logo-img">
-    <div class="brand">LocoClic</div>
+    <img src="images/logo.png" alt="lococlic" class="logo-img">
+    <div class="brand">lococlic<sup>™</sup></div>
     <div class="tagline">Outil d'aide à la décision clinique<br>Appareil locomoteur</div>
   </div>
   
@@ -237,8 +247,9 @@
   
   <div class="footer">
     Accès individuel · Ne partagez pas votre code.<br>
-    Pour obtenir un accès, contactez <strong>l'administrateur LocoClic</strong>.
+    Pour obtenir un accès, contactez <strong>l'administrateur lococlic<sup>™</sup></strong>.
   </div>
+</div>
 </div>
 
 <script>
@@ -363,7 +374,7 @@ function togglePassword() {
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -374,7 +385,7 @@ function togglePassword() {
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>

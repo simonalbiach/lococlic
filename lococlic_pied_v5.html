@@ -4,7 +4,7 @@
 <script src="auth-check.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocoClic — Pied v5</title>
+<title>lococlic™ — Pied v5</title>
 <style>
 
 
@@ -1065,7 +1065,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>LocoClic — Pied</h1>
+    <h1>lococlic<sup>™</sup> — Pied</h1>
     <div class="badge">v5 · clinique adaptatif</div>
   </div>
   <div id="main"></div>
@@ -1100,10 +1100,10 @@ const P = {
       text:"⚠️ Si forme bilatérale, raideur matinale > 30 min, atteinte d'autres enthèses (Achille, ischio, etc.) ou ATCD personnel/familial de psoriasis, uvéite ou MICI : penser à une spondylarthrite (enthésopathie inflammatoire). Bilan : CRP, HLA-B27, radio bassin (sacro-iliaques)."
     },
     sources:[
-      {l:'Trojian & Tucker 2019 — Plantar fasciitis (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/31361104/'},
-      {l:'Sullivan et al. 2015 — Plantar heel pain CPG (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/25549231/'},
-      {l:'Petraglia et al. 2017 — Plantar fasciitis (Muscles Ligaments Tendons J)',u:'https://pubmed.ncbi.nlm.nih.gov/29051915/'},
-      {l:'HAS — Talalgies plantaires',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG: pathologies du talon',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Premier appui matinal','Insertion calcanéenne médiale','Coureur','Étirements','Fasciite']
   },
@@ -1135,10 +1135,10 @@ const P = {
       text:"⚠️ Penser à une spondylarthrite si talalgies bilatérales, raideur matinale > 30 min, atteinte d'autres enthèses ou ATCD de psoriasis, uvéite, MICI. Bilan : CRP, HLA-B27, radio bassin."
     },
     sources:[
-      {l:'Chimenti et al. 2017 — Insertional Achilles tendinopathy (Phys Ther Sport)',u:'https://pubmed.ncbi.nlm.nih.gov/28063681/'},
-      {l:'Vaishya et al. 2016 — Haglund syndrome review (Cureus)',u:'https://pubmed.ncbi.nlm.nih.gov/27818884/'},
-      {l:'Habets et al. 2017 — Eccentric exercise insertional Achilles (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/27286897/'},
-      {l:'HAS — Tendinopathies du membre inférieur',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
     ],
     keys:['Insertion Achille','Haglund','Bursite rétro-calcanéenne','Coureur','Talalgie postérieure']
   },
@@ -1164,8 +1164,8 @@ const P = {
     sources:[
       {l:"James et al. 2016 — Sever's disease (Phys Sports Med)",u:'https://pubmed.ncbi.nlm.nih.gov/27121275/'},
       {l:"Smith & Varacallo 2024 — Sever's disease (StatPearls)",u:'https://www.ncbi.nlm.nih.gov/books/NBK441928/'},
-      {l:'Wiegerinck et al. 2014 — Treatment heel pain children (Eur J Pediatr)',u:'https://pubmed.ncbi.nlm.nih.gov/24985126/'},
-      {l:'HAS — Pathologies pédiatriques sportives',u:'https://www.has-sante.fr'}
+      
+      {l:'HAS — Pathologies osseuses (référence française pour l\'os en croissance)',u:'https://www.has-sante.fr/jcms/p_3105108/fr/prevention-diagnostic-et-traitement-de-l-osteoporose'}
     ],
     keys:['Enfant 8-14 ans','Squeeze calcanéum','Course','Croissance','Sever']
   },
@@ -1191,10 +1191,10 @@ const P = {
       {who:'Chirurgien orthopédique (pied)',why:"Si fracture de Jones (5e méta, dreaded black line), déplacée ou pseudarthrose",p:false}
     ],
     sources:[
-      {l:'Mandell et al. 2017 — Stress fractures foot (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28937451/'},
-      {l:'Welck et al. 2017 — Stress fractures foot ankle (Injury)',u:'https://pubmed.ncbi.nlm.nih.gov/28442183/'},
-      {l:'Mayer et al. 2014 — Stress fractures lower extremity (Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/24604483/'},
-      {l:'HAS — Pathologies osseuses sportives',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS 2019 — Prévention et traitement de l\'ostéoporose (référence française)',u:'https://www.has-sante.fr/jcms/p_3105108/fr/prevention-diagnostic-et-traitement-de-l-osteoporose'}
     ],
     keys:['Coureur','2e métatarsien','Fracture de marche','Douleur exquise','Stress métatarsien']
   },
@@ -1219,12 +1219,7 @@ const P = {
       {who:'Médecin du sport',why:"Évaluation et programme de rééducation, ondes de choc si tendinopathie",p:true},
       {who:'Rhumatologue',why:"Bilan d'arthrose, infiltration sous échoguidage si poussée hyperalgique",p:true}
     ],
-    sources:[
-      {l:'Yasui et al. 2017 — Talonavicular osteoarthritis (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/28452242/'},
-      {l:'Bowring & Chockalingam 2010 — Adult acquired flatfoot (Foot)',u:'https://pubmed.ncbi.nlm.nih.gov/20961751/'},
-      {l:'Kohls-Gatzoulis et al. 2004 — Tibialis posterior dysfunction (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/15217877/'},
-      {l:'Knapik et al. 2019 — Accessory navicular review (Foot Ankle Spec)',u:'https://pubmed.ncbi.nlm.nih.gov/30141342/'}
-    ],
+    sources:[{l:'HAS 2018 — Entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'},{l:'Martin et al. 2018 — JOSPT CPG Achilles tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
     keys:['Médio-pied médial','Arthrose talo-naviculaire','Os naviculaire','Tibial postérieur','Pied plat']
   },
   NEVROME_MORTON: {
@@ -1250,10 +1245,10 @@ const P = {
       {who:'Chirurgien orthopédique (pied)',why:"Si échec médical — neurectomie ou décompression",p:false}
     ],
     sources:[
-      {l:'Bhatia & Thomson 2020 — Mortons neuroma (J Clin Orthop Trauma)',u:'https://pubmed.ncbi.nlm.nih.gov/32684682/'},
-      {l:'Pace et al. 2010 — Mortons neuroma diagnosis (Foot Ankle Spec)',u:'https://pubmed.ncbi.nlm.nih.gov/20023281/'},
-      {l:'Studler et al. 2008 — Intermetatarsal bursitis MRI (Radiology)',u:'https://pubmed.ncbi.nlm.nih.gov/18372475/'},
-      {l:'HAS — Pathologies de l\'avant-pied',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG pathologies pied (référence)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['3e espace','Mulder','Femme talons','Bursite intermétatarsienne','Morton']
   },
@@ -1284,10 +1279,10 @@ const P = {
       text:"⚠️ Atteinte des MTP très fréquente dans la polyarthrite rhumatoïde (PR) — surtout si gonflement articulaire, raideur matinale > 30 min, atteinte symétrique bilatérale. Le squeeze test plantaire douloureux à la compression des têtes MTP est très sensible. Bilan : CRP, FR, anti-CCP, radio pieds face."
     },
     sources:[
-      {l:'Espinosa et al. 2010 — Metatarsalgia (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/20675621/'},
-      {l:'Maceira & Monteagudo 2014 — Mechanical metatarsalgia (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/25129351/'},
-      {l:'Federer et al. 2018 — Conservative treatment metatarsalgia (Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/29409262/'},
-      {l:'HAS — Pathologies de l\'avant-pied',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG pathologies pied (référence)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Avant-pied plantaire','Têtes métatarsiennes','Durillons','Trouble statique','Métatarsalgie']
   },
@@ -1311,10 +1306,10 @@ const P = {
       {who:'Chirurgien orthopédique (pied)',why:"Si retentissement fonctionnel ou déformation évolutive — pour évaluation chirurgicale",p:true}
     ],
     sources:[
-      {l:'Wülker & Mittag 2012 — Treatment of hallux valgus (Dtsch Arztebl Int)',u:'https://pubmed.ncbi.nlm.nih.gov/22989961/'},
-      {l:'Ferrari et al. 2009 — Hallux valgus surgery (Cochrane)',u:'https://pubmed.ncbi.nlm.nih.gov/19370600/'},
-      {l:'Nix et al. 2010 — Prevalence hallux valgus (J Foot Ankle Res)',u:'https://pubmed.ncbi.nlm.nih.gov/20868524/'},
-      {l:'HAS — Hallux valgus',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG: pathologies pied et cheville (référence)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Déviation gros orteil','Exostose médiale','Femme chaussures étroites','Bursite oignon','Hallux valgus']
   },
@@ -1338,10 +1333,10 @@ const P = {
       {who:'Chirurgien orthopédique (pied)',why:"Si forme évoluée invalidante après échec conservateur",p:false}
     ],
     sources:[
-      {l:'Anderson et al. 2018 — Hallux rigidus (Foot Ankle Spec)',u:'https://pubmed.ncbi.nlm.nih.gov/29291634/'},
-      {l:'Yee & Lau 2008 — Hallux rigidus current concepts (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/18524988/'},
-      {l:'Polzer et al. 2014 — Diagnosis treatment hallux rigidus (Dtsch Arztebl Int)',u:'https://pubmed.ncbi.nlm.nih.gov/25249295/'},
-      {l:'HAS — Arthrose du pied',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Bannuru et al. 2019 — OARSI guidelines (general OA management principles)',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'}
     ],
     keys:['Gros orteil dorsal','Raideur extension','Ostéophytes dorsaux','Arthrose MTP1','Hallux rigidus']
   },
@@ -1367,10 +1362,10 @@ const P = {
       {who:'Chirurgien orthopédique (pied)',why:"Si échec conservateur prolongé > 6 mois — sésamoïdectomie",p:false}
     ],
     sources:[
-      {l:'Sims & Kurup 2014 — Sesamoid injuries (Bone Joint Lett)',u:'https://pubmed.ncbi.nlm.nih.gov/25232423/'},
-      {l:'Cohen 2009 — Sesamoiditis (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/19840752/'},
-      {l:'Sanders & Rathur 2008 — Sesamoid disorders MRI (Magn Reson Imaging Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/18234194/'},
-      {l:'HAS — Pathologies sportives du pied',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG: pathologies sportives du pied (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Sous-1ère MTP','Sésamoïdes','Coureur','Danseur','Sésamoïdite']
   },
@@ -1397,10 +1392,10 @@ const P = {
       {who:'Chirurgien orthopédique (pied)',why:"Si grade III, lésion sésamoïdienne associée ou instabilité chronique",p:false}
     ],
     sources:[
-      {l:'McCormick & Anderson 2010 — Turf toe (Sports Health)',u:'https://pubmed.ncbi.nlm.nih.gov/23015984/'},
-      {l:'Smith et al. 2017 — Turf toe injuries (Curr Rev Musculoskelet Med)',u:'https://pubmed.ncbi.nlm.nih.gov/28110391/'},
-      {l:'George et al. 2014 — Turf toe imaging treatment (Skeletal Radiol)',u:'https://pubmed.ncbi.nlm.nih.gov/24493058/'},
-      {l:'HAS — Traumatologie sportive du pied',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG pathologies du pied',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Hyperextension gros orteil','Sport surface dure','MTP1 plantaire','Plaque plantaire','Turf toe']
   },
@@ -1426,10 +1421,10 @@ const P = {
       {who:'Chirurgien orthopédique (pied)',why:"Si forme évoluée invalidante après échec conservateur — réparation",p:false}
     ],
     sources:[
-      {l:'Nery et al. 2012 — Plantar plate injuries classification (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/22735278/'},
-      {l:'Coughlin et al. 2017 — Plantar plate review (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/28779812/'},
-      {l:'Bouché & Heit 2008 — Plantar plate dysfunction (J Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/18455667/'},
-      {l:'HAS — Pathologies de l\'avant-pied',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG pathologies pied (référence)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['2e MTP plantaire','Femme chaussures étroites','Claw toe','Lachman digital','Plaque plantaire']
   },
@@ -1454,12 +1449,7 @@ const P = {
       {who:'Médecin du sport',why:"Évaluation, encadrement de la rééducation et reprise sportive (notamment danseurs)",p:true},
       {who:'Rhumatologue',why:"Infiltration sous échoguidage si échec conservateur",p:false}
     ],
-    sources:[
-      {l:'Michelson & Dunn 2005 — Tenosynovitis FHL dancers (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/15960914/'},
-      {l:'Sammarco & Cooper 1998 — FHL tendinitis in athletes (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/9617590/'},
-      {l:'Ribbans et al. 2012 — Hallux pathology dancers (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/22938648/'},
-      {l:'Hamilton 2008 — FHL ballet dancers (Clin Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18206571/'}
-    ],
+    sources:[{l:'HAS 2018 — Entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'},{l:'Martin et al. 2018 — JOSPT CPG Achilles tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
     keys:['Long fléchisseur hallux','Danseur sur pointes','Flexion contrariée','Trajet rétro-sésamoïdien','FHL distal']
   }
 };
@@ -2415,7 +2405,7 @@ renderStep();
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -2426,7 +2416,7 @@ renderStep();
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>

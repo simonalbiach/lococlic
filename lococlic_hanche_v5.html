@@ -4,7 +4,7 @@
 <script src="auth-check.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocoClic — Hanche v5</title>
+<title>lococlic™ — Hanche v5</title>
 <style>
 
 
@@ -1002,7 +1002,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>LocoClic — Hanche</h1>
+    <h1>lococlic<sup>™</sup> — Hanche</h1>
     <div class="badge">v5 · clinique adaptatif</div>
   </div>
   <div id="main"></div>
@@ -1014,57 +1014,57 @@ const P = {
     desc:'Douleur inguinale',alert:null,
     imaging:[{t:'Radiographies',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Antalgie',d:''},{t:'AINS',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Chirurgie',d:''}],
     exercises:[{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Pont fessier',d:''},{t:'Étirement de la chaîne antérieure (Thomas modifié)',d:''},{t:'Vélo d\'appartement ou marche aquatique',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_01_coxarthrose.html',referral:[{who:'Rhumatologue',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'HAS 2022 — Gonarthrose et coxarthrose',u:'https://www.has-sante.fr'},{l:'Koc et al. 2025 — Hip OA CPG revision (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/39740115/'},{l:'Bannuru et al. 2019 — OARSI guidelines hip OA',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'},{l:'Kolasinski et al. 2020 — ACR guideline OA',u:'https://pubmed.ncbi.nlm.nih.gov/31908163/'}],keys:['Douleur inguinale','Horaire mécanique','Boiterie','Douleur flexion de hanche','Douleur rotation interne','Douleur palaption capsule articulaire']},
+    sources:[{l:'Bannuru et al. 2019 — OARSI guidelines for knee, hip, and polyarticular OA',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'},{l:'Bannuru et al. 2019 — OARSI guidelines hip OA',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'}],keys:['Douleur inguinale','Horaire mécanique','Boiterie','Douleur flexion de hanche','Douleur rotation interne','Douleur palaption capsule articulaire']},
   CFA:{id:'CFA',name:'Conflit fémoro-acétabulaire',icon:'🔵',pop:'20-40 ans sportifs',
     desc:'Douleur aine',alert:null,
     imaging:[{t:'Radiographie bassin de face + faux profil recherche effet CAM ou PINCER',d:''},{t:'Arthoscanner / ArthoIRM recherche lésion labrum',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'AINS',d:''},{t:'Chirurgie',d:''}],
     exercises:[{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne antérieure (Thomas modifié)',d:''},{t:'Renforcement des abdominaux profonds (Bird-dog)',d:''},{t:'Mobilisation douce de la hanche',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_02_conflit_femoroacetabulaire.html',referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'Griffin et al. 2016 — Warwick Agreement on FAI (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/27629403/'},{l:'Griffin et al. 2018 — UK FASHIoN trial FAI surgery vs PT (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29893223/'},{l:'Reiman et al. 2015 — Diagnostic accuracy FADIR test meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/24837243/'},{l:'HAS — Conflit fémoro-acétabulaire',u:'https://www.has-sante.fr'}],keys:['Douleur aine','Horaire mécanique','Douleur flexion rotation interne de hanche ( tirs , montée de genoux )','Bilatérale possible','Douleur FADIR, Positif bilatéral (gêne ou douleur)','Limitation rotation interne de hanche']},
+    sources:[{l:'Griffin et al. 2016 — Warwick Agreement on FAI (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/27629403/'},{l:'Griffin et al. 2016 — Warwick Agreement on FAI syndrome (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/27629403/'}],keys:['Douleur aine','Horaire mécanique','Douleur flexion rotation interne de hanche ( tirs , montée de genoux )','Bilatérale possible','Douleur FADIR, Positif bilatéral (gêne ou douleur)','Limitation rotation interne de hanche']},
   LABRUM:{id:'LABRUM',name:'Lésion labrale acétabulaire',icon:'🟣',pop:'20-50 ans',
     desc:'Douleur inguinale profonde',alert:null,
     imaging:[{t:'Arthoscanner',d:''},{t:'Arthro IRM',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration',d:''},{t:'AINS',d:''},{t:'Chirurgie',d:''}],
     exercises:[{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne antérieure (Thomas modifié)',d:''},{t:'Renforcement des abdominaux profonds (Bird-dog)',d:''},{t:'Mobilisation douce de la hanche',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_03_lesion_labrale.html',referral:[{who:'Médecin du sport',why:'',p:true},{who:'Rhumatologue',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'Reiman et al. 2015 — Hip labral tear diagnostic accuracy (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/24837243/'},{l:'Su et al. 2019 — Hip labral tears systematic review (J Bone Joint Surg Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/31246854/'},{l:'Griffin et al. 2018 — FASHIoN trial (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29893223/'},{l:'HAS — Pathologies labrales hanche',u:'https://www.has-sante.fr'}],keys:['Douleur inguinale profonde','Douleur rotation interne','Claquement (course)','FADIR positif','Test de Mc Carthy positif']},
+    sources:[{l:'Griffin et al. 2016 — Warwick Agreement on FAI and hip labral tears',u:'https://pubmed.ncbi.nlm.nih.gov/27629403/'}],keys:['Douleur inguinale profonde','Douleur rotation interne','Claquement (course)','FADIR positif','Test de Mc Carthy positif']},
   OSTEONECROSE:{id:'OSTEONECROSE',name:'Ostéonécrose de la tête fémorale',icon:'⚫',pop:'30-50 ans , corticoïdes , éthylisme',
     desc:'Douleur inguinale',alert:null,
     imaging:[{t:'Radiographies hanches et bassin de face',d:''},{t:'IRM (diagnostic précoce)',d:''}],treatment:[{t:'Décharge avec béquilles',d:''},{t:'Antalgiques',d:''},{t:'AINS',d:''},{t:'Chirurgie',d:''},{t:'Kinésithérapie',d:''}],
     exercises:[{t:'Renforcement isométrique des fessiers (en décharge)',d:''},{t:'Mobilisation douce de la hanche',d:''},{t:'Vélo d\'appartement (sans charge sur la hanche)',d:''},{t:'Étirement de la chaîne postérieure',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_04_osteonecrose.html',referral:[{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'HAS — Ostéonécrose aseptique de la tête fémorale',u:'https://www.has-sante.fr'},{l:'Mont et al. 2020 — Osteonecrosis femoral head review (J Bone Joint Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/32675670/'},{l:'Petek et al. 2019 — Osteonecrosis hip treatment (EFORT Open Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/30993013/'},{l:'Cohen-Rosenblum & Cui 2019 — Osteonecrosis review (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/31136500/'}],keys:['Douleur inguinale','Douleur Mécanique progressive','Boiterie','Boiterie d’esquive','Douleur rotation interne hanche']},
+    sources:[{l:'OARSI guidelines (pathologies de hanche, incl. ostéonécrose dans la prise en charge)',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'}],keys:['Douleur inguinale','Douleur Mécanique progressive','Boiterie','Boiterie d’esquive','Douleur rotation interne hanche']},
   COXITE_MICRO:{id:'COXITE_MICRO',name:'Coxite microcristalline',icon:'⚡',pop:'> 50 ans , goutte',
     desc:'Impotence fonctionnelle',alert:null,
     imaging:[{t:'Radiographie bassin et hanche',d:''},{t:'IRM',d:''},{t:'Ponction articulaire',d:''}],treatment:[{t:'AINS, Corticoïdes, Colchicine',d:''},{t:'Glaçage',d:''},{t:'Décharge',d:''},{t:'Ponction Infiltration corticoïdes',d:''}],
     exercises:[{t:'Repos relatif et glaçage en phase aiguë',d:''},{t:'Mobilisation douce de la hanche',d:''},{t:'Renforcement isométrique des fessiers',d:''},{t:'Marche progressive',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_05_coxite_microcristalline.html',referral:[{who:'Rhumatologue',why:'',p:true}],
-    sources:[{l:'Dalbeth et al. 2021 — Gout EULAR recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/27457514/'},{l:'FitzGerald et al. 2020 — ACR Guidelines for Gout',u:'https://pubmed.ncbi.nlm.nih.gov/32391934/'},{l:'HAS — Goutte : diagnostic et traitement',u:'https://www.has-sante.fr'},{l:'Pascart & Lioté 2019 — Microcrystalline arthropathies (Rheumatology)',u:'https://pubmed.ncbi.nlm.nih.gov/30247705/'}],keys:['Impotence fonctionnelle','Douleur inguinale et fessière','Horaire inflammatoire','Douleur rotation interne','Hanche en flexion et rotation externe']},
+    sources:[{l:'OARSI guidelines (à compléter par EULAR Richette 2017 pour la goutte)',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'}],keys:['Impotence fonctionnelle','Douleur inguinale et fessière','Horaire inflammatoire','Douleur rotation interne','Hanche en flexion et rotation externe']},
   PUBALGIE:{id:'PUBALGIE',name:'Pubalgie',icon:'🔴',pop:'20-40 ans sportifs',
     desc:'Douleur pubienne',alert:null,
     imaging:[{t:'Radiographies (éliminer ostéite)',d:''},{t:'IRM si persistance (oedème osseux)',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Repos sportif relatif',d:''}],
     exercises:[{t:'Renforcement des adducteurs (Copenhagen plank progressif)',d:''},{t:'Renforcement des abdominaux profonds (Bird-dog)',d:''},{t:'Étirement des adducteurs',d:''},{t:'Étirement de la chaîne antérieure (Thomas modifié)',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_06_pubalgie.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Weir et al. 2015 — Doha agreement groin pain (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/26031643/'},{l:'Thorborg et al. 2018 — Copenhagen 5-second squeeze test (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29298786/'},{l:'Serner et al. 2015 — Acute groin injuries diagnostic (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/26031644/'},{l:'HAS — Pubalgie du sportif',u:'https://www.has-sante.fr'}],keys:['Douleur pubienne','Horaire mécanique','Possible douleur diffuse','Sursollicitation','Changement d’appuis','Course à pied']},
+    sources:[{l:'Weir et al. 2015 — Doha agreement groin pain (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/26031643/'},{l:'Weir et al. 2015 — Doha agreement on terminology for groin pain in athletes (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/26031643/'}],keys:['Douleur pubienne','Horaire mécanique','Possible douleur diffuse','Sursollicitation','Changement d’appuis','Course à pied']},
   BURSITE_TROCH:{id:'BURSITE_TROCH',name:'Bursite trochantérienne',icon:'🟢',pop:'40-70 ans , Femmes',
     desc:'Douleur latérale',alert:null,
     imaging:[{t:'Echographie',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'AINS',d:''},{t:'Antalgie',d:''},{t:'Infiltration corticostéroïdes',d:''}],
     exercises:[{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement du tenseur du fascia lata (TFL)',d:''},{t:'Étirement de la bandelette ilio-tibiale',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_07_bursite_trochanterienne.html',referral:[{who:'Rhumatologue',why:'',p:true},{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Mellor et al. 2018 — LEAP trial gluteal tendinopathy (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/29720374/'},{l:'Grimaldi et al. 2017 — Greater trochanteric pain syndrome (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/28148629/'},{l:'Speers & Bhogal 2017 — Greater trochanteric pain syndrome (Br J Gen Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/28533200/'},{l:'HAS — Bursites trochantériennes',u:'https://www.has-sante.fr'}],keys:['Douleur latérale','Horaire mixte','Douleur couché sur côté atteint','Douleur escaliers , course , marche longue','Douleur palpation trochanter','Douleur Freiberg']},
+    sources:[{l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med) — applicable au tendon glutéal',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],keys:['Douleur latérale','Horaire mixte','Douleur couché sur côté atteint','Douleur escaliers , course , marche longue','Douleur palpation trochanter','Douleur Freiberg']},
   TEND_MOY_FESS:{id:'TEND_MOY_FESS',name:'Tendinopathie moyen fessier',icon:'🟡',pop:'40-60 ans, Sportifs',
     desc:'Douleur latérale',alert:null,
     imaging:[{t:'Echographie',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'AINS',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Infiltration PRP',d:''}],
     exercises:[{t:'Renforcement excentrique du moyen fessier',d:''},{t:'Étirement du tenseur du fascia lata (TFL)',d:''},{t:'Pont fessier',d:''},{t:'Renforcement des abdominaux profonds (Bird-dog)',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_08_tendinopathie_moyen_fessier.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Mellor et al. 2018 — LEAP trial gluteal tendinopathy (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/29720374/'},{l:'Grimaldi & Fearon 2015 — Gluteal tendinopathy (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/26161623/'},{l:'Reiman et al. 2013 — Gluteal tendinopathy clinical tests (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/22773322/'},{l:'HAS — Tendinopathies de la hanche',u:'https://www.has-sante.fr'}],keys:['Douleur latérale','Horaire mixte','Irradiation fesse','Douleur montée escaliers, course','Douleur couché sur coté atteint','Douleur palpation insertion sur trochanter']},
+    sources:[{l:'Reiman et al. 2013 — Gluteal tendinopathy clinical tests (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/22773322/'},{l:'Cook et al. 2009 — Tendinopathy continuum (applicable aux tendinopathies glutéales)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],keys:['Douleur latérale','Horaire mixte','Irradiation fesse','Douleur montée escaliers, course','Douleur couché sur coté atteint','Douleur palpation insertion sur trochanter']},
   PIRIFORME:{id:'PIRIFORME',name:'Syndrome du piriforme',icon:'🟠',pop:'25-60 ans,',
     desc:'Douleur fessière profonde',alert:null,
     imaging:[{t:'Aucun',d:''},{t:'IRM ( élimination discopathie avec radiculopathie )',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'AINS',d:''},{t:'Eviction facteur favorisant',d:''}],
     exercises:[{t:'Étirement du piriforme',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Mobilisation neurale du nerf sciatique',d:''},{t:'Étirement de la chaîne postérieure',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_09_syndrome_piriforme.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Hopayian & Heathcote 2019 — Piriformis syndrome systematic review (Eur J Orthop Surg Traumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/30374693/'},{l:'Probst et al. 2019 — Piriformis syndrome review (Korean J Pain)',u:'https://pubmed.ncbi.nlm.nih.gov/31257821/'},{l:'Michel et al. 2013 — Piriformis muscle syndrome (Ann Phys Rehabil Med)',u:'https://pubmed.ncbi.nlm.nih.gov/24138842/'},{l:'HAS — Sciatique non discale',u:'https://www.has-sante.fr'}],keys:['Douleur fessière profonde','Douleur position assise','Possible radiculalgie L5-S1 tronquée ( STOP au genou )','Histoire de chute, sollicitation excessive fessiers ou position assise prolongée','Palpation muscle piriforme douloureuse','Douleur Freiberg']},
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre pour sciatiques associées)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'}],keys:['Douleur fessière profonde','Douleur position assise','Possible radiculalgie L5-S1 tronquée ( STOP au genou )','Histoire de chute, sollicitation excessive fessiers ou position assise prolongée','Palpation muscle piriforme douloureuse','Douleur Freiberg']},
   TEND_IJ:{id:'TEND_IJ',name:'Tendinopathie Ischios Jambiers',icon:'🟡',pop:'20-40 ans , Sportif',
     desc:'Douleur pli fessier',alert:null,
     imaging:[{t:'Echographie (Fissure ?)',d:''},{t:'IRM ( oedème osseux ? )',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Infiltration PRP',d:''}],
     exercises:[{t:'Renforcement excentrique des ischio-jambiers (Nordic hamstring)',d:''},{t:'Étirement des ischio-jambiers',d:''},{t:'Renforcement du moyen fessier',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_10_tendinopathie_ischio.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Goom et al. 2016 — Proximal hamstring tendinopathy (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/27117729/'},{l:'Fournier-Farley et al. 2016 — Hamstring tendinopathy (Am J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/26944577/'},{l:'Beatty et al. 2017 — Proximal hamstring tendinopathy (PM R)',u:'https://pubmed.ncbi.nlm.nih.gov/27845682/'},{l:'HAS — Tendinopathies du sportif',u:'https://www.has-sante.fr'}],keys:['Douleur pli fessier','Douleur sprint','Douleur étirement','Palpation ischion','Douleur étirement','Douleur flexion de genou contratriée']},
+    sources:[{l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],keys:['Douleur pli fessier','Douleur sprint','Douleur étirement','Palpation ischion','Douleur étirement','Douleur flexion de genou contratriée']},
   CONFLIT_IF:{id:'CONFLIT_IF',name:'Conflit Ischio-fémoral',icon:'🟠',pop:'20-50 ans, Sport',
     desc:'Douleur fessière profonde',alert:null,
     imaging:[{t:'IRM recherche bursite , oedème osseux , inflammation carré fémoral',d:''}],treatment:[{t:'AINS',d:''},{t:'Kinésithérapie',d:''},{t:'Infiltration corticostéroïdes',d:''}],
     exercises:[{t:'Étirement des ischio-jambiers',d:''},{t:'Renforcement des adducteurs contre élastique',d:''},{t:'Renforcement du moyen fessier',d:''},{t:'Étirement de la chaîne antérieure (Thomas modifié)',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_11_conflit_ischio_femoral.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Torriani et al. 2009 — Ischiofemoral impingement (AJR)',u:'https://pubmed.ncbi.nlm.nih.gov/19542428/'},{l:'Singer et al. 2015 — Ischiofemoral impingement systematic review (Skeletal Radiol)',u:'https://pubmed.ncbi.nlm.nih.gov/25864348/'},{l:'Gomez-Hoyos et al. 2016 — Ischiofemoral impingement (Arthroscopy)',u:'https://pubmed.ncbi.nlm.nih.gov/27039692/'},{l:'HAS — Pathologies de la hanche',u:'https://www.has-sante.fr'}],keys:['Douleur fessière profonde','Horaire mécanique','Douleur sprint / extension hanche','Douleur en extension/Adduction/rotation externe de hanche (décubitus ventral)','Palpation espace ischio-fémoral douloureux']},
+    sources:[{l:'Bannuru et al. 2019 — OARSI guidelines (incl. coxarthrose et pathologies de hanche)',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'}],keys:['Douleur fessière profonde','Horaire mécanique','Douleur sprint / extension hanche','Douleur en extension/Adduction/rotation externe de hanche (décubitus ventral)','Palpation espace ischio-fémoral douloureux']},
   SACRO_ILIAQUE: {id:'SACRO_ILIAQUE',name:'Dysfonction sacro-iliaque',icon:'🔺',pop:'Toute âge — post-partum, sportif, sénior',
     desc:"Douleur localisée à la fesse haute/zone du Fortin (épine iliaque postérieure), parfois irradiation à la cuisse postérieure sans dépasser le genou. Aggravée par les transferts (passer assis ↔ debout), la marche prolongée, monter les escaliers. Sensibilité aux changements de position.",
     imaging:[
@@ -1085,10 +1085,10 @@ const P = {
       {who:'Rhumatologue',why:'Si suspicion de spondylarthrite (HLA-B27, raideur matinale > 30 min, < 45 ans)',p:true}
     ],
     sources:[
-      {l:'Laslett 2008 — SIJ tests cluster (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/19119406/'},
-      {l:'Cohen 2013 — SIJ pain review (Anesth Analg)',u:'https://pubmed.ncbi.nlm.nih.gov/23267000/'},
-      {l:'Telli 2018 — SIJ diagnostic tests systematic review (Eur Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/29797151/'},
-      {l:'HAS — Douleurs lombo-sacrées et sacro-iliaques',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'}
     ],
     keys:['Fesse haute','Fortin','Transferts','Cluster Laslett','Post-partum','Sacro-iliaque']
   },
@@ -1099,7 +1099,7 @@ FRACT_COL:{id:'FRACT_COL',name:'Fracture de contrainte du col fémoral',icon:'�
     treatment:[{t:'Décharge immédiate et stricte (béquilles sans appui)',d:''},{t:'Avis chirurgical orthopédique en urgence si fracture tension (supéro-latérale) ou fracture complète → chirurgie',d:''},{t:'Prise en charge conservatrice possible si fracture compression (inféro-médiale) incomplète, sous surveillance rapprochée',d:''},{t:'Évaluation des facteurs de risque : densitométrie osseuse, bilan hormonal, recherche triade de l\'athlète (aménorrhée, trouble conduite alimentaire, ostéoporose)',d:''}],
     exercises:[{t:'Repos relatif et protection (décharge)',d:''},{t:'Renforcement isométrique des fessiers (en décharge)',d:''},{t:'Reprise progressive de l\'activité',d:''},{t:'Renforcement du moyen fessier',d:''}],ficheExercice:'lococlic_fiches_patient/hanche_13_fracture_col.html',
     referral:[{who:'Chirurgien orthopédique en urgence (si fracture tension ou doute)',why:'',p:true},{who:'Médecin du sport pour bilan étiologique et prévention récidive',why:'',p:true},{who:'Endocrinologue / gynécologue si suspicion de triade de l\'athlète',why:'',p:true}],
-    sources:[{l:'Kahanov et al. 2015 — Diagnosis and management of femoral neck stress fracture (Open Access J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25506253/'},{l:'Robertson & Wood 2017 — Lower limb stress fractures (J Athl Train)',u:'https://pubmed.ncbi.nlm.nih.gov/28535123/'},{l:'Matcuk et al. 2016 — Stress fractures: pathophysiology, clinical presentation, imaging (Emerg Radiol)',u:'https://pubmed.ncbi.nlm.nih.gov/26582560/'},{l:'HAS — Fractures de contrainte',u:'https://www.has-sante.fr'}],
+    sources:[{l:'HAS 2019 — Prévention, diagnostic et traitement de l\'ostéoporose (incl. fractures de fragilité)',u:'https://www.has-sante.fr/jcms/p_3105108/fr/prevention-diagnostic-et-traitement-de-l-osteoporose'}],
     keys:['Douleur aine à l\'effort','Boiterie récente','Douleur à la mise en charge','Test du hop positif','Fulcrum test positif']}
 };
 
@@ -1982,7 +1982,7 @@ renderStep();
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -1993,7 +1993,7 @@ renderStep();
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>

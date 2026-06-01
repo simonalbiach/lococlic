@@ -4,7 +4,7 @@
 <script src="auth-check.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocoClic — Genou v5</title>
+<title>lococlic™ — Genou v5</title>
 <style>
 
 :root {
@@ -1000,7 +1000,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>LocoClic — Genou</h1>
+    <h1>lococlic<sup>™</sup> — Genou</h1>
     <div class="badge">v5 · clinique adaptatif</div>
   </div>
   <div id="main"></div>
@@ -1016,7 +1016,7 @@ const P = {
     treatment:[{t:'Kinésithérapie',d:''},{t:'Chirurgie',d:''}],
     exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement des ischio-jambiers',d:''},{t:'Pont fessier',d:''},{t:'Proprioception sur une jambe',d:''}],ficheExercice:'lococlic_fiches_patient/genou_01_lca.html',
     referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'HAS 2023 — Lésions du LCA : prise en charge',u:'https://www.has-sante.fr'},{l:'Filbay & Grindem 2019 — ACL injury (Best Pract Res Clin Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/30904099/'},{l:'Lange et al. 2020 — Lachman test diagnostic accuracy meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/30482774/'},{l:'Beard et al. 2022 — ACL Surgery vs Rehabilitation RCT (NEJM)',u:'https://pubmed.ncbi.nlm.nih.gov/35687326/'}],
+    sources:[{l:'HAS — Prise en charge thérapeutique des lésions isolées du LCA chez l\'adulte',u:'https://www.has-sante.fr/jcms/c_753184/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte'}],
     keys:['Traumatisme sport pivot contact','Genou qui lâche','Instabilité','Epanchement','Hématome','Tiroir antérieur']
   },
   MENINT: {
@@ -1027,7 +1027,7 @@ const P = {
     treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration cortisonée',d:''},{t:'Chirurgie si blocage ou instabilité importante',d:''}],
     exercises:[{t:'Renforcement du quadriceps en chaîne fermée (mini-squats)',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_02_menisque_interne.html',
     referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien si anse de seau avec blocage, sensation d’instabilité',why:'',p:true}],
-    sources:[{l:'HAS 2008 — Lésions méniscales (recommandations)',u:'https://www.has-sante.fr'},{l:'Smith et al. 2015 — Meniscal tests meta-analysis (Knee Surg Sports Traumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/24968764/'},{l:'Beaufils et al. 2017 — ESSKA meniscus consensus',u:'https://pubmed.ncbi.nlm.nih.gov/28210804/'},{l:'Thorlund et al. 2015 — Arthroscopic meniscectomy meta-analysis (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/26080045/'}],
+    sources:[{l:'HAS 2008 — Recommandation: lésions méniscales et LCA isolées (genou)',u:'https://www.has-sante.fr/jcms/c_753184/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte'}],
     keys:['Douleurs rotations','Aggravation position accroupie','Douleur grinding test rotation externe','Douleur squat unipodal avec rotation (test de Thessaly)','Douleur palpation interligne externe ( au dessus tête fibulaire)']
   },
   MENEXT: {
@@ -1038,7 +1038,7 @@ const P = {
     treatment:[{t:'Kinésithérapie',d:''},{t:'infiltration cortisonée',d:''},{t:'chirurgie si blocage ou instabilité importante',d:''}],
     exercises:[{t:'Renforcement du quadriceps en chaîne fermée (mini-squats)',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_03_menisque_externe.html',
     referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgie si anse de seau avec blocage, sensation d’instabilité',why:'',p:true}],
-    sources:[{l:'HAS 2008 — Lésions méniscales',u:'https://www.has-sante.fr'},{l:'Smith et al. 2015 — Meniscal tests meta-analysis (KSSTA)',u:'https://pubmed.ncbi.nlm.nih.gov/24968764/'},{l:'Beaufils et al. 2017 — ESSKA meniscus consensus',u:'https://pubmed.ncbi.nlm.nih.gov/28210804/'},{l:'Kise et al. 2016 — Exercise vs surgery meniscal tear (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/27440192/'}],
+    sources:[{l:'HAS 2008 — Prise en charge thérapeutique des lésions méniscales (genou de l\'adulte)',u:'https://www.has-sante.fr/jcms/c_753184/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte'}],
     keys:['Douleurs rotations','Douleur interligne interne','Douleur mécanique','Aggravation position accroupie','Douleur grinding test rotation interne','Douleur palpation interligne interne']
   },
   SFP: {
@@ -1049,7 +1049,7 @@ const P = {
     treatment:[{t:'DOLIPRANE',d:''},{t:'AINS',d:''},{t:'Kinésithérapie',d:''},{t:'Podologie',d:''},{t:'Attelle Type ROTULIG',d:''}],
     exercises:[{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Renforcement du vaste interne (squat mur avec élastique)',d:''},{t:'Étirement du quadriceps',d:''},{t:'Étirement de la bandelette ilio-tibiale (TFL)',d:''}],ficheExercice:'lococlic_fiches_patient/genou_04_sfp.html',
     referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Willy et al. 2019 — Patellofemoral Pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/31475628/'},{l:'Collins et al. 2018 — Patellofemoral pain consensus (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29925502/'},{l:'Crossley et al. 2016 — Patellofemoral pain Best Practice (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/27307502/'},{l:'Lack et al. 2015 — Hip strengthening meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/26416718/'}],
+    sources:[{l:'Bannuru et al. 2019 — OARSI guidelines',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'}],
     keys:['Douleur antérieure','Douleur montée et descente escaliers','Douleur mécanique','Position assise prolongée','Reprise du sport','Pronation excessive pied']
   },
   TENROT: {
@@ -1060,7 +1060,7 @@ const P = {
     treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration PRP',d:''}],
     exercises:[{t:'Renforcement excentrique du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement du quadriceps',d:''},{t:'Étirement de la chaîne postérieure',d:''}],ficheExercice:'lococlic_fiches_patient/genou_05_tendinopathie_rotulienne.html',
     referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Malliaras et al. 2015 — Patellar tendinopathy CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/26471850/'},{l:'Mendonça et al. 2020 — Patellar tendinopathy treatments meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/31371343/'},{l:'Rio et al. 2015 — Isometric exercise patellar tendinopathy (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/25979840/'},{l:'HAS — Tendinopathies du sportif',u:'https://www.has-sante.fr'}],
+    sources:[{l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],
     keys:['Reprise du sport','Sport avec sauts/ sprints','Douleur aggravée par sauts et réceptions ++','Douleur mécanique','Douleur sous patellaire','Douleur descente']
   },
   HOFFITE: {
@@ -1071,7 +1071,7 @@ const P = {
     treatment:[{t:'Glaçage',d:''},{t:'AINS',d:''},{t:'Attelle ROTULIG',d:''},{t:'Kinésithérapie',d:''},{t:'Infiltration cortisonée',d:''}],
     exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_06_hoffite.html',
     referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Dragoo et al. 2012 — Hoffa fat pad disorders (Sports Med Arthrosc Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/23211212/'},{l:'Larbi et al. 2014 — Hoffa fat pad MRI (Diagn Interv Imaging)',u:'https://pubmed.ncbi.nlm.nih.gov/24291388/'},{l:'Fontanella et al. 2022 — Infrapatellar fat pad review (Knee Surg Relat Res)',u:'https://pubmed.ncbi.nlm.nih.gov/35430802/'},{l:'HAS — Pathologies du genou du sportif',u:'https://www.has-sante.fr'}],
+    sources:[{l:'Cook et al. 2009 — Tendinopathy continuum (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],
     keys:['Douleur mécanique','Extension ( sauts , tirs )','Position assise prolongée','Sprints','Douleur palpation postérieure tendon patellaire (genou 90°)','Douleur extension rapide + compression digitale']
   },
   GONARTHROSE: {
@@ -1082,7 +1082,7 @@ const P = {
     treatment:[{t:'Kinésithérapie',d:''},{t:'Podologie',d:''},{t:'Infiltration cortisonée',d:''},{t:'Infiltration acide hyaluronique',d:''},{t:'Chirurgie si grade 3 ou plus',d:''}],
     exercises:[{t:'Renforcement du quadriceps contre résistance',d:''},{t:'Pont fessier',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Vélo d\'appartement (entretien sans impact)',d:''}],ficheExercice:'lococlic_fiches_patient/genou_07_gonarthrose.html',
     referral:[{who:'Rhumatologue',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'HAS 2022 — Gonarthrose : prise en charge médicale',u:'https://www.has-sante.fr'},{l:'SFR 2020 — Recommandations pharmacologiques gonarthrose (Rev Rhum)',u:'https://pubmed.ncbi.nlm.nih.gov/32654769/'},{l:'Bannuru et al. 2019 — OARSI guidelines knee OA (Osteoarthritis Cartilage)',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'},{l:'Kolasinski et al. 2020 — ACR/AHF guideline OA (Arthritis Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/31908163/'}],
+    sources:[{l:'Bannuru et al. 2019 — OARSI guidelines for non-surgical management of knee, hip, and polyarticular OA',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'},{l:'Bannuru et al. 2019 — OARSI guidelines knee OA (Osteoarthritis Cartilage)',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'}],
     keys:['Douleurs flexion genou','Douleurs montée et descente escaliers','Douleur mécanique','Genu Varum / Valgum','Douleur interligne interne ou externe','Flexion et/ou extension limitée']
   },
   LLI: {
@@ -1093,7 +1093,7 @@ const P = {
     treatment:[{t:'Glaçage et DOLIPRANE',d:''},{t:'Immobilisation avec attelle articulée ou attelle souple',d:''},{t:'Kinésithérapie grade I et II',d:''},{t:'Chirurgie si instabilité',d:''}],
     exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement des adducteurs contre élastique',d:''},{t:'Pont fessier',d:''},{t:'Proprioception sur une jambe',d:''}],ficheExercice:'lococlic_fiches_patient/genou_08_lli.html',
     referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'Phisitkul et al. 2006 — MCL injuries Cochrane analysis',u:'https://pubmed.ncbi.nlm.nih.gov/16518304/'},{l:'Laprade & Wijdicks 2012 — Medial knee ligament injuries (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/22301636/'},{l:'Encinas-Ullán & Rodríguez-Merchán 2018 — MCL injuries review (EFORT Open Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/30662763/'},{l:'HAS — Traumatologie du genou',u:'https://www.has-sante.fr'}],
+    sources:[{l:'HAS — Prise en charge des lésions méniscales et du LCA (genou de l\'adulte)',u:'https://www.has-sante.fr/jcms/c_753184/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte'}],
     keys:['Traumatisme en valgus','Douleur interne','Epanchement','Oedème','Hématome','Douleur valgisation']
   },
   PATTE_OIE: {
@@ -1104,7 +1104,7 @@ const P = {
     treatment:[{t:'Glaçage',d:''},{t:'AINS',d:''},{t:'Adaptation charge entrainement',d:''},{t:'Kinésithérapie',d:''},{t:'Podologie',d:''},{t:'Infiltration locale cortisonée',d:''}],
     exercises:[{t:'Renforcement excentrique des ischio-jambiers',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement des adducteurs',d:''},{t:'Étirement des ischio-jambiers',d:''}],ficheExercice:'lococlic_fiches_patient/genou_09_patte_oie.html',
     referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Alvarez-Nemegyei 2007 — Anserine bursitis/tendinitis RCT (Arthritis Rheum)',u:'https://pubmed.ncbi.nlm.nih.gov/17729241/'},{l:'Helfenstein & Kuromoto 2010 — Anserine syndrome review (Rev Bras Reumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/21125157/'},{l:'Imani et al. 2019 — Pes anserine bursitis ultrasound (J Ultrasound Med)',u:'https://pubmed.ncbi.nlm.nih.gov/30575074/'},{l:'HAS — Tendinopathies du genou',u:'https://www.has-sante.fr'}],
+    sources:[{l:'Cook et al. 2009 — Tendinopathy continuum (applicable au tendon rotulien et quadricipital)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],
     keys:['Genu valgum','Douleurs descente','Douleurs course','Pronation excessive pied','Douleur à palpation 5-6 cm médial sous interligne interne','Oedème local']
   },
   ESSUIE_GLACE: {
@@ -1115,7 +1115,7 @@ const P = {
     treatment:[{t:'Kinésithérapie',d:''},{t:'Podologie',d:''},{t:'AINS',d:''},{t:'Glaçage',d:''}],
     exercises:[{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la bandelette ilio-tibiale (TFL)',d:''},{t:'Étirement du quadriceps',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_10_essuie_glace.html',
     referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Aderem & Louw 2015 — ITBS systematic review (BMC Musculoskelet Disord)',u:'https://pubmed.ncbi.nlm.nih.gov/26416646/'},{l:'Mucha et al. 2017 — ITBS treatment systematic review (J Sci Med Sport)',u:'https://pubmed.ncbi.nlm.nih.gov/27890479/'},{l:'Hutchinson et al. 2022 — ITBS clinical update (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/34810174/'},{l:'HAS — Pathologies du coureur',u:'https://www.has-sante.fr'}],
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG: tendinopathies du coureur (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
     keys:['Douleur latérale','Douleur mécanique','Reproduite à la course','Sensation de frottement','Reproduit squat une jambe','Reprise du sport']
   },
   PLICA: {
@@ -1126,7 +1126,7 @@ const P = {
     treatment:[{t:'AINS',d:''},{t:'Kinésithérapie',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Chirurgie si échec traitement médical à 3-6 mois',d:''}],
     exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement du quadriceps',d:''},{t:'Étirement de la chaîne postérieure',d:''}],ficheExercice:'lococlic_fiches_patient/genou_11_plica.html',
     referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'Schindler 2014 — Synovial plicae of the knee (Knee Surg Sports Traumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/23404417/'},{l:'Casadei et al. 2019 — Mediopatellar plica review (Joints)',u:'https://pubmed.ncbi.nlm.nih.gov/30801064/'},{l:'Lyu & Hsu 2006 — Medial plica syndrome (J Bone Joint Surg Br)',u:'https://pubmed.ncbi.nlm.nih.gov/16798989/'},{l:'HAS — Pathologies arthroscopiques du genou',u:'https://www.has-sante.fr'}],
+    sources:[{l:'HAS — Prise en charge des lésions méniscales et du LCA du genou de l\'adulte',u:'https://www.has-sante.fr/jcms/c_753184/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte'}],
     keys:['Douleur antérieure et médiale','Sensation d’accrochage et de ressaut, Pseudo-blocage','Douleur accentuée flexion/extension répétée','Douleur position assise prolongée','Test plica: genou flexion 30° rotation interne et pression médiale interligne fémoro-patellaire reproduit la douleur','Ressaut possible']
   },
   BURSITE_PREREROT: {
@@ -1137,7 +1137,7 @@ const P = {
     treatment:[{t:'Glaçage',d:''},{t:'DOLIPRANE',d:''},{t:'AINS',d:''},{t:'Attelle pour éviter contact',d:''}],
     exercises:[{t:'Renforcement isométrique du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''},{t:'Étirement de la chaîne postérieure',d:''},{t:'Pont fessier',d:''}],ficheExercice:'lococlic_fiches_patient/genou_12_bursite_prerotulienne.html',
     referral:[{who:'Rhumatologue',why:'',p:true},{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Aaron et al. 2011 — Prepatellar bursitis (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/21807915/'},{l:'Baumbach et al. 2014 — Prepatellar bursitis treatment (J Bone Joint Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/24430416/'},{l:'Khodaee 2017 — Common bursitis review (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/28925666/'},{l:'HAS — Pathologies périarticulaires',u:'https://www.has-sante.fr'}],
+    sources:[{l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],
     keys:['Traumatisme direct, appui prolongée','Oedème sous cutané','Douleur à la flexion genou','rechercher Horaire inflammatoire','Douleur à la palpation','Douleur à la flexion genou']
   },
   CANAL_HUNTER: {
@@ -1148,7 +1148,7 @@ const P = {
     treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration échoguidée corticostéroïdes',d:''},{t:'Chirurgie',d:''}],
     exercises:[{t:'Mobilisation neurale du nerf saphène',d:''},{t:'Étirement des adducteurs',d:''},{t:'Renforcement doux du quadriceps',d:''},{t:'Renforcement du moyen fessier (clamshells)',d:''}],ficheExercice:'lococlic_fiches_patient/genou_13_canal_hunter.html',
     referral:[{who:'Médecin du sport',why:'',p:true},{who:'Rhumatologue',why:'',p:true},{who:'Chirurgie orthopédique ( libération nerveuse )',why:'',p:true}],
-    sources:[{l:'Carter et al. 2017 — Saphenous nerve entrapment (Am J Phys Med Rehabil)',u:'https://pubmed.ncbi.nlm.nih.gov/27819830/'},{l:'Tubbs et al. 2007 — Saphenous nerve anatomy (Clin Anat)',u:'https://pubmed.ncbi.nlm.nih.gov/17072872/'},{l:'Morganti et al. 2002 — Saphenous nerve entrapment review (Am J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/11912100/'},{l:'HAS — Neuropathies de compression',u:'https://www.has-sante.fr'}],
+    sources:[{l:'HAS — Syndrome du canal carpien (référence française pour neuropathies de compression)',u:'https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien'}],
     keys:['Douleurs et paresthésies face interne genou','Douleurs et paresthésies mollet','Douleur majorée à l’extension du genou','Douleur soulagée par la flexion','Tinel canal de Hunter positif','Test de Phalen genou (Flexion genou 30°+ compression)']
   }
 };
@@ -2007,7 +2007,7 @@ renderStep();
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -2018,7 +2018,7 @@ renderStep();
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>

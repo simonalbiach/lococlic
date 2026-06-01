@@ -4,7 +4,7 @@
 <script src="auth-check.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocoClic — Coude & Avant-bras v5</title>
+<title>lococlic™ — Coude & Avant-bras v5</title>
 <style>
 
 
@@ -1065,7 +1065,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>LocoClic — Coude & Avant-bras</h1>
+    <h1>lococlic<sup>™</sup> — Coude & Avant-bras</h1>
     <div class="badge">v5 · clinique adaptatif</div>
   </div>
   <div id="main"></div>
@@ -1081,7 +1081,7 @@ const P = {
       modules:['main'],
       text:"Si épicondylalgie résistante > 3-6 mois : penser à une compression du nerf radial à l'arcade de Frohse (douleur 4-5 cm sous l'épicondyle, supination contrariée douloureuse). Penser aussi à une névralgie cervico-brachiale C6-C7."
     },
-    sources:[{l:'Coombes et al. 2013 — Lateral epicondylalgia treatments meta-analysis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/23114122/'},{l:'Bisset et al. 2015 — Physiotherapy lateral epicondylalgia CPG (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/26110096/'},{l:'Karanasios et al. 2021 — Exercise lateral epicondylalgia meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/32868270/'},{l:'HAS — Tendinopathies du membre supérieur',u:'https://www.has-sante.fr'}],keys:['Douleur face latérale coude','Surutilisation','Douleurs port de charge','Douleur extension poignet contre résistance','Douleur palpation épicondyle latéral','Douleur flexion poignet et extension coude (Mill’s test)']},
+    sources:[{l:'HAS 2023 — Tendinopathies de la coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'}],keys:['Douleur face latérale coude','Surutilisation','Douleurs port de charge','Douleur extension poignet contre résistance','Douleur palpation épicondyle latéral','Douleur flexion poignet et extension coude (Mill’s test)']},
   EPIC_MED:{id:'EPIC_MED',name:'Épicondylalgie médiale',icon:'🟠',pop:'30-60 ans (golf)',
     desc:'Douleur face médiale coude',alert:null,
     imaging:[{t:'Echographie',d:''}],treatment:[{t:'AINS locaux ou Per os',d:''},{t:'Attelle poignet',d:''},{t:'Kinésithérapie',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'infiltration PRP (fissure)',d:''}],
@@ -1090,12 +1090,12 @@ const P = {
       modules:['main'],
       text:"Penser à éliminer une compression associée du nerf ulnaire au coude (Tinel positif, paresthésies 4e-5e doigts). Chez le lanceur : rechercher aussi une instabilité du LCM (valgus stress)."
     },
-    sources:[{l:'Amin et al. 2015 — Medial epicondylitis review (Sports Health)',u:'https://pubmed.ncbi.nlm.nih.gov/26502462/'},{l:'Donaldson et al. 2014 — Medial epicondylitis (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/25034572/'},{l:'Vinod & Ross 2015 — Diagnosis medial epicondylitis (Curr Rev Musculoskelet Med)',u:'https://pubmed.ncbi.nlm.nih.gov/26446730/'},{l:'HAS — Tendinopathies du membre supérieur',u:'https://www.has-sante.fr'}],keys:['Douleur face médiale coude','Douleur port de charge','Douleur activité sportive','Douleur flexion poignet contre résistance','Douleur palpation épicondyle médial','Douleur étirement extension coude et poignet']},
+    sources:[{l:'HAS 2023 — Tendinopathies de la coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'}],keys:['Douleur face médiale coude','Douleur port de charge','Douleur activité sportive','Douleur flexion poignet contre résistance','Douleur palpation épicondyle médial','Douleur étirement extension coude et poignet']},
   TEND_TRICEPS:{id:'TEND_TRICEPS',name:'Tendinopathie triceps brachial',icon:'🟡',pop:'30-50 ans',
     desc:'Douleur postérieure du coude',alert:null,
     imaging:[{t:'Radiographie (recherche ostéophytes)',d:''},{t:'Echographie',d:''}],treatment:[{t:'AINS',d:''},{t:'Kinésithérapie',d:''},{t:'Infiltration corticostéroïdes',d:''}],
     exercises:[{t:'Extension du coude contre élastique (progressif iso → concentrique → excentrique)',d:''},{t:'Étirement du triceps',d:''},{t:'Mobilisation douce du coude',d:''},{t:'Renforcement isométrique du coude',d:''}],ficheExercice:'lococlic_fiches_patient/coude_03_tendinopathie_triceps.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Vidal et al. 2004 — Distal triceps tendon disorders (Sports Med Arthrosc)',u:'https://pubmed.ncbi.nlm.nih.gov/15123971/'},{l:'Tagliafico et al. 2012 — Triceps tendon imaging (Eur Radiol)',u:'https://pubmed.ncbi.nlm.nih.gov/22011905/'},{l:'Ortenburger et al. 2024 — Distal triceps tendinopathy review (J Shoulder Elbow Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/38040094/'},{l:'HAS — Tendinopathies du membre supérieur',u:'https://www.has-sante.fr'}],keys:['Douleur postérieure du coude','Douleur porter charge au dessus de la tête','Douleur palpation insertion sur olécrâne','Douleur extension contrariée','Douleur flexion du coude']},
+    sources:[{l:'HAS 2023 — Tendinopathies de la coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'}],keys:['Douleur postérieure du coude','Douleur porter charge au dessus de la tête','Douleur palpation insertion sur olécrâne','Douleur extension contrariée','Douleur flexion du coude']},
   AIE_CREPITANT: {
     id:'AIE_CREPITANT', name:"Ténosynovite crépitante de l'avant-bras (AIE crépitant)", icon:'🟠', pop:'30-50 ans, métier manuel répétitif soudain (déménagement, bricolage intense), sportif raquette débutant',
     desc:"Ténosynovite crépitante du croisement des extenseurs radiaux (long abducteur du pouce et court extenseur du pouce qui croisent les radiaux à 4-6 cm au-dessus du poignet). Apparition aiguë après surcharge brutale et inhabituelle. Douleur à la face dorso-radiale de l'avant-bras distal avec crépitations palpables typiques (sensation de neige fraîche sous les doigts) lors de la flexion-extension du poignet.",
@@ -1116,10 +1116,10 @@ const P = {
       {who:'Rhumatologue',why:"Si tableau atypique ou évolution prolongée",p:false}
     ],
     sources:[
-      {l:'Hanlon & Luellen 1999 — Intersection syndrome review (Am J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/10424212/'},
-      {l:'Lee et al. 2017 — Intersection syndrome imaging (Skeletal Radiol)',u:'https://pubmed.ncbi.nlm.nih.gov/27752828/'},
-      {l:'Draghi & Bortolotto 2014 — Intersection syndrome ultrasound (J Ultrasound)',u:'https://pubmed.ncbi.nlm.nih.gov/25320667/'},
-      {l:'HAS — Tendinopathies du membre supérieur',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS 2023 — Tendinopathies de la coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'}
     ],
     keys:['Crépitations','Avant-bras dorsal','Surcharge brutale','Croisement extenseurs','AIE crépitant']
   },
@@ -1127,7 +1127,7 @@ const P = {
     desc:'Tuméfaction fluctuante postérieure coude',alert:null,
     imaging:[{t:'Echographie',d:''},{t:'Ponction ( septique ou microcristalline , goutte)',d:''}],treatment:[{t:'Non septique:',d:''},{t:'AINS , glace , éviction appui , Infiltration corticostéroïdes.',d:''},{t:'Septique:',d:''},{t:'Ponction + Biologie',d:''},{t:'Antibiothérapie',d:''}],
     exercises:[{t:'Protection de l\'olécrâne (coudière)',d:''},{t:'Mobilisation douce du coude',d:''},{t:'Étirement du triceps',d:''},{t:'Renforcement progressif (post phase aiguë)',d:''}],ficheExercice:'lococlic_fiches_patient/coude_05_hygroma.html',referral:[{who:'Rhumatologue',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'Khodaee 2017 — Common bursitis review (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/28925666/'},{l:'Sayegh & Strauch 2014 — Olecranon bursitis treatment review (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/25218148/'},{l:'Lormeau et al. 2019 — Management septic bursitis (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/30771474/'},{l:'HAS — Pathologies périarticulaires',u:'https://www.has-sante.fr'}],keys:['Tuméfaction fluctuante postérieure coude','Mobilité conservée','Parfois douloureux','Non douloureux à la palpation','Palpation collection','Eliminer infection']},
+    sources:[{l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],keys:['Tuméfaction fluctuante postérieure coude','Mobilité conservée','Parfois douloureux','Non douloureux à la palpation','Palpation collection','Eliminer infection']},
   COMP_MEDIAN:{id:'COMP_MEDIAN',name:'Compression nerf médian lacertus',icon:'⚡',pop:'40 - 60 ans (travailleur manuel)',
     desc:'Paresthésies 3-4 premiers doigts face palmaire',alert:null,
     imaging:[{t:'ENMG : ralentissement conduction coude',d:''},{t:'Echographie conflit Lacertus',d:''}],treatment:[{t:'AINS',d:''},{t:'Infiltration corsticostéroïdes',d:''},{t:'Chirurgie décompressive',d:''}],
@@ -1140,7 +1140,7 @@ const P = {
       modules:['main'],
       text:"Penser à un double crush syndrome : compression au lacertus pouvant coexister avec un canal carpien (médian comprimé à 2 niveaux) — voir module main/poignet. Tester systématiquement Phalen et Tinel au poignet."
     },
-    sources:[{l:'Pham & Bayle Iniguez 2019 — Lacertus syndrome review (Hand Surg Rehabil)',u:'https://pubmed.ncbi.nlm.nih.gov/31201943/'},{l:'Hagert 2013 — Clinical diagnosis median nerve at lacertus (J Hand Surg Eur)',u:'https://pubmed.ncbi.nlm.nih.gov/23900400/'},{l:'Lans et al. 2021 — Median nerve compression at elbow review (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/33485719/'},{l:'HAS — Neuropathies de compression',u:'https://www.has-sante.fr'}],keys:['Paresthésies 3-4 premiers doigts face palmaire','(plutôt journée)','Faiblesse flexion poignet','Augmentation symptomatologie flexion coude','Tinel face médial coude (Lacertus)','Test compression Lacertus']},
+    sources:[{l:'HAS — Syndrome du canal carpien (référence française pour neuropathies de compression)',u:'https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien'}],keys:['Paresthésies 3-4 premiers doigts face palmaire','(plutôt journée)','Faiblesse flexion poignet','Augmentation symptomatologie flexion coude','Tinel face médial coude (Lacertus)','Test compression Lacertus']},
   COMP_CUB_COUDE:{id:'COMP_CUB_COUDE',name:'Compression nerf cubital au coude',icon:'⚡',pop:'30–60 ans, cyclistes, travail manuel',
     desc:'Paresthésies des 4e et 5e doigts, aggravées en flexion prolongée du coude ou appui répété',alert:null,
     imaging:[{t:'ENMG : ralentissement conduction au coude',d:''},{t:'Échographie : conflit gouttière épitrochléo-olécrânienne',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Orthèse de coude en extension nocturne',d:''},{t:'Éviction compression',d:''},{t:'Infiltration corticostéroïdes',d:''}],exercises:[{t:'Mobilisation neurale du nerf cubital',d:''},{t:'Étirement des fléchisseurs de l\'avant-bras',d:''},{t:'Renforcement des intrinsèques de la main',d:''},{t:'Posture du coude (éviter flexion prolongée)',d:''}],ficheExercice:'lococlic_fiches_patient/coude_07_comp_cubital_coude.html',referral:[{who:'Chirurgien orthopédique (si déficit moteur ou échec conservateur)',why:'',p:true}],
@@ -1152,7 +1152,7 @@ const P = {
       modules:['main'],
       text:"Penser à un double crush : compression cubitale au coude pouvant coexister avec un canal de Guyon au poignet — voir module main/poignet. Tester Tinel au Guyon."
     },
-    sources:[{l:'Caliandro et al. 2016 — Treatment ulnar neuropathy at elbow Cochrane',u:'https://pubmed.ncbi.nlm.nih.gov/27815936/'},{l:'Andrews et al. 2018 — Cubital tunnel syndrome review (J Bone Joint Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/29642007/'},{l:'Cutts 2007 — Cubital tunnel syndrome (Postgrad Med J)',u:'https://pubmed.ncbi.nlm.nih.gov/17267589/'},{l:'HAS — Neuropathies de compression',u:'https://www.has-sante.fr'}],keys:['Paresthésies 4e et 5e doigts','Aggravées en flexion prolongée du coude','Appui répété sur le coude','Faiblesse interosseux','Atrophie hypothénar']},
+    sources:[{l:'HAS — Syndrome du canal carpien (référence française pour neuropathies de compression)',u:'https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien'}],keys:['Paresthésies 4e et 5e doigts','Aggravées en flexion prolongée du coude','Appui répété sur le coude','Faiblesse interosseux','Atrophie hypothénar']},
   COMP_RADIAL: {
     id:'COMP_RADIAL', name:"Compression du nerf radial à l'arcade de Frohse", icon:'⚡', pop:'30-50 ans, métier manuel répétitif (vissage, raquette, marteau), sportif lanceur',
     desc:"Compression du nerf interosseux postérieur (branche motrice du radial) à son passage sous l'arcade de Frohse (chef superficiel du muscle supinateur). Tableau de douleur à la face latérale du coude (souvent confondue avec épicondylalgie résistante), aggravée par la supination contrariée. Pas de déficit sensitif (branche purement motrice). Forme évoluée : déficit d'extension des doigts (Doigts tombants).",
@@ -1181,10 +1181,10 @@ const P = {
       text:"<strong>Tester l'extension active des doigts</strong> — une faiblesse d'extension (doigts tombants) signe une compression motrice évoluée et oriente vers la chirurgie en urgence relative."
     },
     sources:[
-      {l:'Naam & Nemani 2012 — Radial tunnel syndrome (Orthop Clin North Am)',u:'https://pubmed.ncbi.nlm.nih.gov/22995088/'},
-      {l:'Cleary 2006 — Radial tunnel syndrome and resistant lateral epicondylitis (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/16632062/'},
-      {l:'Stanley 2006 — Radial tunnel syndrome (J Hand Surg Br)',u:'https://pubmed.ncbi.nlm.nih.gov/17046122/'},
-      {l:'HAS — Neuropathies de compression',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS — Syndrome du canal carpien (référence française pour neuropathies de compression)',u:'https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien'}
     ],
     keys:['Coude latéral','Supination contrariée','Arcade de Frohse','Doigts tombants','Nerf radial']
   },
@@ -1208,10 +1208,10 @@ const P = {
       {who:'Chirurgien orthopédique',why:'Aponévrotomie si échec conservateur prolongé',p:false}
     ],
     sources:[
-      {l:'Rajasekaran & Finnoff 2016 — Exertional compartment syndrome upper limb (PM&R Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/27117718/'},
-      {l:'Brown et al. 2011 — Forearm compartment syndrome motocross (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/21443988/'},
-      {l:'Croutzet et al. 2009 — Chronic exertional forearm compartment syndrome (Chir Main)',u:'https://pubmed.ncbi.nlm.nih.gov/19394858/'},
-      {l:'HAS — Pathologies sportives du membre supérieur',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS 2023 — Pathologies de la coiffe des rotateurs (référence pour membre supérieur)',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'}
     ],
     keys:['Avant-bras dur effort','Motocross','Seuil reproductible','Repos normal','Syndrome des loges']
   },
@@ -1236,10 +1236,10 @@ const P = {
       {who:'Chirurgien orthopédique (membre supérieur)',why:"Bilan préopératoire et chirurgie de reconstruction (Tommy John) si échec conservateur",p:false}
     ],
     sources:[
-      {l:'Cain et al. 2010 — Outcome of UCL reconstruction (Am J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/20889986/'},
-      {l:'Erickson et al. 2015 — UCL injuries in baseball players review (Sports Health)',u:'https://pubmed.ncbi.nlm.nih.gov/26502438/'},
-      {l:'Camp et al. 2017 — UCL injuries throwing athletes (J Bone Joint Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28872523/'},
-      {l:'HAS — Pathologies sportives du coude',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Cook et al. 2009 — Tendinopathy continuum (applicable au coude)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
     ],
     keys:['Lanceur','Valgus stress','LCM','Tommy John','Instabilité coude']
   }
@@ -2151,7 +2151,7 @@ renderStep();
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -2162,7 +2162,7 @@ renderStep();
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>

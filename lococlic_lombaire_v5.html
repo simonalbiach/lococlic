@@ -4,7 +4,7 @@
 <script src="auth-check.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocoClic — Rachis lombaire v5</title>
+<title>lococlic™ — Rachis lombaire v5</title>
 <style>
 
 
@@ -1065,7 +1065,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>LocoClic — Rachis lombaire</h1>
+    <h1>lococlic<sup>™</sup> — Rachis lombaire</h1>
     <div class="badge">v5 · clinique adaptatif</div>
   </div>
   <div id="main"></div>
@@ -1105,8 +1105,8 @@ const P = {
     sources:[
       {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},
       {l:'Foster et al. 2018 — Low back pain prevention (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'},
-      {l:'Hartvigsen et al. 2018 — What low back pain is and why we need to pay attention (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573870/'},
-      {l:'Maher et al. 2017 — Non-specific low back pain (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/27745712/'}
+      
+      
     ],
     keys:['Lombalgie aiguë','Mécanique','Pas imagerie','HAS 2019','Mouvement']
   },
@@ -1139,10 +1139,10 @@ const P = {
       {who:'Chirurgien orthopédique (rachis)',why:"Uniquement si indication chirurgicale (canal étroit symptomatique, instabilité)",p:false}
     ],
     sources:[
-      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/'},
+      
       {l:'Foster et al. 2018 — Low back pain prevention treatment (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'},
-      {l:'Qaseem et al. 2017 — ACP guideline noninvasive treatments low back pain',u:'https://pubmed.ncbi.nlm.nih.gov/28192789/'},
-      {l:'Saragiotto et al. 2016 — Motor control exercise chronic low back pain Cochrane',u:'https://pubmed.ncbi.nlm.nih.gov/26742533/'}
+      
+      
     ],
     keys:['Lombalgie chronique','> 3 mois','Yellow flags','Bio-psycho-social','Exercice']
   },
@@ -1168,10 +1168,10 @@ const P = {
       {who:'Médecin du sport',why:"Programme de rééducation et correction posturale",p:false}
     ],
     sources:[
-      {l:'Cohen & Raja 2007 — Pathogenesis diagnosis treatment lumbar zygapophysial joint pain (Anesthesiology)',u:'https://pubmed.ncbi.nlm.nih.gov/17585245/'},
-      {l:'Manchikanti et al. 2015 — Lumbar facet joint interventions (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/26218948/'},
-      {l:'Perolat et al. 2018 — Facet joint syndrome (Insights Imaging)',u:'https://pubmed.ncbi.nlm.nih.gov/30090998/'},
-      {l:'HAS — Lombalgie commune chronique',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'}
     ],
     keys:['Lombalgie basse','Extension douloureuse','Arthrose facettaire','Pseudo-radiculaire','Facettaire']
   },
@@ -1200,12 +1200,7 @@ const P = {
       {who:'Rhumatologue',why:"Si évolution prolongée, pour infiltration épidurale et bilan",p:true},
       {who:'Chirurgien orthopédique (rachis)',why:"Si déficit moteur, hyperalgie résistante > 6 semaines, ou red flag",p:true}
     ],
-    sources:[
-      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/'},
-      {l:'Jordan et al. 2009 — Herniated lumbar disc BMJ Clin Evid',u:'https://pubmed.ncbi.nlm.nih.gov/19445754/'},
-      {l:'Vroomen et al. 2002 — Diagnostic value of history physical exam lumbosacral radicular syndrome (J Neurol)',u:'https://pubmed.ncbi.nlm.nih.gov/12082608/'},
-      {l:'Pinto et al. 2012 — Drugs for sciatica systematic review (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/22331277/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Lasègue','Trajet L5 ou S1','Hernie discale','Radiculalgie','Sciatique']
   },
   CRURALGIE: {
@@ -1233,12 +1228,7 @@ const P = {
       {who:'Rhumatologue',why:"Pour infiltration épidurale et bilan complet",p:true},
       {who:'Chirurgien orthopédique (rachis)',why:"Si déficit moteur du quadriceps, hyperalgie résistante",p:true}
     ],
-    sources:[
-      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/'},
-      {l:'Suri et al. 2011 — Femoral nerve stretch test physical exam (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/21482199/'},
-      {l:'Tarulli & Raynor 2007 — Lumbosacral radiculopathy (Neurol Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/17445733/'},
-      {l:'Jordan et al. 2011 — Herniated lumbar disc BMJ Clin Evid',u:'https://pubmed.ncbi.nlm.nih.gov/21711958/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Léri positif','Trajet L3 ou L4','Cruralgie','Hernie haute','Quadriceps']
   },
   CANAL_LOMBAIRE: {
@@ -1262,12 +1252,7 @@ const P = {
       {who:'Radiologue interventionnel',why:"Pour infiltration épidurale sous radioguidage",p:true},
       {who:'Chirurgien orthopédique (rachis)',why:"Si retentissement marqué sur le périmètre de marche après échec conservateur",p:true}
     ],
-    sources:[
-      {l:'Lurie & Tomkins-Lane 2016 — Management of lumbar spinal stenosis (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/26727925/'},
-      {l:'Kalichman et al. 2009 — Spinal stenosis prevalence (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/19111259/'},
-      {l:'Katz et al. 2008 — Lumbar spinal stenosis NEJM',u:'https://pubmed.ncbi.nlm.nih.gov/18272897/'},
-      {l:'Ammendolia et al. 2013 — Non-operative treatment for lumbar spinal stenosis Cochrane',u:'https://pubmed.ncbi.nlm.nih.gov/23959343/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Claudication neurogène','Caddy sign','Sénior','Marche penchée','Canal étroit']
   },
   SACRO_ILIAQUE: {
@@ -1299,12 +1284,7 @@ const P = {
       modules:[],
       text:"<strong>Éliminer une sacro-iliite inflammatoire</strong> (spondylarthrite axiale) chez le jeune adulte avec : douleurs nocturnes, raideur matinale > 30 min, atteinte d'autres enthèses, ATCD de psoriasis/MICI/uvéite. Bilan : CRP, HLA-B27, IRM sacro-iliaques."
     },
-    sources:[
-      {l:'Cohen 2005 — Sacroiliac joint pain comprehensive review (Anesth Analg)',u:'https://pubmed.ncbi.nlm.nih.gov/16244000/'},
-      {l:'Laslett 2008 — Evidence-based diagnosis treatment sacroiliac joint (J Man Manip Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/19119403/'},
-      {l:'Dreyfuss et al. 2004 — Sacroiliac joint pain (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/15089082/'},
-      {l:'Vanelderen et al. 2010 — Sacroiliac joint pain (Pain Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/20667026/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Fortin point','FABER positif','Post-partum','Fesse haute','Sacro-iliaque']
   },
   SPONDYLOLISTHESIS: {
@@ -1328,12 +1308,7 @@ const P = {
       {who:'Chirurgien orthopédique (rachis)',why:"Si glissement évolutif, déficit neurologique, ou retentissement invalidant",p:false},
       {who:'Médecin du sport',why:"Pour le jeune sportif — encadrement de la reprise et adaptation de l'activité",p:true}
     ],
-    sources:[
-      {l:'Kalichman & Hunter 2008 — Diagnosis treatment degenerative spondylolisthesis (Eur Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/18075763/'},
-      {l:'Beutler et al. 2003 — Natural history of spondylolysis spondylolisthesis (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/12782996/'},
-      {l:'Tebet 2014 — Spondylolisthesis update (Rev Bras Ortop)',u:'https://pubmed.ncbi.nlm.nih.gov/26229765/'},
-      {l:'Kreiner et al. 2016 — NASS guideline degenerative spondylolisthesis (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/27037096/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Glissement vertébral','Lyse isthmique','Jeune sportif hyperextension','Sénior dégénératif','Spondylolisthésis']
   },
   LUMBAGO_AIGU: {
@@ -1356,10 +1331,10 @@ const P = {
       {who:'Rhumatologue',why:"Si évolution prolongée ou apparition de red flag",p:false}
     ],
     sources:[
-      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/'},
+      
       {l:'Foster et al. 2018 — Low back pain prevention treatment (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'},
-      {l:'Hartvigsen et al. 2018 — What low back pain is and why we need to pay attention (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/29573870/'},
-      {l:'Qaseem et al. 2017 — ACP guideline noninvasive treatments low back pain',u:'https://pubmed.ncbi.nlm.nih.gov/28192789/'}
+      
+      
     ],
     keys:['Brutal après effort','Contracture','Faux mouvement','Impotence','Lumbago']
   },
@@ -1391,8 +1366,8 @@ const P = {
     sources:[
       {l:'Sieper et al. 2017 — Axial spondyloarthritis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/28110981/'},
       {l:'van der Heijde et al. 2017 — ASAS-EULAR management recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/28087505/'},
-      {l:'Rudwaleit et al. 2009 — ASAS classification criteria axial spondyloarthritis',u:'https://pubmed.ncbi.nlm.nih.gov/19297344/'},
-      {l:'Wendling et al. 2022 — Recommandations SFR spondyloarthrite (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/35487390/'}
+      
+      
     ],
     keys:['Lombalgie inflammatoire','Sujet jeune','HLA-B27','Sacro-iliite','Spondylarthrite']
   }
@@ -2258,7 +2233,7 @@ renderStep();
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -2269,7 +2244,7 @@ renderStep();
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>

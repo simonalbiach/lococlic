@@ -1,0 +1,43 @@
+{
+  "exact": [
+    "https://orthoinfo.aaos.org/en/diseases--conditions/arthritis-of-the-shoulder/",
+    "https://orthoinfo.aaos.org/en/diseases--conditions/biceps-tendinitis/",
+    "https://orthoinfo.aaos.org/en/diseases--conditions/chronic-shoulder-instability/",
+    "https://orthoinfo.aaos.org/en/diseases--conditions/dislocated-shoulder/",
+    "https://orthoinfo.aaos.org/en/diseases--conditions/rotator-cuff-tears/",
+    "https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-impingementrotator-cuff-tendinitis/",
+    "https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-injuries-in-the-throwing-athlete/",
+    "https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-separation-acromioclavicular-joint-injury/",
+    "https://orthoinfo.aaos.org/en/diseases--conditions/slap-tears/",
+    "https://orthoinfo.aaos.org/en/diseases--conditions/thoracic-outlet-syndrome/",
+    "https://pubmed.ncbi.nlm.nih.gov/18364459/",
+    "https://pubmed.ncbi.nlm.nih.gov/18523035/",
+    "https://pubmed.ncbi.nlm.nih.gov/18812414/",
+    "https://pubmed.ncbi.nlm.nih.gov/22773322/",
+    "https://pubmed.ncbi.nlm.nih.gov/26031643/",
+    "https://pubmed.ncbi.nlm.nih.gov/27629403/",
+    "https://pubmed.ncbi.nlm.nih.gov/28087505/",
+    "https://pubmed.ncbi.nlm.nih.gov/28110981/",
+    "https://pubmed.ncbi.nlm.nih.gov/29573872/",
+    "https://pubmed.ncbi.nlm.nih.gov/29712543/",
+    "https://pubmed.ncbi.nlm.nih.gov/31278997/",
+    "https://www.aaos.org/quality/quality-programs/upper-extremity-programs/rotator-cuff/",
+    "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD005619.pub2/full",
+    "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD008954.pub2/full",
+    "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD012224/full",
+    "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD013502.pub2/full",
+    "https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien",
+    "https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte",
+    "https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune",
+    "https://www.has-sante.fr/jcms/c_658445/fr/prise-en-charge-chirurgicale-des-tendinopathies-rompues-de-la-coiffe-des-rotateurs-de-l-epaule-chez-l-adulte",
+    "https://www.has-sante.fr/jcms/c_753184/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte",
+    "https://www.has-sante.fr/jcms/p_3105108/fr/prevention-diagnostic-et-traitement-de-l-osteoporose",
+    "https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs",
+    "https://www.jospt.org/doi/10.2519/jospt.2013.0302",
+    "https://www.jospt.org/doi/10.2519/jospt.2018.0302",
+    "https://www.jospt.org/doi/10.2519/jospt.2024.0302"
+  ],
+  "prefixes": [
+    "https://cks.nice.org.uk/topics/"
+  ]
+}

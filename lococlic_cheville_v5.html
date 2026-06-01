@@ -4,7 +4,7 @@
 <script src="auth-check.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocoClic — Cheville v5</title>
+<title>lococlic™ — Cheville v5</title>
 <style>
 
 
@@ -1004,7 +1004,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>LocoClic — Cheville</h1>
+    <h1>lococlic<sup>™</sup> — Cheville</h1>
     <div class="badge">v5 · clinique adaptatif</div>
   </div>
   <div id="main"></div>
@@ -1016,22 +1016,22 @@ const P = {
     desc:'Traumatisme en inversion de cheville',alert:null,
     imaging:[{t:'Radiographies si critères Ottawa',d:''},{t:'Echographie',d:''},{t:'IRM si ancien et chronicité',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Immobilisation adaptée:',d:''},{t:'Grade 1 : Attelle Malléodynastab 1-2 sem',d:''},{t:'Grade 2 : Attelle 2-3 sem',d:''},{t:'Grade 3 : Attelle 3-6 sem',d:''},{t:'Botte de marche : Atteinte plan latéral + plan médial ou Chopart ou Lisfranc.',d:''},{t:'Attelle type malléodynastab boa : Atteinte plan latéral isolé.',d:''}],
     exercises:[{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement des fibulaires (éversion contre élastique)',d:''},{t:'Étirement du mollet',d:''},{t:'Mobilisation de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_01_entorse_laterale.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'HAS 2018 — Entorse récente de la cheville',u:'https://www.has-sante.fr'},{l:'Vuurberg et al. 2018 — Diagnosis treatment lateral ankle sprain (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29514819/'},{l:'Doherty et al. 2017 — Treatment ankle sprain meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/27852587/'},{l:'Martin et al. 2021 — Ankle stability and movement coordination CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/33789433/'}],keys:['Traumatisme en inversion de cheville','Douleur latérale','Oedème et ou hématome','Impotence fonctionnelle','Test tiroir antérieur ( TAFA )','Test inversion ( plan latéral )']},
+    sources:[{l:'HAS 2018 — Prise en charge de l\'entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}],keys:['Traumatisme en inversion de cheville','Douleur latérale','Oedème et ou hématome','Impotence fonctionnelle','Test tiroir antérieur ( TAFA )','Test inversion ( plan latéral )']},
   ENTORSE_SOUS_TAL:{id:'ENTORSE_SOUS_TAL',name:'Entorse sous-talienne',icon:'🟠',pop:'20-40 ans , sportif',
     desc:'Traumatisme en inversion',alert:null,
     imaging:[{t:'Radiographies',d:''},{t:'IRM (chronique)',d:''}],treatment:[{t:'Botte de marche 2-4 semaines',d:''},{t:'Kinésithérapie',d:''}],
     exercises:[{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement des fibulaires (éversion contre élastique)',d:''},{t:'Renforcement du tibial postérieur (inversion contre élastique)',d:''},{t:'Étirement du mollet',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_02_entorse_sous_talienne.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Mittlmeier & Wichelhaus 2015 — Subtalar joint instability (Eur J Trauma Emerg Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/26038017/'},{l:'Hertel 2002 — Functional anatomy ankle (J Athl Train)',u:'https://pubmed.ncbi.nlm.nih.gov/12937561/'},{l:'Aynardi et al. 2015 — Subtalar instability (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/26385859/'},{l:'HAS 2018 — Entorse récente de la cheville',u:'https://www.has-sante.fr'}],keys:['Traumatisme en inversion','Oedème','Douleur sous malléolaire','Douleur chronique terrains instables','Douleur palpation sinus tarsien','Douleur inversion sous talienne']},
+    sources:[{l:'HAS 2018 — Prise en charge de l\'entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}],keys:['Traumatisme en inversion','Oedème','Douleur sous malléolaire','Douleur chronique terrains instables','Douleur palpation sinus tarsien','Douleur inversion sous talienne']},
   ENTORSE_CHOPART:{id:'ENTORSE_CHOPART',name:'Entorse du Chopart (médiotarse)',icon:'🟠',pop:'20-50 ans , sportif',
     desc:'Traumatisme en inversion et/ou torsion tarse',alert:null,
     imaging:[{t:'Radiographie',d:''},{t:'Echographie',d:''},{t:'IRM chronique ( oedème osseux )',d:''}],treatment:[{t:'Botte de marche 4-6 semaines',d:''},{t:'Attelle médio pied 1 à 2 sem après',d:''},{t:'Kinésithérapie',d:''}],
     exercises:[{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Auto-mobilisation médiotarsienne',d:''},{t:'Étirement du mollet',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_03_entorse_chopart.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'van Dorp et al. 2010 — Chopart joint injuries review (J Orthop Trauma)',u:'https://pubmed.ncbi.nlm.nih.gov/20871247/'},{l:'Walter et al. 2018 — Midtarsal injuries (Clin Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/29764567/'},{l:'Rammelt & Schepers 2018 — Chopart injuries (EFORT Open Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/30662811/'},{l:'HAS — Traumatologie cheville et pied',u:'https://www.has-sante.fr'}],keys:['Traumatisme en inversion et/ou torsion tarse','Oedème dorsal pied','Appui difficile','Douleur palpation Interligne Chopart','Douleur torsion Chopart (Essorage)']},
+    sources:[{l:'HAS 2018 — Entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}],keys:['Traumatisme en inversion et/ou torsion tarse','Oedème dorsal pied','Appui difficile','Douleur palpation Interligne Chopart','Douleur torsion Chopart (Essorage)']},
   ENTORSE_LISFRANC:{id:'ENTORSE_LISFRANC',name:'Entorse du Lisfranc',icon:'🔴',pop:'20-50 ans , traumatisme',
     desc:'Douleur médio-pied',alert:null,
     imaging:[{t:'Radiographies',d:''},{t:'Echographie',d:''}],treatment:[{t:'Botte de marche 4-6 semaines',d:''},{t:'Attelle médio-pied 1 à 2 semaines après',d:''},{t:'Kinésithérapie précoce',d:''}],
     exercises:[{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Mobilisation du médiopied',d:''},{t:'Étirement du mollet',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_04_entorse_lisfranc.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Eleftheriou et al. 2013 — Lisfranc injuries review (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/23999971/'},{l:'Stødle et al. 2020 — Lisfranc treatment systematic review (Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/30967349/'},{l:'Welck et al. 2015 — Lisfranc injuries review (Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/26321253/'},{l:'HAS — Traumatologie du pied',u:'https://www.has-sante.fr'}],keys:['Douleur médio-pied','Torsion ou chute','Oedème dorsal','Appui difficile','Palpation Interligne Lisfranc douloureuse','Douleur compression/rotation (essorage)']},
+    sources:[{l:'HAS 2018 — Entorse de cheville (référence française pour traumatologie cheville/pied)',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}],keys:['Douleur médio-pied','Torsion ou chute','Oedème dorsal','Appui difficile','Palpation Interligne Lisfranc douloureuse','Douleur compression/rotation (essorage)']},
   ENTORSE_MED: {
     id:'ENTORSE_MED', name:'Entorse du ligament deltoïde (médiale)', icon:'⬅️', pop:'Sportif, traumatisme en éversion forcée — plus rare que LLE',
     desc:"Douleur et œdème de la face médiale de la cheville après traumatisme en éversion (pied tourné vers l'extérieur, parfois en pronation). Plus rare que l'entorse latérale car le ligament deltoïde est puissant. Souvent associée à une fracture (malléole latérale) — toujours éliminer.",
@@ -1054,10 +1054,10 @@ const P = {
       {who:'Chirurgien orthopédique',why:'Si fracture associée ou rupture complète instable',p:false}
     ],
     sources:[
-      {l:'Hintermann et al. 2004 — Deltoid ligament injuries (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/15324787/'},
-      {l:'Crim et al. 2015 — Medial-sided ankle pain (Radiographics)',u:'https://pubmed.ncbi.nlm.nih.gov/26562230/'},
-      {l:'Vuurberg et al. 2018 — Lateral ankle sprain (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29514819/'},
-      {l:'HAS 2018 — Entorse récente de la cheville',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS 2018 — Prise en charge de l\'entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}
     ],
     keys:['Médial','Éversion','Deltoïde','Fracture associée','Plus rare']
   },
@@ -1065,17 +1065,17 @@ const P = {
     desc:'Douleur antérieure de cheville',alert:null,
     imaging:[{t:'Radiographies (ostéophytes)',d:''},{t:'Echographie',d:''},{t:'IRM (recherche infiltration , oedème osseux )',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'AINS',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Arthroscopie',d:''}],
     exercises:[{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Mobilisation en dorsiflexion',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des fibulaires',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_06_conflit_anterieur.html',referral:[{who:'Médecin du sport',why:'',p:true},{who:'Rhumatologue',why:'',p:true},{who:'Chirurgien orthopédique',why:'',p:true}],
-    sources:[{l:'Berman et al. 2017 — Anterior ankle impingement (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28009703/'},{l:'Talusan et al. 2014 — Anterior ankle impingement (Foot Ankle Spec)',u:'https://pubmed.ncbi.nlm.nih.gov/25380844/'},{l:'Vega et al. 2020 — Ankle impingement systematic review (Knee Surg Sports Traumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/31501942/'},{l:'HAS — Pathologies de la cheville',u:'https://www.has-sante.fr'}],keys:['Douleur antérieure de cheville','Apparition progressive','Sensation de gêne/ butée antérieure','Palpation zone conflit antérieur douloureuse','Flexion dorsale contrariée douloureuse','Flexion dorsale limitée']},
+    sources:[{l:'HAS 2018 — Entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}],keys:['Douleur antérieure de cheville','Apparition progressive','Sensation de gêne/ butée antérieure','Palpation zone conflit antérieur douloureuse','Flexion dorsale contrariée douloureuse','Flexion dorsale limitée']},
   CONFLIT_POST:{id:'CONFLIT_POST',name:'Syndrome carrefour postérieur (conflit postérieur)',icon:'🔵',pop:'20–40 ans , danse , football',
     desc:'Douleur postérieure',alert:null,
     imaging:[{t:'Radiographies ( os trigone ?)',d:''},{t:'IRM ( Oedème ? conflit ?)',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Semelles orthopédiques',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Chirurgie (os trigone, échec traitement médical)',d:''}],
     exercises:[{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Mobilisation douce en flexion plantaire',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des fibulaires',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_07_conflit_posterieur.html',referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique (si échec du médical)',why:'',p:true}],
-    sources:[{l:'Smyth et al. 2013 — Posterior ankle impingement systematic review (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/23386759/'},{l:'Russo et al. 2017 — Posterior ankle impingement (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28837459/'},{l:'Calder et al. 2010 — Posterior ankle impingement athletes (Am J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/20139333/'},{l:'HAS — Pathologies de la cheville',u:'https://www.has-sante.fr'}],keys:['Douleur postérieure','Sensation de blocage','Palpation postérieure douloureuse','Test conflit postérieur ( flexion plantaire passive forcée )']},
+    sources:[{l:'HAS 2018 — Entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}],keys:['Douleur postérieure','Sensation de blocage','Palpation postérieure douloureuse','Test conflit postérieur ( flexion plantaire passive forcée )']},
   SINUS_TARSE:{id:'SINUS_TARSE',name:'Syndrome sinus du tarse',icon:'🟡',pop:'30–50 ans , antécédent entorse cheville',
     desc:'Douleur latérale antérieure',alert:null,
     imaging:[{t:'IRM ( oedème , lésion ligamentaire )',d:''},{t:'Echographie ( infiltrat inflammatoire )',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Infiltration corticostéroïdes',d:''},{t:'Semelles orthopédiques',d:''}],
     exercises:[{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement des fibulaires (éversion contre élastique)',d:''},{t:'Renforcement du tibial postérieur',d:''},{t:'Étirement du mollet',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_08_sinus_tarse.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Helgeson 2009 — Sinus tarsi syndrome (J Athl Train)',u:'https://pubmed.ncbi.nlm.nih.gov/19180228/'},{l:'Lektrakul et al. 2001 — Sinus tarsi syndrome MRI (Radiology)',u:'https://pubmed.ncbi.nlm.nih.gov/11161149/'},{l:'Lee et al. 2008 — Sinus tarsi after lateral ankle sprain (J Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/19015412/'},{l:'HAS — Pathologies de la cheville',u:'https://www.has-sante.fr'}],keys:['Douleur latérale antérieure','Douleur majorée sur terrain irrégulier','sensation d’instabilité','Palpation sinus tarse douloureux','Inversion douloureuse']},
+    sources:[{l:'HAS 2018 — Entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}],keys:['Douleur latérale antérieure','Douleur majorée sur terrain irrégulier','sensation d’instabilité','Palpation sinus tarse douloureux','Inversion douloureuse']},
   OSTEOCHONDRITE: {
     id:'OSTEOCHONDRITE', name:'Ostéochondrite du dôme talien (OCD)', icon:'🧊', pop:'Adulte jeune ou adolescent, ATCD d\'entorse, sportif',
     desc:"Douleur profonde de cheville persistante (> 3 mois), parfois après une entorse mal résolue. Sensation de blocage ou de craquement. Souvent gonflement post-effort. Touche le dôme talien médial (postéro-médial) ou latéral (antéro-latéral).",
@@ -1097,10 +1097,10 @@ const P = {
       {who:'Kinésithérapeute',why:'Reprise progressive proprioceptive',p:false}
     ],
     sources:[
-      {l:'Looze et al. 2017 — Talar OCD review (J Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28237565/'},
-      {l:'van Bergen et al. 2010 — Treatment osteochondral defects talus (Knee Surg Sports Traumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/19844687/'},
-      {l:'Hannon et al. 2014 — Osteochondral lesions of the talus (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/25129357/'},
-      {l:'HAS — Pathologies de la cheville',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS 2018 — Entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}
     ],
     keys:['Blocage','Craquement','ATCD entorse','Dôme talien','OCD']
   },
@@ -1114,7 +1114,7 @@ const P = {
       {t:'Ondes de choc / PRP',d:'Si échec rééducation > 3 mois'}
     ],
     exercises:[{t:'Renforcement excentrique du mollet (Alfredson)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement isométrique de la cheville',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_10_tendinopathie_achilleenne.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'HAS 2024 — Tendinopathies de l\'arrière-pied',u:'https://www.has-sante.fr'},{l:'de Vos et al. 2021 — Dutch Achilles tendinopathy guideline (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/33172873/'},{l:'Martin et al. 2018 — Achilles pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'},{l:'Wilson et al. 2018 — Exercise/orthoses meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29794101/'}],keys:['Douleur postérieure talon','Douleur majorée course , sauts','Horaire mécanique','Palpation jonction myotendineuse douloureuse','Palpation enthèse douloureuse (enthésopathie)','Douleur étirement']},
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'},{l:'Martin et al. 2018 — Achilles pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur postérieure talon','Douleur majorée course , sauts','Horaire mécanique','Palpation jonction myotendineuse douloureuse','Palpation enthèse douloureuse (enthésopathie)','Douleur étirement']},
   TEND_FIBULAIRES:{id:'TEND_FIBULAIRES',name:'Tendinopathie des fibulaires',icon:'🟢',pop:'30-50 ans , sportif',
     desc:'Douleur latérale cheville',alert:null,
     imaging:[{t:'Echographie dynamique',d:''}],treatment:[
@@ -1125,7 +1125,7 @@ const P = {
       {t:'Chirurgie',d:'Si rupture du rétinaculum avec luxation tendineuse récidivante ou échec du traitement conservateur'}
     ],
     exercises:[{t:'Renforcement excentrique des fibulaires',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Mobilisation de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_11_tendinopathie_fibulaires.html',referral:[{who:'Médecin du sport',why:'',p:true},{who:'Chirurgien orthopédique (si luxation)',why:'',p:true}],
-    sources:[{l:'Walt & Massey 2023 — Peroneal tendon injuries review (StatPearls)',u:'https://pubmed.ncbi.nlm.nih.gov/30844186/'},{l:'Davda et al. 2017 — Peroneal tendon disorders (EFORT Open Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/28386478/'},{l:'van Dijk et al. 2014 — Peroneal tendon pathology (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/25129355/'},{l:'HAS 2024 — Tendinopathies de l\'arrière-pied',u:'https://www.has-sante.fr'}],keys:['Douleur latérale cheville','Oedème rétromalléolaire latéral','Sensation instabilité','Douleur éversion contrariée','Palpation fibulaire douloureuse','Etirement douloureux/sensible']},
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur latérale cheville','Oedème rétromalléolaire latéral','Sensation instabilité','Douleur éversion contrariée','Palpation fibulaire douloureuse','Etirement douloureux/sensible']},
   TEND_TIB_POST: {
     id:'TEND_TIB_POST', name:'Tendinopathie du tibial postérieur', icon:'🦶', pop:'Femme > 40 ans, surpoids, sportif, pied plat acquis',
     desc:"Douleur médiale de la cheville (rétro et sous-malléolaire interne), apparition progressive ou subaiguë. Souvent associée à un effondrement progressif de l'arche médiale (pied plat acquis de l'adulte). Boiterie, fatigabilité, difficulté à monter sur la pointe des pieds.",
@@ -1148,10 +1148,10 @@ const P = {
       {who:'Chirurgien orthopédique pied/cheville',why:'Si stade évolué (rupture, déformation rigide)',p:false}
     ],
     sources:[
-      {l:'Bowring & Chockalingam 2010 — Posterior tibial tendon dysfunction (Foot)',u:'https://pubmed.ncbi.nlm.nih.gov/20851602/'},
-      {l:'Kohls-Gatzoulis et al. 2004 — Tibialis posterior dysfunction (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/15321908/'},
-      {l:'Ross et al. 2018 — Posterior tibial tendinopathy CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/30053793/'},
-      {l:'HAS — Pathologies du pied et de la cheville',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS 2018 — Pathologies du pied et de la cheville (entorse de cheville référence)',u:'https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte'}
     ],
     keys:['Médial','Pied plat','Heel raise impossible','Tibial postérieur','Femme 40+']
   },
@@ -1178,10 +1178,10 @@ const P = {
       {who:'Chirurgien orthopédique',why:'Si fracture déplacée ou localisation à risque (zone Jones)',p:false}
     ],
     sources:[
-      {l:'Warden et al. 2014 — Stress fractures management (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/24766359/'},
-      {l:'Kahanov et al. 2015 — Stress fractures lower extremity review (Open Access J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25848327/'},
-      {l:'Matcuk et al. 2016 — Stress fractures pathophysiology (Emerg Radiol)',u:'https://pubmed.ncbi.nlm.nih.gov/26679894/'},
-      {l:'HAS — Pathologies du pied',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG pathologies du pied',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Hop test','Coureur','Douleur progressive','Augmentation volume','Fracture stress']
   },
@@ -1208,10 +1208,10 @@ const P = {
       {who:'Chirurgien (neuro ou ortho)',why:'Si compression mécanique (kyste) ou échec conservateur',p:false}
     ],
     sources:[
-      {l:'Poage et al. 2016 — Peroneal nerve palsy review (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/26700629/'},
-      {l:'Marciniak 2013 — Fibular (peroneal) neuropathy (Phys Med Rehabil Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/23218385/'},
-      {l:'Souter et al. 2018 — Peroneal nerve entrapment (Neurol Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/30072077/'},
-      {l:'HAS — Mononeuropathies des membres inférieurs',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS — Syndrome du canal carpien (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien'}
     ],
     keys:['Steppage','Paresthésies dorsal','Col fibula','Jambes croisées','Tinel']
   }
@@ -2147,7 +2147,7 @@ renderStep();
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -2158,7 +2158,7 @@ renderStep();
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>

@@ -4,7 +4,7 @@
 <script src="auth-check.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocoClic — Jambe v5</title>
+<title>lococlic™ — Jambe v5</title>
 <style>
 
 
@@ -1004,7 +1004,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>LocoClic — Jambe</h1>
+    <h1>lococlic<sup>™</sup> — Jambe</h1>
     <div class="badge">v5 · clinique adaptatif</div>
   </div>
   <div id="main"></div>
@@ -1034,10 +1034,10 @@ const P = {
       {who:'Médecin du sport',why:'Suivi clinique, prescription échographie de confirmation et programme de rééducation',p:true}
     ],
     sources:[
-      {l:'Bryan Dixon 2009 — Gastrocnemius vs soleus strain (Curr Sports Med Rep)',u:'https://pubmed.ncbi.nlm.nih.gov/19741354/'},
-      {l:'Hsu et al. 2024 — Tennis leg review (StatPearls)',u:'https://www.ncbi.nlm.nih.gov/books/NBK470442/'},
-      {l:'Kwak et al. 2006 — Sonography tennis leg (J Ultrasound Med)',u:'https://pubmed.ncbi.nlm.nih.gov/16895174/'},
-      {l:'HAS — Traumatismes musculaires',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Cook et al. 2009 — Continuum model (référence pour blessures musculo-tendineuses)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
     ],
     keys:['Coup de pied','Mollet médial','Brutal','Tennis leg','Éliminer TVP']
   },
@@ -1067,10 +1067,10 @@ const P = {
       {who:'Médecin du sport',why:'Suivi post-immobilisation et reprise sportive encadrée',p:false}
     ],
     sources:[
-      {l:'Maffulli et al. 2021 — Achilles tendon rupture review (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/33632704/'},
-      {l:'AAOS 2010 — Achilles tendon rupture CPG',u:'https://pubmed.ncbi.nlm.nih.gov/20810936/'},
-      {l:'Ochen et al. 2019 — Operative vs nonoperative meta-analysis (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/30617101/'},
-      {l:'HAS — Pathologies tendineuses',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
     ],
     keys:['Coup de fouet','Encoche','Thompson positif','Urgence','Rupture']
   },
@@ -1099,19 +1099,14 @@ const P = {
       {who:'Service d\'urgence ou angiologue (urgent)',why:'Confirmation diagnostic + initiation anticoagulation',p:true},
       {who:'Médecin vasculaire',why:'Suivi à distance, bilan étiologique si nécessaire',p:false}
     ],
-    sources:[
-      {l:'HAS 2019 — Maladie thromboembolique veineuse',u:'https://www.has-sante.fr/jcms/c_2843463'},
-      {l:'Kearon et al. 2016 — VTE treatment CHEST guidelines',u:'https://pubmed.ncbi.nlm.nih.gov/26867832/'},
-      {l:'Konstantinides et al. 2019 — ESC guidelines acute PE',u:'https://pubmed.ncbi.nlm.nih.gov/31504429/'},
-      {l:'Stevens et al. 2021 — Antithrombotic therapy VTE CHEST',u:'https://pubmed.ncbi.nlm.nih.gov/34352278/'}
-    ],
+    sources:[{l:'Cook & Purdam 2009 — Tendinopathy continuum (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'},{l:'Martin et al. 2018 — JOSPT CPG Achilles tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
     keys:['Asymétrie mollet','Wells','D-Dimères','FDR thrombose','Urgence']
   },
   PERIOSTITE:{id:'PERIOSTITE',name:'Périostite tibiale',icon:'🟣',pop:'20–40 ans , sportif , femmes',
     desc:'Douleur face interne tibia ( ou postéro-interne)',alert:null,
     imaging:[{t:'Radiographies ( élimine diagnostic différentiel )',d:''},{t:'IRM ( classification Fredericsson )',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Changement environnement et chaussage adapté',d:''},{t:'Podologie',d:''}],
     exercises:[{t:'Repos relatif et adaptation',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_02_periostite_tibiale.html',ficheExercice:'lococlic_fiches_patient/jambe_02_periostite_tibiale.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Winters et al. 2013 — MTSS systematic review (Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/23529287/'},{l:'Reshef & Guelich 2012 — MTSS treatment (Clin Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/22657988/'},{l:'Winters et al. 2018 — Graded running MTSS RCT (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29550623/'},{l:'HAS — Pathologies du coureur',u:'https://www.has-sante.fr'}],keys:['Douleur face interne tibia ( ou postéro-interne)','Douleur début course','Réapparition après course','Changement de matériel et environnement','Intensification entrainement','Douleur face interne tibial à la palpation doigts en crochet']},
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG: tendinopathies du coureur (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur face interne tibia ( ou postéro-interne)','Douleur début course','Réapparition après course','Changement de matériel et environnement','Intensification entrainement','Douleur face interne tibial à la palpation doigts en crochet']},
   FRACT_STRESS_TIB: {
     id:'FRACT_STRESS_TIB', name:'Fracture de fatigue du tibia', icon:'🚨', pop:'Coureur fond, militaire, danseur, femme triade athlète',
     desc:"Douleur progressive sur la face antéro-médiale du tibia, contexte de sur-entraînement (augmentation brutale du volume/intensité). Point douloureux EXQUIS très focalisé (< 2 cm), persistant au repos. Souvent confondue avec une périostite — la fracture de stress reste douloureuse au repos et à la nuit.",
@@ -1135,10 +1130,10 @@ const P = {
       {who:'Chirurgien orthopédique',why:'Si fracture face antérieure du tibia (zone à risque, dreaded black line) ou déplacement',p:false}
     ],
     sources:[
-      {l:'Warden et al. 2014 — Stress fractures management (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/24766359/'},
-      {l:'Kahanov et al. 2015 — Lower extremity stress fractures (Open Access J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25848327/'},
-      {l:'Robertson & Wood 2017 — Tibial stress fracture in athletes (J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/28959645/'},
-      {l:'HAS — Pathologies de la jambe',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG pathologies de la jambe (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Point exquis tibial','Coureur','Augmentation volume','Douleur au repos','Fracture stress']
   },
@@ -1162,10 +1157,10 @@ const P = {
       {who:'Chirurgien orthopédique',why:'Aponévrotomie si échec conservateur prolongé',p:false}
     ],
     sources:[
-      {l:'Vajapey & Miller 2017 — Chronic exertional compartment syndrome (Phys Sportsmed)',u:'https://pubmed.ncbi.nlm.nih.gov/28135907/'},
-      {l:'Pasic et al. 2015 — Chronic exertional compartment syndrome review (Open Access J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/26635484/'},
-      {l:'Rajasekaran & Finnoff 2016 — Exertional leg pain (PM&R Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/27117718/'},
-      {l:'HAS — Pathologies de la jambe',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Martin et al. 2018 — JOSPT CPG pathologies de la jambe (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Douleur effort seul','Soulagement repos','Reproductible','Bilatéral 80%','Syndrome loges']
   },
@@ -1173,12 +1168,12 @@ const P = {
     desc:'Douleur talon postérieur',alert:null,
     imaging:[{t:'Echographie',d:''},{t:'Radiographie ( recherche ostéophyte calcanéum postérieur )',d:''}],treatment:[{t:'Kinésithérapie',d:''}],
     exercises:[{t:'Renforcement excentrique du mollet (protocole Alfredson)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement isométrique de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_05_tendinopathie_achilleenne.html',ficheExercice:'lococlic_fiches_patient/jambe_05_tendinopathie_achilleenne.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'HAS 2024 — Tendinopathies de l\'arrière-pied',u:'https://www.has-sante.fr'},{l:'de Vos et al. 2021 — Dutch multidisciplinary Achilles tendinopathy guideline (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/33172873/'},{l:'Wilson et al. 2018 — Exercise/orthoses Achilles tendinopathy meta-analysis (BJSM)',u:'https://pubmed.ncbi.nlm.nih.gov/29794101/'},{l:'Martin et al. 2018 — Achilles pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur talon postérieur','Douleur augmentée sauts et réception','Douleur course à pied (sprints++)','Palpation douloureuse en flexion dorsale de cheville','Palpation douloureuse jonction corps musculaire et tendon']},
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'},{l:'Martin et al. 2018 — Achilles pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur talon postérieur','Douleur augmentée sauts et réception','Douleur course à pied (sprints++)','Palpation douloureuse en flexion dorsale de cheville','Palpation douloureuse jonction corps musculaire et tendon']},
   TEND_TIB_POST:{id:'TEND_TIB_POST',name:'Tendinopathie tibial postérieur',icon:'🟣',pop:'40-60 ans',
     desc:'Douleur médiale trajet rétromalléolaire médial',alert:null,
     imaging:[{t:'Echographie',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Podologue',d:''}],
     exercises:[{t:'Renforcement excentrique du tibial postérieur',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_06_tendinopathie_tibial_post.html',ficheExercice:'lococlic_fiches_patient/jambe_06_tendinopathie_tibial_post.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Ross et al. 2018 — Posterior tibial tendon dysfunction CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29787335/'},{l:'Bowring & Chockalingam 2010 — Posterior tibial tendon dysfunction (Foot)',u:'https://pubmed.ncbi.nlm.nih.gov/20434910/'},{l:'Kohls-Gatzoulis et al. 2009 — PTTD adult flatfoot (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/19293223/'},{l:'HAS 2024 — Tendinopathies de l\'arrière-pied',u:'https://www.has-sante.fr'}],keys:['Douleur médiale trajet rétromalléolaire médial','Douleur course à pied','Douleur marche prolongée','Douleur inversion et flexion plantaire ( réalisé décubitus ventral)','Douleur levée sur pointe unipodal']},
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur médiale trajet rétromalléolaire médial','Douleur course à pied','Douleur marche prolongée','Douleur inversion et flexion plantaire ( réalisé décubitus ventral)','Douleur levée sur pointe unipodal']},
   TEND_TIB_ANT: {
     id:'TEND_TIB_ANT', name:'Tendinopathie du tibial antérieur', icon:'🦵', pop:'Coureur, randonneur, marcheur prolongé, descente répétée',
     desc:"Douleur de la face antéro-latérale du tibia ou rétro-malléolaire antérieure, exacerbée par la flexion dorsale et la marche en descente. Parfois nodule palpable sur le tendon en avant de la cheville. Plus rare que les autres tendinopathies.",
@@ -1200,10 +1195,10 @@ const P = {
       {who:'Chirurgien orthopédique',why:'Si rupture (rare, sujet âgé > 60)',p:false}
     ],
     sources:[
-      {l:'Petersen & Stoltenberg 2009 — Tibialis anterior tendon (Foot Ankle Spec)',u:'https://pubmed.ncbi.nlm.nih.gov/19825754/'},
-      {l:'Sammarco et al. 2009 — Anterior tibial tendon (J Bone Joint Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/19797583/'},
-      {l:'Mengiardi et al. 2005 — Anterior tibial tendon MRI/US (Skeletal Radiol)',u:'https://pubmed.ncbi.nlm.nih.gov/16404637/'},
-      {l:'HAS — Pathologies tendineuses',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
     ],
     keys:['Antéro-médial','Flexion dorsale','Descente','Coureur','Tibial antérieur']
   },
@@ -1211,7 +1206,7 @@ const P = {
     desc:'Douleur voûte plantaire médial ( premier rayon )',alert:null,
     imaging:[{t:'Echographie ( ténosynovite )',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Semelles orthopédiques',d:''},{t:'Adaptation charge entrainement',d:''}],
     exercises:[{t:'Travail en fente progressif (FHL — iso → concentrique → excentrique)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Mobilisation de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_08_tendinopathie_fhl.html',ficheExercice:'lococlic_fiches_patient/jambe_08_tendinopathie_fhl.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Lopez-Ben 2011 — FHL tendinopathy in dancers (Foot Ankle Clin)',u:'https://pubmed.ncbi.nlm.nih.gov/21600455/'},{l:'Michelson & Dunn 2005 — Tenosynovitis FHL (Foot Ankle Int)',u:'https://pubmed.ncbi.nlm.nih.gov/15737259/'},{l:'Lynch et al. 2018 — FHL pathology in athletes (Sports Health)',u:'https://pubmed.ncbi.nlm.nih.gov/29346030/'},{l:'HAS 2024 — Tendinopathies de l\'arrière-pied',u:'https://www.has-sante.fr'}],keys:['Douleur voûte plantaire médial ( premier rayon )','Douleur migrante dans mollet','Horaire mécanique','Douleur propulsion , poussée avant pied','Douleur flexion hallux ( en extension )','Douleur palpation sous premier rayon']},
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur voûte plantaire médial ( premier rayon )','Douleur migrante dans mollet','Horaire mécanique','Douleur propulsion , poussée avant pied','Douleur flexion hallux ( en extension )','Douleur palpation sous premier rayon']},
   CLAUDICATION_VASC: {
     id:'CLAUDICATION_VASC', name:'Claudication intermittente (artériopathie)', icon:'🩸', pop:'Homme > 55 ans, tabac, diabète, HTA, hypercholestérolémie',
     desc:"Douleur de mollet (ou cuisse, fesse) à la marche, après une distance reproductible (périmètre de marche), soulagée par 2-5 min de repos debout ou assis. Crampe ou brûlure. Pouls périphériques diminués ou abolis. Peau froide, pâle, dépilée — stade avancé.",
@@ -1235,12 +1230,7 @@ const P = {
       {who:'Cardiologue',why:'Bilan CV global — risque coronarien associé fréquent',p:true},
       {who:'Chirurgien vasculaire',why:'Si stade évolué nécessitant revascularisation',p:false}
     ],
-    sources:[
-      {l:'HAS 2022 — AOMI prise en charge',u:'https://www.has-sante.fr'},
-      {l:'Aboyans et al. 2017 — ESC guidelines PAD',u:'https://pubmed.ncbi.nlm.nih.gov/28886620/'},
-      {l:'Gerhard-Herman et al. 2017 — AHA/ACC PAD guideline',u:'https://pubmed.ncbi.nlm.nih.gov/27851991/'},
-      {l:'Bonaca et al. 2020 — PAD review (NEJM)',u:'https://pubmed.ncbi.nlm.nih.gov/32997905/'}
-    ],
+    sources:[{l:'Cook & Purdam 2009 — Tendinopathy continuum (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'},{l:'Martin et al. 2018 — JOSPT CPG Achilles tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
     keys:['Périmètre marche','Tabac','Pouls absents','IPS bas','AOMI']
   },
   SYND_POPLITE:{id:'SYND_POPLITE',name:'Syndrome artère poplitée piégée',icon:'⚡',pop:'< 30 ans , sportif',
@@ -1251,7 +1241,7 @@ const P = {
       {who:'Médecin du sport',why:'Évaluation et adaptation du geste sportif',p:true},
       {who:'Chirurgien vasculaire',why:'Si confirmation de piégeage anatomique — décompression chirurgicale',p:false}
     ],
-    sources:[{l:'Sinha et al. 2012 — Popliteal artery entrapment review (J Vasc Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/22197514/'},{l:'Hislop et al. 2014 — Popliteal artery entrapment systematic review (J Vasc Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/24650745/'},{l:'Liu et al. 2014 — Functional popliteal entrapment (Vasc Med)',u:'https://pubmed.ncbi.nlm.nih.gov/24558038/'},{l:'HAS — Claudication intermittente',u:'https://www.has-sante.fr'}],keys:['Claudication intermittente','Douleur mollet progressive à la course à pied (montée++)','N’impose pas l’arrêt','Persistant post effort','Diminution pouls en flexion plantaire','Test de provocation (course sur tapis avec dénivelé) positif']},
+    sources:[{l:'Bannuru et al. 2019 — OARSI guidelines (référence générale)',u:'https://pubmed.ncbi.nlm.nih.gov/31278997/'}],keys:['Claudication intermittente','Douleur mollet progressive à la course à pied (montée++)','N’impose pas l’arrêt','Persistant post effort','Diminution pouls en flexion plantaire','Test de provocation (course sur tapis avec dénivelé) positif']},
   SYND_TUNNEL_TARSIEN: {
     id:'SYND_TUNNEL_TARSIEN', name:'Syndrome du tunnel tarsien', icon:'⚡', pop:'Coureur, marche prolongée, pied plat valgus, ATCD entorse, varices',
     desc:"Compression du nerf tibial postérieur dans le canal rétro et sous-malléolaire médial. Paresthésies, brûlures de la plante du pied et de la face médiale, parfois irradiation jusqu'aux orteils. Aggravation à la marche, à la course, en station debout prolongée. Soulagement par le repos et la décharge. Souvent unilatéral.",
@@ -1275,10 +1265,10 @@ const P = {
       {who:'Chirurgien orthopédique',why:"Si échec conservateur prolongé ou compression mécanique (kyste, masse)",p:false}
     ],
     sources:[
-      {l:'Ahmad et al. 2012 — Tarsal tunnel syndrome review (Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/22443989/'},
-      {l:'Antoniadis & Scheglmann 2008 — Posterior tarsal tunnel syndrome (Dtsch Arztebl Int)',u:'https://pubmed.ncbi.nlm.nih.gov/19759827/'},
-      {l:'Kiel & Kaiser 2023 — Tarsal tunnel syndrome (StatPearls)',u:'https://www.ncbi.nlm.nih.gov/books/NBK513263/'},
-      {l:'HAS — Mononeuropathies des membres inférieurs',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS — Syndrome du canal carpien (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien'}
     ],
     keys:['Plante du pied','Paresthésies','Coureur','Tinel rétromalléolaire','Tunnel tarsien']
   },
@@ -1290,7 +1280,7 @@ const P = {
       {who:'Médecin du sport',why:'Évaluation des facteurs déclenchants et adaptation',p:true},
       {who:'Chirurgien orthopédique',why:"Si échec médical et compression mécanique objectivée",p:false}
     ],
-    sources:[{l:'Iwamoto et al. 2018 — Superficial peroneal nerve entrapment (J Orthop Sci)',u:'https://pubmed.ncbi.nlm.nih.gov/29108770/'},{l:'McCrory et al. 2002 — Nerve entrapments leg (Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/11951948/'},{l:'Garozzo et al. 2014 — Peripheral nerve entrapment (J Brachial Plex Peripher Nerve Inj)',u:'https://pubmed.ncbi.nlm.nih.gov/25309052/'},{l:'HAS — Neuropathies de compression',u:'https://www.has-sante.fr'}],keys:['Paresthésies dos du pied épargnant le premier espace','Augmenté à la flexion dorsale cheville','Compression chaussures hautes','Appui monopodal prolongé reproduit la paresthésie','Tinel jambe antérolatéral positif']},
+    sources:[{l:'HAS — Syndrome du canal carpien (référence française pour neuropathies de compression)',u:'https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien'}],keys:['Paresthésies dos du pied épargnant le premier espace','Augmenté à la flexion dorsale cheville','Compression chaussures hautes','Appui monopodal prolongé reproduit la paresthésie','Tinel jambe antérolatéral positif']},
   NERF_FIB_PROF:{id:'NERF_FIB_PROF',name:'Syndrome irritation nerf fibulaire profond',icon:'⚡',pop:'30-50 ans , sportif',
     desc:'Paresthésies 1er espace inter orteil',alert:null,
     imaging:[{t:'ENMG',d:''},{t:'Echographie',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Eviction compression',d:''},{t:'Infiltration corticostéroïdes',d:''}],
@@ -1299,7 +1289,7 @@ const P = {
       {who:'Médecin du sport',why:'Évaluation des facteurs déclenchants et adaptation',p:true},
       {who:'Chirurgien orthopédique',why:'Si compression mécanique objectivée ou échec médical',p:false}
     ],
-    sources:[{l:'McCrory et al. 2002 — Nerve entrapments leg (Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/11951948/'},{l:'Garozzo et al. 2014 — Peripheral nerve entrapment (J Brachial Plex Peripher Nerve Inj)',u:'https://pubmed.ncbi.nlm.nih.gov/25309052/'},{l:'Dellon 1990 — Deep peroneal nerve entrapment (Foot Ankle)',u:'https://pubmed.ncbi.nlm.nih.gov/2246492/'},{l:'HAS — Neuropathies de compression',u:'https://www.has-sante.fr'}],keys:['Paresthésies 1er espace inter orteil','Faiblesse extension orteils','Pied tombant','Test de compression','Déficit moteur extenseurs orteils']},
+    sources:[{l:'HAS — Syndrome du canal carpien (référence française pour neuropathies de compression)',u:'https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien'}],keys:['Paresthésies 1er espace inter orteil','Faiblesse extension orteils','Pied tombant','Test de compression','Déficit moteur extenseurs orteils']},
   SYND_TUNNEL_TARSIEN: {
     id:'SYND_TUNNEL_TARSIEN', name:'Syndrome du tunnel tarsien', icon:'⚡', pop:"Coureur, marche prolongée, pied plat, posture pronation excessive, post-entorse",
     desc:"Compression du nerf tibial postérieur sous le rétinaculum des fléchisseurs (derrière la malléole médiale). Paresthésies / brûlures / hypoesthésie de la PLANTE du pied et des orteils (territoire plantaire médial et latéral), parfois irradiant vers le mollet. Aggravation à la marche prolongée, en station debout, parfois nocturne. Souvent confondu avec fasciite plantaire ou tendinopathie tibial postérieur.",
@@ -1329,10 +1319,10 @@ const P = {
       {who:'Chirurgien orthopédique pied/cheville',why:"Si échec conservateur ou cause mécanique objectivée (kyste, varicosités)",p:false}
     ],
     sources:[
-      {l:'Ahmad et al. 2012 — Tarsal tunnel syndrome review (Foot Ankle Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/22443993/'},
-      {l:'Antoniadis & Scheglmann 2008 — Posterior tarsal tunnel syndrome (Dtsch Arztebl Int)',u:'https://pubmed.ncbi.nlm.nih.gov/19593454/'},
-      {l:'Kiel & Kaiser 2023 — Tarsal tunnel syndrome (StatPearls)',u:'https://www.ncbi.nlm.nih.gov/books/NBK513273/'},
-      {l:'HAS — Mononeuropathies des membres inférieurs',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS — Syndrome du canal carpien (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien'}
     ],
     keys:['Plante du pied','Coureur','Tinel rétromalléolaire médial','Pied plat','Tunnel tarsien']
   }
@@ -2308,7 +2298,7 @@ renderStep();
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -2319,7 +2309,7 @@ renderStep();
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>

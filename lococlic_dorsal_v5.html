@@ -4,7 +4,7 @@
 <script src="auth-check.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocoClic — Rachis dorsal v5</title>
+<title>lococlic™ — Rachis dorsal v5</title>
 <style>
 
 
@@ -1069,7 +1069,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>LocoClic — Rachis dorsal</h1>
+    <h1>lococlic<sup>™</sup> — Rachis dorsal</h1>
     <div class="badge">v5 · clinique adaptatif</div>
   </div>
   <div id="main"></div>
@@ -1106,12 +1106,7 @@ const P = {
       modules:[],
       text:"<strong>Toujours éliminer une cause viscérale</strong> (cardiaque, aortique, respiratoire, digestive) chez tout patient avec dorsalgie aiguë — particulièrement si : douleur thoracique associée, terrain cardiovasculaire, dyspnée, signes digestifs, fièvre. Bilan : ECG, dosages cardiaques selon contexte, imagerie thoraco-abdominale au moindre doute."
     },
-    sources:[
-      {l:'Briggs et al. 2009 — Thoracic spine pain prevalence systematic review (BMC Musculoskelet Disord)',u:'https://pubmed.ncbi.nlm.nih.gov/19563667/'},
-      {l:'Fouquet et al. 2015 — Prevalence of thoracic spine pain (Occup Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25638207/'},
-      {l:'Heneghan et al. 2018 — Thoracic spine pain physiotherapy (Musculoskelet Sci Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/29709769/'},
-      {l:'Masaracchio et al. 2019 — Thoracic spine manipulation systematic review (PLoS One)',u:'https://pubmed.ncbi.nlm.nih.gov/30759134/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Dorsalgie aiguë','Mécanique','Diagnostic d\'élimination','Red flags viscéraux','Dos']
   },
   DORS_CHRONIQUE: {
@@ -1139,12 +1134,7 @@ const P = {
       {who:'Rhumatologue',why:"Si doute diagnostique, infiltrations ou bilan complet",p:false},
       {who:'Médecin du travail',why:"Si origine professionnelle ou retentissement sur l'emploi — adaptation du poste",p:false}
     ],
-    sources:[
-      {l:'Briggs et al. 2009 — Thoracic spine pain prevalence systematic review (BMC Musculoskelet Disord)',u:'https://pubmed.ncbi.nlm.nih.gov/19563667/'},
-      {l:'Fouquet et al. 2015 — Prevalence of thoracic spine pain (Occup Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25638207/'},
-      {l:'Heneghan et al. 2018 — Thoracic spine pain physiotherapy (Musculoskelet Sci Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/29709769/'},
-      {l:'Niemeläinen et al. 2006 — Thoracic spine MRI degenerative findings (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/16778693/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Dorsalgie chronique','Sédentaire écran','Posture','> 3 mois','Bio-psycho-social']
   },
   SYND_FACETTAIRE_D: {
@@ -1165,12 +1155,7 @@ const P = {
       {who:'Rhumatologue',why:"Pour infiltration facettaire sous radioguidage et bilan complet",p:true},
       {who:'Médecin du sport',why:"Programme de rééducation et correction posturale",p:false}
     ],
-    sources:[
-      {l:'Manchikanti et al. 2020 — Thoracic facet joint pain (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/32942779/'},
-      {l:'Stolz et al. 2020 — Thoracic facet joint syndrome diagnosis (Schmerz)',u:'https://pubmed.ncbi.nlm.nih.gov/32072290/'},
-      {l:'Atluri et al. 2008 — Diagnostic accuracy thoracic facet joint blocks (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/18850031/'},
-      {l:'Manchikanti et al. 2012 — Thoracic interventional techniques (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/22622912/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Extension douloureuse','Pseudo-radiculaire intercostale','Arthrose facettaire','Facettaire dorsal']
   },
   DOULEUR_COSTOVERTEBRALE: {
@@ -1190,12 +1175,7 @@ const P = {
       {who:'Médecin du sport',why:"Évaluation et prise en charge manipulatoire spécialisée",p:true},
       {who:'Rhumatologue',why:"Si évolution prolongée ou récidives fréquentes",p:false}
     ],
-    sources:[
-      {l:'Triano et al. 2013 — Spinal manipulation review (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/24139395/'},
-      {l:'Erwin et al. 2010 — Costovertebral joint pain (PM R)',u:'https://pubmed.ncbi.nlm.nih.gov/20970764/'},
-      {l:'Arroyo et al. 1992 — Costovertebral joint anatomy biomechanics (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/1428657/'},
-      {l:'Heneghan et al. 2018 — Thoracic spine pain physiotherapy (Musculoskelet Sci Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/29709769/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Effort torsion','Reproductible respiration','Blocage costal','Manipulation efficace','Costo-vertébrale']
   },
   SYND_CYRIAX: {
@@ -1217,12 +1197,7 @@ const P = {
       {who:'Médecin du sport',why:"Évaluation et programme de rééducation",p:true},
       {who:'Chirurgien thoracique',why:"Si forme invalidante et résistante au traitement médical — résection costale",p:false}
     ],
-    sources:[
-      {l:'Foley et al. 2019 — Slipping rib syndrome (Curr Sports Med Rep)',u:'https://pubmed.ncbi.nlm.nih.gov/30817515/'},
-      {l:'Turcios 2017 — Slipping rib syndrome review (J Pediatr Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28528718/'},
-      {l:'Lippi et al. 2019 — Costal cartilage resection slipping rib (Ann Thorac Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/32055418/'},
-      {l:'McMahon 2018 — Slipping rib syndrome diagnosis (BMJ Case Rep)',u:'https://pubmed.ncbi.nlm.nih.gov/29929973/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Côtes flottantes','Test du crochet','Slipping rib','Subluxation costale','Cyriax']
   },
   TIETZE: {
@@ -1247,12 +1222,7 @@ const P = {
       {who:'Rhumatologue',why:"Si forme résistante, infiltration ou doute diagnostique",p:false},
       {who:'Médecin du sport',why:"Si origine sportive — gestion de la reprise",p:false}
     ],
-    sources:[
-      {l:'Schumann 2023 — Tietze syndrome review (Eur Heart J)',u:'https://pubmed.ncbi.nlm.nih.gov/37551691/'},
-      {l:'Aeschlimann & Kahn 1990 — Tietze syndrome 32 cases (J Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/2280720/'},
-      {l:'Proulx & Zryd 2009 — Costochondritis diagnosis treatment (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/19751083/'},
-      {l:'Ayloo et al. 2013 — Evaluation noncardiac chest pain (Prim Care)',u:'https://pubmed.ncbi.nlm.nih.gov/24209725/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Tuméfaction chondrocostale','2e-3e côte','Femme jeune','Inflammation bénigne','Tietze']
   },
   FRACT_VERTEBRE_OSTEOP: {
@@ -1283,10 +1253,10 @@ const P = {
       {who:'Chirurgien orthopédique (rachis)',why:"Si tassement majeur, cyphose évolutive ou compression neurologique",p:false}
     ],
     sources:[
-      {l:'Compston et al. 2019 — Osteoporosis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/30739747/'},
-      {l:'Briot & Roux 2017 — Prise en charge ostéoporose (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/28017737/'},
-      {l:'Camacho et al. 2020 — AACE/ACE guidelines osteoporosis',u:'https://pubmed.ncbi.nlm.nih.gov/32427503/'},
-      {l:'HAS 2019 — Prise en charge fracture ostéoporose',u:'https://www.has-sante.fr'}
+      
+      
+      
+      {l:'HAS 2019 — Prévention, diagnostic et traitement de l\'ostéoporose',u:'https://www.has-sante.fr/jcms/p_3105108/fr/prevention-diagnostic-et-traitement-de-l-osteoporose'}
     ],
     keys:['Femme ménopausée','Effort minime','Brutal','T11-L2','Fracture ostéoporotique']
   },
@@ -1309,12 +1279,7 @@ const P = {
       {who:'Chirurgien orthopédique (rachis pédiatrique)',why:"Si cyphose évolutive > 45-50° Cobb en cours de croissance — bilan et indication corset/chirurgie",p:true},
       {who:'Médecin du sport',why:"Encadrement du programme de rééducation et de l'activité physique",p:true}
     ],
-    sources:[
-      {l:'Palazzo et al. 2014 — Scheuermann disease review (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/24369971/'},
-      {l:'Lowe 2007 — Scheuermann disease (J Bone Joint Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/17828283/'},
-      {l:'Ali et al. 2000 — Scheuermann kyphosis natural history (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/10833254/'},
-      {l:'Ristolainen et al. 2012 — Untreated Scheuermann long-term follow-up (J Bone Joint Surg Br)',u:'https://pubmed.ncbi.nlm.nih.gov/22219252/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Adolescent','Cyphose fixée','Cunéiformisation','Nodules de Schmorl','Scheuermann']
   },
   SYND_CHARNIERE_DL: {
@@ -1345,12 +1310,7 @@ const P = {
       modules:[],
       text:"<strong>Diagnostic différentiel</strong> : douleur de hanche (irradiations fessières), pathologie rénale (lombalgie + flanc), pathologie pelvienne. Toujours éliminer ces causes avant de retenir le syndrome de Maigne — examen abdo-pelvien et examen de hanche systématiques."
     },
-    sources:[
-      {l:'Maigne 1980 — Low back pain of thoracolumbar origin (Arch Phys Med Rehabil)',u:'https://pubmed.ncbi.nlm.nih.gov/6446290/'},
-      {l:'Sebbag et al. 2006 — Syndrome de la charnière dorso-lombaire (Rev Rhum)',u:'https://www.sciencedirect.com/science/article/abs/pii/S1169833005001754'},
-      {l:'Proctor 1985 — Posterior ramus syndromes',u:'https://pubmed.ncbi.nlm.nih.gov/3160078/'},
-      {l:'Maigne JY 2007 — Le syndrome de la charnière dorso-lombaire (Rev Med Suisse)',u:'https://www.revmed.ch'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Maigne','Charnière T11-L1','Rotation douloureuse','Irradiations atypiques','Palper-roulé']
   },
     DISCOPATHIE_D: {
@@ -1383,12 +1343,7 @@ const P = {
       modules:[],
       text:"<strong>Toujours dépister une compression médullaire dorsale</strong> : signes pyramidaux des membres inférieurs (Babinski, hyperréflexie, troubles marche), paresthésies en chaussette, troubles sphinctériens. Une hernie discale dorsale médiane est une URGENCE chirurgicale."
     },
-    sources:[
-      {l:'Stillerman et al. 1998 — Experience in management thoracic disc herniations (J Neurosurg)',u:'https://pubmed.ncbi.nlm.nih.gov/9525713/'},
-      {l:'Wood et al. 1995 — Thoracic disc herniation MRI (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/7747234/'},
-      {l:'Brown et al. 1992 — Symptomatic thoracic disc herniation (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/1411773/'},
-      {l:'McInerney & Ball 2000 — Thoracic disc disease pathophysiology (Br J Neurosurg)',u:'https://pubmed.ncbi.nlm.nih.gov/10923146/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Flexion douloureuse','T7-T11','Hémiceinture','McKenzie','Discopathie dorsale']
   },
   SPONDYLARTHRITE_D: {
@@ -1418,8 +1373,8 @@ const P = {
     sources:[
       {l:'Sieper et al. 2017 — Axial spondyloarthritis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/28110981/'},
       {l:'van der Heijde et al. 2017 — ASAS-EULAR management recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/28087505/'},
-      {l:'Rudwaleit et al. 2009 — ASAS classification criteria axial spondyloarthritis',u:'https://pubmed.ncbi.nlm.nih.gov/19297344/'},
-      {l:'Wendling et al. 2022 — Recommandations SFR spondyloarthrite (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/35487390/'}
+      
+      
     ],
     keys:['Raideur inflammatoire','Sujet jeune','HLA-B27','Atteinte axiale','Spondylarthrite dorsale']
   }
@@ -2317,7 +2272,7 @@ renderStep();
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -2328,7 +2283,7 @@ renderStep();
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>

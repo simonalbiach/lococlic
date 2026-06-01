@@ -4,7 +4,7 @@
 <script src="auth-check.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LocoClic — Rachis cervical v5</title>
+<title>lococlic™ — Rachis cervical v5</title>
 <style>
 
 
@@ -1067,7 +1067,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>LocoClic — Rachis cervical</h1>
+    <h1>lococlic<sup>™</sup> — Rachis cervical</h1>
     <div class="badge">v5 · clinique adaptatif</div>
   </div>
   <div id="main"></div>
@@ -1105,12 +1105,7 @@ const P = {
       modules:[],
       text:"<strong>Si cervicalgie > 6 semaines</strong> chez sujet jeune (< 45 ans) avec raideur matinale > 30 min, douleurs nocturnes en 2e partie de nuit, atteinte d'autres articulations ou ATCD personnel/familial de psoriasis, uvéite ou MICI : penser à une spondylarthrite. Bilan : CRP, HLA-B27, IRM sacro-iliaques."
     },
-    sources:[
-      {l:'Cohen 2015 — Epidemiology diagnosis treatment of neck pain (Mayo Clin Proc)',u:'https://pubmed.ncbi.nlm.nih.gov/25659245/'},
-      {l:'Hoy et al. 2010 — Epidemiology of neck pain (Best Pract Res Clin Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/21665125/'},
-      {l:'Côté et al. 2008 — Neck pain task force results general population (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/18204405/'},
-      {l:'Blanpied et al. 2017 — Neck pain CPG (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/28666405/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Cervicalgie aiguë','Mécanique','Pas imagerie','Évolution favorable','Cou']
   },
   CERV_CHRONIQUE: {
@@ -1139,12 +1134,7 @@ const P = {
       {who:'Rhumatologue',why:"Si bilan complémentaire, infiltrations, ou doute diagnostique",p:false},
       {who:'Médecin du travail',why:"Si origine professionnelle ou retentissement sur l'emploi — adaptation du poste",p:false}
     ],
-    sources:[
-      {l:'Blanpied et al. 2017 — Neck pain CPG (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/28666405/'},
-      {l:'Gross et al. 2015 — Exercises for mechanical neck disorders Cochrane',u:'https://pubmed.ncbi.nlm.nih.gov/25629215/'},
-      {l:'Bier et al. 2018 — KNGF clinical practice guideline neck pain',u:'https://pubmed.ncbi.nlm.nih.gov/29073829/'},
-      {l:'Côté et al. 2016 — OPTIMa Collaboration neck pain noninvasive interventions',u:'https://pubmed.ncbi.nlm.nih.gov/26984843/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Cervicalgie chronique','> 3 mois','Sédentaire écran','Bio-psycho-social','Exercice']
   },
   TORTICOLIS_AIGU: {
@@ -1167,10 +1157,10 @@ const P = {
       {who:'Rhumatologue',why:"Si évolution prolongée > 2 semaines ou apparition de red flag",p:false}
     ],
     sources:[
-      {l:'Cohen 2015 — Epidemiology diagnosis treatment of neck pain (Mayo Clin Proc)',u:'https://pubmed.ncbi.nlm.nih.gov/25659245/'},
-      {l:'Blanpied et al. 2017 — Neck pain CPG (J Orthop Sports Phys Ther)',u:'https://pubmed.ncbi.nlm.nih.gov/28666405/'},
+      
+      
       {l:"Bonfort et al. 2007 — Acute neck pain conservative care (Spine J)",u:'https://pubmed.ncbi.nlm.nih.gov/17321965/'},
-      {l:'Hurwitz et al. 2008 — Treatment of neck pain task force (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/18204402/'}
+      
     ],
     keys:['Brutal au réveil','Contracture','Attitude vicieuse','Impotence','Torticolis']
   },
@@ -1195,12 +1185,7 @@ const P = {
       {who:'Rhumatologue',why:"Pour infiltration facettaire sous radioguidage et bilan complet",p:true},
       {who:'Médecin du sport',why:"Programme de rééducation et correction posturale",p:false}
     ],
-    sources:[
-      {l:'Manchikanti et al. 2020 — Cervical facet joint pain (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/32942779/'},
-      {l:'Cohen et al. 2007 — Cervical zygapophysial joint pain (Anesthesiology)',u:'https://pubmed.ncbi.nlm.nih.gov/17585245/'},
-      {l:'Bogduk 2011 — On cervical zygapophyseal joint pain (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/21587101/'},
-      {l:'Falco et al. 2012 — Cervical facet joint interventions (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/22828690/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Extension douloureuse','Pseudo-radiculaire trapèze','Arthrose facettaire','Facettaire cervical']
   },
   NCB: {
@@ -1233,12 +1218,7 @@ const P = {
       modules:[],
       text:"<strong>Toujours dépister une atteinte médullaire</strong> (myélopathie cervicarthrosique) : signes pyramidaux (Hoffmann, Babinski), troubles de la marche, hyperréflexie, troubles sphinctériens. Si présents : urgence chirurgicale.<br><br><strong>Diagnostic différentiel : syndrome du défilé thoraco-brachial</strong> (SDTB) — paresthésies des 4e-5e doigts aggravées bras levé, position du soldat, port de charge, terrain cervico-thoracique. Tests de Roos, Wright, Adson positifs. À évoquer si Spurling négatif et symptômes positionnels."
     },
-    sources:[
-      {l:'Caridi et al. 2011 — Cervical radiculopathy a review (HSS J)',u:'https://pubmed.ncbi.nlm.nih.gov/22582013/'},
-      {l:'Iyer & Kim 2016 — Cervical radiculopathy (Curr Rev Musculoskelet Med)',u:'https://pubmed.ncbi.nlm.nih.gov/27101095/'},
-      {l:'Thoomes et al. 2018 — Physical tests cervical radiculopathy systematic review (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/28838833/'},
-      {l:'Bono et al. 2011 — NASS guideline cervical radiculopathy (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/21168100/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Spurling','Trajet C5-C8','Hernie cervicale','Radiculalgie','NCB']
   },
   ARTHROSE_CERV: {
@@ -1260,12 +1240,7 @@ const P = {
       {who:'Rhumatologue',why:"Bilan complet, infiltrations facettaires si poussée",p:true},
       {who:'Médecin du sport',why:"Programme de rééducation et correction posturale",p:false}
     ],
-    sources:[
-      {l:'Goode et al. 2010 — Prevalence cervical spine osteoarthritis (Best Pract Res Clin Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/21665128/'},
-      {l:'Binder 2007 — Cervical spondylosis neck pain (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/17347239/'},
-      {l:'Theodore 2020 — Degenerative cervical spondylosis (N Engl J Med)',u:'https://pubmed.ncbi.nlm.nih.gov/32101671/'},
-      {l:'Kuijper et al. 2009 — Cervical collar physiotherapy radiculopathy (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/19808579/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Sénior','Raideur cervicale','Uncarthrose','Discarthrose','Cervicarthrose']
   },
   MYELOPATHIE_CERV: {
@@ -1292,12 +1267,7 @@ const P = {
       {who:'Chirurgien orthopédique (rachis) ou neurochirurgien',why:"Avis chirurgical EN URGENCE dès la suspicion clinique",p:true},
       {who:'Rhumatologue',why:"Bilan complet et coordination",p:false}
     ],
-    sources:[
-      {l:'Nouri et al. 2015 — Degenerative cervical myelopathy review (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/26020847/'},
-      {l:'Fehlings et al. 2017 — Clinical practice guidelines management cervical myelopathy (Global Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/29164027/'},
-      {l:'Tetreault et al. 2015 — Cervical spondylotic myelopathy prognosis (J Bone Joint Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/26537168/'},
-      {l:'Davies et al. 2018 — Degenerative cervical myelopathy (BMJ)',u:'https://pubmed.ncbi.nlm.nih.gov/29472200/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['Troubles marche','Hoffmann','Babinski','Sénior','Myélopathie cervicale']
   },
   WHIPLASH: {
@@ -1331,12 +1301,7 @@ const P = {
       modules:[],
       text:"<strong>Whiplash chronique (> 3 mois)</strong> : composante psycho-sociale fréquente (yellow flags ++) — kinésiophobie, anxiété, contexte médico-légal/assurantiel. Approche bio-psycho-sociale indispensable. Ne pas surtraiter (imagerie, collier, opiacés)."
     },
-    sources:[
-      {l:'Sterling 2014 — Physiotherapy management of whiplash-associated disorders (Phys Ther Rev)',u:'https://pubmed.ncbi.nlm.nih.gov/24834007/'},
-      {l:'Côté et al. 2008 — Treatment whiplash associated disorders task force (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/18204402/'},
-      {l:'Stiell et al. 2001 — Canadian C-spine rule (JAMA)',u:'https://pubmed.ncbi.nlm.nih.gov/11597285/'},
-      {l:'Carroll et al. 2008 — Whiplash prognosis course (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/18204384/'}
-    ],
+    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
     keys:['AVP','Hyperextension-flexion','Yellow flags','Canadian C-spine','Whiplash']
   },
   SPONDYLARTHRITE_C: {
@@ -1367,8 +1332,8 @@ const P = {
     sources:[
       {l:'Sieper et al. 2017 — Axial spondyloarthritis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/28110981/'},
       {l:'van der Heijde et al. 2017 — ASAS-EULAR management recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/28087505/'},
-      {l:'Kim et al. 2007 — Cervical spine involvement ankylosing spondylitis (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/17304130/'},
-      {l:'Wendling et al. 2022 — Recommandations SFR spondyloarthrite (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/35487390/'}
+      
+      
     ],
     keys:['Raideur inflammatoire','Sujet jeune','HLA-B27','Atteinte axiale','Spondylarthrite cervicale']
   }
@@ -2222,7 +2187,7 @@ renderStep();
 </style>
 <div class="lococlic-medical-disclaimer">
   <strong>⚠️ Outil d'aide à la décision pédagogique réservé aux professionnels de santé.</strong>
-  LocoClic n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
+  lococlic<sup>™</sup> n'est pas un dispositif médical. Il ne remplace ni l'examen clinique ni le jugement médical du praticien. La responsabilité du diagnostic, du traitement et de l'orientation du patient appartient exclusivement au médecin utilisateur.
   <a href="/cgu.html">Voir les CGU</a>
 </div>
 <footer class="lococlic-footer">
@@ -2233,7 +2198,7 @@ renderStep();
     <a href="/cgu.html">CGU</a>
     <a href="mailto:contact@lococlic.com">Contact</a>
   </nav>
-  <div class="copyright">© 2026 LocoClic™ — Tous droits réservés. Marque déposée à l'INPI.</div>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
 </footer>
 
 </body>
