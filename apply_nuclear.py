@@ -268,7 +268,7 @@ for module in ROOT.glob("lococlic_*_v5.html"):
                 fb_url = "https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs"
             elif "cheville" in mod_name or "pied" in mod_name:
                 fb_label = "HAS 2018 — Entorse de cheville de l'adulte"
-                fb_url = "https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte"
+                fb_url = "https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive"
             elif "lomb" in mod_name or "dorsal" in mod_name or "cerv" in mod_name:
                 fb_label = "HAS 2019 — Prise en charge du patient présentant une lombalgie commune"
                 fb_url = "https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune"
@@ -277,7 +277,7 @@ for module in ROOT.glob("lococlic_*_v5.html"):
                 fb_url = "https://pubmed.ncbi.nlm.nih.gov/31278997/"
             elif "main" in mod_name or "coude" in mod_name:
                 fb_label = "HAS — Syndrome du canal carpien"
-                fb_url = "https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien"
+                fb_url = "https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient"
             else:
                 fb_label = "Bannuru et al. 2019 — OARSI guidelines (référence générale)"
                 fb_url = "https://pubmed.ncbi.nlm.nih.gov/31278997/"

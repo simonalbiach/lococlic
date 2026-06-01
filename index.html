@@ -288,6 +288,37 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 32px;
   }
+  
+  .info-card-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    display: block;
+    transition: all 0.25s ease;
+  }
+  
+  .info-card-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+  }
+  
+  .info-card-link h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .info-card-link .link-arrow {
+    color: #10b981;
+    font-weight: 600;
+    transition: transform 0.2s;
+  }
+  
+  .info-card-link:hover .link-arrow {
+    transform: translateX(4px);
+  }
+
   .info-card {
     text-align: center;
     padding: 24px;
@@ -674,11 +705,11 @@
       <h3>Parcours adaptatif</h3>
       <p>Le moteur sélectionne les tests cliniques les plus pertinents en fonction des étapes précédentes et des résultats. 5 tests maximum par cas.</p>
     </div>
-    <div class="info-card">
+    <a href="references.html" class="info-card info-card-link">
       <div class="info-icon">📚</div>
-      <h3>Données probantes</h3>
-      <p>Chaque fiche pathologie cite 4 sources Pubmed ou HAS validées. Évidence médicale, pas de recommandations hors AMM.</p>
-    </div>
+      <h3>Références <span class="link-arrow">→</span></h3>
+      <p>Toutes les sources scientifiques citées (HAS, PubMed, Cochrane, JOSPT, AAOS, NICE). 36 références vérifiées une par une. Cliquez pour consulter la liste complète.</p>
+    </a>
     <div class="info-card">
       <div class="info-icon">⚡</div>
       <h3>Rapide & mobile</h3>

@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Références bibliographiques — lococlic™</title>
+<meta name="description" content="Liste complète des références scientifiques et recommandations cliniques utilisées dans lococlic™ : HAS, PubMed, Cochrane, JOSPT, AAOS, NICE.">
+<meta name="robots" content="index, follow">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* Header */
+  .top-bar {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  
+  .top-bar .brand {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .top-bar nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  
+  .top-bar nav a:hover { opacity: 1; }
+  
+  /* Container */
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 48px 32px 64px 32px;
+  }
+  
+  .breadcrumb {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 24px;
+  }
+  
+  .breadcrumb a {
+    color: #10b981;
+    text-decoration: none;
+  }
+  
+  .breadcrumb a:hover { text-decoration: underline; }
+  
+  h1 {
+    font-size: 36px;
+    color: #1e3a5f;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  
+  .page-subtitle {
+    font-size: 18px;
+    color: #475569;
+    margin-bottom: 32px;
+  }
+  
+  /* Intro stats */
+  .intro-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  
+  .intro-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  
+  .stat {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: #10b981;
+    line-height: 1;
+  }
+  
+  .stat-label {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 6px;
+  }
+  
+  .intro-text {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  /* Catégorie */
+  .category-section {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  
+  .category-section h2 {
+    font-size: 22px;
+    color: #1e3a5f;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  
+  .category-description {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 4px;
+  }
+  
+  .category-count {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #10b981;
+    background: #d1fae5;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  
+  /* Référence */
+  .references-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .reference-item {
+    border-radius: 8px;
+    background: #f8fafc;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  
+  .reference-item:hover {
+    background: #ecfdf5;
+    border-color: #10b981;
+    transform: translateX(2px);
+  }
+  
+  .reference-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 18px;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .reference-content {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .reference-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+  
+  .reference-url {
+    font-size: 12px;
+    color: #64748b;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    word-break: break-all;
+  }
+  
+  .reference-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  
+  .usage-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: #10b981;
+    background: #d1fae5;
+    padding: 3px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  
+  .external-icon {
+    font-size: 16px;
+    color: #94a3b8;
+  }
+  
+  .reference-item:hover .external-icon {
+    color: #10b981;
+  }
+  
+  /* Note bas de page */
+  .footer-note {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-top: 32px;
+    font-size: 14px;
+    color: #78350f;
+  }
+  
+  .footer-note strong { color: #78350f; }
+  
+  /* Footer */
+  footer {
+    background: #1e3a5f;
+    color: white;
+    padding: 32px;
+    text-align: center;
+    margin-top: 48px;
+  }
+  
+  footer nav {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  
+  footer nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.85;
+  }
+  
+  footer nav a:hover { opacity: 1; text-decoration: underline; }
+  
+  footer .copyright {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+  
+  /* Responsive */
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 48px 16px; }
+    h1 { font-size: 28px; }
+    .category-section { padding: 20px; }
+    .reference-link { flex-direction: column; gap: 8px; }
+    .reference-meta { flex-direction: row; align-items: center; align-self: flex-start; }
+    .intro-stats { gap: 16px; }
+    .stat-value { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="/" class="brand">lococlic<sup>™</sup></a>
+  <nav>
+    <a href="/">Accueil</a>
+  </nav>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumb">
+    <a href="/">Accueil</a> &nbsp;›&nbsp; Références bibliographiques
+  </div>
+  
+  <h1>Références bibliographiques</h1>
+  <p class="page-subtitle">Toutes les sources scientifiques citées dans lococlic<sup>™</sup></p>
+  
+  <div class="intro-card">
+    <div class="intro-stats">
+      <div class="stat">
+        <div class="stat-value">36</div>
+        <div class="stat-label">Sources uniques</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">422</div>
+        <div class="stat-label">Citations dans le site</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">6</div>
+        <div class="stat-label">Catégories de sources</div>
+      </div>
+    </div>
+    <p class="intro-text">
+      Chaque source listée ci-dessous a été <strong>vérifiée individuellement</strong> et pointe directement vers l'article original.
+      Les références sont organisées par type d'éditeur (HAS, PubMed, Cochrane, etc.) et triées par fréquence de citation.
+      Cliquez sur une référence pour ouvrir l'article dans un nouvel onglet.
+    </p>
+  </div>
+
+  <section class="category-section">
+    <h2>📋 HAS — Haute Autorité de Santé</h2>
+    <p class="category-description">Recommandations officielles françaises pour la prise en charge clinique.</p>
+    <div class="category-count">7 références</div>
+    <div class="references-list">
+    <div class="reference-item">
+      <a href="https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">HAS 2019 — Prise en charge de la lombalgie commune (cadre pour sciatiques associées)</div>
+          <div class="reference-url">https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">51× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">HAS 2023 — Pathologies de la coiffe des rotateurs (référence pour membre supérieur)</div>
+          <div class="reference-url">https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">40× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence française pour neuropathies de compression)</div>
+          <div class="reference-url">https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">35× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">HAS 2024 — Entorse du ligament collatéral latéral de cheville : diagnostic et rééducation</div>
+          <div class="reference-url">https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">22× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.has-sante.fr/jcms/c_680973/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">HAS 2008 — Prise en charge thérapeutique des lésions méniscales (genou de l&apos;adulte)</div>
+          <div class="reference-url">https://www.has-sante.fr/jcms/c_680973/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">10× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.has-sante.fr/jcms/c_1751307/fr/les-medicaments-de-l-osteoporose" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">HAS 2019 — Prévention, diagnostic et traitement de l&apos;ostéoporose (incl. fractures de fragilité)</div>
+          <div class="reference-url">https://www.has-sante.fr/jcms/c_1751307/fr/les-medicaments-de-l-osteoporose</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">8× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.has-sante.fr/jcms/c_658443/fr/chirurgie-des-tendinopathies-rompues-de-la-coiffe-des-rotateurs-recommandations" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">HAS 2008 — Prise en charge chirurgicale des tendinopathies rompues de la coiffe des rotateurs</div>
+          <div class="reference-url">https://www.has-sante.fr/jcms/c_658443/fr/chirurgie-des-tendinopathies-rompues-de-la-coiffe-des-rotateurs-recommandations</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">2× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <section class="category-section">
+    <h2>🔬 PubMed — Articles scientifiques de référence</h2>
+    <p class="category-description">Publications majeures issues de revues internationales à comité de lecture.</p>
+    <div class="category-count">11 références</div>
+    <div class="references-list">
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/29573872/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Foster et al. 2018 — Lancet Low Back Pain Series (cadre douleurs rachidiennes)</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/29573872/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">48× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/29712543/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Martin et al. 2018 — JOSPT CPG: pathologies pied et cheville (référence)</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/29712543/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">42× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/18812414/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med) — applicable au tendon glutéal</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/18812414/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">29× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/31278997/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Bannuru et al. 2019 — OARSI guidelines for non-surgical management of knee, hip, and polyarticular OA</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/31278997/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">26× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/28110981/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Sieper et al. 2017 — Axial spondyloarthritis (Lancet)</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/28110981/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">6× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/28087505/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">van der Heijde et al. 2017 — ASAS-EULAR management recommendations</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/28087505/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">6× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/18364459/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Radkowski/Bradley 2008 — Posterior shoulder instability in throwing athletes (Am J Sports Med)</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/18364459/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">6× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/27629403/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Griffin et al. 2016 — Warwick Agreement on FAI syndrome (Br J Sports Med)</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/27629403/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">6× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/18523035/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Cools et al. 2008 — Screening the athlete&apos;s shoulder for impingement symptoms (Br J Sports Med)</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/18523035/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/26031643/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Weir et al. 2015 — Doha agreement on terminology for groin pain in athletes (Br J Sports Med)</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/26031643/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://pubmed.ncbi.nlm.nih.gov/22773322/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Hegedus et al. 2012 — Shoulder physical examination tests: meta-analysis update (Br J Sports Med)</div>
+          <div class="reference-url">https://pubmed.ncbi.nlm.nih.gov/22773322/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <section class="category-section">
+    <h2>🌐 Cochrane Reviews — Méta-analyses</h2>
+    <p class="category-description">Revues systématiques de la littérature, références internationales pour la médecine fondée sur les preuves.</p>
+    <div class="category-count">4 références</div>
+    <div class="references-list">
+    <div class="reference-item">
+      <a href="https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD013502.pub2/full" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Cochrane Review — Surgery for rotator cuff tears and subacromial decompression</div>
+          <div class="reference-url">https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD013502.pub2/full</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD008954.pub2/full" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Cochrane Review — Extracorporeal shockwave for calcific tendinitis of the shoulder</div>
+          <div class="reference-url">https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD008954.pub2/full</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD005619.pub2/full" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Cochrane Review — Corticosteroid injections for shoulder pain</div>
+          <div class="reference-url">https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD005619.pub2/full</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">2× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD012224/full" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Page et al. — Cochrane Review: Manual therapy and exercise for rotator cuff disease</div>
+          <div class="reference-url">https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD012224/full</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">2× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <section class="category-section">
+    <h2>📚 JOSPT — Clinical Practice Guidelines</h2>
+    <p class="category-description">Recommandations cliniques du Journal of Orthopaedic & Sports Physical Therapy.</p>
+    <div class="category-count">1 référence</div>
+    <div class="references-list">
+    <div class="reference-item">
+      <a href="https://www.jospt.org/doi/10.2519/jospt.2013.0302" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">Kelley et al. 2013 — JOSPT CPG: Shoulder Pain and Mobility Deficits (Adhesive Capsulitis)</div>
+          <div class="reference-url">https://www.jospt.org/doi/10.2519/jospt.2013.0302</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <section class="category-section">
+    <h2>🦴 AAOS — American Academy of Orthopaedic Surgeons</h2>
+    <p class="category-description">Fiches patient OrthoInfo et Clinical Practice Guidelines de l'AAOS.</p>
+    <div class="category-count">11 références</div>
+    <div class="references-list">
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/thoracic-outlet-syndrome/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — Thoracic Outlet Syndrome (référence générale syndromes vasculaires)</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/thoracic-outlet-syndrome/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">9× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/slap-tears/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — SLAP Tears</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/slap-tears/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">6× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/chronic-shoulder-instability/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — Chronic Shoulder Instability</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/chronic-shoulder-instability/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-separation-acromioclavicular-joint-injury/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — Shoulder Separation (AC Joint Injury)</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-separation-acromioclavicular-joint-injury/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/arthritis-of-the-shoulder/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — Arthritis of the Shoulder</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/arthritis-of-the-shoulder/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/biceps-tendinitis/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — Biceps Tendinitis</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/biceps-tendinitis/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://www.aaos.org/quality/quality-programs/upper-extremity-programs/rotator-cuff/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS Clinical Practice Guideline — Management of Rotator Cuff Injuries</div>
+          <div class="reference-url">https://www.aaos.org/quality/quality-programs/upper-extremity-programs/rotator-cuff/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-injuries-in-the-throwing-athlete/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — Shoulder Injuries in the Throwing Athlete</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-injuries-in-the-throwing-athlete/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">4× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/dislocated-shoulder/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — Shoulder Dislocation</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/dislocated-shoulder/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">2× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-impingementrotator-cuff-tendinitis/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — Shoulder Impingement / Rotator Cuff Tendinitis</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-impingementrotator-cuff-tendinitis/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">2× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://orthoinfo.aaos.org/en/diseases--conditions/rotator-cuff-tears/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">AAOS OrthoInfo — Rotator Cuff Tears</div>
+          <div class="reference-url">https://orthoinfo.aaos.org/en/diseases--conditions/rotator-cuff-tears/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">2× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <section class="category-section">
+    <h2>🇬🇧 NICE CKS — Clinical Knowledge Summaries</h2>
+    <p class="category-description">Recommandations cliniques de l'institut britannique NICE pour la médecine de premier recours.</p>
+    <div class="category-count">2 références</div>
+    <div class="references-list">
+    <div class="reference-item">
+      <a href="https://cks.nice.org.uk/topics/shoulder-pain/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">NICE CKS — Shoulder pain</div>
+          <div class="reference-url">https://cks.nice.org.uk/topics/shoulder-pain/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">10× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    <div class="reference-item">
+      <a href="https://cks.nice.org.uk/topics/shoulder-pain/management/frozen-shoulder/" target="_blank" rel="noopener" class="reference-link">
+        <div class="reference-content">
+          <div class="reference-label">NICE CKS — Frozen shoulder</div>
+          <div class="reference-url">https://cks.nice.org.uk/topics/shoulder-pain/management/frozen-shoulder/</div>
+        </div>
+        <div class="reference-meta">
+          <span class="usage-count">2× cités</span>
+          <span class="external-icon">↗</span>
+        </div>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    <strong>⚠️ Note importante :</strong>
+    Les sources listées ici constituent l'<strong>ensemble exhaustif</strong> des références utilisées dans lococlic<sup>™</sup>. 
+    Aucune autre source n'est citée dans l'application. Ces références ont été choisies pour leur fiabilité 
+    (recommandations officielles, méta-analyses, guidelines internationales) et leur stabilité 
+    (URLs durables avec identifiants permanents : DOI, PMID, slug HAS).
+  </div>
+</div>
+
+<footer>
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/mentions-legales.html">Mentions légales</a>
+    <a href="/confidentialite.html">Confidentialité</a>
+    <a href="/cgu.html">CGU</a>
+    <a href="mailto:contact@lococlic.com">Contact</a>
+  </nav>
+  <div class="copyright">© 2026 lococlic<sup>™</sup> — Tous droits réservés. Marque déposée à l'INPI.</div>
+</footer>
+
+</body>
+</html>

@@ -16,11 +16,11 @@ Format : (old_url, old_label) -> {new_url, new_label, source_type, confidence}
 
 URL_HAS_EPAULE_2023 = "https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs"
 URL_HAS_COIFFE_2008 = "https://www.has-sante.fr/jcms/c_658445/fr/prise-en-charge-chirurgicale-des-tendinopathies-rompues-de-la-coiffe-des-rotateurs-de-l-epaule-chez-l-adulte"
-URL_HAS_LCA_MENISQUE = "https://www.has-sante.fr/jcms/c_753184/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte"
-URL_HAS_ENTORSE_CHEVILLE = "https://www.has-sante.fr/jcms/c_2812061/fr/entorse-de-cheville-de-l-adulte"
-URL_HAS_OSTEOPOROSE = "https://www.has-sante.fr/jcms/p_3105108/fr/prevention-diagnostic-et-traitement-de-l-osteoporose"
+URL_HAS_LCA_MENISQUE = "https://www.has-sante.fr/jcms/c_680973/fr/prise-en-charge-therapeutique-des-lesions-meniscales-et-des-lesions-isolees-du-ligament-croise-anterieur-du-genou-chez-l-adulte"
+URL_HAS_ENTORSE_CHEVILLE = "https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive"
+URL_HAS_OSTEOPOROSE = "https://www.has-sante.fr/jcms/c_1751307/fr/les-medicaments-de-l-osteoporose"
 URL_HAS_LOMBALGIE = "https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune"
-URL_HAS_CANAL_CARPIEN = "https://www.has-sante.fr/jcms/c_1751069/fr/syndrome-du-canal-carpien"
+URL_HAS_CANAL_CARPIEN = "https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient"
 
 URL_AAOS_RC_TEARS = "https://orthoinfo.aaos.org/en/diseases--conditions/rotator-cuff-tears/"
 URL_AAOS_IMPINGEMENT = "https://orthoinfo.aaos.org/en/diseases--conditions/shoulder-impingementrotator-cuff-tendinitis/"
