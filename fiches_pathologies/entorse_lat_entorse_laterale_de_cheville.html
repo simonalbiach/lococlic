@@ -307,7 +307,55 @@
     .patho-icon-img { width: 90px; height: 90px; }
     .fiche-grid { grid-template-columns: 1fr; }
   }
-</style>
+
+  /* Ottawa box */
+  .ottawa-box {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border-left: 6px solid #2563eb;
+    border-radius: 0 14px 14px 0;
+    padding: 22px 24px;
+    margin: 22px 0;
+    box-shadow: 0 2px 10px rgba(37, 99, 235, 0.08);
+  }
+  .ottawa-box .ot-title {
+    color: #1e3a8a;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .ottawa-box .ot-intro {
+    color: #1e40af;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .ottawa-box ul {
+    margin: 0;
+    padding-left: 22px;
+    color: #1e3a8a;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .ottawa-box ul ul {
+    margin-top: 4px;
+    padding-left: 18px;
+    color: #1e40af;
+  }
+  .ottawa-box li {
+    margin-bottom: 6px;
+  }
+  .ottawa-box .ot-conclusion {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(37, 99, 235, 0.3);
+    color: #1e3a8a;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  </style>
 </head>
 <body>
 
@@ -334,6 +382,27 @@
 </section>
 
 
+
+    <div class="ottawa-box">
+      <div class="ot-title">📋 Critères d'Ottawa de la cheville</div>
+      <div class="ot-intro">Radiographie indiquée si AU MOINS UN de ces critères est présent :</div>
+      <ul>
+        <li><strong>Douleur dans la zone malléolaire</strong> ET au moins un des éléments suivants :
+          <ul>
+            <li>Sensibilité à la palpation du bord postérieur ou de l'extrémité de la malléole <strong>latérale</strong> (sur 6 cm)</li>
+            <li>Sensibilité à la palpation du bord postérieur ou de l'extrémité de la malléole <strong>médiale</strong> (sur 6 cm)</li>
+          </ul>
+        </li>
+        <li><strong>Douleur dans la zone du médio-pied</strong> ET au moins un des éléments suivants :
+          <ul>
+            <li>Sensibilité à la palpation de la base du <strong>5<sup>e</sup> métatarsien</strong></li>
+            <li>Sensibilité à la palpation de l'<strong>os naviculaire</strong></li>
+          </ul>
+        </li>
+        <li><strong>Incapacité de mise en charge</strong> (4 pas) immédiatement après le traumatisme ET en consultation</li>
+      </ul>
+      <div class="ot-conclusion">✅ Sensibilité ~97% pour fracture cliniquement significative · Réduit de ~30% les radiographies inutiles</div>
+    </div>
 
 <main class="main-content">
   <div class="fiche-grid">

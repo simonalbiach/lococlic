@@ -1034,9 +1034,6 @@ const P = {
       {who:'Médecin du sport',why:'Suivi clinique, prescription échographie de confirmation et programme de rééducation',p:true}
     ],
     sources:[
-      
-      
-      
       {l:'Cook et al. 2009 — Continuum model (référence pour blessures musculo-tendineuses)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
     ],
     keys:['Coup de pied','Mollet médial','Brutal','Tennis leg','Éliminer TVP']
@@ -1067,9 +1064,6 @@ const P = {
       {who:'Médecin du sport',why:'Suivi post-immobilisation et reprise sportive encadrée',p:false}
     ],
     sources:[
-      
-      
-      
       {l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
     ],
     keys:['Coup de fouet','Encoche','Thompson positif','Urgence','Rupture']
@@ -1105,7 +1099,7 @@ const P = {
   PERIOSTITE:{id:'PERIOSTITE',name:'Périostite tibiale',icon:'🟣',pop:'20–40 ans , sportif , femmes',
     desc:'Douleur face interne tibia ( ou postéro-interne)',alert:null,
     imaging:[{t:'Radiographies ( élimine diagnostic différentiel )',d:''},{t:'IRM ( classification Fredericsson )',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Changement environnement et chaussage adapté',d:''},{t:'Podologie',d:''}],
-    exercises:[{t:'Repos relatif et adaptation',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_02_periostite_tibiale.html',ficheExercice:'lococlic_fiches_patient/jambe_02_periostite_tibiale.html',referral:[{who:'Médecin du sport',why:'',p:true}],
+    exercises:[{t:'Repos relatif et reprise progressive (modification d\'activité)',d:''},{t:'Calf raises progressifs (renforcement mollet)',d:''},{t:'Renforcement hip abducteurs + contrôle moteur',d:''},{t:'Short foot (renforcement intrinsèques du pied)',d:''},{t:'Étirement du mollet (gastrocnémien + soléaire)',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_02_periostite_tibiale.html',ficheExercice:'lococlic_fiches_patient/jambe_02_periostite_tibiale.html',referral:[{who:'Médecin du sport',why:'',p:true}],
     sources:[{l:'Martin et al. 2018 — JOSPT CPG: tendinopathies du coureur (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur face interne tibia ( ou postéro-interne)','Douleur début course','Réapparition après course','Changement de matériel et environnement','Intensification entrainement','Douleur face interne tibial à la palpation doigts en crochet']},
   FRACT_STRESS_TIB: {
     id:'FRACT_STRESS_TIB', name:'Fracture de fatigue du tibia', icon:'🚨', pop:'Coureur fond, militaire, danseur, femme triade athlète',
@@ -1130,9 +1124,6 @@ const P = {
       {who:'Chirurgien orthopédique',why:'Si fracture face antérieure du tibia (zone à risque, dreaded black line) ou déplacement',p:false}
     ],
     sources:[
-      
-      
-      
       {l:'Martin et al. 2018 — JOSPT CPG pathologies de la jambe (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Point exquis tibial','Coureur','Augmentation volume','Douleur au repos','Fracture stress']
@@ -1157,9 +1148,6 @@ const P = {
       {who:'Chirurgien orthopédique',why:'Aponévrotomie si échec conservateur prolongé',p:false}
     ],
     sources:[
-      
-      
-      
       {l:'Martin et al. 2018 — JOSPT CPG pathologies de la jambe (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
     ],
     keys:['Douleur effort seul','Soulagement repos','Reproductible','Bilatéral 80%','Syndrome loges']
@@ -1169,11 +1157,32 @@ const P = {
     imaging:[{t:'Echographie',d:''},{t:'Radiographie ( recherche ostéophyte calcanéum postérieur )',d:''}],treatment:[{t:'Kinésithérapie',d:''}],
     exercises:[{t:'Renforcement excentrique du mollet (protocole Alfredson)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement isométrique de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_05_tendinopathie_achilleenne.html',ficheExercice:'lococlic_fiches_patient/jambe_05_tendinopathie_achilleenne.html',referral:[{who:'Médecin du sport',why:'',p:true}],
     sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'},{l:'Martin et al. 2018 — Achilles pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur talon postérieur','Douleur augmentée sauts et réception','Douleur course à pied (sprints++)','Palpation douloureuse en flexion dorsale de cheville','Palpation douloureuse jonction corps musculaire et tendon']},
-  TEND_TIB_POST:{id:'TEND_TIB_POST',name:'Tendinopathie tibial postérieur',icon:'🟣',pop:'40-60 ans',
-    desc:'Douleur médiale trajet rétromalléolaire médial',alert:null,
-    imaging:[{t:'Echographie',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Podologue',d:''}],
-    exercises:[{t:'Renforcement excentrique du tibial postérieur',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_06_tendinopathie_tibial_post.html',ficheExercice:'lococlic_fiches_patient/jambe_06_tendinopathie_tibial_post.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur médiale trajet rétromalléolaire médial','Douleur course à pied','Douleur marche prolongée','Douleur inversion et flexion plantaire ( réalisé décubitus ventral)','Douleur levée sur pointe unipodal']},
+  TEND_TIB_POST: {
+    id:'TEND_TIB_POST', name:'Tendinopathie du tibial postérieur', icon:'🦶', pop:'Femme > 40 ans, surpoids, sportif, pied plat acquis',
+    desc:"Douleur médiale de la cheville (rétro et sous-malléolaire interne), apparition progressive ou subaiguë. Souvent associée à un effondrement progressif de l'arche médiale (pied plat acquis de l'adulte). Boiterie, fatigabilité, difficulté à monter sur la pointe des pieds.",
+    imaging:[
+      {t:'Échographie',d:'Examen de première intention — épaississement, perte de la définition fibrillaire, fluide péritendineux, possible rupture'},
+      {t:'IRM',d:'Si suspicion de rupture, d\'évolution avancée ou bilan préopératoire'},
+      {t:'Radiographie pied en charge',d:'Évalue le pied plat acquis (angle de Méary, talus pinch)'}
+    ],
+    treatment:[
+      {t:'Adaptation de la charge',d:"Réduire l'activité provocante, sans repos complet (préserver la mise en charge utile à la cicatrisation tendineuse)"},
+      {t:'Semelles orthopédiques',d:"Soutien de l'arche médiale, coin pronateur — première intention"},
+      {t:'Kinésithérapie',d:'Excentrique tibial postérieur, renforcement intrinsèques, étirements chaîne postérieure'},
+      {t:'Antalgiques simples (paracétamol)',d:'Si nécessaire — éviter AINS et glaçage prolongés (retardent cicatrisation)'},
+      {t:'Chirurgie',d:'Si stade avancé ou rupture (transferts tendineux, ostéotomie)'}
+    ],
+    exercises:[{t:'Renforcement excentrique du tibial postérieur',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_06_tendinopathie_tibial_post.html',
+    referral:[
+      {who:'Podologue',why:'Confection de semelles orthopédiques sur mesure',p:true},
+      {who:'Kinésithérapeute',why:'Programme excentrique progressif',p:true},
+      {who:'Chirurgien orthopédique pied/cheville',why:'Si stade évolué (rupture, déformation rigide)',p:false}
+    ],
+    sources:[
+      {l:'HAS 2018 — Pathologies du pied et de la cheville (entorse de cheville référence)',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}
+    ,{l:'Deu, Coslick & Dreher 2022 — Clinical Review: Tendinopathies of the Foot and Ankle (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/35559641/'}],
+    keys:['Douleur médiale trajet rétromalléolaire médial','Douleur course à pied','Douleur marche prolongée','Douleur inversion et flexion plantaire ( réalisé décubitus ventral)','Douleur levée sur pointe unipodal']
+  },
   TEND_TIB_ANT: {
     id:'TEND_TIB_ANT', name:'Tendinopathie du tibial antérieur', icon:'🦵', pop:'Coureur, randonneur, marcheur prolongé, descente répétée',
     desc:"Douleur de la face antéro-latérale du tibia ou rétro-malléolaire antérieure, exacerbée par la flexion dorsale et la marche en descente. Parfois nodule palpable sur le tendon en avant de la cheville. Plus rare que les autres tendinopathies.",
@@ -1195,9 +1204,6 @@ const P = {
       {who:'Chirurgien orthopédique',why:'Si rupture (rare, sujet âgé > 60)',p:false}
     ],
     sources:[
-      
-      
-      
       {l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
     ],
     keys:['Antéro-médial','Flexion dorsale','Descente','Coureur','Tibial antérieur']
@@ -1265,9 +1271,6 @@ const P = {
       {who:'Chirurgien orthopédique',why:"Si échec conservateur prolongé ou compression mécanique (kyste, masse)",p:false}
     ],
     sources:[
-      
-      
-      
       {l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}
     ],
     keys:['Plante du pied','Paresthésies','Coureur','Tinel rétromalléolaire','Tunnel tarsien']
@@ -1319,9 +1322,6 @@ const P = {
       {who:'Chirurgien orthopédique pied/cheville',why:"Si échec conservateur ou cause mécanique objectivée (kyste, varicosités)",p:false}
     ],
     sources:[
-      
-      
-      
       {l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}
     ],
     keys:['Plante du pied','Coureur','Tinel rétromalléolaire médial','Pied plat','Tunnel tarsien']
@@ -2185,7 +2185,7 @@ function showModal(pid){
   const p = P[pid];
   const imagingHTML = (p.imaging || []).map(i => `<div class="fi"><strong>${i.t}</strong>${i.d?`<span>${i.d}</span>`:''}</div>`).join('');
   const treatmentHTML = (p.treatment || []).map(t => `<div class="fi"><strong>${t.t}</strong>${t.d?`<span>${t.d}</span>`:''}</div>`).join('');
-  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
+  const exercisesHTML = (p.exercises || []).map(e => `<div class="fi"><strong>${e.t}</strong>${e.d?`<span>${e.d}</span>`:''}</div>`).join('') + (p.ficheExercice ? `<div style="margin-top:14px;text-align:center;"><a href="${p.ficheExercice}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1e3a5f;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(30,58,95,0.2);transition:all 0.2s;">🖨️ Imprimer la fiche exercice</a></div>` : '');
   const referralHTML = (p.referral || []).map(r => `
     <div class="ref-tag ${r.p?'p':'s'}">
       <div class="ref-info">

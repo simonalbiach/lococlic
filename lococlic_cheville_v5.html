@@ -1228,6 +1228,33 @@ const TESTS = {
     neg:"Pas de translation, indolore",
     affects_pos:{ENTORSE_LAT:50, ENTORSE_SOUS_TAL:15}, affects_neg:{ENTORSE_LAT:-25}
   },
+  SYND_TUNNEL_TARSIEN: {
+    id:'SYND_TUNNEL_TARSIEN', name:'Syndrome du tunnel tarsien', icon:'⚡', pop:'Coureur, marche prolongée, pied plat valgus, ATCD entorse, varices',
+    desc:"Compression du nerf tibial postérieur dans le canal rétro et sous-malléolaire médial. Paresthésies, brûlures de la plante du pied et de la face médiale, parfois irradiation jusqu'aux orteils. Aggravation à la marche, à la course, en station debout prolongée. Soulagement par le repos et la décharge. Souvent unilatéral.",
+    imaging:[
+      {t:'Pas d\'imagerie en première intention',d:"Diagnostic clinique avant tout (Tinel + reproduction des symptômes)"},
+      {t:'EMG (électroneuromyogramme)',d:"Référence pour confirmer la compression — sensibilité limitée en début de maladie"},
+      {t:'Échographie nerveuse / IRM',d:"Si suspicion de compression mécanique (kyste synovial, masse, varice) ou bilan préopératoire"}
+    ],
+    treatment:[
+      {t:'Adaptation de la charge',d:"Réduire course, marche prolongée, surfaces dures"},
+      {t:'Modification du chaussage',d:"Éviter chaussures comprimant la cheville médiale, laçage adapté"},
+      {t:'Kinésithérapie',d:"Mobilisation neurale du nerf tibial, étirements chaîne postérieure, renforcement intrinsèques du pied"},
+      {t:'Semelles orthopédiques',d:"Correction du pied plat valgus, soutien de l\'arche médiale"},
+      {t:'Infiltration de corticoïdes guidée',d:"Si échec du traitement conservateur 3 mois — par radiologue interventionnel"},
+      {t:'Chirurgie (libération du tunnel)',d:"Si échec conservateur > 6 mois ou compression mécanique objectivée"}
+    ],
+    exercises:[{t:'Renforcement gastrocnémien classique',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Reprise sportive progressive',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_11_tunnel_tarsien.html',
+    referral:[
+      {who:'Neurologue',why:"EMG pour confirmer la compression et le niveau",p:true},
+      {who:'Médecin du sport',why:"Évaluation des facteurs déclenchants (chaussage, foulée) et adaptation",p:true},
+      {who:'Chirurgien orthopédique',why:"Si échec conservateur prolongé ou compression mécanique (kyste, masse)",p:false}
+    ],
+    sources:[
+      {l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}
+    ],
+    keys:['Plante du pied','Paresthésies','Coureur','Tinel rétromalléolaire','Tunnel tarsien']
+  },
   palp_lle: {
     name:"Palpation des faisceaux du LLE", family:'LLE', badge:'LLE',
     desc:"Palpation directe LTFA, ligament calcanéo-fibulaire (LCF), ligament talo-fibulaire postérieur",
@@ -1419,6 +1446,24 @@ const TESTS = {
     neg:"Force conservée (5/5), pas de steppage",
     affects_pos:{NEURO_FIB:50}, affects_neg:{NEURO_FIB:-22}
   }
+  tinel_tarsien: {
+    name:"Tinel au tunnel tarsien (rétromalléolaire médial)", family:'TUNNEL_TAR', badge:'TUN',
+    desc:"Test de compression du nerf tibial postérieur dans le tunnel tarsien",
+    how:"Percussion par 2-3 coups secs avec les doigts sur la face postérieure et inférieure de la malléole médiale (trajet du nerf tibial). Peut être complété par dorsiflexion-éversion maintenue 10-15 sec.",
+    pos:"Paresthésies, brûlures, fourmillements irradiant vers la plante du pied — compression du nerf tibial",
+    neg:"Pas de paresthésie déclenchée",
+    affects_pos:{SYND_TUNNEL_TARSIEN:55}, affects_neg:{SYND_TUNNEL_TARSIEN:-25}
+  },
+
+  sensitif_plante: {
+    name:"Test sensitif plante du pied", family:'TUNNEL_TAR', badge:'TUN',
+    desc:"Recherche d'hypoesthésie plantaire (territoire nerf tibial)",
+    how:"Tester la sensibilité (toucher léger, piqûre) de la plante du pied côté médial (territoire du nerf plantaire médial) et latéral. Comparer côté opposé.",
+    pos:"Hypoesthésie ou paresthésie plantaire — atteinte du nerf tibial dans le tunnel tarsien",
+    neg:"Sensibilité conservée et symétrique",
+    affects_pos:{SYND_TUNNEL_TARSIEN:45}, affects_neg:{SYND_TUNNEL_TARSIEN:-20}
+  },
+
 };
 
 // ========== VIGNETTES + CHOIX + CIRCUITS ==========
@@ -1464,6 +1509,11 @@ const VIGNETTES = {
     desc:'Fourmillements ou hypoesthésie face dorsale du pied',
     score:{NEURO_FIB:55}
   },
+  loc_plant_med: {
+    id:'loc_plant_med', lbl:'⚡ Anesthésie / paresthésies plante du pied',
+    desc:"Anesthésie ou paresthésies de la plante du pied, +/- face médiale (sous la malléole médiale) — évoque syndrome du tunnel tarsien",
+    score:{SYND_TUNNEL_TARSIEN:55}
+  },
 
   // === PRÉSENTATIONS / SIGNES ===
   pres_instabilite: {
@@ -1508,9 +1558,9 @@ const CHOICES = {
       {key:'progressif', lbl:'Installation progressive sans trauma',
         desc:"Apparition lente, sans facteur déclenchant clair, ou évolution chronique",
         score:{SINUS_TARSE:30, OSTEOCHONDRITE:25, TEND_TIB_POST:25, CONFLIT_ANT:20, CONFLIT_POST:20, TEND_ACHILLE:15}},
-      {key:'neuro', lbl:'Paresthésies / faiblesse',
-        desc:"Fourmillements, hypoesthésie, faiblesse releveurs — atteinte nerveuse",
-        score:{NEURO_FIB:50}}
+      {key:'neuro', lbl:'Paresthésies / fourmillements',
+        desc:"Sensation anormale (paresthésies, fourmillements, anesthésie) au pied ou à la cheville, avec ou sans faiblesse — la localisation orientera le diagnostic",
+        score:{NEURO_FIB:25, SYND_TUNNEL_TARSIEN:25}}
     ]
   },
   AGE: {
@@ -1565,6 +1615,7 @@ const CIRCUITS = {
   FRACT_STRESS:      ['hop_test_che','percussion_osseuse','palp_achille','flexdors_cont','palp_sinus'],
   OSTEOCHONDRITE:    ['flex_dors_compression','flexdors_cont','hop_test_che','palp_sinus','palp_lle'],
   NEURO_FIB:         ['tinel_fibulaire','flex_dors_force','palp_lle','palp_achille','palp_sinus']
+  SYND_TUNNEL_TARSIEN: ['tinel_tarsien','sensitif_plante','palp_tib_post','tinel_fibulaire'],
 };
 
 // ========== MOTEUR + RENDU ==========
