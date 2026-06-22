@@ -49,6 +49,8 @@ body {
   font-weight: 800;
   letter-spacing: -0.5px;
 }
+  .module-title-clean { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .module-title-icon { width: 38px; height: 38px; object-fit: contain; }
 .header .badge {
   display: inline-block;
   margin-top: 6px;
@@ -1065,8 +1067,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>lococlic<sup>™</sup> — Rachis lombaire</h1>
-    <div class="badge">v5 · clinique adaptatif</div>
+    <h1 class="module-title-clean"><img src="images_pathologies/lombaire.png" alt="Rachis lombaire" class="module-title-icon"><span>Rachis lombaire</span></h1>
   </div>
   <div id="main"></div>
 </div>
@@ -2005,7 +2006,7 @@ function renderResult(){
   // Encart Pièges diagnostiques (pitfall)
   const pitfallHTML = mainP.pitfall ? `
     <div class="pitfall-card">
-      <div class="pitfall-head">💡 À considérer aussi</div>
+      <div class="pitfall-head">🔍 Diagnostic différentiel</div>
       <div class="pitfall-body">${mainP.pitfall.text}</div>
       ${(mainP.pitfall.modules || []).length ? `
       <div class="pitfall-modules">

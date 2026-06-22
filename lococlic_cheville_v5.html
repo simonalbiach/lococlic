@@ -48,6 +48,8 @@ body {
   font-weight: 800;
   letter-spacing: -0.5px;
 }
+  .module-title-clean { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .module-title-icon { width: 38px; height: 38px; object-fit: contain; }
 .header .badge {
   display: inline-block;
   margin-top: 6px;
@@ -1004,8 +1006,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>lococlic<sup>™</sup> — Cheville</h1>
-    <div class="badge">v5 · clinique adaptatif</div>
+    <h1 class="module-title-clean"><img src="images_pathologies/cheville.png" alt="Cheville" class="module-title-icon"><span>Cheville</span></h1>
   </div>
   <div id="main"></div>
 </div>
@@ -1015,7 +1016,7 @@ const P = {
   ENTORSE_LAT:{id:'ENTORSE_LAT',name:'Entorse latérale de cheville',icon:'🟠',pop:'20-40 ans , sportif',
     desc:'Traumatisme en inversion de cheville',alert:null,
     imaging:[{t:'Radiographies si critères Ottawa',d:''},{t:'Echographie',d:''},{t:'IRM si ancien et chronicité',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Immobilisation adaptée:',d:''},{t:'Grade 1 : Attelle Malléodynastab 1-2 sem',d:''},{t:'Grade 2 : Attelle 2-3 sem',d:''},{t:'Grade 3 : Attelle 3-6 sem',d:''},{t:'Botte de marche : Atteinte plan latéral + plan médial ou Chopart ou Lisfranc.',d:''},{t:'Attelle type malléodynastab boa : Atteinte plan latéral isolé.',d:''}],
-    exercises:[{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement des fibulaires (éversion contre élastique)',d:''},{t:'Étirement du mollet',d:''},{t:'Mobilisation de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_01_entorse_laterale.html',referral:[{who:'Médecin du sport',why:'',p:true}],
+    exercises:[{t:'Mobilisation active de la cheville',d:'Récupération précoce des amplitudes (flexion/extension, circumduction, inversion/éversion) sans douleur.'},{t:'Renforcement des fibulaires (éversion contre élastique)',d:'Stabilisateurs actifs du plan latéral — geste clé.'},{t:'Renforcement du mollet (heel raises progressifs)',d:'Progression 2 jambes → 1 jambe.'},{t:'Étirement du mollet',d:'Récupération de la dorsiflexion (facteur de récidive si limitée).'},{t:'Renforcement des intrinsèques du pied (short foot)',d:'Concept foot core (McKeon) — améliore le contrôle dynamique du pied.'},{t:'Rééducation proprioceptive / équilibre',d:'Appui unipodal progressif (yeux ouverts → fermés → surface instable). Preuve forte JOSPT 2021 : prévient l instabilité chronique.'},{t:'Réathlétisation fonctionnelle',d:'Sauts, changements de direction, retour au sport progressif (dès S4).'}],ficheExercice:'lococlic_fiches_patient/cheville_01_entorse_laterale.html',referral:[{who:'Médecin du sport',why:'',p:true}],
     sources:[{l:'HAS 2018 — Prise en charge de l\'entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}],keys:['Traumatisme en inversion de cheville','Douleur latérale','Oedème et ou hématome','Impotence fonctionnelle','Test tiroir antérieur ( TAFA )','Test inversion ( plan latéral )']},
   ENTORSE_SOUS_TAL:{id:'ENTORSE_SOUS_TAL',name:'Entorse sous-talienne',icon:'🟠',pop:'20-40 ans , sportif',
     desc:'Traumatisme en inversion',alert:null,
@@ -1445,7 +1446,7 @@ const TESTS = {
     pos:"Faiblesse de la flexion dorsale (cotation < 5/5) ± steppage à la marche — atteinte fibulaire",
     neg:"Force conservée (5/5), pas de steppage",
     affects_pos:{NEURO_FIB:50}, affects_neg:{NEURO_FIB:-22}
-  }
+  },
   tinel_tarsien: {
     name:"Tinel au tunnel tarsien (rétromalléolaire médial)", family:'TUNNEL_TAR', badge:'TUN',
     desc:"Test de compression du nerf tibial postérieur dans le tunnel tarsien",
@@ -1614,7 +1615,7 @@ const CIRCUITS = {
   TEND_TIB_POST:     ['heel_raise','palp_tib_post','eversion_passive','palp_deltoide','palp_achille'],
   FRACT_STRESS:      ['hop_test_che','percussion_osseuse','palp_achille','flexdors_cont','palp_sinus'],
   OSTEOCHONDRITE:    ['flex_dors_compression','flexdors_cont','hop_test_che','palp_sinus','palp_lle'],
-  NEURO_FIB:         ['tinel_fibulaire','flex_dors_force','palp_lle','palp_achille','palp_sinus']
+  NEURO_FIB:         ['tinel_fibulaire','flex_dors_force','palp_lle','palp_achille','palp_sinus'],
   SYND_TUNNEL_TARSIEN: ['tinel_tarsien','sensitif_plante','palp_tib_post','tinel_fibulaire'],
 };
 

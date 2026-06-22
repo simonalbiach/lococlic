@@ -49,6 +49,8 @@ body {
   font-weight: 800;
   letter-spacing: -0.5px;
 }
+  .module-title-clean { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .module-title-icon { width: 38px; height: 38px; object-fit: contain; }
 .header .badge {
   display: inline-block;
   margin-top: 6px;
@@ -1065,8 +1067,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>lococlic<sup>™</sup> — Coude & Avant-bras</h1>
-    <div class="badge">v5 · clinique adaptatif</div>
+    <h1 class="module-title-clean"><img src="images_pathologies/coude.png" alt="Coude & Avant-bras" class="module-title-icon"><span>Coude & Avant-bras</span></h1>
   </div>
   <div id="main"></div>
 </div>
@@ -1097,7 +1098,7 @@ const P = {
     exercises:[{t:'Renforcement isométrique du triceps (Stage 1)',d:''},{t:'Push-up progressif (renforcement chaîne fermée — Stage 2)',d:''},{t:'Extension du coude excentrique avec poids (Stage 2-3)',d:''},{t:'Étirement doux du triceps (mobilité, toutes phases)',d:''}],ficheExercice:'lococlic_fiches_patient/coude_03_tendinopathie_triceps.html',referral:[{who:'Médecin du sport',why:'',p:true}],
     sources:[{l:'HAS 2023 — Tendinopathies de la coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'}],keys:['Douleur postérieure du coude','Douleur porter charge au dessus de la tête','Douleur palpation insertion sur olécrâne','Douleur extension contrariée','Douleur flexion du coude']},
   AIE_CREPITANT: {
-    id:'AIE_CREPITANT', name:"Ténosynovite crépitante de l'avant-bras (AIE crépitant)", icon:'🟠', pop:'30-50 ans, métier manuel répétitif soudain (déménagement, bricolage intense), sportif raquette débutant',
+    id:'AIE_CREPITANT', name:"Ténosynovite crépitante de l'avant-bras (AÏE crépitant)", icon:'🟠', pop:'30-50 ans, métier manuel répétitif soudain (déménagement, bricolage intense), sportif raquette débutant',
     desc:"Ténosynovite crépitante du croisement des extenseurs radiaux (long abducteur du pouce et court extenseur du pouce qui croisent les radiaux à 4-6 cm au-dessus du poignet). Apparition aiguë après surcharge brutale et inhabituelle. Douleur à la face dorso-radiale de l'avant-bras distal avec crépitations palpables typiques (sensation de neige fraîche sous les doigts) lors de la flexion-extension du poignet.",
     imaging:[
       {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (crépitations palpables très évocatrices)"},
@@ -1110,7 +1111,7 @@ const P = {
       {t:"Adaptation des gestes",d:"Reprise très progressive de l'activité après disparition des crépitations"},
       {t:'Kinésithérapie',d:"Étirements et reprise progressive après phase aiguë"}
     ],
-    exercises:[{t:'Repos relatif et immobilisation temporaire',d:''},{t:'Étirement des extenseurs de l\'avant-bras',d:''},{t:'Étirement des fléchisseurs de l\'avant-bras',d:''},{t:'Mobilisation douce du poignet',d:''}],ficheExercice:'lococlic_fiches_patient/coude_04_tenosynovite_crepitante.html',
+    exercises:[{t:'Repos relatif + attelle de poignet + modification d\'activité (éducation)',d:''},{t:'Étirement des extenseurs de l\'avant-bras',d:''},{t:'Renforcement progressif extenseurs (isométrique → excentrique)',d:''},{t:'Mobilisation douce du poignet (récupération mobilité)',d:''}],ficheExercice:'lococlic_fiches_patient/coude_04_tenosynovite_crepitante.html',
     referral:[
       {who:'Médecin du sport',why:"Si origine sportive ou non résolution — adaptation du geste et rééducation",p:true},
       {who:'Rhumatologue',why:"Si tableau atypique ou évolution prolongée",p:false}
@@ -1121,7 +1122,7 @@ const P = {
       
       {l:'HAS 2023 — Tendinopathies de la coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'}
     ],
-    keys:['Crépitations','Avant-bras dorsal','Surcharge brutale','Croisement extenseurs','AIE crépitant']
+    keys:['Crépitations','Avant-bras dorsal','Surcharge brutale','Croisement extenseurs','AÏE crépitant']
   },
   HYGROMA:{id:'HYGROMA',name:'Hygroma olécrânien',icon:'🔵',pop:'30- 60 ans ( travail manuel )',
     desc:'Tuméfaction fluctuante postérieure coude',alert:null,
@@ -1143,7 +1144,7 @@ const P = {
     sources:[{l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence française pour neuropathies de compression)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}],keys:['Paresthésies 3-4 premiers doigts face palmaire','(plutôt journée)','Faiblesse flexion poignet','Augmentation symptomatologie flexion coude','Tinel face médial coude (Lacertus)','Test compression Lacertus']},
   COMP_CUB_COUDE:{id:'COMP_CUB_COUDE',name:'Compression nerf cubital au coude',icon:'⚡',pop:'30–60 ans, cyclistes, travail manuel',
     desc:'Paresthésies des 4e et 5e doigts, aggravées en flexion prolongée du coude ou appui répété',alert:null,
-    imaging:[{t:'ENMG : ralentissement conduction au coude',d:''},{t:'Échographie : conflit gouttière épitrochléo-olécrânienne',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Orthèse de coude en extension nocturne',d:''},{t:'Éviction compression',d:''},{t:'Infiltration corticostéroïdes',d:''}],exercises:[{t:'Mobilisation neurale du nerf cubital',d:''},{t:'Étirement des fléchisseurs de l\'avant-bras',d:''},{t:'Renforcement des intrinsèques de la main',d:''},{t:'Posture du coude (éviter flexion prolongée)',d:''}],ficheExercice:'lococlic_fiches_patient/coude_07_comp_cubital_coude.html',referral:[{who:'Chirurgien orthopédique (si déficit moteur ou échec conservateur)',why:'',p:true}],
+    imaging:[{t:'ENMG : ralentissement conduction au coude',d:''},{t:'Échographie : conflit gouttière épitrochléo-olécrânienne',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Orthèse de coude en extension nocturne',d:''},{t:'Éviction compression',d:''},{t:'Infiltration corticostéroïdes',d:''}],exercises:[{t:'Repos relatif + attelle nocturne + modification d\'activité (éducation)',d:''},{t:'Mobilisation neurale du nerf cubital (slider doux)',d:''},{t:'Étirement des fléchisseurs de l\'avant-bras',d:''},{t:'Renforcement des intrinsèques de la main (Froment)',d:''}],ficheExercice:'lococlic_fiches_patient/coude_07_comp_cubital_coude.html',referral:[{who:'Chirurgien orthopédique (si déficit moteur ou échec conservateur)',why:'',p:true}],
     severity:{
       title:"Signes de gravité",
       text:"<strong>Inspecter les espaces inter-métacarpiens dorsaux</strong> — un creusement (fonte des interosseux/lombricaux) ± griffe ulnaire signe une compression évoluée et oriente vers la chirurgie."
@@ -1170,7 +1171,7 @@ const P = {
       {t:'Infiltration de corticoïde',d:"Sous échoguidage à l\'arcade de Frohse — si échec des mesures conservatrices"},
       {t:'Chirurgie de neurolyse',d:"Section de l\'arcade de Frohse — si échec médical ou déficit moteur installé"}
     ],
-    exercises:[{t:'Mobilisation neurale du nerf radial',d:''},{t:'Étirement des extenseurs de l\'avant-bras',d:''},{t:'Renforcement des extenseurs du poignet',d:''},{t:'Tirage horizontal avec élastique',d:''}],ficheExercice:'lococlic_fiches_patient/coude_08_comp_radial.html',
+    exercises:[{t:'Repos relatif + attelle de repos + modification d\'activité (éducation)',d:''},{t:'Mobilisation neurale du nerf radial (slider doux)',d:''},{t:'Étirement extenseurs + supinateur (décompression arcade)',d:''},{t:'Renforcement progressif extenseurs poignet (isométrique → excentrique)',d:''}],ficheExercice:'lococlic_fiches_patient/coude_08_comp_radial.html',
     referral:[
       {who:'Médecin du sport',why:"Pour évaluation, infiltration sous échoguidage et adaptation",p:true},
       {who:'Rhumatologue',why:"Alternative pour infiltration sous échoguidage",p:false},
@@ -1923,7 +1924,7 @@ function renderResult(){
   // Encart Pièges diagnostiques (pitfall)
   const pitfallHTML = mainP.pitfall ? `
     <div class="pitfall-card">
-      <div class="pitfall-head">💡 À considérer aussi</div>
+      <div class="pitfall-head">🔍 Diagnostic différentiel</div>
       <div class="pitfall-body">${mainP.pitfall.text}</div>
       ${(mainP.pitfall.modules || []).length ? `
       <div class="pitfall-modules">

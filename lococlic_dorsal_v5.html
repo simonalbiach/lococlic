@@ -51,6 +51,8 @@ body {
   font-weight: 800;
   letter-spacing: -0.5px;
 }
+  .module-title-clean { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .module-title-icon { width: 38px; height: 38px; object-fit: contain; }
 .header .badge {
   display: inline-block;
   margin-top: 6px;
@@ -1069,8 +1071,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>lococlic<sup>™</sup> — Rachis dorsal</h1>
-    <div class="badge">v5 · clinique adaptatif</div>
+    <h1 class="module-title-clean"><img src="images_pathologies/dorsal.png" alt="Rachis dorsal" class="module-title-icon"><span>Rachis dorsal</span></h1>
   </div>
   <div id="main"></div>
 </div>
@@ -1091,13 +1092,20 @@ const P = {
       {t:"IRM dorsale",d:"Réservée aux cas avec red flag ou évolution prolongée résistante"}
     ],
     treatment:[
-      {t:"Réassurance et maintien de l'activité",d:"Évolution favorable dans la majorité des cas"},
-      {t:"Antalgiques + AINS courte durée",d:"Paracétamol en première intention, AINS si insuffisant"},
-      {t:"Myorelaxant courte durée",d:"5-7 jours si contracture importante"},
-      {t:"Médecine manuelle / manipulations",d:"Souvent efficaces sur les blocages dorsaux"},
-      {t:"Kinésithérapie",d:"Si évolution prolongée"}
+      {t:"Information et réassurance du patient",d:"Évolution favorable dans la majorité des cas — démédicaliser après élimination des red flags"},
+      {t:"Maintien de l'activité",d:"Pierre angulaire — éviter l'immobilisation prolongée, reprise progressive"},
+      {t:"Antalgiques de palier 1-2",d:"Paracétamol en première intention, AINS courte durée si insuffisant"},
+      {t:"Myorelaxant (courte durée)",d:"Si contracture importante — 5-7 jours maximum"},
+      {t:"Application de chaleur locale",d:"Soulage la contracture musculaire"},
+      {t:"Kinésithérapie",d:"Si évolution prolongée — mobilisations dorsales, étirements, renforcement, conseils posturaux"},
+      {t:"Médecine manuelle / manipulations",d:"Manipulations vertébrales douces dans un programme multimodal — souvent efficaces sur les blocages dorsaux"}
     ],
-    exercises:[{t:'Mobilisation dorsale en extension sur rouleau',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_01_dorsalgie_commune.html',
+    exercises:[
+      {t:"Mobilité douce du rachis dorsal",d:"Mobilisations actives, rotations, extensions"},
+      {t:"Étirements pectoraux et trapèzes",d:"Corrige la cyphose et la posture en enroulement"},
+      {t:"Renforcement musculature dorsale",d:"Travail des rhomboïdes, dentelés, érecteurs"},
+      {t:"Activité physique régulière",d:"Marche, natation — lutte contre la sédentarité"}
+    ],
     referral:[
       {who:'Médecin du sport',why:"Si récidives, sportif, ou pour programme de rééducation",p:false},
       {who:'Rhumatologue',why:"Si évolution prolongée > 6 semaines, doute diagnostique ou red flag suspecté",p:false}
@@ -1106,7 +1114,12 @@ const P = {
       modules:[],
       text:"<strong>Toujours éliminer une cause viscérale</strong> (cardiaque, aortique, respiratoire, digestive) chez tout patient avec dorsalgie aiguë — particulièrement si : douleur thoracique associée, terrain cardiovasculaire, dyspnée, signes digestifs, fièvre. Bilan : ECG, dosages cardiaques selon contexte, imagerie thoraco-abdominale au moindre doute."
     },
-    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
+    sources:[
+      {l:'Briggs et al. 2009 — Thoracic spine pain prevalence systematic review (BMC Musculoskelet Disord)',u:'https://pubmed.ncbi.nlm.nih.gov/19563667/'},
+      {l:'Fouquet et al. 2015 — Prevalence of thoracic spine pain (Occup Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25638207/'},
+      {l:'Heneghan et al. 2018 — Thoracic spine pain physiotherapy (Musculoskelet Sci Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/29709769/'},
+      {l:'Masaracchio et al. 2019 — Thoracic spine manipulation systematic review (PLoS One)',u:'https://pubmed.ncbi.nlm.nih.gov/30759134/'}
+    ],
     keys:['Dorsalgie aiguë','Mécanique','Diagnostic d\'élimination','Red flags viscéraux','Dos']
   },
   DORS_CHRONIQUE: {
@@ -1119,43 +1132,66 @@ const P = {
     imaging:[
       {t:'Radiographie dorsale face/profil',d:"Évalue alignement, statique (cyphose), troubles dégénératifs, fractures vertébrales"},
       {t:'IRM dorsale',d:"Indiquée si retentissement neurologique, doute diagnostique ou red flag — recherche hernie, sténose, atteinte médullaire"},
-      {t:'Bilan biologique',d:"NFS, CRP, calcémie, vitamine D — pour éliminer cause systémique/inflammatoire"}
+      {t:'Bilan biologique',d:"NFS, CRP, calcémie, vitamine D — pour éliminer cause systémique/inflammatoire"},
+      {t:'DEXA',d:"Si terrain ostéoporotique suspecté (femme ménopausée, corticothérapie)"}
     ],
     treatment:[
-      {t:"Exercice physique régulier",d:"Pierre angulaire — renforcement dorsal, mobilité, étirements"},
-      {t:"Kinésithérapie active",d:"Programme supervisé, renforcement, étirements, mobilisations"},
-      {t:"Antalgiques + AINS courte durée",d:"Paracétamol en première intention"},
-      {t:"Médecine manuelle / manipulations",d:"Efficaces sur les blocages dorsaux"},
-      {t:"Infiltration facettaire (art. post.)",d:"Sous radioguidage si composante facettaire dominante — par rhumatologue ou radiologue interventionnel"}
+      {t:"Exercice physique régulier",d:"Pierre angulaire — programme adapté (renforcement dorsal, mobilité, étirements)"},
+      {t:"Kinésithérapie active",d:"Programme supervisé, renforcement rhomboïdes/érecteurs, étirements pectoraux, mobilisations"},
+      {t:"Adaptation du poste de travail",d:"Ergonomie (hauteur écran, siège, pauses régulières) — coordination avec médecin du travail"},
+      {t:"Approche bio-psycho-sociale",d:"Prendre en compte facteurs psycho-sociaux et professionnels"},
+      {t:"Antalgiques selon palier",d:"Privilégier paracétamol, AINS courte durée — éviter opiacés au long cours"},
+      {t:"Médecine manuelle / manipulations",d:"Manipulations vertébrales douces dans un programme multimodal — efficaces sur les blocages dorsaux"}
     ],
-    exercises:[{t:'Mobilisation dorsale en extension sur rouleau',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement paravertébraux + activité aérobie',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_02_dorsalgie_chronique.html',
+    exercises:[
+      {t:"Renforcement de la musculature dorsale",d:"Rhomboïdes, dentelés, érecteurs — pierre angulaire"},
+      {t:"Étirements pectoraux et trapèzes",d:"Corrige la posture en enroulement (cyphose)"},
+      {t:"Mobilisations dorsales actives",d:"Rotations, extensions, ouverture cage thoracique"},
+      {t:"Activité aérobie régulière",d:"Marche, natation, yoga — 30 min × 3-5/semaine"}
+    ],
     referral:[
       {who:'Médecin du sport',why:"Programme de rééducation et de réentraînement à l'effort",p:true},
       {who:'Rhumatologue',why:"Si doute diagnostique, infiltrations ou bilan complet",p:false},
       {who:'Médecin du travail',why:"Si origine professionnelle ou retentissement sur l'emploi — adaptation du poste",p:false}
     ],
-    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
+    sources:[
+      {l:'Briggs et al. 2009 — Thoracic spine pain prevalence systematic review (BMC Musculoskelet Disord)',u:'https://pubmed.ncbi.nlm.nih.gov/19563667/'},
+      {l:'Fouquet et al. 2015 — Prevalence of thoracic spine pain (Occup Med)',u:'https://pubmed.ncbi.nlm.nih.gov/25638207/'},
+      {l:'Heneghan et al. 2018 — Thoracic spine pain physiotherapy (Musculoskelet Sci Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/29709769/'},
+      {l:'Niemeläinen et al. 2006 — Thoracic spine MRI degenerative findings (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/16778693/'}
+    ],
     keys:['Dorsalgie chronique','Sédentaire écran','Posture','> 3 mois','Bio-psycho-social']
   },
   SYND_FACETTAIRE_D: {
-    id:'SYND_FACETTAIRE_D', name:'Syndrome articulaire postérieur dorsal', icon:'🦴', pop:'Adulte 40-70 ans, arthrose dorsale, posture en hyperlordose ou hypercyphose, parfois post-traumatique',
-    desc:"Douleur dorsale d'origine articulaire postérieure (zygapophysaire) de niveau T2 à T10. Douleur étagée avec irradiation intercostale ou pseudo-viscérale possible (sans dépasser la ligne médiane). Aggravée par l'extension et l'inclinaison ipsilatérale, soulagée par la flexion. PALPER-ROULÉ POSITIF sur le métamère atteint (hyperalgésie cutanée). Bonne réponse à la médecine manuelle / manipulation après élimination des red flags.",
+    id:'SYND_FACETTAIRE_D', name:'Syndrome facettaire dorsal', icon:'🦴', pop:'Adulte 40-70 ans, arthrose dorsale, posture en hyperlordose ou hypercyphose, parfois post-traumatique',
+    desc:"Douleur dorsale mécanique d'origine articulaire postérieure (zygapophysaire). Douleur dorsale étagée, parfois irradiation pseudo-radiculaire intercostale (sans dépasser la ligne médiane), reproductible par la palpation des massifs articulaires postérieurs. Aggravée par l'extension et la rotation, soulagée par la flexion. Pas de signe neurologique vrai.",
     imaging:[
       {t:'Radiographie dorsale face/profil',d:"Recherche arthrose interapophysaire postérieure, pincement discal"},
       {t:'Scanner ou IRM dorsale',d:"Si doute ou échec du traitement — arthrose facettaire, hypertrophie articulaire"}
     ],
     treatment:[
+      {t:"Maintien de l'activité",d:"Éviter le repos prolongé, reprise progressive"},
       {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
-      {t:"Kinésithérapie active",d:"Renforcement dorsal, étirements"},
-      {t:"Médecine manuelle / manipulations",d:"Souvent efficaces sur les blocages facettaires"},
-      {t:"Infiltration facettaire (art. post.)",d:"Sous radioguidage/scanner — par rhumatologue ou radiologue interventionnel si échec médical"}
+      {t:"Kinésithérapie active",d:"Renforcement dorsal, étirements, correction posturale"},
+      {t:"Médecine manuelle / manipulations",d:"Manipulations vertébrales douces — souvent efficaces sur les blocages facettaires dorsaux"},
+      {t:"Infiltration de corticoïde des facettes",d:"Sous radioguidage/scanner par rhumatologue ou centre antidouleur — si échec médical"}
     ],
-    exercises:[{t:'Mobilisation dorsale en flexion (ouverture facettes)',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_03_syndrome_facettaire.html',
+    exercises:[
+      {t:"Renforcement dorsal et abdominal",d:"Réduit la surcharge des facettes"},
+      {t:"Étirements pectoraux et chaîne postérieure",d:"Correction posturale globale"},
+      {t:"Mobilisations dorsales en rotation",d:"Dans l'amplitude indolore"},
+      {t:"Éviter extension et rotation forcée",d:"Dans les phases douloureuses"}
+    ],
     referral:[
       {who:'Rhumatologue',why:"Pour infiltration facettaire sous radioguidage et bilan complet",p:true},
       {who:'Médecin du sport',why:"Programme de rééducation et correction posturale",p:false}
     ],
-    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
+    sources:[
+      {l:'Manchikanti et al. 2020 — Thoracic facet joint pain (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/32942779/'},
+      {l:'Stolz et al. 2020 — Thoracic facet joint syndrome diagnosis (Schmerz)',u:'https://pubmed.ncbi.nlm.nih.gov/32072290/'},
+      {l:'Atluri et al. 2008 — Diagnostic accuracy thoracic facet joint blocks (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/18850031/'},
+      {l:'Manchikanti et al. 2012 — Thoracic interventional techniques (Pain Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/22622912/'}
+    ],
     keys:['Extension douloureuse','Pseudo-radiculaire intercostale','Arthrose facettaire','Facettaire dorsal']
   },
   DOULEUR_COSTOVERTEBRALE: {
@@ -1166,16 +1202,27 @@ const P = {
       {t:'Radiographie dorsale face/profil',d:"Élimine fracture costale ou pathologie pulmonaire associée"}
     ],
     treatment:[
-      {t:"Médecine manuelle / manipulations",d:"Pierre angulaire — manipulations costo-vertébrales très efficaces (déblocage)"},
+      {t:"Information et réassurance",d:"Évolution favorable avec prise en charge mécanique"},
       {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
-      {t:"Kinésithérapie",d:"Mobilisations costo-vertébrales, étirements"}
+      {t:"Médecine manuelle / manipulations",d:"Peut contribuer au traitement — manipulations costo-vertébrales spécifiques très efficaces (déblocage)"},
+      {t:"Kinésithérapie",d:"Mobilisations costo-vertébrales, étirements, rééducation respiratoire"},
+      {t:"Adaptation de l'activité",d:"Réduction temporaire des mouvements de torsion (sports asymétriques)"}
     ],
-    exercises:[{t:'Mobilisation respiratoire (inspiration + rotation)',d:''},{t:'Mobilisation dorsale douce',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_04_costovertebrale.html',
+    exercises:[
+      {t:"Mobilisations costales actives",d:"Inspirations profondes, rotations du tronc dans l'amplitude indolore"},
+      {t:"Étirements de la chaîne respiratoire",d:"Pectoraux, intercostaux, dentelés"},
+      {t:"Reprise progressive des sports asymétriques",d:"Après amélioration — golf, tennis"}
+    ],
     referral:[
       {who:'Médecin du sport',why:"Évaluation et prise en charge manipulatoire spécialisée",p:true},
       {who:'Rhumatologue',why:"Si évolution prolongée ou récidives fréquentes",p:false}
     ],
-    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
+    sources:[
+      {l:'Triano et al. 2013 — Spinal manipulation review (Spine J)',u:'https://pubmed.ncbi.nlm.nih.gov/24139395/'},
+      {l:'Erwin et al. 2010 — Costovertebral joint pain (PM R)',u:'https://pubmed.ncbi.nlm.nih.gov/20970764/'},
+      {l:'Arroyo et al. 1992 — Costovertebral joint anatomy biomechanics (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/1428657/'},
+      {l:'Heneghan et al. 2018 — Thoracic spine pain physiotherapy (Musculoskelet Sci Pract)',u:'https://pubmed.ncbi.nlm.nih.gov/29709769/'}
+    ],
     keys:['Effort torsion','Reproductible respiration','Blocage costal','Manipulation efficace','Costo-vertébrale']
   },
   SYND_CYRIAX: {
@@ -1187,17 +1234,28 @@ const P = {
       {t:'Radiographie thoracique',d:"Élimine fracture costale ou pathologie pleuro-pulmonaire"}
     ],
     treatment:[
+      {t:"Information et réassurance",d:"Évolution variable — souvent chronique mais bénin"},
       {t:"Antalgiques + AINS",d:"Paracétamol, AINS en poussée"},
+      {t:"Adaptation de l'activité",d:"Éviter les sports de contact, mouvements de torsion brusques"},
       {t:"Kinésithérapie",d:"Renforcement de la paroi thoracique, étirements doux"},
-      {t:"Infiltration locale",d:"Sous échoguidage en cas de douleur localisée résistante"},
-      {t:"Chirurgie (résection costale partielle)",d:"Si forme invalidante résistante — par chirurgien thoracique"}
+      {t:"Infiltration locale",d:"Sous échoguidage en cas de douleur localisée et résistante"},
+      {t:"Chirurgie (résection costale partielle)",d:"Si forme invalidante et résistante au traitement médical — par chirurgien thoracique"}
     ],
-    exercises:[{t:'Adaptation des activités',d:''},{t:'Mobilisation respiratoire',d:''},{t:'Mobilisation dorsale douce',d:''},{t:'Étirement des pectoraux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_05_cyriax.html',
+    exercises:[
+      {t:"Renforcement paroi thoracique",d:"Intercostaux, dentelés, transverse — encadré par kiné"},
+      {t:"Étirements doux thoraciques",d:"Sans étirements forcés des derniers arcs costaux"},
+      {t:"Éviter sports de contact",d:"Et mouvements de torsion violents en phase aiguë"}
+    ],
     referral:[
       {who:'Médecin du sport',why:"Évaluation et programme de rééducation",p:true},
       {who:'Chirurgien thoracique',why:"Si forme invalidante et résistante au traitement médical — résection costale",p:false}
     ],
-    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
+    sources:[
+      {l:'Foley et al. 2019 — Slipping rib syndrome (Curr Sports Med Rep)',u:'https://pubmed.ncbi.nlm.nih.gov/30817515/'},
+      {l:'Turcios 2017 — Slipping rib syndrome review (J Pediatr Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/28528718/'},
+      {l:'Lippi et al. 2019 — Costal cartilage resection slipping rib (Ann Thorac Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/32055418/'},
+      {l:'McMahon 2018 — Slipping rib syndrome diagnosis (BMJ Case Rep)',u:'https://pubmed.ncbi.nlm.nih.gov/29929973/'}
+    ],
     keys:['Côtes flottantes','Test du crochet','Slipping rib','Subluxation costale','Cyriax']
   },
   TIETZE: {
@@ -1213,107 +1271,30 @@ const P = {
       {t:'Radiographie thoracique',d:"Élimine fracture costale ou pathologie pleuro-pulmonaire"}
     ],
     treatment:[
+      {t:"Information et réassurance",d:"Pathologie bénigne, évolution favorable spontanée — démédicaliser"},
       {t:"Antalgiques + AINS",d:"Paracétamol, AINS en poussée — souvent efficaces"},
-      {t:"Repos sportif transitoire",d:"Si origine sportive"},
-      {t:"Infiltration locale",d:"Sous échoguidage en cas de forme résistante"}
+      {t:"Application de chaleur locale",d:"Soulagement symptomatique"},
+      {t:"Repos sportif transitoire",d:"Si origine sportive ou traumatique"},
+      {t:"Infiltration locale",d:"Sous échoguidage en cas de forme résistante et localisée"}
     ],
-    exercises:[{t:'Repos relatif et glaçage local',d:''},{t:'Mobilisation respiratoire douce',d:''},{t:'Étirement des pectoraux (léger)',d:''},{t:'Reprise progressive des activités',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_06_tietze.html',
+    exercises:[
+      {t:"Repos sportif jusqu'à amélioration",d:"Éviter les sports avec impact thoracique"},
+      {t:"Étirements pectoraux doux",d:"Après la phase aiguë"},
+      {t:"Reprise progressive de l'activité",d:"Selon douleur"}
+    ],
     referral:[
       {who:'Rhumatologue',why:"Si forme résistante, infiltration ou doute diagnostique",p:false},
       {who:'Médecin du sport',why:"Si origine sportive — gestion de la reprise",p:false}
     ],
-    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
+    sources:[
+      {l:'Schumann 2023 — Tietze syndrome review (Eur Heart J)',u:'https://pubmed.ncbi.nlm.nih.gov/37551691/'},
+      {l:'Aeschlimann & Kahn 1990 — Tietze syndrome 32 cases (J Rheumatol)',u:'https://pubmed.ncbi.nlm.nih.gov/2280720/'},
+      {l:'Proulx & Zryd 2009 — Costochondritis diagnosis treatment (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/19751083/'},
+      {l:'Ayloo et al. 2013 — Evaluation noncardiac chest pain (Prim Care)',u:'https://pubmed.ncbi.nlm.nih.gov/24209725/'}
+    ],
     keys:['Tuméfaction chondrocostale','2e-3e côte','Femme jeune','Inflammation bénigne','Tietze']
   },
-  FRACT_VERTEBRE_OSTEOP: {
-    id:'FRACT_VERTEBRE_OSTEOP', name:'Fracture vertébrale ostéoporotique', icon:'⚠️', pop:'Femme ménopausée > 60 ans, homme > 70 ans, corticothérapie au long cours, ATCD fracture, faible IMC, tabagisme',
-    desc:"Tassement vertébral par fragilité osseuse, le plus souvent dorso-lombaire (T11-L2). Apparition brutale d'une douleur dorsale intense après un effort minime (toux, port léger, simple mouvement). Impotence fonctionnelle, douleur exquise à la palpation de l'épineuse, parfois irradiation en ceinture. Risque de tassement progressif avec cyphose et perte de taille.",
-    severity:{
-      title:"URGENCE diagnostique - terrain à risque",
-      text:"<strong>Penser systématiquement</strong> à la fracture vertébrale ostéoporotique chez : femme ménopausée, homme > 70 ans, corticothérapie au long cours, ATCD fracture de fragilité, perte de taille > 3 cm. Apparition brutale après effort minime = critère majeur. Radiographie en urgence + bilan d'ostéoporose (DMO, calcémie, vitamine D, bilan endocrinien)."
-    },
-    imaging:[
-      {t:'Radiographie dorso-lombaire face/profil',d:"Examen de référence en première intention — tassement vertébral, hauteur réduite (> 20% = fracture), classification Genant"},
-      {t:'IRM dorsale',d:"Différencie fracture récente (œdème osseux T2) versus ancienne — utile si doute"},
-      {t:'DMO (densitométrie minérale osseuse)',d:"Bilan ostéoporose — T-score lombaire et fémoral"},
-      {t:'Bilan biologique ostéoporose',d:"Calcémie, vitamine D, créatinine, NFS, électrophorèse protéines (éliminer myélome)"}
-    ],
-    treatment:[
-      {t:"Antalgiques (paliers progressifs)",d:"Paracétamol + palier 2 souvent nécessaires"},
-      {t:"Mobilisation précoce adaptée",d:"Éviter alitement prolongé"},
-      {t:"Ceinture lombaire ou corset",d:"Soutien transitoire en phase aiguë"},
-      {t:"Traitement de l'ostéoporose",d:"Calcium + vitamine D, bisphosphonates — par rhumatologue"},
-      {t:"Kinésithérapie",d:"Renforcement progressif après phase aiguë"},
-      {t:"Vertébroplastie / cyphoplastie",d:"Si douleur invalidante résistante > 4-6 semaines — par radiologue interventionnel"}
-    ],
-    exercises:[{t:'Repos relatif et corset (selon avis)',d:''},{t:'Mobilisation dorsale très douce (post phase aiguë)',d:''},{t:'Renforcement isométrique des paravertébraux',d:''},{t:'Suivi spécialisé indispensable',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_07_fracture_vertebrale_osteop.html',
-    referral:[
-      {who:'Rhumatologue',why:"Bilan complet d'ostéoporose et mise en route du traitement de fond",p:true},
-      {who:'Radiologue interventionnel',why:"Si vertébroplastie ou cyphoplastie indiquée — douleur invalidante résistante",p:false},
-      {who:'Chirurgien orthopédique (rachis)',why:"Si tassement majeur, cyphose évolutive ou compression neurologique",p:false}
-    ],
-    sources:[
-      
-      
-      
-      {l:'HAS 2019 — Prévention, diagnostic et traitement de l\'ostéoporose',u:'https://www.has-sante.fr/jcms/c_1751307/fr/les-medicaments-de-l-osteoporose'}
-    ],
-    keys:['Femme ménopausée','Effort minime','Brutal','T11-L2','Fracture ostéoporotique']
-  },
-  SCHEUERMANN: {
-    id:'SCHEUERMANN', name:'Maladie de Scheuermann (cyphose juvénile)', icon:'🧒', pop:'Adolescent 12-17 ans, plus fréquent garçon, terrain familial, sportif (cyphose flexible) ou sédentaire',
-    desc:"Dystrophie de croissance vertébrale avec cunéiformisation des vertèbres dorsales (au moins 3 vertèbres adjacentes avec cunéiformisation ≥ 5°). Cyphose dorsale fixée (non corrigée volontairement) chez l'adolescent, parfois douloureuse. Évolution favorable à la fin de la croissance dans les formes mineures. Risque de cyphose pathologique > 50° (Cobb).",
-    imaging:[
-      {t:'Radiographie dorso-lombaire face/profil debout',d:"Examen de référence — cunéiformisation ≥ 5° d'au moins 3 vertèbres adjacentes, irrégularité des plateaux, nodules de Schmorl, mesure angle de Cobb"},
-      {t:'IRM dorsale',d:"Si suspicion de hernie ou bilan préopératoire — précise les atteintes discales"}
-    ],
-    treatment:[
-      {t:"Kinésithérapie active",d:"Pierre angulaire — renforcement dorsal, étirements pectoraux"},
-      {t:"Activité physique régulière",d:"Natation (dos crawlé), gymnastique"},
-      {t:"Antalgiques selon besoin",d:"Paracétamol si douleur"},
-      {t:"Corset orthopédique",d:"Si cyphose évolutive > 45-50° Cobb — par chirurgien"},
-      {t:"Chirurgie (arthrodèse)",d:"Réservée aux formes sévères > 70° Cobb"}
-    ],
-    exercises:[{t:'Mobilisation dorsale en extension',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_08_scheuermann.html',
-    referral:[
-      {who:'Chirurgien orthopédique (rachis pédiatrique)',why:"Si cyphose évolutive > 45-50° Cobb en cours de croissance — bilan et indication corset/chirurgie",p:true},
-      {who:'Médecin du sport',why:"Encadrement du programme de rééducation et de l'activité physique",p:true}
-    ],
-    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
-    keys:['Adolescent','Cyphose fixée','Cunéiformisation','Nodules de Schmorl','Scheuermann']
-  },
-  SYND_CHARNIERE_DL: {
-    id:'SYND_CHARNIERE_DL', name:"Syndrome de la charnière dorso-lombaire (Maigne)", icon:'🔄', pop:'Adulte 30-60 ans, sport ou métier avec rotations répétées du tronc (golf, tennis, ports asymétriques), sédentaire',
-    desc:"Syndrome articulaire postérieur de la charnière dorso-lombaire (T11-T12-L1) avec dysfonction des facettes et irritation des branches postérieures. Douleur lombaire haute déclenchée mais avec irradiations atypiques évocatrices : douleur fessière haute (zone de la crête iliaque), douleur du flanc, parfois pubalgie. ROTATION dorso-lombaire reproduisant la douleur (test discriminant). PALPER-ROULÉ POSITIF sur le métamère T11-L1 (zone crête iliaque). Bonne réponse à la médecine manuelle.",
-    severity:{
-      title:"Diagnostic d'élimination",
-      text:"<strong>Toujours éliminer</strong> : pathologie viscérale (rein, colon, organes pelviens), pathologie de hanche (coxopathie), fracture ostéoporotique de la charnière, pathologie radiculaire L1-L2. Le syndrome de Maigne est un diagnostic clinique d'élimination."
-    },
-    imaging:[
-      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (palper-roulé + rotation + irradiations typiques)"},
-      {t:'Radiographie dorso-lombaire face/profil',d:"Si red flag ou évolution prolongée — élimine pathologie organique"},
-      {t:'IRM ou Scanner',d:"Réservés aux cas atypiques ou résistants"}
-    ],
-    treatment:[
-      {t:"Médecine manuelle / manipulations",d:"Pierre angulaire — manipulations spécifiques T11-L1 très efficaces"},
-      {t:"Antalgiques + AINS courte durée",d:"Paracétamol, AINS en poussée"},
-      {t:"Kinésithérapie",d:"Mobilisations, étirements, renforcement musculature paravertébrale"},
-      {t:"Infiltration facettaire (art. post.) T11-L1",d:"Sous radioguidage si échec — par rhumatologue ou radiologue interventionnel"}
-    ],
-    exercises:[{t:'Bird-dog (contrôle moteur, anti-rotation)',d:''},{t:'Pont fessier progressif (chaîne postérieure)',d:''},{t:'Goblet squat (renforcement global membres inférieurs + tronc)',d:''},{t:'Jefferson curl (désensibilisation flexion lombaire)',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_09_charniere_dl_maigne.html',
-    referral:[
-      {who:'Médecin du sport',why:"Pour prise en charge manipulatoire et programme de rééducation",p:true},
-      {who:'Rhumatologue',why:"Si évolution prolongée ou pour infiltration facettaire",p:false},
-      {who:'Radiologue interventionnel',why:"Pour infiltration facettaire T11-L1 sous radioguidage",p:false}
-    ],
-    pitfall:{
-      modules:[],
-      text:"<strong>Diagnostic différentiel</strong> : douleur de hanche (irradiations fessières), pathologie rénale (lombalgie + flanc), pathologie pelvienne. Toujours éliminer ces causes avant de retenir le syndrome de Maigne — examen abdo-pelvien et examen de hanche systématiques."
-    },
-    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
-    keys:['Maigne','Charnière T11-L1','Rotation douloureuse','Irradiations atypiques','Palper-roulé']
-  },
-    DISCOPATHIE_D: {
+  DISCOPATHIE_D: {
     id:'DISCOPATHIE_D', name:'Discopathie dorsale', icon:'💿', pop:'Adulte 30-60 ans, effort de flexion/port de charge en flexion, sport ou métier physique, sédentaire',
     desc:"Atteinte discale dorsale (le plus souvent T7-T11) avec irritation ou hernie. Douleur dorsale aggravée par la FLEXION antérieure du tronc et soulagée par l'extension (inverse du syndrome facettaire). Parfois irradiation en hémiceinture (en arc, de l'épineuse vers le sternum ou le flanc). Le rachis dorsal étant peu mobile, les discopathies y sont moins fréquentes mais réelles. Diagnostic clinique + IRM en cas de persistance.",
     severity:{
@@ -1327,13 +1308,19 @@ const P = {
       {t:'Radiographie dorsale face/profil',d:"Recherche pincement discal, signes dégénératifs associés"}
     ],
     treatment:[
-      {t:"Antalgiques (paliers progressifs)",d:"Paracétamol + AINS, neuropathiques (gabapentine, prégabaline) si composante radiculaire"},
-      {t:"Kinésithérapie (McKenzie)",d:"Préférence d'extension, renforcement"},
-      {t:"Infiltration facettaire (art. post.)",d:"Sous radioguidage si composante facettaire associée"},
-      {t:"Infiltration péri-radiculaire ou épidurale",d:"Sous radioguidage si échec antalgique — par radiologue interventionnel"},
-      {t:"Chirurgie",d:"Si compression médullaire ou hyperalgie résistante"}
+      {t:"Information et réassurance",d:"Évolution favorable dans la majorité des cas"},
+      {t:"Maintien de l'activité",d:"Éviter le repos prolongé, adapter les positions (privilégier l'extension)"},
+      {t:"Antalgiques (paliers progressifs)",d:"Paracétamol + AINS courte durée, neuropathiques (gabapentine, prégabaline) si composante radiculaire"},
+      {t:"Kinésithérapie",d:"Méthode McKenzie (préférence d'extension), renforcement, mobilisations, conseils ergonomiques"},
+      {t:"Infiltration péri-radiculaire ou épidurale",d:"Sous radioguidage par radiologue interventionnel ou rhumatologue — si échec antalgique"},
+      {t:"Chirurgie",d:"Réservée aux formes hyperalgiques résistantes ou avec compression médullaire — par chirurgien orthopédique rachis"}
     ],
-    exercises:[{t:'Mobilisation dorsale douce',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Étirement des pectoraux',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_10_discopathie.html',
+    exercises:[
+      {t:"Exercices en extension (McKenzie)",d:"Position de la sphinx, extension active du tronc — préférence d'extension"},
+      {t:"Éviter les flexions répétées",d:"En phase aiguë"},
+      {t:"Renforcement musculature dorsale",d:"Rhomboïdes, érecteurs"},
+      {t:"Reprise progressive port de charge",d:"Apprendre à porter en gainage avec rachis neutre"}
+    ],
     referral:[
       {who:'Rhumatologue',why:"Si évolution prolongée ou pour infiltration",p:true},
       {who:'Radiologue interventionnel',why:"Pour infiltration péri-radiculaire ou épidurale sous radioguidage",p:false},
@@ -1343,8 +1330,115 @@ const P = {
       modules:[],
       text:"<strong>Toujours dépister une compression médullaire dorsale</strong> : signes pyramidaux des membres inférieurs (Babinski, hyperréflexie, troubles marche), paresthésies en chaussette, troubles sphinctériens. Une hernie discale dorsale médiane est une URGENCE chirurgicale."
     },
-    sources:[{l:'HAS 2019 — Prise en charge de la lombalgie commune (cadre rachidien)',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},{l:'Foster et al. 2018 — Lancet Low Back Pain Series',u:'https://pubmed.ncbi.nlm.nih.gov/29573872/'}],
+    sources:[
+      {l:'Stillerman et al. 1998 — Experience in management thoracic disc herniations (J Neurosurg)',u:'https://pubmed.ncbi.nlm.nih.gov/9525713/'},
+      {l:'Wood et al. 1995 — Thoracic disc herniation MRI (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/7747234/'},
+      {l:'Brown et al. 1992 — Symptomatic thoracic disc herniation (Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/1411773/'},
+      {l:'McInerney & Ball 2000 — Thoracic disc disease pathophysiology (Br J Neurosurg)',u:'https://pubmed.ncbi.nlm.nih.gov/10923146/'}
+    ],
     keys:['Flexion douloureuse','T7-T11','Hémiceinture','McKenzie','Discopathie dorsale']
+  },
+  FRACT_VERTEBRE_OSTEOP: {
+    id:'FRACT_VERTEBRE_OSTEOP', name:'Fracture vertébrale ostéoporotique', icon:'⚠️', pop:'Femme ménopausée > 60 ans, homme > 70 ans, corticothérapie au long cours, ATCD fracture, faible IMC, tabagisme',
+    desc:"Tassement vertébral par fragilité osseuse, le plus souvent dorso-lombaire (T11-L2). Apparition brutale d'une douleur dorsale intense après un effort minime (toux, port léger, simple mouvement). Impotence fonctionnelle, douleur exquise à la palpation de l'épineuse, parfois irradiation en ceinture. Risque de tassement progressif avec cyphose et perte de taille.",
+    severity:{
+      title:"URGENCE diagnostique - terrain à risque",
+      text:"<strong>Penser systématiquement</strong> à la fracture vertébrale ostéoporotique chez : femme ménopausée, homme > 70 ans, corticothérapie au long cours, ATCD fracture de fragilité, perte de taille > 3 cm. Apparition brutale après effort minime = critère majeur. Radiographie en urgence + bilan d'ostéoporose (DEXA, calcémie, vitamine D, bilan endocrinien)."
+    },
+    imaging:[
+      {t:'Radiographie dorso-lombaire face/profil',d:"Examen de référence en première intention — tassement vertébral, hauteur réduite (> 20% = fracture), classification Genant"},
+      {t:'IRM dorsale',d:"Différencie fracture récente (œdème osseux T2) versus ancienne — utile si doute"},
+      {t:'DEXA (densitométrie osseuse)',d:"Bilan ostéoporose — T-score lombaire et fémoral"},
+      {t:'Bilan biologique ostéoporose',d:"Calcémie, vitamine D, créatinine, NFS, électrophorèse protéines (éliminer myélome)"}
+    ],
+    treatment:[
+      {t:"Antalgiques (paliers progressifs)",d:"Paracétamol + palier 2 souvent nécessaires, antalgiques neuropathiques si composante"},
+      {t:"Mobilisation précoce adaptée",d:"Éviter alitement prolongé — pierre angulaire pour limiter la déminéralisation"},
+      {t:"Ceinture lombaire ou corset",d:"Soutien transitoire en phase aiguë — pas de port prolongé"},
+      {t:"Traitement de l'ostéoporose",d:"Calcium + vitamine D, bisphosphonates ou tériparatide selon contexte — par rhumatologue"},
+      {t:"Kinésithérapie",d:"Rééducation posturale, renforcement progressif, équilibre — après phase aiguë"},
+      {t:"Vertébroplastie / cyphoplastie",d:"En cas de douleur invalidante et résistante > 4-6 semaines — par radiologue interventionnel"}
+    ],
+    exercises:[
+      {t:"Mobilisation précoce adaptée",d:"Marche dès que possible, éviter alitement prolongé"},
+      {t:"Renforcement postural",d:"Travail des érecteurs du rachis — encadré par kiné"},
+      {t:"Activité physique avec impact modéré",d:"Marche, gymnastique douce — pour densification osseuse"},
+      {t:"Éviter mouvements à risque",d:"Flexion antérieure forcée, port de charges, hyperextension"}
+    ],
+    referral:[
+      {who:'Rhumatologue',why:"Bilan complet d'ostéoporose et mise en route du traitement de fond",p:true},
+      {who:'Radiologue interventionnel',why:"Si vertébroplastie ou cyphoplastie indiquée — douleur invalidante résistante",p:false},
+      {who:'Chirurgien orthopédique (rachis)',why:"Si tassement majeur, cyphose évolutive ou compression neurologique",p:false}
+    ],
+    sources:[
+      {l:'Compston et al. 2019 — Osteoporosis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/30739747/'},
+      {l:'Briot & Roux 2017 — Prise en charge ostéoporose (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/28017737/'},
+      {l:'Camacho et al. 2020 — AACE/ACE guidelines osteoporosis',u:'https://pubmed.ncbi.nlm.nih.gov/32427503/'},
+      {l:'HAS 2019 — Prise en charge fracture ostéoporose',u:'https://www.has-sante.fr'}
+    ],
+    keys:['Femme ménopausée','Effort minime','Brutal','T11-L2','Fracture ostéoporotique']
+  },
+  SCHEUERMANN: {
+    id:'SCHEUERMANN', name:'Maladie de Scheuermann (cyphose juvénile)', icon:'🦴', pop:'Adolescent 12-17 ans, majoritairement garçons, découverte souvent à la puberté',
+    desc:"Dystrophie rachidienne de croissance touchant les corps vertébraux dorsaux (cunéiformisation ≥ 5° sur ≥ 3 vertèbres contiguës), entraînant une cyphose dorsale fixée (Cobb > 40°). Douleur mécanique dorsale, raideur, déformation postérieure non corrigible volontairement. Diagnostic radiologique. Traitement conservateur (orthèse + rééducation) chez l'adolescent en croissance ; chirurgie si cyphose > 70-80° ou douleur invalidante persistante.",
+    alert:null,
+    imaging:[
+      {t:"Radiographies du rachis dorsal (F+P debout)",d:"Clichés en charge — mesure de l'angle de Cobb et cunéiformisation des vertèbres"},
+      {t:"IRM si douleur atypique ou signes neurologiques",d:"Élimine une autre étiologie (hernie discale, tumeur)"}
+    ],
+    treatment:[
+      {t:"Orthèse de correction (Milwaukee, Boston)",d:"Chez l'adolescent en croissance (Risser < 4) : orthèse 16-23h/jour — meilleure preuve non-opératoire"},
+      {t:"Rééducation : extension dorsale + renforcement paravertébraux",d:"Soulagement symptomatique, amélioration posturale fonctionnelle"},
+      {t:"Antalgiques palier 1",d:"Paracétamol, AINS courte durée"},
+      {t:"Chirurgie",d:"Si Cobb > 70-80°, douleur réfractaire ou déficit neurologique"}
+    ],
+    referral:[
+      {who:'Rhumatologue pédiatrique / orthopédiste',why:"Confirmation diagnostique, prescription orthèse, suivi radiologique",p:true},
+      {who:'Médecin du sport / kinésithérapeute',why:"Programme de rééducation en extension dorsale",p:false}
+    ],
+    sources:[
+      {l:'Huq et al. 2019 — Treatment approaches for Scheuermann kyphosis: SR (J Neurosurg Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/31675699/'},
+      {l:'StatPearls — Scheuermann Disease (NCBI Bookshelf)',u:'https://www.ncbi.nlm.nih.gov/books/NBK499966/'}
+    ],
+    ficheExercice:'lococlic_fiches_patient/dorsal_08_scheuermann.html',
+    exercises:[
+      {t:"Mobilisation dorsale en extension (ouverture vertèbres cunéiformes)",d:''},
+      {t:"Tirage horizontal avec élastique (rétracteurs scapulaires)",d:''},
+      {t:"Étirement des pectoraux (ouverture thorax antérieur)",d:''},
+      {t:"Renforcement des paravertébraux dorsaux (Y-T-W)",d:''}
+    ],
+    keys:['Scheuermann','Cyphose dorsale','Cyphose juvénile','Dystrophie vertébrale']
+  },
+  SYND_CHARNIERE_DL: {
+    id:'SYND_CHARNIERE_DL', name:'Syndrome de la charnière dorso-lombaire (Maigne)', icon:'🔗', pop:'Adulte 30-60 ans, douleurs référées à distance (fesse, crête iliaque, aine, flanc), souvent méconnu',
+    desc:"Syndrome douloureux par irritation des branches postérieures et latérales des nerfs T12-L1 au niveau de la charnière thoraco-lombaire (T12-L1). Douleurs référées à distance : crête iliaque, fesse supéro-externe, flanc, face latérale de cuisse, voire aine. Souvent confondu avec une pathologie de hanche ou lombalgie. Diagnostic par reproduction des douleurs en rotation de la charnière + palper-roulé positif sur le métamère + infiltration diagnostique.",
+    alert:null,
+    imaging:[
+      {t:"Radiographies dorso-lombaires (F+P)",d:"Bilan initial — éliminer fracture, tassement, lyse"},
+      {t:"IRM si suspicion lésion structurelle",d:"Élimine discopathie, tumeur"}
+    ],
+    treatment:[
+      {t:"Infiltration péri-articulaire T12-L1",d:"Valeur diagnostique et thérapeutique (Alptekin 2017) — corticoïdes + anesthésique local"},
+      {t:"Rééducation : mobilisation jonction T12-L1 + contrôle moteur",d:"Exercices ciblés sur la charnière"},
+      {t:"Antalgiques palier 1 + AINS",d:"Traitement symptomatique"},
+      {t:"Médecine manuelle",d:"Manipulation/mobilisation de la charnière T12-L1 — peut contribuer au traitement"}
+    ],
+    referral:[
+      {who:'Rhumatologue / médecin du sport',why:"Infiltration diagnostique et thérapeutique T12-L1",p:true},
+      {who:'Kinésithérapeute',why:"Programme de mobilisation et renforcement",p:false}
+    ],
+    sources:[
+      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/mal-de-dos'},
+      {l:"Alptekin et al. 2017 — Effectiveness of Exercise and Local Steroid Injections for Thoracolumbar Junction Syndrome (Open Orthop J)",u:'https://pubmed.ncbi.nlm.nih.gov/28694884/'}
+    ],
+    ficheExercice:'lococlic_fiches_patient/dorsal_09_charniere_dl_maigne.html',
+    exercises:[
+      {t:"Éducation + modification d'activité (jonction T12-L1)",d:''},
+      {t:"Mobilisation de la jonction T12-L1 (thoraco-lombaire)",d:''},
+      {t:"Bird-dog (contrôle moteur, stabilité T12-L1)",d:''},
+      {t:"Pont fessier progressif (chaîne postérieure)",d:''}
+    ],
+    keys:['Maigne','Charnière dorso-lombaire','T12-L1','Syndrome thoraco-lombaire']
   },
   SPONDYLARTHRITE_D: {
     id:'SPONDYLARTHRITE_D', name:'Atteinte dorsale d\'une spondylarthrite (à dépister)', icon:'⚠️', pop:'Jeune adulte 15-45 ans, terrain HLA-B27, ATCD familial, psoriasis, MICI, uvéite, atteinte axiale prédominante',
@@ -1360,12 +1454,17 @@ const P = {
       {t:'Bilan biologique',d:"CRP, VS, HLA-B27, NFS"}
     ],
     treatment:[
-      {t:"AINS ou AIS au long cours",d:"Première intention — pierre angulaire"},
-      {t:"Kinésithérapie active",d:"Maintien des amplitudes, étirements — quotidien"},
-      {t:"Activité physique régulière",d:"Natation, marche"},
-      {t:"Anti-TNFα ou anti-IL17",d:"Si forme active malgré AINS — par rhumatologue"}
+      {t:"AINS ou AIS au long cours",d:"Première intention — pierre angulaire, à dose efficace, en continu ou à la demande"},
+      {t:"Kinésithérapie active",d:"Maintien des amplitudes dorsales, étirements, exercices posturaux — quotidien"},
+      {t:"Activité physique régulière",d:"Pierre angulaire — natation, marche, exercices doux"},
+      {t:"Anti-TNFα ou anti-IL17",d:"Si forme active malgré AINS (BASDAI > 4) — par rhumatologue"},
+      {t:"Sevrage tabagique",d:"Le tabac aggrave l'évolution"}
     ],
-    exercises:[{t:'Mobilisation globale du rachis (toutes directions)',d:''},{t:'Étirement de la chaîne antérieure',d:''},{t:'Renforcement des paravertébraux dorsaux',d:''},{t:'Activité aérobie régulière',d:''}],ficheExercice:'lococlic_fiches_patient/dorsal_11_spondylarthrite_dorsale.html',
+    exercises:[
+      {t:"Étirements quotidiens du rachis",d:"Maintien de la mobilité — pierre angulaire"},
+      {t:"Renforcement postural",d:"Travail global du rachis"},
+      {t:"Activité physique aérobie",d:"Natation, marche — 30 min × 3-5/semaine"}
+    ],
     referral:[
       {who:'Rhumatologue',why:"Pour confirmation diagnostique, mise en route traitement de fond, suivi",p:true},
       {who:'Médecin du sport',why:"Programme de rééducation et de réentraînement à l'effort",p:false}
@@ -1373,8 +1472,8 @@ const P = {
     sources:[
       {l:'Sieper et al. 2017 — Axial spondyloarthritis (Lancet)',u:'https://pubmed.ncbi.nlm.nih.gov/28110981/'},
       {l:'van der Heijde et al. 2017 — ASAS-EULAR management recommendations',u:'https://pubmed.ncbi.nlm.nih.gov/28087505/'},
-      
-      
+      {l:'Rudwaleit et al. 2009 — ASAS classification criteria axial spondyloarthritis',u:'https://pubmed.ncbi.nlm.nih.gov/19297344/'},
+      {l:'Wendling et al. 2022 — Recommandations SFR spondyloarthrite (Joint Bone Spine)',u:'https://pubmed.ncbi.nlm.nih.gov/35487390/'}
     ],
     keys:['Raideur inflammatoire','Sujet jeune','HLA-B27','Atteinte axiale','Spondylarthrite dorsale']
   }
@@ -2042,7 +2141,7 @@ function renderResult(){
   // Encart Pièges diagnostiques (pitfall)
   const pitfallHTML = mainP.pitfall ? `
     <div class="pitfall-card">
-      <div class="pitfall-head">💡 À considérer aussi</div>
+      <div class="pitfall-head">🔍 Diagnostic différentiel</div>
       <div class="pitfall-body">${mainP.pitfall.text}</div>
       ${(mainP.pitfall.modules || []).length ? `
       <div class="pitfall-modules">

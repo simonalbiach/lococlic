@@ -48,6 +48,8 @@ body {
   font-weight: 800;
   letter-spacing: -0.5px;
 }
+  .module-title-clean { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .module-title-icon { width: 38px; height: 38px; object-fit: contain; }
 .header .badge {
   display: inline-block;
   margin-top: 6px;
@@ -1004,8 +1006,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>lococlic<sup>™</sup> — Jambe</h1>
-    <div class="badge">v5 · clinique adaptatif</div>
+    <h1 class="module-title-clean"><img src="images_pathologies/jambe.png" alt="Jambe" class="module-title-icon"><span>Jambe</span></h1>
   </div>
   <div id="main"></div>
 </div>
@@ -1069,7 +1070,7 @@ const P = {
     keys:['Coup de fouet','Encoche','Thompson positif','Urgence','Rupture']
   },
   TVP: {
-    id:'TVP', name:'Thrombose veineuse profonde (TVP)', icon:'🚨', pop:'Tout âge — facteurs de risque (alitement, post-chirurgie, contraception, voyage long, cancer, ATCD)',
+    id:'TVP', name:'Thrombose veineuse profonde (TVP) — diagnostic différentiel', icon:'🚨', pop:'Tout âge — facteurs de risque (alitement, post-chirurgie, contraception, voyage long, cancer, ATCD)',
     desc:"Douleur unilatérale du mollet, sensation de tension, œdème, augmentation de chaleur cutanée locale, parfois rougeur. Pâleur, dilatation veineuse superficielle. Asymétrie de mollets (différence > 3 cm). Facteurs de risque +++. Peut être asymptomatique.",
     alert:{type:'red',text:"URGENCE médicale : risque d\'embolie pulmonaire. Score de Wells + D-Dimères + écho-doppler veineux en URGENCE. Hospitalisation si haute probabilité. Anticoagulation à débuter dès suspicion forte."},
     imaging:[
@@ -1093,7 +1094,7 @@ const P = {
       {who:'Service d\'urgence ou angiologue (urgent)',why:'Confirmation diagnostic + initiation anticoagulation',p:true},
       {who:'Médecin vasculaire',why:'Suivi à distance, bilan étiologique si nécessaire',p:false}
     ],
-    sources:[{l:'Cook & Purdam 2009 — Tendinopathy continuum (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'},{l:'Martin et al. 2018 — JOSPT CPG Achilles tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
+    sources:[{l:'HAS 2024 — Prise en charge des artériopathies chroniques oblitérantes des membres inférieurs',u:'https://www.has-sante.fr/jcms/c_272513/fr/guide-parcours-de-soins-maladie-renale-chronique-de-l-adulte-chez-le-patient-diabetique'}],
     keys:['Asymétrie mollet','Wells','D-Dimères','FDR thrombose','Urgence']
   },
   PERIOSTITE:{id:'PERIOSTITE',name:'Périostite tibiale',icon:'🟣',pop:'20–40 ans , sportif , femmes',
@@ -1214,9 +1215,9 @@ const P = {
     exercises:[{t:'Travail en fente progressif (FHL — iso → concentrique → excentrique)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement des intrinsèques du pied (short foot)',d:''},{t:'Mobilisation de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_08_tendinopathie_fhl.html',ficheExercice:'lococlic_fiches_patient/jambe_08_tendinopathie_fhl.html',referral:[{who:'Médecin du sport',why:'',p:true}],
     sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur voûte plantaire médial ( premier rayon )','Douleur migrante dans mollet','Horaire mécanique','Douleur propulsion , poussée avant pied','Douleur flexion hallux ( en extension )','Douleur palpation sous premier rayon']},
   CLAUDICATION_VASC: {
-    id:'CLAUDICATION_VASC', name:'Claudication intermittente (artériopathie)', icon:'🩸', pop:'Homme > 55 ans, tabac, diabète, HTA, hypercholestérolémie',
+    id:'CLAUDICATION_VASC', name:'Claudication intermittente (AOMI) — diagnostic différentiel', icon:'🩸', pop:'Homme > 55 ans, tabac, diabète, HTA, hypercholestérolémie',
     desc:"Douleur de mollet (ou cuisse, fesse) à la marche, après une distance reproductible (périmètre de marche), soulagée par 2-5 min de repos debout ou assis. Crampe ou brûlure. Pouls périphériques diminués ou abolis. Peau froide, pâle, dépilée — stade avancé.",
-    alert:{type:'yellow',text:"Toute claudication d\'effort doit faire évoquer une AOMI : ECG, lipides, glycémie, mesure IPS (index de pression systolique), bilan vasculaire. Risque cardio-vasculaire majeur associé."},
+    alert:{type:'red',text:"⛔ Diagnostic différentiel non MSK — AOMI (Artériopathie Oblitérante des Membres Inférieurs) : ce n\'est pas une pathologie musculo-squelettique. Bilan vasculaire urgent : mesure IPS (index de pression systolique), écho-doppler artériel. Risque cardio-vasculaire majeur associé. Adresser médecin vasculaire."},
     imaging:[
       {t:'Mesure IPS (index de pression systolique)',d:'Examen de référence en MG — IPS < 0,9 = AOMI'},
       {t:'Écho-doppler artériel des MI',d:'Localise et quantifie les sténoses'},
@@ -1230,13 +1231,13 @@ const P = {
       {t:'Contrôle des autres FdR CV',d:'HTA, diabète, dyslipidémie'},
       {t:'Revascularisation',d:'Si stade évolué (douleurs de repos, troubles trophiques) — chirurgie ou endovasculaire'}
     ],
-    exercises:[{t:'Marche progressive (training intermittent à la douleur)',d:''},{t:'Mobilisation de la cheville',d:''},{t:'Étirement du mollet',d:''},{t:'Suivi cardio-vasculaire global',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_09_claudication.html',ficheExercice:'lococlic_fiches_patient/jambe_09_claudication.html',
+    exercises:[{t:'Marche progressive (training intermittent à la douleur)',d:''},{t:'Mobilisation de la cheville',d:''},{t:'Étirement du mollet',d:''},{t:'Suivi cardio-vasculaire global',d:''}],ficheExercice:null,
     referral:[
       {who:'Médecin vasculaire / angiologue',why:'Bilan complet AOMI, suivi',p:true},
       {who:'Cardiologue',why:'Bilan CV global — risque coronarien associé fréquent',p:true},
       {who:'Chirurgien vasculaire',why:'Si stade évolué nécessitant revascularisation',p:false}
     ],
-    sources:[{l:'Cook & Purdam 2009 — Tendinopathy continuum (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'},{l:'Martin et al. 2018 — JOSPT CPG Achilles tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
+    sources:[{l:'HAS 2024 — Prise en charge des artériopathies chroniques oblitérantes des membres inférieurs',u:'https://www.has-sante.fr/jcms/c_272513/fr/guide-parcours-de-soins-maladie-renale-chronique-de-l-adulte-chez-le-patient-diabetique'}],
     keys:['Périmètre marche','Tabac','Pouls absents','IPS bas','AOMI']
   },
   SYND_POPLITE:{id:'SYND_POPLITE',name:'Syndrome artère poplitée piégée',icon:'⚡',pop:'< 30 ans , sportif',
@@ -1681,7 +1682,7 @@ const CHOICES = {
     ]
   },
   HORAIRE: {
-    tag:'Étape 4 · Horaire', q:"Caractère et horaire de la douleur ?",
+    tag:'Étape 3 · Horaire', q:"Caractère et horaire de la douleur ?",
     items:[
       {key:'effort_pur', lbl:"À l\'effort uniquement, soulagée au repos",
         desc:"Périmètre de marche, seuil reproductible — vasculaire, syndrome des loges, périostite",
@@ -1715,7 +1716,8 @@ const CIRCUITS = {
   SYND_POPLITE:      ['pouls_flexplant','pouls_pedieux','examen_repos','palp_tibia','palp_achille'],
   NERF_FIB_SUPERF:   ['palp_nerf_superf','tinel_fibulaire','palp_tibia','palp_achille','flexdors_contrariee'],
   NERF_FIB_PROF:     ['tinel_fibulaire','paresth_1er','flexdors_contrariee','palp_nerf_superf','palp_tibia'],
-  SYND_TUNNEL_TARSIEN: ['tinel_tarsien','sensitif_plante','palp_tib_post','tinel_fibulaire','palp_achille']
+  SYND_TUNNEL_TARSIEN: ['tinel_tarsien','sensitif_plante','palp_tib_post','tinel_fibulaire','palp_achille'],
+        NERF_FIB_PROF: ['tinel_fibulaire','flexdors_contrariee','paresth_1er','palp_tibia','palp_achille']
 };
 
 // ========== MOTEUR + RENDU ==========

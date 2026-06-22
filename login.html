@@ -157,6 +157,32 @@
     transition: all 0.2s;
     box-shadow: 0 4px 16px rgba(30, 58, 95, 0.25);
   }
+
+  .cgu-field {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 20px; text-align: left;
+  }
+  .cgu-field input[type="checkbox"] {
+    width: 20px; height: 20px; margin-top: 1px; flex-shrink: 0;
+    accent-color: #1e3a5f; cursor: pointer;
+  }
+  .cgu-field label {
+    font-size: 13px; color: #475569; line-height: 1.5; cursor: pointer;
+  }
+  .cgu-field a { color: #1e3a5f; text-decoration: underline; font-weight: 600; }
+  .cgu-field.cgu-error {
+    padding: 14px 16px; border-radius: 14px;
+    background: #fef2f2; border: 1.5px solid #fecaca;
+    animation: cguShake 0.4s;
+  }
+  .cgu-field.cgu-error label { color: #991b1b; font-weight: 500; }
+  .cgu-field.cgu-error a { color: #991b1b; font-weight: 700; }
+  .cgu-field.cgu-error input[type="checkbox"] { outline: 2px solid #dc2626; outline-offset: 2px; border-radius: 3px; }
+  @keyframes cguShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
   
   .submit-btn:hover {
     transform: translateY(-1px);
@@ -242,6 +268,11 @@
       </button>
     </div>
     
+    <div class="cgu-field" id="cguField">
+      <input type="checkbox" id="cguCheck">
+      <label for="cguCheck">J'ai lu et j'accepte les <a href="cgu.html" target="_blank" rel="noopener">conditions générales d'utilisation</a> et la <a href="confidentialite.html" target="_blank" rel="noopener">politique de confidentialité</a>.</label>
+    </div>
+    
     <button type="submit" class="submit-btn">Entrer</button>
   </form>
   
@@ -297,13 +328,29 @@ function checkAccess(event) {
   
   const input = document.getElementById('codeInput');
   const errorMsg = document.getElementById('errorMsg');
+  const cguCheck = document.getElementById('cguCheck');
+  const cguField = document.getElementById('cguField');
   const code = input.value.trim();
   
+  // Vérifier d'abord l'acceptation des CGU
+  if (!cguCheck.checked) {
+    cguField.classList.remove('cgu-error');
+    void cguField.offsetWidth; // reflow pour rejouer l'animation
+    cguField.classList.add('cgu-error');
+    errorMsg.textContent = 'Veuillez accepter les conditions générales d\'utilisation pour continuer.';
+    errorMsg.classList.add('show');
+    setTimeout(() => { errorMsg.classList.remove('show'); errorMsg.textContent = 'Code invalide. Vérifiez la saisie et réessayez.'; }, 4000);
+    return false;
+  }
+  cguField.classList.remove('cgu-error');
+  
   if (VALID_CODES.includes(code)) {
-    // Code valide : créer la session
+    // Code valide : créer la session (avec horodatage acceptation CGU)
     const session = {
       code: code,
-      expires: Date.now() + (SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000)
+      expires: Date.now() + (SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000),
+      cguAccepted: true,
+      cguAcceptedAt: new Date().toISOString()
     };
     localStorage.setItem('lococlic_session', JSON.stringify(session));
     

@@ -47,6 +47,8 @@ body {
   font-weight: 800;
   letter-spacing: -0.5px;
 }
+  .module-title-clean { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .module-title-icon { width: 38px; height: 38px; object-fit: contain; }
 .header .badge {
   display: inline-block;
   margin-top: 6px;
@@ -1002,8 +1004,7 @@ body {
 
 <div class="app">
   <div class="header">
-    <h1>lococlic<sup>™</sup> — Épaule</h1>
-    <div class="badge">v5 · clinique adaptatif</div>
+    <h1 class="module-title-clean"><img src="images_pathologies/epaule.png" alt="Épaule" class="module-title-icon"><span>Épaule</span></h1>
   </div>
   <div id="main"></div>
 </div>
@@ -1159,7 +1160,7 @@ const P = {
     alert:null,
     imaging:[{t:'Echographie',d:''}],
     treatment:[{t:'Kinésithérapie',d:''},{t:'Antalgie',d:''},{t:'AINS',d:''}],
-    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique sous-scapulaire en R2',d:''},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/14_tendinopathie_sous_scapulaire.html',
+    exercises:[{t:'Renforcement du dentelé antérieur',d:''},{t:'Tirage horizontal avec élastique',d:''},{t:'Renforcement isométrique sous-scapulaire en R2',d:''},{t:'Rotation interne excentrique contre élastique',d:'Charge excentrique progressive du sous-scapulaire, coude au corps, phase de retour lente (3-4 s).'},{t:'Pendule de Codman',d:''}],ficheExercice:'lococlic_fiches_patient/14_tendinopathie_sous_scapulaire.html',
     referral:[{who:'Médecin du sport',why:'',p:true}],
     sources:[{l:'HAS 2023 — Tendinopathies coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'},{l:'AAOS Clinical Practice Guideline — Management of Rotator Cuff Injuries',u:'https://www.aaos.org/quality/quality-programs/upper-extremity-programs/rotator-cuff/'},{l:'AAOS Clinical Practice Guideline — Management of Rotator Cuff Injuries',u:'https://www.aaos.org/quality/quality-programs/upper-extremity-programs/rotator-cuff/'},{l:'Hegedus et al. 2012 — Shoulder physical examination tests: meta-analysis update (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/22773322/'}],
     keys:['Douleur antérieure','Progressive','Post chirurgie','Douleur et faiblesse rotation interne ( RE2)','Douleur palpation insertion antérieure sous-scapulaire','Rotation interne lag sign']
