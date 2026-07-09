@@ -1034,9 +1034,7 @@ const P = {
     referral:[
       {who:'Médecin du sport',why:'Suivi clinique, prescription échographie de confirmation et programme de rééducation',p:true}
     ],
-    sources:[
-      {l:'Cook et al. 2009 — Continuum model (référence pour blessures musculo-tendineuses)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
-    ],
+    sources:[{l:'Cook et al. 2009 — Continuum model (référence pour blessures musculo-tendineuses)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],
     keys:['Coup de pied','Mollet médial','Brutal','Tennis leg','Éliminer TVP']
   },
   RUPTURE_ACHILLE: {
@@ -1064,9 +1062,7 @@ const P = {
       {who:'Chirurgien orthopédique (urgent)',why:"Avis sous 48-72h pour décision thérapeutique (chirurgie vs conservateur)",p:true},
       {who:'Médecin du sport',why:'Suivi post-immobilisation et reprise sportive encadrée',p:false}
     ],
-    sources:[
-      {l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
-    ],
+    sources:[{l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],
     keys:['Coup de fouet','Encoche','Thompson positif','Urgence','Rupture']
   },
   TVP: {
@@ -1124,9 +1120,7 @@ const P = {
       {who:'Médecin du sport',why:'Bilan facteurs de risque + reprise sportive encadrée',p:true},
       {who:'Chirurgien orthopédique',why:'Si fracture face antérieure du tibia (zone à risque, dreaded black line) ou déplacement',p:false}
     ],
-    sources:[
-      {l:'Martin et al. 2018 — JOSPT CPG pathologies de la jambe (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
-    ],
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG pathologies de la jambe (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
     keys:['Point exquis tibial','Coureur','Augmentation volume','Douleur au repos','Fracture stress']
   },
   SYND_LOGES: {
@@ -1148,16 +1142,14 @@ const P = {
       {who:'Médecin du sport',why:"Mesure des pressions intra-compartimentales à l'effort + adaptation sportive",p:true},
       {who:'Chirurgien orthopédique',why:'Aponévrotomie si échec conservateur prolongé',p:false}
     ],
-    sources:[
-      {l:'Martin et al. 2018 — JOSPT CPG pathologies de la jambe (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
-    ],
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG pathologies de la jambe (Achilles)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
     keys:['Douleur effort seul','Soulagement repos','Reproductible','Bilatéral 80%','Syndrome loges']
   },
   TEND_ACHILLE_J:{id:'TEND_ACHILLE_J',name:'Tendinopathie achilléenne',icon:'🟡',pop:'30–50 ans , sportif',
     desc:'Douleur talon postérieur',alert:null,
     imaging:[{t:'Echographie',d:''},{t:'Radiographie ( recherche ostéophyte calcanéum postérieur )',d:''}],treatment:[{t:'Kinésithérapie',d:''}],
     exercises:[{t:'Renforcement excentrique du mollet (protocole Alfredson)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement isométrique de la cheville',d:''}],ficheExercice:'lococlic_fiches_patient/jambe_05_tendinopathie_achilleenne.html',ficheExercice:'lococlic_fiches_patient/jambe_05_tendinopathie_achilleenne.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'},{l:'Martin et al. 2018 — Achilles pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur talon postérieur','Douleur augmentée sauts et réception','Douleur course à pied (sprints++)','Palpation douloureuse en flexion dorsale de cheville','Palpation douloureuse jonction corps musculaire et tendon']},
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur talon postérieur','Douleur augmentée sauts et réception','Douleur course à pied (sprints++)','Palpation douloureuse en flexion dorsale de cheville','Palpation douloureuse jonction corps musculaire et tendon']},
   TEND_TIB_POST: {
     id:'TEND_TIB_POST', name:'Tendinopathie du tibial postérieur', icon:'🦶', pop:'Femme > 40 ans, surpoids, sportif, pied plat acquis',
     desc:"Douleur médiale de la cheville (rétro et sous-malléolaire interne), apparition progressive ou subaiguë. Souvent associée à un effondrement progressif de l'arche médiale (pied plat acquis de l'adulte). Boiterie, fatigabilité, difficulté à monter sur la pointe des pieds.",
@@ -1179,9 +1171,7 @@ const P = {
       {who:'Kinésithérapeute',why:'Programme excentrique progressif',p:true},
       {who:'Chirurgien orthopédique pied/cheville',why:'Si stade évolué (rupture, déformation rigide)',p:false}
     ],
-    sources:[
-      {l:'HAS 2018 — Pathologies du pied et de la cheville (entorse de cheville référence)',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}
-    ,{l:'Deu, Coslick & Dreher 2022 — Clinical Review: Tendinopathies of the Foot and Ankle (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/35559641/'}],
+    sources:[{l:'HAS 2018 — Pathologies du pied et de la cheville (entorse de cheville référence)',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'},{l:'Deu, Coslick & Dreher 2022 — Clinical Review: Tendinopathies of the Foot and Ankle (Am Fam Physician)',u:'https://pubmed.ncbi.nlm.nih.gov/35559641/'}],
     keys:['Douleur médiale trajet rétromalléolaire médial','Douleur course à pied','Douleur marche prolongée','Douleur inversion et flexion plantaire ( réalisé décubitus ventral)','Douleur levée sur pointe unipodal']
   },
   TEND_TIB_ANT: {
@@ -1204,9 +1194,7 @@ const P = {
       {who:'Médecin du sport',why:'Suivi du programme de rééducation et adaptation du geste sportif',p:true},
       {who:'Chirurgien orthopédique',why:'Si rupture (rare, sujet âgé > 60)',p:false}
     ],
-    sources:[
-      {l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}
-    ],
+    sources:[{l:'Cook et al. 2009 — Tendinopathy continuum model (Br J Sports Med)',u:'https://pubmed.ncbi.nlm.nih.gov/18812414/'}],
     keys:['Antéro-médial','Flexion dorsale','Descente','Coureur','Tibial antérieur']
   },
   TEND_FHL:{id:'TEND_FHL',name:'Tendinopathie long fléchisseur de l’hallux',icon:'🟡',pop:'20–40 ans , sportif',
@@ -1271,9 +1259,7 @@ const P = {
       {who:'Médecin du sport',why:"Évaluation des facteurs déclenchants (chaussage, foulée) et adaptation",p:true},
       {who:'Chirurgien orthopédique',why:"Si échec conservateur prolongé ou compression mécanique (kyste, masse)",p:false}
     ],
-    sources:[
-      {l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}
-    ],
+    sources:[{l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}],
     keys:['Plante du pied','Paresthésies','Coureur','Tinel rétromalléolaire','Tunnel tarsien']
   },
   NERF_FIB_SUPERF:{id:'NERF_FIB_SUPERF',name:'Syndrome d\'irritation fibulaire superficiel',icon:'⚡',pop:'30–50 ans , Ski , Wake board',
@@ -1322,9 +1308,7 @@ const P = {
       {who:'Médecin du sport',why:"Évaluation des facteurs déclenchants, adaptation du geste sportif et du chaussage",p:true},
       {who:'Chirurgien orthopédique pied/cheville',why:"Si échec conservateur ou cause mécanique objectivée (kyste, varicosités)",p:false}
     ],
-    sources:[
-      {l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}
-    ],
+    sources:[{l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}],
     keys:['Plante du pied','Coureur','Tinel rétromalléolaire médial','Pied plat','Tunnel tarsien']
   }
 };

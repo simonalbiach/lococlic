@@ -1017,12 +1017,12 @@ const P = {
     desc:'Traumatisme en inversion de cheville',alert:null,
     imaging:[{t:'Radiographies si critères Ottawa',d:''},{t:'Echographie',d:''},{t:'IRM si ancien et chronicité',d:''}],treatment:[{t:'Kinésithérapie',d:''},{t:'Immobilisation adaptée:',d:''},{t:'Grade 1 : Attelle Malléodynastab 1-2 sem',d:''},{t:'Grade 2 : Attelle 2-3 sem',d:''},{t:'Grade 3 : Attelle 3-6 sem',d:''},{t:'Botte de marche : Atteinte plan latéral + plan médial ou Chopart ou Lisfranc.',d:''},{t:'Attelle type malléodynastab boa : Atteinte plan latéral isolé.',d:''}],
     exercises:[{t:'Mobilisation active de la cheville',d:'Récupération précoce des amplitudes (flexion/extension, circumduction, inversion/éversion) sans douleur.'},{t:'Renforcement des fibulaires (éversion contre élastique)',d:'Stabilisateurs actifs du plan latéral — geste clé.'},{t:'Renforcement du mollet (heel raises progressifs)',d:'Progression 2 jambes → 1 jambe.'},{t:'Étirement du mollet',d:'Récupération de la dorsiflexion (facteur de récidive si limitée).'},{t:'Renforcement des intrinsèques du pied (short foot)',d:'Concept foot core (McKeon) — améliore le contrôle dynamique du pied.'},{t:'Rééducation proprioceptive / équilibre',d:'Appui unipodal progressif (yeux ouverts → fermés → surface instable). Preuve forte JOSPT 2021 : prévient l instabilité chronique.'},{t:'Réathlétisation fonctionnelle',d:'Sauts, changements de direction, retour au sport progressif (dès S4).'}],ficheExercice:'lococlic_fiches_patient/cheville_01_entorse_laterale.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'HAS 2018 — Prise en charge de l\'entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}],keys:['Traumatisme en inversion de cheville','Douleur latérale','Oedème et ou hématome','Impotence fonctionnelle','Test tiroir antérieur ( TAFA )','Test inversion ( plan latéral )']},
+    sources:[],keys:['Traumatisme en inversion de cheville','Douleur latérale','Oedème et ou hématome','Impotence fonctionnelle','Test tiroir antérieur ( TAFA )','Test inversion ( plan latéral )']},
   ENTORSE_SOUS_TAL:{id:'ENTORSE_SOUS_TAL',name:'Entorse sous-talienne',icon:'🟠',pop:'20-40 ans , sportif',
     desc:'Traumatisme en inversion',alert:null,
     imaging:[{t:'Radiographies',d:''},{t:'IRM (chronique)',d:''}],treatment:[{t:'Botte de marche 2-4 semaines',d:''},{t:'Kinésithérapie',d:''}],
     exercises:[{t:'Renforcement du mollet (heel raises progressifs)',d:''},{t:'Renforcement des fibulaires (éversion contre élastique)',d:''},{t:'Renforcement du tibial postérieur (inversion contre élastique)',d:''},{t:'Étirement du mollet',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_02_entorse_sous_talienne.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'HAS 2018 — Prise en charge de l\'entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}],keys:['Traumatisme en inversion','Oedème','Douleur sous malléolaire','Douleur chronique terrains instables','Douleur palpation sinus tarsien','Douleur inversion sous talienne']},
+    sources:[],keys:['Traumatisme en inversion','Oedème','Douleur sous malléolaire','Douleur chronique terrains instables','Douleur palpation sinus tarsien','Douleur inversion sous talienne']},
   ENTORSE_CHOPART:{id:'ENTORSE_CHOPART',name:'Entorse du Chopart (médiotarse)',icon:'🟠',pop:'20-50 ans , sportif',
     desc:'Traumatisme en inversion et/ou torsion tarse',alert:null,
     imaging:[{t:'Radiographie',d:''},{t:'Echographie',d:''},{t:'IRM chronique ( oedème osseux )',d:''}],treatment:[{t:'Botte de marche 4-6 semaines',d:''},{t:'Attelle médio pied 1 à 2 sem après',d:''},{t:'Kinésithérapie',d:''}],
@@ -1054,12 +1054,7 @@ const P = {
       {who:'Kinésithérapeute',why:'Programme de rééducation proprioceptive',p:true},
       {who:'Chirurgien orthopédique',why:'Si fracture associée ou rupture complète instable',p:false}
     ],
-    sources:[
-      
-      
-      
-      {l:'HAS 2018 — Prise en charge de l\'entorse de cheville de l\'adulte',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}
-    ],
+    sources:[],
     keys:['Médial','Éversion','Deltoïde','Fracture associée','Plus rare']
   },
   CONFLIT_ANT:{id:'CONFLIT_ANT',name:'Conflit antérieur de cheville',icon:'🔵',pop:'20-50 ans, sportif',
@@ -1097,12 +1092,7 @@ const P = {
       {who:'Chirurgien orthopédique pied/cheville',why:'Si lésion instable, fragment libre, échec conservateur',p:true},
       {who:'Kinésithérapeute',why:'Reprise progressive proprioceptive',p:false}
     ],
-    sources:[
-      
-      
-      
-      {l:'HAS 2024 — Entorse du ligament collatéral latéral de cheville : diagnostic et rééducation',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}
-    ],
+    sources:[{l:'HAS 2024 — Entorse du ligament collatéral latéral de cheville : diagnostic et rééducation',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}],
     keys:['Blocage','Craquement','ATCD entorse','Dôme talien','OCD']
   },
   TEND_ACHILLE:{id:'TEND_ACHILLE',name:'Tendinopathie achilléenne',icon:'🟡',pop:'30–50 ans , sportif',
@@ -1115,7 +1105,7 @@ const P = {
       {t:'Ondes de choc / PRP',d:'Si échec rééducation > 3 mois'}
     ],
     exercises:[{t:'Renforcement excentrique du mollet (Alfredson)',d:''},{t:'Étirement du mollet',d:''},{t:'Renforcement isométrique de la cheville',d:''},{t:'Renforcement du mollet (heel raises progressifs)',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_10_tendinopathie_achilleenne.html',referral:[{who:'Médecin du sport',why:'',p:true}],
-    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'},{l:'Martin et al. 2018 — Achilles pain CPG (JOSPT)',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur postérieure talon','Douleur majorée course , sauts','Horaire mécanique','Palpation jonction myotendineuse douloureuse','Palpation enthèse douloureuse (enthésopathie)','Douleur étirement']},
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG: Midportion Achilles Tendinopathy',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],keys:['Douleur postérieure talon','Douleur majorée course , sauts','Horaire mécanique','Palpation jonction myotendineuse douloureuse','Palpation enthèse douloureuse (enthésopathie)','Douleur étirement']},
   TEND_FIBULAIRES:{id:'TEND_FIBULAIRES',name:'Tendinopathie des fibulaires',icon:'🟢',pop:'30-50 ans , sportif',
     desc:'Douleur latérale cheville',alert:null,
     imaging:[{t:'Echographie dynamique',d:''}],treatment:[
@@ -1148,12 +1138,7 @@ const P = {
       {who:'Kinésithérapeute',why:'Programme excentrique progressif',p:true},
       {who:'Chirurgien orthopédique pied/cheville',why:'Si stade évolué (rupture, déformation rigide)',p:false}
     ],
-    sources:[
-      
-      
-      
-      {l:'HAS 2018 — Pathologies du pied et de la cheville (entorse de cheville référence)',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}
-    ],
+    sources:[{l:'HAS 2018 — Pathologies du pied et de la cheville (entorse de cheville référence)',u:'https://www.has-sante.fr/jcms/p_3460983/fr/entorse-du-ligament-collateral-lateral-ligament-lateral-externe-de-cheville-diagnostic-reeducation-et-reprise-de-l-activite-physique-et-de-la-pratique-sportive'}],
     keys:['Médial','Pied plat','Heel raise impossible','Tibial postérieur','Femme 40+']
   },
   FRACT_STRESS: {
@@ -1178,12 +1163,7 @@ const P = {
       {who:'Médecin du sport',why:'Bilan facteurs de risque + reprise encadrée',p:true},
       {who:'Chirurgien orthopédique',why:'Si fracture déplacée ou localisation à risque (zone Jones)',p:false}
     ],
-    sources:[
-      
-      
-      
-      {l:'Martin et al. 2018 — JOSPT CPG pathologies du pied',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}
-    ],
+    sources:[{l:'Martin et al. 2018 — JOSPT CPG pathologies du pied',u:'https://pubmed.ncbi.nlm.nih.gov/29712543/'}],
     keys:['Hop test','Coureur','Douleur progressive','Augmentation volume','Fracture stress']
   },
   NEURO_FIB: {
@@ -1208,12 +1188,7 @@ const P = {
       {who:'Kinésithérapeute',why:'Mobilisation neurale, renforcement',p:true},
       {who:'Chirurgien (neuro ou ortho)',why:'Si compression mécanique (kyste) ou échec conservateur',p:false}
     ],
-    sources:[
-      
-      
-      
-      {l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}
-    ],
+    sources:[{l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}],
     keys:['Steppage','Paresthésies dorsal','Col fibula','Jambes croisées','Tinel']
   }
 };
@@ -1251,9 +1226,7 @@ const TESTS = {
       {who:'Médecin du sport',why:"Évaluation des facteurs déclenchants (chaussage, foulée) et adaptation",p:true},
       {who:'Chirurgien orthopédique',why:"Si échec conservateur prolongé ou compression mécanique (kyste, masse)",p:false}
     ],
-    sources:[
-      {l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}
-    ],
+    sources:[{l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}],
     keys:['Plante du pied','Paresthésies','Coureur','Tinel rétromalléolaire','Tunnel tarsien']
   },
   palp_lle: {
