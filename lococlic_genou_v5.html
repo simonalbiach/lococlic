@@ -973,6 +973,11 @@ body {
     object-fit: cover;
     flex-shrink: 0;
   }
+
+.fiche-sec.fs-img  { background: linear-gradient(180deg, rgba(30,109,184,0.07), rgba(30,109,184,0.015)); border: 1px solid rgba(30,109,184,0.18); }
+.fiche-sec.fs-ex   { background: linear-gradient(180deg, rgba(21,128,61,0.07), rgba(21,128,61,0.015)); border: 1px solid rgba(21,128,61,0.18); }
+.fiche-sec.fs-rx   { background: linear-gradient(180deg, rgba(180,83,9,0.07), rgba(180,83,9,0.015)); border: 1px solid rgba(180,83,9,0.18); }
+.fiche-sec.fs-ref  { background: linear-gradient(180deg, rgba(109,40,217,0.07), rgba(109,40,217,0.015)); border: 1px solid rgba(109,40,217,0.18); }
 </style>
 </head>
 <body>
@@ -1097,6 +1102,17 @@ const P = {
     sources:[],
     keys:['Traumatisme en valgus','Douleur interne','Epanchement','Oedème','Hématome','Douleur valgisation']
   },
+  PELLEGRINI: {
+    id:'PELLEGRINI', name:'Lésion de Pellegrini-Stieda', icon:'🔴', pop:'Adulte, antécédent d\'entorse du LCM',
+    desc:'Calcification du ligament collatéral médial post-traumatique',
+    alert:null,
+    imaging:[{t:'Radiographies de face et profil (calcification linéaire ou curviligne du condyle fémoral médial — signe de Pellegrini-Stieda)',d:''},{t:'Échographie ou IRM si doute diagnostique ou bilan des parties molles',d:''}],
+    treatment:[{t:'AINS et antalgiques en phase douloureuse',d:''},{t:'Kinésithérapie : récupération des amplitudes et lutte contre la raideur',d:''},{t:'Infiltration cortisonée si douleur persistante',d:''},{t:'Barbotage / lavage percutané écho-guidé si forme réfractaire',d:''},{t:'Exérèse chirurgicale exceptionnelle (formes réfractaires invalidantes)',d:''}],
+    exercises:[{t:'Mobilisation en flexion-extension du genou',d:''},{t:'Étirements des ischio-jambiers et des adducteurs',d:''},{t:'Renforcement progressif du quadriceps (isométrique puis dynamique)',d:''},{t:'Proprioception et stabilité sur une jambe',d:''}],ficheExercice:'lococlic_fiches_patient/genou_14_pellegrini.html',
+    referral:[{who:'Médecin du sport',why:'Prise en charge initiale, infiltration ou barbotage écho-guidé',p:true},{who:'Rhumatologue',why:'Pathologie calcifiante, infiltrations et lavage percutané',p:true},{who:'Chirurgien orthopédique',why:'Formes réfractaires (exérèse exceptionnelle)',p:true}],
+    sources:[{l:'StatPearls — Pellegrini-Stieda Disease (NCBI Bookshelf : ossification post-traumatique du LCM à son insertion fémorale, diagnostic radiographique, traitement conservateur puis chirurgical)',u:'https://www.ncbi.nlm.nih.gov/books/NBK535347/'},{l:'Somford et al. 2019 — The Pellegrini-Stieda Lesion of the Knee: An Anatomical and Radiological Review (J Knee Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/29991078/'}],
+    keys:['Antécédent d\'entorse du LCM ou traumatisme en valgus','Douleur médiale chronique','Raideur du genou','Douleur à la palpation du condyle fémoral médial','Calcification radiographique du condyle médial']
+  },
   PATTE_OIE: {
     id:'PATTE_OIE', name:'Tendinopathie patte d’oie', icon:'🟡', pop:'> 40 ans - coureurs  - surpoids',
     desc:'Genu valgum',
@@ -1188,7 +1204,7 @@ const TESTS = {
     how:'Patient debout sur la jambe atteinte, genou à 20° de flexion. Rotation interne puis externe du genou.',
     pos:'Douleur reproduite à l\'interligne — lésion méniscale probable',
     neg:'Pas de douleur — lésion méniscale peu probable',
-    affects_pos:{MENINT:35, MENEXT:30}, affects_neg:{MENINT:-20, MENEXT:-18}
+    affects_pos:{MENINT:35, MENEXT:30, PELLEGRINI:-10}, affects_neg:{MENINT:-20, MENEXT:-18}
   },
   mcmurray: {
     name:'Test de McMurray', family:'MENISQUE', badge:'MEN',
@@ -1196,7 +1212,7 @@ const TESTS = {
     how:'Décubitus dorsal, genou en flexion maximale. Extension passive avec rotation externe (ménisque interne) ou rotation interne (ménisque externe).',
     pos:'Claquement audible ou douleur reproduite à l\'interligne',
     neg:'Pas de claquement ni douleur',
-    affects_pos:{MENINT:35, MENEXT:25}, affects_neg:{MENINT:-15, MENEXT:-10}
+    affects_pos:{MENINT:35, MENEXT:25, PELLEGRINI:-15}, affects_neg:{MENINT:-15, MENEXT:-10}
   },
   grinding_ext: {
     name:"Grinding test (rotation EXTERNE)", family:'MENISQUE', badge:'MIN',
@@ -1280,7 +1296,23 @@ const TESTS = {
     how:'Décubitus dorsal, genou à 30° de flexion. Stabiliser la cuisse, appliquer un valgus sur le tibia.',
     pos:'Bâillement médial + douleur — entorse LLI',
     neg:'Stabilité médiale — LLI intact',
-    affects_pos:{LLI:50}, affects_neg:{LLI:-30}
+    affects_pos:{LLI:50, PELLEGRINI:20}, affects_neg:{LLI:-30}
+  },
+  palpation_condyle_medial: {
+    name:'Palpation du condyle fémoral médial', family:'LIGAMENT', badge:'PS',
+    desc:'Recherche d\'une douleur ou d\'une induration à l\'insertion fémorale du LCM',
+    how:'Palpation appuyée de la face médiale du condyle fémoral, à l\'insertion proximale du ligament collatéral médial. Rechercher une douleur élective et parfois une masse indurée.',
+    pos:'Douleur élective ± masse indurée palpable au condyle médial — évoque une calcification (Pellegrini-Stieda)',
+    neg:'Palpation indolore — diagnostic de Pellegrini-Stieda moins probable',
+    affects_pos:{PELLEGRINI:45}, affects_neg:{PELLEGRINI:-20}
+  },
+  palpation_patte_oie: {
+    name:'Palpation de la patte d\'oie', family:'LIGAMENT', badge:'PO',
+    desc:'Palpation de l\'insertion des tendons de la patte d\'oie (face antéro-médiale du tibia)',
+    how:'Palpation de la zone d\'insertion des tendons de la patte d\'oie, sur la face antéro-médiale du tibia, environ 5 cm sous l\'interligne articulaire médial.',
+    pos:'Douleur élective sur le tibia antéro-médial — oriente vers une tendinopathie de la patte d\'oie',
+    neg:'Palpation tibiale indolore — tendinopathie de la patte d\'oie peu probable',
+    affects_pos:{PATTE_OIE:45, PELLEGRINI:-10}, affects_neg:{PATTE_OIE:-15}
   },
   // === FAMILLE PATTE D\'OIE ===
   palpation_patte_oie: {
@@ -1339,7 +1371,7 @@ const VIGNETTES = {
   loc_med:{
     id:'loc_med', lbl:'◀️ Douleur médiale',
     desc:'Face interne du genou',
-    score:{MENINT:35, LLI:30, PATTE_OIE:30, CANAL_HUNTER:35, GONARTHROSE:12}
+    score:{MENINT:35, LLI:30, PATTE_OIE:30, CANAL_HUNTER:35, GONARTHROSE:12, PELLEGRINI:22}
   },
   loc_lat:{
     id:'loc_lat', lbl:'▶️ Douleur latérale',
@@ -1381,13 +1413,13 @@ const CHOICES = {
     items:[
       {key:'trauma', lbl:'Traumatisme aigu ou appui direct répété',
         desc:'Choc, torsion, chute, hyperextension brutale, microtraumatismes répétés',
-        score:{LCA:25, MENINT:20, MENEXT:18, LLI:30, BURSITE_PREREROT:15}},
+        score:{LCA:25, MENINT:20, MENEXT:18, LLI:30, BURSITE_PREREROT:15, PELLEGRINI:15}},
       {key:'surcharge', lbl:'Surcharge progressive',
         desc:"Effort sportif inhabituel, augmentation du volume d'entraînement, métier physique",
         score:{SFP:25, TENROT:32, ESSUIE_GLACE:30, PATTE_OIE:20, HOFFITE:25, MENINT:10, MENEXT:8}},
       {key:'progressif', lbl:'Installation progressive sans traumatisme',
         desc:'Apparition lente, progressive, sans événement déclenchant identifié',
-        score:{GONARTHROSE:35, MENINT:15, MENEXT:12, PLICA:12, PATTE_OIE:15, CANAL_HUNTER:25}},
+        score:{GONARTHROSE:35, MENINT:15, MENEXT:12, PLICA:12, PATTE_OIE:15, CANAL_HUNTER:25, PELLEGRINI:12}},
       {key:'inflam', lbl:'Épisode inflammatoire',
         desc:'Apparition rapide avec chaleur, rougeur, tuméfaction',
         score:{BURSITE_PREREROT:30, GONARTHROSE:15, HOFFITE:18, MENINT:12}}
@@ -1404,7 +1436,7 @@ const CHOICES = {
         score:{MENINT:10, SFP:12, LLI:8, PLICA:8, BURSITE_PREREROT:10, HOFFITE:8, GONARTHROSE:-15}},
       {key:'a35_60', lbl:'35-60 ans',
         desc:'Adulte actif ou sédentaire',
-        score:{MENINT:18, MENEXT:12, SFP:12, GONARTHROSE:10, PATTE_OIE:15, ESSUIE_GLACE:10, TENROT:10, HOFFITE:12, CANAL_HUNTER:10}},
+        score:{MENINT:18, MENEXT:12, SFP:12, GONARTHROSE:10, PATTE_OIE:15, ESSUIE_GLACE:10, TENROT:10, HOFFITE:12, CANAL_HUNTER:10, PELLEGRINI:12}},
       {key:'a60p', lbl:'> 60 ans',
         desc:'Sénior',
         score:{GONARTHROSE:35, MENINT:15, MENEXT:10, PATTE_OIE:10}}
@@ -1415,7 +1447,7 @@ const CHOICES = {
     items:[
       {key:'mec', lbl:'Mécanique pur',
         desc:'Effort → douleur, repos → soulagement, pas de réveil nocturne',
-        score:{TENROT:20, SFP:20, ESSUIE_GLACE:20, PATTE_OIE:18, GONARTHROSE:15, HOFFITE:18, CANAL_HUNTER:10}},
+        score:{TENROT:20, SFP:20, ESSUIE_GLACE:20, PATTE_OIE:18, GONARTHROSE:15, HOFFITE:18, CANAL_HUNTER:10, PELLEGRINI:10}},
       {key:'mixte', lbl:'Mixte (mécanique + nocturne)',
         desc:'Douleur effort ET nocturne (appui côté atteint)',
         score:{GONARTHROSE:25, MENINT:15, MENEXT:12}},
@@ -1838,19 +1870,19 @@ function renderResult(){
         <div class="fiche">
           ${alertHTML}
           <div class="fiche-grid">
-            <div class="fiche-sec">
+            <div class="fiche-sec fs-img">
               <div class="sec-title sec-img">🔬 Imagerie</div>
               ${imagingItems || '<div class="fi-empty">—</div>'}
             </div>
-            <div class="fiche-sec">
+            <div class="fiche-sec fs-ex">
               <div class="sec-title sec-ex">💪 Exercices</div>
               ${exercisesItems || '<div class="fi-empty">—</div>'}
             </div>
-            <div class="fiche-sec">
+            <div class="fiche-sec fs-rx">
               <div class="sec-title sec-rx">💊 Traitement</div>
               ${treatmentItems || '<div class="fi-empty">—</div>'}
             </div>
-            <div class="fiche-sec">
+            <div class="fiche-sec fs-ref">
               <div class="sec-title sec-ref">🏥 Orientation</div>
               ${referralItems || '<div class="fi-empty">—</div>'}
             </div>
@@ -1918,19 +1950,19 @@ function showModal(pid){
     </div>
     ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
     <div class="fiche-grid modal-fiche">
-      <div class="fiche-sec">
+      <div class="fiche-sec fs-img">
         <div class="sec-title sec-img">🔬 Imagerie</div>
         ${imagingHTML || '<div class="fi-empty">—</div>'}
       </div>
-      <div class="fiche-sec">
+      <div class="fiche-sec fs-ex">
         <div class="sec-title sec-ex">💪 Exercices</div>
         ${exercisesHTML || '<div class="fi-empty">—</div>'}
       </div>
-      <div class="fiche-sec">
+      <div class="fiche-sec fs-rx">
         <div class="sec-title sec-rx">💊 Traitement</div>
         ${treatmentHTML || '<div class="fi-empty">—</div>'}
       </div>
-      <div class="fiche-sec">
+      <div class="fiche-sec fs-ref">
         <div class="sec-title sec-ref">🏥 Orientation</div>
         ${referralHTML || '<div class="fi-empty">—</div>'}
       </div>

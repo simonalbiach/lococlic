@@ -81,7 +81,7 @@
   }
   .module-tag {
     display: inline-block;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, #2563a8 0%, #3b82f6 100%);
     color: white;
     font-size: 11px;
     font-weight: 700;
@@ -307,6 +307,15 @@
     .patho-icon-img { width: 90px; height: 90px; }
     .fiche-grid { grid-template-columns: 1fr; }
   }
+
+  .fiche-sec.fs-img  { background: linear-gradient(180deg, rgba(30,109,184,0.07), rgba(30,109,184,0.015)); border-color: rgba(30,109,184,0.18); }
+  .fiche-sec.fs-ex   { background: linear-gradient(180deg, rgba(21,128,61,0.07), rgba(21,128,61,0.015)); border-color: rgba(21,128,61,0.18); }
+  .fiche-sec.fs-rx   { background: linear-gradient(180deg, rgba(180,83,9,0.07), rgba(180,83,9,0.015)); border-color: rgba(180,83,9,0.18); }
+  .fiche-sec.fs-ref  { background: linear-gradient(180deg, rgba(109,40,217,0.07), rgba(109,40,217,0.015)); border-color: rgba(109,40,217,0.18); }
+  .sec-title.sec-img { color: #1e6db8; }
+  .sec-title.sec-ex  { color: #15803d; }
+  .sec-title.sec-rx  { color: #b45309; }
+  .sec-title.sec-ref { color: #6d28d9; }
 </style>
 </head>
 <body>
@@ -337,21 +346,21 @@
 
 <main class="main-content">
   <div class="fiche-grid">
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">🔬</span> Imagerie</h2>
+    <div class="fiche-sec fs-img">
+      <h2 class="sec-title sec-img"><span class="sec-icon">🔬</span> Imagerie</h2>
       <div class="fi"><strong>Aucune</strong></div>
       <div class="fi"><strong>Echographie</strong></div>
     </div>
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">💊</span> Traitement</h2>
+    <div class="fiche-sec fs-rx">
+      <h2 class="sec-title sec-rx"><span class="sec-icon">💊</span> Traitement</h2>
       <div class="fi"><strong>Glaçage</strong></div>
       <div class="fi"><strong>AINS</strong></div>
       <div class="fi"><strong>Attelle ROTULIG</strong></div>
       <div class="fi"><strong>Kinésithérapie</strong></div>
       <div class="fi"><strong>Infiltration cortisonée</strong></div>
     </div>
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">💪</span> Exercices</h2>
+    <div class="fiche-sec fs-ex">
+      <h2 class="sec-title sec-ex"><span class="sec-icon">💪</span> Exercices</h2>
       <div class="fi"><strong>Éviter l'hyperextension + repos relatif (éducation patient)</strong></div>
       <div class="fi"><strong>Renforcement isométrique du quadriceps (Stage 1)</strong></div>
       <div class="fi"><strong>Mini-squat amplitude limitée 0-60° (chaîne fermée)</strong></div>
@@ -363,8 +372,8 @@
         </a>
       </div>
     </div>
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">🏥</span> Orientation</h2>
+    <div class="fiche-sec fs-ref">
+      <h2 class="sec-title sec-ref"><span class="sec-icon">🏥</span> Orientation</h2>
       <div class="ref-tag p">
         <div class="ref-info">
           <div class="ref-who">→ Médecin du sport</div>

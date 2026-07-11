@@ -81,7 +81,7 @@
   }
   .module-tag {
     display: inline-block;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, #2563a8 0%, #3b82f6 100%);
     color: white;
     font-size: 11px;
     font-weight: 700;
@@ -307,6 +307,15 @@
     .patho-icon-img { width: 90px; height: 90px; }
     .fiche-grid { grid-template-columns: 1fr; }
   }
+
+  .fiche-sec.fs-img  { background: linear-gradient(180deg, rgba(30,109,184,0.07), rgba(30,109,184,0.015)); border-color: rgba(30,109,184,0.18); }
+  .fiche-sec.fs-ex   { background: linear-gradient(180deg, rgba(21,128,61,0.07), rgba(21,128,61,0.015)); border-color: rgba(21,128,61,0.18); }
+  .fiche-sec.fs-rx   { background: linear-gradient(180deg, rgba(180,83,9,0.07), rgba(180,83,9,0.015)); border-color: rgba(180,83,9,0.18); }
+  .fiche-sec.fs-ref  { background: linear-gradient(180deg, rgba(109,40,217,0.07), rgba(109,40,217,0.015)); border-color: rgba(109,40,217,0.18); }
+  .sec-title.sec-img { color: #1e6db8; }
+  .sec-title.sec-ex  { color: #15803d; }
+  .sec-title.sec-rx  { color: #b45309; }
+  .sec-title.sec-ref { color: #6d28d9; }
 </style>
 </head>
 <body>
@@ -341,29 +350,29 @@
 
 <main class="main-content">
   <div class="fiche-grid">
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">🔬</span> Imagerie</h2>
+    <div class="fiche-sec fs-img">
+      <h2 class="sec-title sec-img"><span class="sec-icon">🔬</span> Imagerie</h2>
       <div class="fi"><strong>Écho-doppler veineux des MI</strong><span>Examen de référence — confirme le diagnostic</span></div>
       <div class="fi"><strong>D-Dimères</strong><span>Si score de Wells bas/intermédiaire — VPN élevée si négatif</span></div>
       <div class="fi"><strong>Pas d'imagerie de routine si Wells faible + D-Dimères négatif</strong><span>TVP éliminée</span></div>
     </div>
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">💊</span> Traitement</h2>
+    <div class="fiche-sec fs-rx">
+      <h2 class="sec-title sec-rx"><span class="sec-icon">💊</span> Traitement</h2>
       <div class="fi"><strong>Anticoagulation curative</strong><span>AOD (rivaroxaban, apixaban) ou HBPM relais AVK — selon profil patient</span></div>
       <div class="fi"><strong>Hospitalisation si TVP proximale étendue</strong><span>TVP iliaque, signes d'EP, comorbidités</span></div>
       <div class="fi"><strong>Contention élastique</strong><span>Classe 3 d'emblée, port quotidien</span></div>
       <div class="fi"><strong>Mobilisation précoce</strong><span>Pas de repos strict prolongé</span></div>
       <div class="fi"><strong>Recherche étiologique</strong><span>Selon contexte : néoplasie, thrombophilie (si TVP idiopathique, jeune, récidive)</span></div>
     </div>
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">💪</span> Exercices</h2>
+    <div class="fiche-sec fs-ex">
+      <h2 class="sec-title sec-ex"><span class="sec-icon">💪</span> Exercices</h2>
       <div class="fi"><strong>Mobilisation précoce</strong><span>Pas d'immobilisation — marche dès que possible sous anticoagulation</span></div>
       <div class="fi"><strong>Port de la contention</strong><span>Bas de classe 3, à vie ou prolongée selon profil</span></div>
       <div class="fi"><strong>Activité physique régulière</strong><span>Marche quotidienne en prévention secondaire</span></div>
       
     </div>
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">🏥</span> Orientation</h2>
+    <div class="fiche-sec fs-ref">
+      <h2 class="sec-title sec-ref"><span class="sec-icon">🏥</span> Orientation</h2>
       <div class="ref-tag p">
         <div class="ref-info">
           <div class="ref-who">→ Service d'urgence ou angiologue (urgent)</div>

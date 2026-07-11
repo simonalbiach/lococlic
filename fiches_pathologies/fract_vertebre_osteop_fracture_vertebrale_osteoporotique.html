@@ -81,7 +81,7 @@
   }
   .module-tag {
     display: inline-block;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, #2563a8 0%, #3b82f6 100%);
     color: white;
     font-size: 11px;
     font-weight: 700;
@@ -307,6 +307,15 @@
     .patho-icon-img { width: 90px; height: 90px; }
     .fiche-grid { grid-template-columns: 1fr; }
   }
+
+  .fiche-sec.fs-img  { background: linear-gradient(180deg, rgba(30,109,184,0.07), rgba(30,109,184,0.015)); border-color: rgba(30,109,184,0.18); }
+  .fiche-sec.fs-ex   { background: linear-gradient(180deg, rgba(21,128,61,0.07), rgba(21,128,61,0.015)); border-color: rgba(21,128,61,0.18); }
+  .fiche-sec.fs-rx   { background: linear-gradient(180deg, rgba(180,83,9,0.07), rgba(180,83,9,0.015)); border-color: rgba(180,83,9,0.18); }
+  .fiche-sec.fs-ref  { background: linear-gradient(180deg, rgba(109,40,217,0.07), rgba(109,40,217,0.015)); border-color: rgba(109,40,217,0.18); }
+  .sec-title.sec-img { color: #1e6db8; }
+  .sec-title.sec-ex  { color: #15803d; }
+  .sec-title.sec-rx  { color: #b45309; }
+  .sec-title.sec-ref { color: #6d28d9; }
 </style>
 
 <style>
@@ -448,15 +457,15 @@
 
 
   <div class="fiche-grid">
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">🔬</span> Imagerie</h2>
+    <div class="fiche-sec fs-img">
+      <h2 class="sec-title sec-img"><span class="sec-icon">🔬</span> Imagerie</h2>
       <div class="fi"><strong>Radiographie dorso-lombaire face/profil</strong><span>Examen de référence en première intention — tassement vertébral, hauteur réduite (&gt; 20% = fracture), classification Genant</span></div>
       <div class="fi"><strong>IRM dorsale</strong><span>Différencie fracture récente (œdème osseux T2) versus ancienne — utile si doute</span></div>
       <div class="fi"><strong>DMO (densitométrie minérale osseuse)</strong><span>Bilan ostéoporose — T-score lombaire et fémoral</span></div>
       <div class="fi"><strong>Bilan biologique ostéoporose</strong><span>Calcémie, vitamine D, créatinine, NFS, électrophorèse protéines (éliminer myélome)</span></div>
     </div>
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">💊</span> Traitement</h2>
+    <div class="fiche-sec fs-rx">
+      <h2 class="sec-title sec-rx"><span class="sec-icon">💊</span> Traitement</h2>
       <div class="fi"><strong>Antalgiques (paliers progressifs)</strong><span>Paracétamol + palier 2 souvent nécessaires</span></div>
       <div class="fi"><strong>Mobilisation précoce adaptée</strong><span>Éviter alitement prolongé</span></div>
       <div class="fi"><strong>Ceinture lombaire ou corset</strong><span>Soutien transitoire en phase aiguë</span></div>
@@ -464,8 +473,8 @@
       <div class="fi"><strong>Kinésithérapie</strong><span>Renforcement progressif après phase aiguë</span></div>
       <div class="fi"><strong>Vertébroplastie / cyphoplastie</strong><span>Si douleur invalidante résistante &gt; 4-6 semaines — par radiologue interventionnel</span></div>
     </div>
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">💪</span> Exercices</h2>
+    <div class="fiche-sec fs-ex">
+      <h2 class="sec-title sec-ex"><span class="sec-icon">💪</span> Exercices</h2>
       <div class="fi"><strong>Repos relatif et corset (selon avis)</strong></div>
       <div class="fi"><strong>Mobilisation dorsale très douce (post phase aiguë)</strong></div>
       <div class="fi"><strong>Renforcement isométrique des paravertébraux</strong></div>
@@ -476,8 +485,8 @@
         </a>
       </div>
     </div>
-    <div class="fiche-sec">
-      <h2 class="sec-title"><span class="sec-icon">🏥</span> Orientation</h2>
+    <div class="fiche-sec fs-ref">
+      <h2 class="sec-title sec-ref"><span class="sec-icon">🏥</span> Orientation</h2>
       <div class="ref-tag p">
         <div class="ref-info">
           <div class="ref-who">→ Rhumatologue</div>

@@ -977,6 +977,11 @@ body {
     object-fit: cover;
     flex-shrink: 0;
   }
+
+.fiche-sec.fs-img  { background: linear-gradient(180deg, rgba(30,109,184,0.07), rgba(30,109,184,0.015)); border: 1px solid rgba(30,109,184,0.18); }
+.fiche-sec.fs-ex   { background: linear-gradient(180deg, rgba(21,128,61,0.07), rgba(21,128,61,0.015)); border: 1px solid rgba(21,128,61,0.18); }
+.fiche-sec.fs-rx   { background: linear-gradient(180deg, rgba(180,83,9,0.07), rgba(180,83,9,0.015)); border: 1px solid rgba(180,83,9,0.18); }
+.fiche-sec.fs-ref  { background: linear-gradient(180deg, rgba(109,40,217,0.07), rgba(109,40,217,0.015)); border: 1px solid rgba(109,40,217,0.18); }
 </style>
 </head>
 <body>
@@ -2112,19 +2117,19 @@ function renderResult(){
         <div class="fiche">
           ${alertHTML}
           <div class="fiche-grid">
-            <div class="fiche-sec">
+            <div class="fiche-sec fs-img">
               <div class="sec-title sec-img">🔬 Imagerie</div>
               ${imagingItems || '<div class="fi-empty">—</div>'}
             </div>
-            <div class="fiche-sec">
+            <div class="fiche-sec fs-ex">
               <div class="sec-title sec-ex">💪 Exercices</div>
               ${exercisesItems || '<div class="fi-empty">—</div>'}
             </div>
-            <div class="fiche-sec">
+            <div class="fiche-sec fs-rx">
               <div class="sec-title sec-rx">💊 Traitement</div>
               ${treatmentItems || '<div class="fi-empty">—</div>'}
             </div>
-            <div class="fiche-sec">
+            <div class="fiche-sec fs-ref">
               <div class="sec-title sec-ref">🏥 Orientation</div>
               ${referralItems || '<div class="fi-empty">—</div>'}
             </div>
@@ -2192,19 +2197,19 @@ function showModal(pid){
     </div>
     ${p.desc ? `<div class="modal-section"><strong>Présentation</strong><div>${p.desc}</div></div>` : ''}
     <div class="fiche-grid modal-fiche">
-      <div class="fiche-sec">
+      <div class="fiche-sec fs-img">
         <div class="sec-title sec-img">🔬 Imagerie</div>
         ${imagingHTML || '<div class="fi-empty">—</div>'}
       </div>
-      <div class="fiche-sec">
+      <div class="fiche-sec fs-ex">
         <div class="sec-title sec-ex">💪 Exercices</div>
         ${exercisesHTML || '<div class="fi-empty">—</div>'}
       </div>
-      <div class="fiche-sec">
+      <div class="fiche-sec fs-rx">
         <div class="sec-title sec-rx">💊 Traitement</div>
         ${treatmentHTML || '<div class="fi-empty">—</div>'}
       </div>
-      <div class="fiche-sec">
+      <div class="fiche-sec fs-ref">
         <div class="sec-title sec-ref">🏥 Orientation</div>
         ${referralHTML || '<div class="fi-empty">—</div>'}
       </div>
