@@ -1253,7 +1253,7 @@ const TESTS = {
     how:'Assis, genou fléchi à 90°, jambe pendante. Stabiliser la jambe, mettre la cheville en rotation externe (± dorsiflexion).',
     pos:'Douleur à l\'espace interosseux ou médiale — évoque une lésion de la syndesmose',
     neg:'Indolore',
-    affects_pos:{ENTORSE_SYNDESMOSE:45}, affects_neg:{ENTORSE_SYNDESMOSE:-20}
+    affects_pos:{ENTORSE_SYNDESMOSE:60}, affects_neg:{ENTORSE_SYNDESMOSE:-20}
   },
   squeeze_test: {
     name:'Squeeze test', family:'SYNDESMOSE', badge:'SYN',
@@ -1615,7 +1615,7 @@ const CHOICES = {
 // Circuit de 5 tests par pathologie (familles distinctes pour adaptatif)
 const CIRCUITS = {
   ENTORSE_SYNDESMOSE: ['kleiger_test','squeeze_test','tafa','palp_lle'],
-  ENTORSE_LAT:       ['tafa','palp_lle','palp_sinus','sous_tal_inversion','flexdors_cont'],
+  ENTORSE_LAT:       ['kleiger_test','tafa','palp_lle','palp_sinus','sous_tal_inversion','flexdors_cont'],
   ENTORSE_SOUS_TAL:  ['palp_sinus','sous_tal_inversion','tafa','flexdors_cont','palp_lle'],
   ENTORSE_CHOPART:   ['essorage_chop','palp_lisfranc','tafa','palp_sinus','flexdors_cont'],
   ENTORSE_LISFRANC:  ['palp_lisfranc','essorage_chop','tafa','palp_sinus','hop_test_che'],
