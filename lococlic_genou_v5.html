@@ -1306,14 +1306,6 @@ const TESTS = {
     neg:'Palpation indolore — diagnostic de Pellegrini-Stieda moins probable',
     affects_pos:{PELLEGRINI:45}, affects_neg:{PELLEGRINI:-20}
   },
-  palpation_patte_oie: {
-    name:'Palpation de la patte d\'oie', family:'LIGAMENT', badge:'PO',
-    desc:'Palpation de l\'insertion des tendons de la patte d\'oie (face antéro-médiale du tibia)',
-    how:'Palpation de la zone d\'insertion des tendons de la patte d\'oie, sur la face antéro-médiale du tibia, environ 5 cm sous l\'interligne articulaire médial.',
-    pos:'Douleur élective sur le tibia antéro-médial — oriente vers une tendinopathie de la patte d\'oie',
-    neg:'Palpation tibiale indolore — tendinopathie de la patte d\'oie peu probable',
-    affects_pos:{PATTE_OIE:45, PELLEGRINI:-10}, affects_neg:{PATTE_OIE:-15}
-  },
   // === FAMILLE PATTE D\'OIE ===
   palpation_patte_oie: {
     name:"Palpation patte d'oie", family:'PATTE', badge:'POI',
@@ -1321,7 +1313,7 @@ const TESTS = {
     how:"Décubitus dorsal, genou en flexion 30°. Palper en crochet 5-6 cm sous l'interligne articulaire interne, à la face antéro-médiale du tibia.",
     pos:"Douleur vive reproduite — tendinopathie patte d'oie",
     neg:'Indolore',
-    affects_pos:{PATTE_OIE:50}, affects_neg:{PATTE_OIE:-30}
+    affects_pos:{PATTE_OIE:50, PELLEGRINI:-10}, affects_neg:{PATTE_OIE:-30}
   },
   // === FAMILLE TFL ===
   noble_compression: {

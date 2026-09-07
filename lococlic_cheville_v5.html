@@ -1196,19 +1196,7 @@ const P = {
     sources:[{l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}],
     keys:['Steppage','Paresthésies dorsal','Col fibula','Jambes croisées','Tinel']
   }
-};
-
-// ========== TESTS CLINIQUES ==========
-const TESTS = {
-  // === FAMILLE ENTORSE LATÉRALE (LLE) ===
-  tafa: {
-    name:"Test du tiroir antérieur (anterior drawer)", family:'LLE', badge:'LLE',
-    desc:"Test de stabilité du ligament talo-fibulaire antérieur (LTFA)",
-    how:"Patient assis, jambes pendantes. Une main maintient le tibia distal, l\'autre saisit l\'arrière-pied. Tirer le calcanéum vers l\'avant en flexion plantaire de 10-20°.",
-    pos:"Translation antérieure excessive ou douleur reproduite — rupture/laxité du LTFA",
-    neg:"Pas de translation, indolore",
-    affects_pos:{ENTORSE_LAT:50, ENTORSE_SOUS_TAL:15}, affects_neg:{ENTORSE_LAT:-25}
-  },
+,
   SYND_TUNNEL_TARSIEN: {
     id:'SYND_TUNNEL_TARSIEN', name:'Syndrome du tunnel tarsien', icon:'⚡', pop:'Coureur, marche prolongée, pied plat valgus, ATCD entorse, varices',
     desc:"Compression du nerf tibial postérieur dans le canal rétro et sous-malléolaire médial. Paresthésies, brûlures de la plante du pied et de la face médiale, parfois irradiation jusqu'aux orteils. Aggravation à la marche, à la course, en station debout prolongée. Soulagement par le repos et la décharge. Souvent unilatéral.",
@@ -1233,6 +1221,47 @@ const TESTS = {
     ],
     sources:[{l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}],
     keys:['Plante du pied','Paresthésies','Coureur','Tinel rétromalléolaire','Tunnel tarsien']
+  }
+,
+  ENTORSE_SYNDESMOSE: {
+    id:'ENTORSE_SYNDESMOSE', name:'Entorse de la syndesmose (haute entorse)', icon:'🔺', pop:'Sportif, trauma en rotation externe/hyperdorsiflexion',
+    desc:'Lésion des ligaments tibio-fibulaires distaux',
+    alert:null,
+    imaging:[{t:'Radiographies (mortaise ± clichés de stress)',d:'Recherche élargissement de l\'espace tibio-fibulaire'},{t:'IRM si doute diagnostique',d:''}],
+    treatment:[{t:'Immobilisation et décharge initiale',d:''},{t:'Kinésithérapie progressive (guérison plus longue qu\'une entorse latérale classique)',d:''},{t:'Chirurgie si instabilité (diastasis)',d:''}],
+    exercises:[{t:'Mobilisation douce en charge protégée',d:''},{t:'Renforcement progressif des stabilisateurs',d:''},{t:'Reprise d\'appui progressive',d:''},{t:'Réathlétisation tardive',d:''}],ficheExercice:'lococlic_fiches_patient/cheville_entorse_syndesmose.html',
+    referral:[{who:'Médecin du sport',why:'Confirmation diagnostique, suivi de la guérison',p:true},{who:'Chirurgien orthopédique',why:'Si instabilité ou diastasis',p:true}],
+    sources:[{l:'StatPearls — Acute Ankle Sprain (NCBI Bookshelf : mécanisme en rotation externe/hyperdorsiflexion de la syndesmose, distinct de l\'inversion classique)',u:'https://www.ncbi.nlm.nih.gov/books/NBK459212/'},{l:'Hunt et al. 2015 — High Ankle Sprains and Syndesmotic Injuries in Athletes (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/26498585/'}],
+    keys:['Trauma en rotation externe ou hyperdorsiflexion','Douleur haute au-dessus de la cheville','Kleiger et squeeze test positifs','Guérison prolongée']
+  }
+};
+
+// ========== TESTS CLINIQUES ==========
+const TESTS = {
+  // === FAMILLE ENTORSE LATÉRALE (LLE) ===
+  tafa: {
+    name:"Test du tiroir antérieur (anterior drawer)", family:'LLE', badge:'LLE',
+    desc:"Test de stabilité du ligament talo-fibulaire antérieur (LTFA)",
+    how:"Patient assis, jambes pendantes. Une main maintient le tibia distal, l\'autre saisit l\'arrière-pied. Tirer le calcanéum vers l\'avant en flexion plantaire de 10-20°.",
+    pos:"Translation antérieure excessive ou douleur reproduite — rupture/laxité du LTFA",
+    neg:"Pas de translation, indolore",
+    affects_pos:{ENTORSE_LAT:50, ENTORSE_SOUS_TAL:15}, affects_neg:{ENTORSE_LAT:-25}
+  },
+  kleiger_test: {
+    name:'Test de Kleiger', family:'SYNDESMOSE', badge:'SYN',
+    desc:'Test de rotation externe pour la syndesmose',
+    how:'Assis, genou fléchi à 90°, jambe pendante. Stabiliser la jambe, mettre la cheville en rotation externe (± dorsiflexion).',
+    pos:'Douleur à l\'espace interosseux ou médiale — évoque une lésion de la syndesmose',
+    neg:'Indolore',
+    affects_pos:{ENTORSE_SYNDESMOSE:45}, affects_neg:{ENTORSE_SYNDESMOSE:-20}
+  },
+  squeeze_test: {
+    name:'Squeeze test', family:'SYNDESMOSE', badge:'SYN',
+    desc:'Test de compression tibio-fibulaire (confirmation, bonne spécificité)',
+    how:'Comprimer le tibia et la fibula l\'un contre l\'autre au niveau du mollet, à distance de la cheville.',
+    pos:'Douleur reproduite à la syndesmose distale — confirme la suspicion',
+    neg:'Indolore',
+    affects_pos:{ENTORSE_SYNDESMOSE:35}, affects_neg:{ENTORSE_SYNDESMOSE:-15}
   },
   palp_lle: {
     name:"Palpation des faisceaux du LLE", family:'LLE', badge:'LLE',
@@ -1467,6 +1496,11 @@ const VIGNETTES = {
     id:'loc_ant', lbl:'⬆️ Douleur antérieure de cheville',
     desc:'Face antérieure, accentuée en flexion dorsale',
     score:{CONFLIT_ANT:45, OSTEOCHONDRITE:25}
+  },
+  loc_haute: {
+    id:'loc_haute', lbl:'🔺 Douleur haute, au-dessus de la cheville',
+    desc:'Espace entre tibia et fibula, plus haut que la malléole',
+    score:{ENTORSE_SYNDESMOSE:50, ENTORSE_LAT:10}
   },
   loc_post: {
     id:'loc_post', lbl:'⬇️ Douleur postérieure de cheville',
