@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script>
+(function(){
+  try {
+    var s = localStorage.getItem('lococlic_session');
+    if (!s) { window.location.href = 'login.html'; return; }
+    var d = JSON.parse(s);
+    if (!d.expires || Date.now() >= d.expires) {
+      localStorage.removeItem('lococlic_session');
+      window.location.href = 'login.html';
+      return;
+    }
+  } catch(e) { window.location.href = 'login.html'; }
+})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Références bibliographiques — lococlic™</title>
