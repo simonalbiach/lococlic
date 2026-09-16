@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon compte — lococlic</title>
+<script>
+(function(){
+  try {
+    var s = localStorage.getItem('lococlic_session');
+    if (!s) { window.location.href = 'login.html'; return; }
+    var d = JSON.parse(s);
+    if (!d.expires || Date.now() >= d.expires) {
+      localStorage.removeItem('lococlic_session');
+      window.location.href = 'login.html';
+      return;
+    }
+  } catch(e) { window.location.href = 'login.html'; }
+})();
+</script>
+<style>
+  :root {
+    --navy: #1e3a5f;
+    --accent2: #2c5f8d;
+    --bg: #f5f3ee;
+    --green: #16a34a;
+    --red: #dc2626;
+    --border: #e2e8f0;
+    --text-muted: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--navy);
+    min-height: 100vh;
+  }
+
+  .topbar {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .topbar-brand img { width: 32px; height: 32px; border-radius: 8px; }
+  .topbar-brand sup { font-size: 10px; }
+
+  .profil {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg);
+    padding: 6px 14px 6px 6px;
+    border-radius: 30px;
+  }
+  .profil-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--accent2) 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 16px;
+  }
+  .profil-email {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .conteneur {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  h1 { font-size: 24px; margin-bottom: 6px; }
+  .sous-titre { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+
+  .onglets {
+    display: flex;
+    gap: 4px;
+    background: #ffffff;
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .onglet {
+    flex: 1;
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    transition: all 0.15s;
+  }
+  .onglet.actif { background: var(--navy); color: white; }
+
+  .carte {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 28px;
+  }
+
+  .panneau { display: none; }
+  .panneau.actif { display: block; }
+
+  .ligne-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .ligne-info:last-of-type { border-bottom: none; }
+  .ligne-info-label { font-size: 13px; color: var(--text-muted); }
+  .ligne-info-valeur { font-size: 14px; font-weight: 600; color: var(--navy); text-align: right; }
+  .ligne-info-valeur a { color: var(--navy); }
+
+  .badge-actif {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #f0fdf4; color: var(--green);
+    font-size: 13px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px;
+  }
+  .badge-actif::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+  .zone-danger { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .zone-danger-titre { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; }
+  .btn-resilier {
+    background: #ffffff; border: 1.5px solid #fecaca; color: var(--red);
+    font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 10px;
+    cursor: pointer; width: 100%;
+  }
+  .btn-resilier:hover { background: #fef2f2; }
+  .btn-resilier:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .confirmation { display: none; margin-top: 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 16px; }
+  .confirmation.actif { display: block; }
+  .confirmation p { font-size: 13px; color: #7f1d1d; margin-bottom: 12px; line-height: 1.5; }
+  .confirmation-boutons { display: flex; gap: 10px; }
+  .btn-confirmer-resiliation { background: var(--red); color: white; border: none; font-size: 13px; font-weight: 600; padding: 10px 16px; border-radius: 8px; cursor: pointer; flex: 1; }
+  .btn-annuler-resiliation { background: transparent; color: var(--text-muted); border: 1px solid var(--border); font-size: 13px; font-weight: 600; padding: 10px 16px; border-radius: 8px; cursor: pointer; flex: 1; }
+
+  .message-info { font-size: 14px; color: var(--text-muted); text-align: center; padding: 20px 0; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="topbar-brand">
+    <img src="images/logo.png" alt="">
+    lococlic<sup>™</sup>
+  </a>
+  <div class="profil">
+    <div class="profil-avatar">👤</div>
+    <span class="profil-email" id="email-affiche">···</span>
+  </div>
+</div>
+
+<div class="conteneur">
+  <h1>Mon espace</h1>
+  <p class="sous-titre">Gérez votre compte et votre abonnement LocoClic</p>
+
+  <div class="onglets">
+    <button class="onglet actif" onclick="changerOnglet('abonnement', event)">Mon abonnement</button>
+    <button class="onglet" onclick="changerOnglet('factures', event)">Mes factures</button>
+    <button class="onglet" onclick="changerOnglet('compte', event)">Mes informations</button>
+  </div>
+
+  <div class="carte">
+
+    <div class="panneau actif" id="panneau-abonnement">
+      <div class="ligne-info">
+        <span class="ligne-info-label">Statut</span>
+        <span class="badge-actif" id="badge-statut">Actif</span>
+      </div>
+
+      <div class="zone-danger">
+        <div class="zone-danger-titre">Résiliation</div>
+        <button class="btn-resilier" id="btn-resilier" onclick="document.getElementById('confirmation').classList.add('actif')">
+          Résilier mon abonnement
+        </button>
+        <div class="confirmation" id="confirmation">
+          <p>Votre abonnement restera actif jusqu'à la fin de la période déjà payée, puis ne sera pas renouvelé.</p>
+          <div class="confirmation-boutons">
+            <button class="btn-annuler-resiliation" onclick="document.getElementById('confirmation').classList.remove('actif')">Garder mon abonnement</button>
+            <button class="btn-confirmer-resiliation" id="btn-confirmer" onclick="confirmerResiliation()">Confirmer la résiliation</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panneau" id="panneau-factures">
+      <div id="liste-factures">
+        <p class="message-info">Chargement...</p>
+      </div>
+    </div>
+
+    <div class="panneau" id="panneau-compte">
+      <div class="ligne-info">
+        <span class="ligne-info-label">Email</span>
+        <span class="ligne-info-valeur" id="info-email">···</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const WORKER_URL = 'https://lococlic-worker.simon-albiach.workers.dev';
+
+function getSession() {
+  try { return JSON.parse(localStorage.getItem('lococlic_session')); }
+  catch(e) { return null; }
+}
+const session = getSession();
+
+document.getElementById('email-affiche').textContent = session.email;
+document.getElementById('info-email').textContent = session.email;
+
+function changerOnglet(nom, evt) {
+  document.querySelectorAll('.onglet').forEach(o => o.classList.remove('actif'));
+  document.querySelectorAll('.panneau').forEach(p => p.classList.remove('actif'));
+  evt.target.classList.add('actif');
+  document.getElementById('panneau-' + nom).classList.add('actif');
+}
+
+async function chargerFactures() {
+  const conteneur = document.getElementById('liste-factures');
+  try {
+    const reponse = await fetch(WORKER_URL + '/mes-factures', {
+      headers: { 'Authorization': 'Bearer ' + session.jetonSession }
+    });
+    if (reponse.status === 401) {
+      localStorage.removeItem('lococlic_session');
+      window.location.href = 'login.html';
+      return;
+    }
+    const data = await reponse.json();
+    if (!data.factures || data.factures.length === 0) {
+      conteneur.innerHTML = '<p class="message-info">Aucune facture pour le moment.</p>';
+      return;
+    }
+    conteneur.innerHTML = data.factures.map(f => {
+      const dateFormatee = new Date(f.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      return `<div class="ligne-info">
+        <span class="ligne-info-label">${dateFormatee}</span>
+        <span class="ligne-info-valeur">${f.montant} € — <a href="${f.pdf}" target="_blank" rel="noopener">Télécharger PDF</a></span>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    conteneur.innerHTML = '<p class="message-info" style="color:#dc2626;">Erreur de chargement des factures.</p>';
+  }
+}
+
+async function confirmerResiliation() {
+  const btnConfirmer = document.getElementById('btn-confirmer');
+  btnConfirmer.disabled = true;
+  btnConfirmer.textContent = 'Traitement...';
+  try {
+    const reponse = await fetch(WORKER_URL + '/resilier-abonnement', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + session.jetonSession }
+    });
+    if (reponse.status === 401) {
+      localStorage.removeItem('lococlic_session');
+      window.location.href = 'login.html';
+      return;
+    }
+    const data = await reponse.json();
+    if (data.success) {
+      const dateFin = new Date(data.fin_acces).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      document.getElementById('confirmation').innerHTML = `<p style="color:#166534;">Votre abonnement a bien été résilié. Vous conservez l'accès jusqu'au ${dateFin}.</p>`;
+      document.getElementById('btn-resilier').style.display = 'none';
+    } else {
+      alert(data.error || 'Erreur lors de la résiliation.');
+      btnConfirmer.disabled = false;
+      btnConfirmer.textContent = 'Confirmer la résiliation';
+    }
+  } catch(e) {
+    alert('Erreur de connexion. Réessayez.');
+    btnConfirmer.disabled = false;
+    btnConfirmer.textContent = 'Confirmer la résiliation';
+  }
+}
+
+chargerFactures();
+</script>
+
+</body>
+</html>

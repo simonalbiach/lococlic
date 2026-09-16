@@ -368,6 +368,7 @@ async function checkAccess(event) {
       const session = {
         email: resultat.email,
         statut: resultat.statut,
+        jetonSession: resultat.jeton_session,
         expires: Date.now() + (SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000),
         cguAccepted: true,
         cguAcceptedAt: new Date().toISOString()
