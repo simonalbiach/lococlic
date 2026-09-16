@@ -96,7 +96,7 @@
     margin-bottom: 20px;
   }
   
-  input[type="password"], input[type="text"] {
+  input[type="password"], input[type="text"], input[type="email"] {
     width: 100%;
     padding: 16px 56px 16px 20px;
     font-size: 16px;
@@ -242,25 +242,36 @@
   </div>
   
   <h1>Accès réservé</h1>
-  <p class="subtitle">Saisissez votre code d'accès pour continuer</p>
+  <p class="subtitle">Connectez-vous avec votre email et mot de passe</p>
   
   <div class="error-msg" id="errorMsg">
-    Code invalide. Vérifiez la saisie et réessayez.
+    Email ou mot de passe incorrect.
   </div>
   
   <form id="loginForm" onsubmit="return checkAccess(event)">
     <div class="field">
       <input 
-        type="password" 
-        id="codeInput" 
-        placeholder="••••••••••" 
-        autocomplete="off"
+        type="email" 
+        id="emailInput" 
+        placeholder="votre.email@exemple.fr" 
+        autocomplete="username"
         autocapitalize="off"
         spellcheck="false"
         autofocus
         required
       >
-      <button type="button" class="toggle-btn" onclick="togglePassword()" aria-label="Afficher le code">
+    </div>
+    <div class="field">
+      <input 
+        type="password" 
+        id="codeInput" 
+        placeholder="Votre mot de passe" 
+        autocomplete="current-password"
+        autocapitalize="off"
+        spellcheck="false"
+        required
+      >
+      <button type="button" class="toggle-btn" onclick="togglePassword()" aria-label="Afficher le mot de passe">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
           <circle cx="12" cy="12" r="3"/>
@@ -277,8 +288,8 @@
   </form>
   
   <div class="footer">
-    Accès individuel · Ne partagez pas votre code.<br>
-    Pour obtenir un accès, contactez <strong>l'administrateur lococlic<sup>™</sup></strong>.
+    Accès individuel · Réservé aux professionnels de santé vérifiés.<br>
+    Besoin d'aide ? Contactez <strong>l'administrateur lococlic<sup>™</sup></strong>.
   </div>
 </div>
 </div>
@@ -288,19 +299,13 @@
 // LISTE DES CODES D'ACCÈS VALIDES
 // Modifie cette liste pour ajouter / retirer des codes
 // ============================================================
-const VALID_CODES = [
-  'simon-2026',
-  'betatest',
-  'drlecoz',
-  'droheix',
-  'drkostka'
-];
+const WORKER_URL = 'https://lococlic-worker.simon-albiach.workers.dev';
 
 // Durée de validité de la session (en jours)
 const SESSION_DURATION_DAYS = 7;
 
 // ============================================================
-// LOGIQUE D'AUTHENTIFICATION
+// LOGIQUE D'AUTHENTIFICATION (via le serveur)
 // ============================================================
 
 // Si déjà connecté, redirection vers l'app
@@ -323,14 +328,17 @@ const SESSION_DURATION_DAYS = 7;
   }
 })();
 
-function checkAccess(event) {
+async function checkAccess(event) {
   event.preventDefault();
   
+  const emailInput = document.getElementById('emailInput');
   const input = document.getElementById('codeInput');
   const errorMsg = document.getElementById('errorMsg');
   const cguCheck = document.getElementById('cguCheck');
   const cguField = document.getElementById('cguField');
-  const code = input.value.trim();
+  const submitBtn = document.querySelector('.submit-btn');
+  const email = emailInput.value.trim();
+  const motDePasse = input.value;
   
   // Vérifier d'abord l'acceptation des CGU
   if (!cguCheck.checked) {
@@ -339,31 +347,47 @@ function checkAccess(event) {
     cguField.classList.add('cgu-error');
     errorMsg.textContent = 'Veuillez accepter les conditions générales d\'utilisation pour continuer.';
     errorMsg.classList.add('show');
-    setTimeout(() => { errorMsg.classList.remove('show'); errorMsg.textContent = 'Code invalide. Vérifiez la saisie et réessayez.'; }, 4000);
+    setTimeout(() => { errorMsg.classList.remove('show'); errorMsg.textContent = 'Email ou mot de passe incorrect.'; }, 4000);
     return false;
   }
   cguField.classList.remove('cgu-error');
   
-  if (VALID_CODES.includes(code)) {
-    // Code valide : créer la session (avec horodatage acceptation CGU)
-    const session = {
-      code: code,
-      expires: Date.now() + (SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000),
-      cguAccepted: true,
-      cguAcceptedAt: new Date().toISOString()
-    };
-    localStorage.setItem('lococlic_session', JSON.stringify(session));
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Connexion...';
+  
+  try {
+    const reponse = await fetch(WORKER_URL + '/connexion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, mot_de_passe: motDePasse })
+    });
+    const resultat = await reponse.json();
     
-    // Redirection
-    window.location.href = 'index.html';
-  } else {
-    // Code invalide
+    if (resultat.success) {
+      // Connexion réussie : créer la session (avec horodatage acceptation CGU)
+      const session = {
+        email: resultat.email,
+        statut: resultat.statut,
+        expires: Date.now() + (SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000),
+        cguAccepted: true,
+        cguAcceptedAt: new Date().toISOString()
+      };
+      localStorage.setItem('lococlic_session', JSON.stringify(session));
+      window.location.href = 'index.html';
+    } else {
+      errorMsg.textContent = resultat.error || 'Email ou mot de passe incorrect.';
+      errorMsg.classList.add('show');
+      input.value = '';
+      input.focus();
+      setTimeout(() => errorMsg.classList.remove('show'), 5000);
+    }
+  } catch (err) {
+    errorMsg.textContent = 'Erreur de connexion. Vérifiez votre connexion internet.';
     errorMsg.classList.add('show');
-    input.value = '';
-    input.focus();
-    
-    // Cacher l'erreur après 4 secondes
-    setTimeout(() => errorMsg.classList.remove('show'), 4000);
+    setTimeout(() => errorMsg.classList.remove('show'), 5000);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Entrer';
   }
   
   return false;
