@@ -71,61 +71,32 @@
     display: flex; align-items: center; justify-content: center;
     color: white; font-size: 16px;
   }
-  .profil-email {
-    font-size: 13px;
-    color: var(--text-muted);
-  }
+  .profil-email { font-size: 13px; color: var(--text-muted); }
 
-  .conteneur {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 40px 20px 80px;
-  }
+  .conteneur { max-width: 640px; margin: 0 auto; padding: 40px 20px 80px; }
 
   h1 { font-size: 24px; margin-bottom: 6px; }
   .sous-titre { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
 
   .onglets {
-    display: flex;
-    gap: 4px;
-    background: #ffffff;
-    padding: 4px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    margin-bottom: 24px;
+    display: flex; gap: 4px; background: #ffffff; padding: 4px;
+    border-radius: 12px; border: 1px solid var(--border); margin-bottom: 24px;
   }
   .onglet {
-    flex: 1;
-    text-align: center;
-    padding: 10px 12px;
-    border-radius: 9px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    transition: all 0.15s;
+    flex: 1; text-align: center; padding: 10px 12px; border-radius: 9px;
+    font-size: 13px; font-weight: 600; color: var(--text-muted);
+    cursor: pointer; border: none; background: transparent; transition: all 0.15s;
   }
   .onglet.actif { background: var(--navy); color: white; }
 
-  .carte {
-    background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    padding: 28px;
-  }
+  .carte { background: #ffffff; border-radius: 16px; border: 1px solid var(--border); padding: 28px; }
 
   .panneau { display: none; }
   .panneau.actif { display: block; }
 
   .ligne-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-    gap: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0; border-bottom: 1px solid var(--border); gap: 12px;
   }
   .ligne-info:last-of-type { border-bottom: none; }
   .ligne-info-label { font-size: 13px; color: var(--text-muted); }
@@ -135,12 +106,29 @@
   .badge-actif {
     display: inline-flex; align-items: center; gap: 6px;
     background: #f0fdf4; color: var(--green);
-    font-size: 13px; font-weight: 600;
-    padding: 4px 12px; border-radius: 20px;
+    font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 20px;
   }
   .badge-actif::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
 
-  .zone-danger { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .zone-info-annulation {
+    background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
+    padding: 14px 16px; margin-top: 16px; font-size: 13px; color: #92400e; line-height: 1.5;
+  }
+
+  .zone-modifier {
+    margin-top: 24px; padding: 20px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px;
+  }
+  .zone-modifier-titre { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .zone-modifier-texte { font-size: 13px; color: #475569; line-height: 1.5; margin-bottom: 14px; }
+  .btn-modifier {
+    background: var(--navy); color: white; border: none;
+    font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 10px;
+    cursor: pointer; width: 100%;
+  }
+  .btn-modifier:hover { background: var(--accent2); }
+  .btn-modifier:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .zone-danger { margin-top: 20px; padding-top: 24px; border-top: 1px solid var(--border); }
   .zone-danger-titre { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; }
   .btn-resilier {
     background: #ffffff; border: 1.5px solid #fecaca; color: var(--red);
@@ -186,23 +174,8 @@
   <div class="carte">
 
     <div class="panneau actif" id="panneau-abonnement">
-      <div class="ligne-info">
-        <span class="ligne-info-label">Statut</span>
-        <span class="badge-actif" id="badge-statut">Actif</span>
-      </div>
-
-      <div class="zone-danger">
-        <div class="zone-danger-titre">Résiliation</div>
-        <button class="btn-resilier" id="btn-resilier" onclick="document.getElementById('confirmation').classList.add('actif')">
-          Résilier mon abonnement
-        </button>
-        <div class="confirmation" id="confirmation">
-          <p>Votre abonnement restera actif jusqu'à la fin de la période déjà payée, puis ne sera pas renouvelé.</p>
-          <div class="confirmation-boutons">
-            <button class="btn-annuler-resiliation" onclick="document.getElementById('confirmation').classList.remove('actif')">Garder mon abonnement</button>
-            <button class="btn-confirmer-resiliation" id="btn-confirmer" onclick="confirmerResiliation()">Confirmer la résiliation</button>
-          </div>
-        </div>
+      <div id="details-abonnement">
+        <p class="message-info">Chargement...</p>
       </div>
     </div>
 
@@ -241,8 +214,101 @@ function changerOnglet(nom, evt) {
   document.getElementById('panneau-' + nom).classList.add('actif');
 }
 
+function formaterDate(iso) {
+  return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function afficherAbonnement(abonnement) {
+  const conteneur = document.getElementById('details-abonnement');
+  if (!abonnement) {
+    conteneur.innerHTML = '<p class="message-info">Aucun abonnement actif.</p>';
+    return;
+  }
+
+  if (abonnement.type === 'interne') {
+    conteneur.innerHTML = `
+      <div class="ligne-info">
+        <span class="ligne-info-label">Statut</span>
+        <span class="badge-actif">Actif</span>
+      </div>
+      <div class="ligne-info">
+        <span class="ligne-info-label">Formule</span>
+        <span class="ligne-info-valeur">Interne — Gratuit</span>
+      </div>
+      <div class="ligne-info">
+        <span class="ligne-info-label">Fin de la gratuité</span>
+        <span class="ligne-info-valeur">${formaterDate(abonnement.fin_gratuite)}</span>
+      </div>
+    `;
+    return;
+  }
+
+  const libellePlan = abonnement.plan === 'annuel' ? 'Médecin — Annuel' : 'Médecin — Mensuel';
+  const unite = abonnement.plan === 'annuel' ? '/ an' : '/ mois';
+  const autrePlan = abonnement.plan === 'annuel' ? 'mensuel' : 'annuel';
+  const texteBouton = abonnement.plan === 'annuel' ? 'Passer au mensuel' : 'Passer à l\'annuel';
+  const texteExplicatif = abonnement.plan === 'annuel'
+    ? 'Passez au mensuel pour plus de flexibilité (14,90 €/mois).'
+    : 'Passez à l\'annuel pour économiser (149 € au lieu de 178,80 € sur l\'année, soit 2 mois offerts).';
+
+  let html = `
+    <div class="ligne-info">
+      <span class="ligne-info-label">Statut</span>
+      <span class="badge-actif">Actif</span>
+    </div>
+    <div class="ligne-info">
+      <span class="ligne-info-label">Formule</span>
+      <span class="ligne-info-valeur">${libellePlan}</span>
+    </div>
+    <div class="ligne-info">
+      <span class="ligne-info-label">Montant</span>
+      <span class="ligne-info-valeur">${abonnement.montant} € ${unite}</span>
+    </div>
+    <div class="ligne-info">
+      <span class="ligne-info-label">Prochain prélèvement</span>
+      <span class="ligne-info-valeur">${formaterDate(abonnement.prochain_prelevement)}</span>
+    </div>
+  `;
+
+  if (abonnement.annulation_prevue) {
+    html += `<div class="zone-info-annulation">⚠️ Résiliation programmée : votre abonnement prendra fin le ${formaterDate(abonnement.prochain_prelevement)} et ne sera pas renouvelé.</div>`;
+  } else {
+    html += `
+      <div class="zone-modifier">
+        <div class="zone-modifier-titre">Modifier mon abonnement</div>
+        <div class="zone-modifier-texte">${texteExplicatif}</div>
+        <button class="btn-modifier" id="btn-modifier" onclick="changerPlan()">${texteBouton}</button>
+      </div>
+      <div class="zone-danger">
+        <div class="zone-danger-titre">Résiliation</div>
+        <button class="btn-resilier" id="btn-resilier" onclick="document.getElementById('confirmation').classList.add('actif')">
+          Résilier mon abonnement
+        </button>
+        <div class="confirmation" id="confirmation">
+          <p>Votre abonnement restera actif jusqu'à la fin de la période déjà payée, puis ne sera pas renouvelé.</p>
+          <div class="confirmation-boutons">
+            <button class="btn-annuler-resiliation" onclick="document.getElementById('confirmation').classList.remove('actif')">Garder mon abonnement</button>
+            <button class="btn-confirmer-resiliation" id="btn-confirmer" onclick="confirmerResiliation()">Confirmer la résiliation</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  conteneur.innerHTML = html;
+}
+
+function formaterLibelleFacture(dateIso, plan) {
+  const date = new Date(dateIso);
+  if (plan === 'annuel') {
+    return `Facture ${date.getFullYear()}`;
+  }
+  const mois = date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  return `Facture de ${mois}`;
+}
+
 async function chargerFactures() {
-  const conteneur = document.getElementById('liste-factures');
+  const conteneurFactures = document.getElementById('liste-factures');
   try {
     const reponse = await fetch(WORKER_URL + '/mes-factures', {
       headers: { 'Authorization': 'Bearer ' + session.jetonSession }
@@ -253,19 +319,52 @@ async function chargerFactures() {
       return;
     }
     const data = await reponse.json();
+
+    afficherAbonnement(data.abonnement);
+
     if (!data.factures || data.factures.length === 0) {
-      conteneur.innerHTML = '<p class="message-info">Aucune facture pour le moment.</p>';
+      conteneurFactures.innerHTML = '<p class="message-info">Aucune facture pour le moment.</p>';
       return;
     }
-    conteneur.innerHTML = data.factures.map(f => {
-      const dateFormatee = new Date(f.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    const planPourLibelle = data.abonnement && data.abonnement.type === 'medecin' ? data.abonnement.plan : null;
+    conteneurFactures.innerHTML = data.factures.map(f => {
+      const libelle = formaterLibelleFacture(f.date, planPourLibelle);
       return `<div class="ligne-info">
-        <span class="ligne-info-label">${dateFormatee}</span>
+        <span class="ligne-info-label">${libelle}</span>
         <span class="ligne-info-valeur">${f.montant} € — <a href="${f.pdf}" target="_blank" rel="noopener">Télécharger PDF</a></span>
       </div>`;
     }).join('');
   } catch(e) {
-    conteneur.innerHTML = '<p class="message-info" style="color:#dc2626;">Erreur de chargement des factures.</p>';
+    document.getElementById('details-abonnement').innerHTML = '<p class="message-info" style="color:#dc2626;">Erreur de chargement.</p>';
+    conteneurFactures.innerHTML = '<p class="message-info" style="color:#dc2626;">Erreur de chargement.</p>';
+  }
+}
+
+async function changerPlan() {
+  const btn = document.getElementById('btn-modifier');
+  btn.disabled = true;
+  btn.textContent = 'Traitement...';
+  try {
+    const reponse = await fetch(WORKER_URL + '/changer-plan', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + session.jetonSession }
+    });
+    if (reponse.status === 401) {
+      localStorage.removeItem('lococlic_session');
+      window.location.href = 'login.html';
+      return;
+    }
+    const data = await reponse.json();
+    if (data.success) {
+      chargerFactures();
+    } else {
+      alert(data.error || 'Erreur lors du changement de formule.');
+      btn.disabled = false;
+      btn.textContent = 'Réessayer';
+    }
+  } catch(e) {
+    alert('Erreur de connexion. Réessayez.');
+    btn.disabled = false;
   }
 }
 
@@ -285,9 +384,7 @@ async function confirmerResiliation() {
     }
     const data = await reponse.json();
     if (data.success) {
-      const dateFin = new Date(data.fin_acces).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-      document.getElementById('confirmation').innerHTML = `<p style="color:#166534;">Votre abonnement a bien été résilié. Vous conservez l'accès jusqu'au ${dateFin}.</p>`;
-      document.getElementById('btn-resilier').style.display = 'none';
+      chargerFactures();
     } else {
       alert(data.error || 'Erreur lors de la résiliation.');
       btnConfirmer.disabled = false;
