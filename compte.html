@@ -155,9 +155,14 @@
     <img src="images/logo.png" alt="">
     lococlic<sup>™</sup>
   </a>
-  <div class="profil">
-    <div class="profil-avatar">👤</div>
-    <span class="profil-email" id="email-affiche">···</span>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div class="profil">
+      <div class="profil-avatar">👤</div>
+      <span class="profil-email" id="email-affiche">···</span>
+    </div>
+    <button onclick="seDeconnecter()" style="background:transparent; border:1px solid #e2e8f0; color:#64748b; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px; cursor:pointer;">
+      Déconnexion
+    </button>
   </div>
 </div>
 
@@ -206,6 +211,11 @@ const session = getSession();
 
 document.getElementById('email-affiche').textContent = session.email;
 document.getElementById('info-email').textContent = session.email;
+
+function seDeconnecter() {
+  localStorage.removeItem('lococlic_session');
+  window.location.href = 'login.html';
+}
 
 function changerOnglet(nom, evt) {
   document.querySelectorAll('.onglet').forEach(o => o.classList.remove('actif'));
