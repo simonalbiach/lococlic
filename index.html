@@ -5,11 +5,13 @@
 (function(){
   try {
     var s = localStorage.getItem('lococlic_session');
-    if (!s) { window.location.href = 'login.html'; return; }
+    var paiementSucces = new URLSearchParams(window.location.search).get('paiement') === 'succes';
+    var destination = paiementSucces ? 'login.html?paiement=succes' : 'login.html';
+    if (!s) { window.location.href = destination; return; }
     var d = JSON.parse(s);
     if (!d.expires || Date.now() >= d.expires) {
       localStorage.removeItem('lococlic_session');
-      window.location.href = 'login.html';
+      window.location.href = destination;
       return;
     }
   } catch(e) { window.location.href = 'login.html'; }
