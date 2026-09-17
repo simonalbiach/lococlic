@@ -273,6 +273,14 @@
 const WORKER_URL = 'https://lococlic-worker.simon-albiach.workers.dev';
 let planChoisi = 'mensuel';
 
+const ongletDemande = new URLSearchParams(window.location.search).get('onglet');
+if (ongletDemande === 'medecin') {
+  document.querySelectorAll('.onglet-profil').forEach(o => o.classList.remove('actif'));
+  document.querySelectorAll('.panneau').forEach(p => p.classList.remove('actif'));
+  document.querySelectorAll('.onglet-profil')[1].classList.add('actif');
+  document.getElementById('form-medecin').classList.add('actif');
+}
+
 function ressembleInstitutionnel(email) {
   const domaine = (email.split('@')[1] || '').toLowerCase();
   const domainesPublics = ['gmail.com','yahoo.fr','yahoo.com','hotmail.com','hotmail.fr','outlook.com','outlook.fr','free.fr','orange.fr','laposte.net','icloud.com'];
