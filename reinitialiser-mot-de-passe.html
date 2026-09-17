@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nouveau mot de passe — lococlic</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f3ee;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .conteneur { width: 100%; max-width: 420px; }
+  .carte {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(15,42,68,0.08);
+  }
+  .entete {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+    padding: 32px 32px 24px;
+    text-align: center;
+  }
+  .entete img { width: 56px; height: 56px; border-radius: 12px; margin-bottom: 12px; }
+  .entete h1 { color: white; font-size: 20px; font-weight: 700; }
+  .corps { padding: 28px 32px 32px; }
+  .champ { margin-bottom: 18px; }
+  .champ label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+  .champ-mdp-wrapper { position: relative; }
+  .champ-mdp-wrapper input { padding-right: 44px; }
+  .champ input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .champ input:focus { outline: none; border-color: #1e3a5f; }
+  .champ input.erreur { border-color: #dc2626; background: #fef2f2; }
+  .btn-afficher-mdp {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: transparent; border: none; cursor: pointer;
+    padding: 8px; border-radius: 8px; color: #64748b; transition: all 0.15s;
+  }
+  .btn-afficher-mdp:hover { color: #10b981; background: #f0fdf4; }
+  .btn-afficher-mdp svg { display: block; width: 20px; height: 20px; }
+  .btn-soumettre {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-soumettre:disabled { opacity: 0.6; cursor: not-allowed; }
+  .message {
+    display: none;
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .message.succes { display: block; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+  .message.erreur { display: block; background: #fef2f2; color: #7f1d1d; border: 1px solid #fecaca; }
+  .lien-connexion { text-align: center; margin-top: 20px; font-size: 13px; color: #64748b; }
+  .lien-connexion a { color: #1e3a5f; font-weight: 600; text-decoration: none; }
+  .jeton-manquant { text-align: center; padding: 20px 0; font-size: 14px; color: #7f1d1d; }
+</style>
+</head>
+<body>
+
+<div class="conteneur">
+  <div class="carte">
+    <div class="entete">
+      <img src="images/logo.png" alt="LocoClic">
+      <h1>Nouveau mot de passe</h1>
+    </div>
+    <div class="corps">
+
+      <div id="zone-jeton-manquant" class="jeton-manquant" style="display:none;">
+        Lien invalide. Merci de refaire une <a href="mot-de-passe-oublie.html" style="color:#1e3a5f;">demande de réinitialisation</a>.
+      </div>
+
+      <form id="form-reset" onsubmit="soumettre(event)">
+        <div class="champ">
+          <label>Nouveau mot de passe</label>
+          <div class="champ-mdp-wrapper">
+            <input type="password" id="mdp" minlength="8" required>
+            <button type="button" class="btn-afficher-mdp" onclick="basculerAffichage('mdp')" aria-label="Afficher le mot de passe">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="champ">
+          <label>Confirmer le mot de passe</label>
+          <div class="champ-mdp-wrapper">
+            <input type="password" id="mdp2" minlength="8" required>
+            <button type="button" class="btn-afficher-mdp" onclick="basculerAffichage('mdp2')" aria-label="Afficher le mot de passe">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn-soumettre" id="btn">Réinitialiser</button>
+        <div class="message" id="message"></div>
+      </form>
+
+      <div class="lien-connexion">
+        <a href="login.html">← Retour à la connexion</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const WORKER_URL = 'https://lococlic-worker.simon-albiach.workers.dev';
+const jeton = new URLSearchParams(window.location.search).get('jeton');
+
+if (!jeton) {
+  document.getElementById('form-reset').style.display = 'none';
+  document.getElementById('zone-jeton-manquant').style.display = 'block';
+}
+
+function basculerAffichage(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+async function soumettre(e) {
+  e.preventDefault();
+  const mdpInput = document.getElementById('mdp');
+  const mdp2Input = document.getElementById('mdp2');
+  mdpInput.classList.remove('erreur');
+  mdp2Input.classList.remove('erreur');
+
+  if (mdpInput.value !== mdp2Input.value) {
+    mdp2Input.classList.add('erreur');
+    const msg = document.getElementById('message');
+    msg.className = 'message erreur';
+    msg.textContent = 'Les deux mots de passe ne correspondent pas.';
+    return;
+  }
+
+  const btn = document.getElementById('btn');
+  btn.disabled = true;
+  btn.textContent = 'Traitement...';
+
+  try {
+    const reponse = await fetch(WORKER_URL + '/reinitialiser-mot-de-passe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ jeton, nouveau_mot_de_passe: mdpInput.value })
+    });
+    const data = await reponse.json();
+    const msg = document.getElementById('message');
+    if (data.success) {
+      msg.className = 'message succes';
+      msg.textContent = 'Mot de passe réinitialisé avec succès ! Vous pouvez maintenant vous connecter.';
+      document.getElementById('form-reset').querySelectorAll('input, button[type=submit]').forEach(el => el.disabled = true);
+    } else {
+      msg.className = 'message erreur';
+      msg.textContent = data.error || 'Une erreur est survenue.';
+      btn.disabled = false;
+      btn.textContent = 'Réinitialiser';
+    }
+  } catch (err) {
+    const msg = document.getElementById('message');
+    msg.className = 'message erreur';
+    msg.textContent = 'Erreur de connexion. Réessayez.';
+    btn.disabled = false;
+    btn.textContent = 'Réinitialiser';
+  }
+}
+</script>
+
+</body>
+</html>
