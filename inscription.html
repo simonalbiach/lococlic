@@ -69,6 +69,14 @@
   }
   .champ input:focus { outline: none; border-color: #1e3a5f; }
 
+  .champ-mdp-wrapper { position: relative; }
+  .champ-mdp-wrapper input { padding-right: 44px; }
+  .btn-afficher-mdp {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; font-size: 16px;
+    color: #94a3b8; padding: 4px;
+  }
+
   .plans { display: flex; gap: 10px; margin-bottom: 16px; }
   .plan-carte {
     flex: 1;
@@ -154,7 +162,17 @@
         </div>
         <div class="champ">
           <label>Mot de passe</label>
-          <input type="password" id="interne-mdp" minlength="8" required>
+          <div class="champ-mdp-wrapper">
+            <input type="password" id="interne-mdp" minlength="8" required>
+            <button type="button" class="btn-afficher-mdp" onclick="basculerAffichage('interne-mdp', this)">👁</button>
+          </div>
+        </div>
+        <div class="champ">
+          <label>Confirmer le mot de passe</label>
+          <div class="champ-mdp-wrapper">
+            <input type="password" id="interne-mdp2" minlength="8" required>
+            <button type="button" class="btn-afficher-mdp" onclick="basculerAffichage('interne-mdp2', this)">👁</button>
+          </div>
         </div>
         <div class="champ">
           <label>Année de début d'internat</label>
@@ -176,7 +194,17 @@
         </div>
         <div class="champ">
           <label>Mot de passe</label>
-          <input type="password" id="medecin-mdp" minlength="8" required>
+          <div class="champ-mdp-wrapper">
+            <input type="password" id="medecin-mdp" minlength="8" required>
+            <button type="button" class="btn-afficher-mdp" onclick="basculerAffichage('medecin-mdp', this)">👁</button>
+          </div>
+        </div>
+        <div class="champ">
+          <label>Confirmer le mot de passe</label>
+          <div class="champ-mdp-wrapper">
+            <input type="password" id="medecin-mdp2" minlength="8" required>
+            <button type="button" class="btn-afficher-mdp" onclick="basculerAffichage('medecin-mdp2', this)">👁</button>
+          </div>
         </div>
         <div class="champ">
           <label>Formule</label>
@@ -216,6 +244,17 @@
 const WORKER_URL = 'https://lococlic-worker.simon-albiach.workers.dev';
 let planChoisi = 'mensuel';
 
+function basculerAffichage(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+
 function changerProfil(nom, evt) {
   document.querySelectorAll('.onglet-profil').forEach(o => o.classList.remove('actif'));
   document.querySelectorAll('.panneau').forEach(p => p.classList.remove('actif'));
@@ -244,6 +283,10 @@ async function soumettreInterne(e) {
   const cgu = document.getElementById('interne-cgu').checked;
   if (!cgu) {
     afficherMessage('message-interne', 'Vous devez accepter les CGU pour continuer.', 'erreur');
+    return;
+  }
+  if (document.getElementById('interne-mdp').value !== document.getElementById('interne-mdp2').value) {
+    afficherMessage('message-interne', 'Les deux mots de passe ne correspondent pas.', 'erreur');
     return;
   }
   const btn = document.getElementById('btn-interne');
@@ -280,6 +323,10 @@ async function soumettreMedecin(e) {
   const cgu = document.getElementById('medecin-cgu').checked;
   if (!cgu) {
     afficherMessage('message-medecin', 'Vous devez accepter les CGU pour continuer.', 'erreur');
+    return;
+  }
+  if (document.getElementById('medecin-mdp').value !== document.getElementById('medecin-mdp2').value) {
+    afficherMessage('message-medecin', 'Les deux mots de passe ne correspondent pas.', 'erreur');
     return;
   }
   const btn = document.getElementById('btn-medecin');
