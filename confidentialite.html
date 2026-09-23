@@ -306,8 +306,8 @@
     <h3>🛡️ L'essentiel en un coup d'œil</h3>
     <ul>
       <li><strong>AUCUNE donnée patient</strong> n'est collectée ni stockée par lococlic<sup>™</sup></li>
-      <li><strong>AUCUN compte utilisateur</strong> n'est créé sur nos serveurs</li>
-      <li>L'authentification utilise <strong>uniquement le navigateur</strong> de l'utilisateur (localStorage)</li>
+      <li>Un compte utilisateur est créé (email, mot de passe haché) pour l'accès au service</li>
+      <li>Le mot de passe n'est <strong>jamais stocké en clair</strong> (haché de façon irréversible)</li>
       <li>Aucune donnée n'est transmise à des tiers à des fins commerciales</li>
       <li>Conforme au <strong>RGPD</strong> (Règlement Général sur la Protection des Données)</li>
     </ul>
@@ -321,7 +321,7 @@
       <dt>Statut</dt>
       <dd>Personne physique — Médecin, éditeur du site lococlic<sup>™</sup></dd>
       <dt>Email de contact</dt>
-      <dd><a href="mailto:confidentialite@lococlic.com">confidentialite@lococlic.com</a></dd>
+      <dd><a href="mailto:contact@lococlic.com">contact@lococlic.com</a></dd>
     </dl>
   </div>
   
@@ -332,7 +332,7 @@
     Il ne collecte, ne stocke, ne traite et ne transmet <strong>aucune donnée concernant un patient</strong>. Les médecins utilisateurs n'y saisissent aucune information identifiante relative à leurs patients.
   </div>
   
-  <p>lococlic<sup>™</sup> ne fonctionne pas comme une base de données médicale ou un dossier patient informatisé. Il s'agit d'un parcours diagnostique interactif dont les réponses aux questions cliniques ne sont jamais enregistrées sur nos serveurs. À la fermeture du navigateur, toute la session diagnostique est effacée.</p>
+  <p>lococlic<sup>™</sup> ne fonctionne pas comme une base de données médicale ou un dossier patient informatisé. Il s'agit d'un parcours diagnostique interactif dont les réponses aux questions cliniques (tests cochés, résultats) ne sont jamais enregistrées sur nos serveurs. Seules des données liées au compte utilisateur (et non au patient) sont conservées.</p>
   
   <h2>3. Données collectées</h2>
   
@@ -349,16 +349,34 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>Code d'accès</strong></td>
-        <td>Authentification de l'utilisateur autorisé</td>
-        <td>Navigateur (localStorage)</td>
-        <td>7 jours maximum</td>
+        <td><strong>Adresse email</strong></td>
+        <td>Identifiant de compte, vérification d'éligibilité (institutionnelle ou MSSanté), communication</td>
+        <td>Base de données (Cloudflare D1)</td>
+        <td>Durée de vie du compte</td>
+      </tr>
+      <tr>
+        <td><strong>Mot de passe</strong></td>
+        <td>Authentification</td>
+        <td>Base de données, haché (jamais en clair)</td>
+        <td>Durée de vie du compte</td>
+      </tr>
+      <tr>
+        <td><strong>Statut et informations d'abonnement</strong></td>
+        <td>Gestion de l'accès (interne/médecin, actif/résilié), facturation</td>
+        <td>Base de données ; identifiants Stripe pour les paiements</td>
+        <td>Durée de vie du compte</td>
       </tr>
       <tr>
         <td><strong>Jeton de session</strong></td>
         <td>Maintien de la connexion entre les pages</td>
-        <td>Navigateur (localStorage)</td>
-        <td>7 jours maximum</td>
+        <td>Signé, transmis à chaque requête</td>
+        <td>2 heures</td>
+      </tr>
+      <tr>
+        <td><strong>Historique de tentatives de connexion</strong></td>
+        <td>Sécurité (protection contre les tentatives répétées)</td>
+        <td>Base de données</td>
+        <td>Effacé après succès ou expiration du blocage temporaire</td>
       </tr>
       <tr>
         <td><strong>Logs serveur techniques</strong></td>
@@ -371,7 +389,7 @@
   
   <h3>Détails techniques</h3>
   
-  <p><strong>Le code d'accès et le jeton de session sont stockés uniquement sur l'appareil de l'utilisateur</strong>, dans le localStorage de son navigateur. Aucune base de données utilisateur n'existe sur nos serveurs. L'utilisateur peut à tout moment supprimer ces données en vidant le cache de son navigateur ou en se déconnectant.</p>
+  <p>Les données de compte (email, mot de passe haché, statut, informations d'abonnement) sont stockées de façon sécurisée sur nos serveurs (base de données Cloudflare D1). Le mot de passe n'est jamais stocké en clair : il est haché selon un algorithme standard (PBKDF2) avant tout enregistrement. Le paiement des médecins abonnés est traité par Stripe, qui ne transmet à lococlic<sup>™</sup> aucune donnée bancaire en clair.</p>
   
   <p>lococlic<sup>™</sup> n'utilise actuellement <strong>aucun outil de tracking publicitaire</strong>, <strong>aucun cookie tiers</strong>, <strong>aucune solution d'analytics comportementale</strong> (type Google Analytics, Meta Pixel, Hotjar, etc.).</p>
   
@@ -386,18 +404,20 @@
   
   <h2>5. Destinataires des données</h2>
   
-  <p>Les données techniques (logs serveur) sont accessibles uniquement à&nbsp;:</p>
+  <p>Les données sont accessibles uniquement à&nbsp;:</p>
   
   <ul class="styled">
     <li>L'éditeur du site (Simon Albiach), pour les besoins de maintenance et de sécurité</li>
-    <li>Cloudflare, en tant qu'hébergeur, dans le cadre strict de la fourniture des services techniques</li>
+    <li>Cloudflare, en tant qu'hébergeur (site, base de données), dans le cadre strict de la fourniture des services techniques</li>
+    <li>Stripe, pour le traitement des paiements des médecins abonnés</li>
+    <li>Resend, pour l'envoi des emails transactionnels (confirmation de compte, réinitialisation de mot de passe, rappels)</li>
   </ul>
   
   <p><strong>Aucune donnée n'est revendue, partagée à des fins commerciales, ou transmise à des tiers non essentiels au fonctionnement du service.</strong></p>
   
   <h2>6. Transferts hors Union européenne</h2>
   
-  <p>L'hébergeur Cloudflare est une société américaine disposant d'un réseau mondial de serveurs. Les logs techniques peuvent donc transiter par des serveurs situés hors de l'Union européenne. Cloudflare est certifié au cadre <strong>Data Privacy Framework (DPF) UE-États-Unis</strong> et applique des Clauses Contractuelles Types (CCT) garantissant un niveau de protection adéquat des données.</p>
+  <p>Cloudflare, Stripe et Resend sont des sociétés américaines disposant chacune d'infrastructures internationales. Les données peuvent donc transiter par des serveurs situés hors de l'Union européenne. Ces prestataires appliquent des Clauses Contractuelles Types (CCT) et/ou sont certifiés au cadre <strong>Data Privacy Framework (DPF) UE-États-Unis</strong>, garantissant un niveau de protection adéquat des données transférées.</p>
   
   <h2>7. Sécurité des données</h2>
   
@@ -405,9 +425,10 @@
   
   <ul class="styled">
     <li>Connexion HTTPS chiffrée (TLS) sur l'ensemble du site</li>
-    <li>Authentification par code d'accès individuel</li>
+    <li>Mot de passe haché (PBKDF2), jamais stocké en clair</li>
+    <li>Jeton de session signé et limité dans le temps (2 heures)</li>
+    <li>Protection contre les tentatives de connexion répétées (blocage temporaire après plusieurs échecs)</li>
     <li>Hébergement sur infrastructure Cloudflare (CDN sécurisé, protection DDoS)</li>
-    <li>Aucun stockage centralisé de données utilisateur (architecture sans backend identifiant)</li>
     <li>Mises à jour régulières du code source</li>
   </ul>
   
@@ -425,10 +446,9 @@
     <li><strong>Droit de retirer votre consentement</strong> à tout moment</li>
   </ul>
   
-  <p>Compte tenu de la nature minimale des données traitées par lococlic<sup>™</sup> (uniquement un code d'accès stocké dans votre navigateur), l'exercice de la plupart de ces droits se fait simplement <strong>en vidant le cache de votre navigateur</strong> ou en vous déconnectant.</p>
-  
-  <p>Pour toute demande complémentaire, contactez&nbsp;:<br>
-  <a href="mailto:confidentialite@lococlic.com">confidentialite@lococlic.com</a></p>
+  <p>Pour exercer l'un de ces droits, contactez&nbsp;:<br>
+  <a href="mailto:contact@lococlic.com">contact@lococlic.com</a><br>
+  Une réponse sera apportée dans un délai maximum d'un mois, conformément à l'article 12 du RGPD. La suppression d'un compte entraîne l'effacement des données associées (email, mot de passe, historique d'abonnement), à l'exception des informations que Stripe doit conserver au titre de ses propres obligations légales et comptables.</p>
   
   <p>Vous disposez également du droit d'introduire une réclamation auprès de la <strong>Commission Nationale de l'Informatique et des Libertés (CNIL)</strong>&nbsp;:<br>
   <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a></p>
@@ -446,7 +466,7 @@
   <h2>11. Contact</h2>
   
   <p>Pour toute question relative à la protection de vos données personnelles&nbsp;:<br>
-  <a href="mailto:confidentialite@lococlic.com">confidentialite@lococlic.com</a></p>
+  <a href="mailto:contact@lococlic.com">contact@lococlic.com</a></p>
   
 </div>
 
