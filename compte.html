@@ -18,6 +18,23 @@
   } catch(e) { window.location.href = 'login.html'; }
 })();
 </script>
+<script>
+(function(){
+  try {
+    var s = JSON.parse(localStorage.getItem('lococlic_session'));
+    if (s && s.jetonSession) {
+      fetch('https://lococlic-worker.simon-albiach.workers.dev/verifier-session', {
+        headers: { 'Authorization': 'Bearer ' + s.jetonSession }
+      }).then(function(r){ return r.json(); }).then(function(d){
+        if (!d.valide) {
+          localStorage.removeItem('lococlic_session');
+          window.location.href = 'login.html';
+        }
+      }).catch(function(){});
+    }
+  } catch(e) {}
+})();
+</script>
 <style>
   :root {
     --navy: #1e3a5f;
@@ -212,7 +229,15 @@ const session = getSession();
 document.getElementById('email-affiche').textContent = session.email;
 document.getElementById('info-email').textContent = session.email;
 
-function seDeconnecter() {
+async function seDeconnecter() {
+  try {
+    if (session && session.jetonSession) {
+      await fetch(WORKER_URL + '/deconnexion', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + session.jetonSession }
+      });
+    }
+  } catch(e) {}
   localStorage.removeItem('lococlic_session');
   window.location.href = 'login.html';
 }

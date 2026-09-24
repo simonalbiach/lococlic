@@ -17,6 +17,26 @@
 </script>
 
 <script src="../auth-check.js"></script>
+
+<script>
+(function(){
+  try {
+    var s = JSON.parse(localStorage.getItem('lococlic_session'));
+    if (s && s.jetonSession) {
+      fetch('https://lococlic-worker.simon-albiach.workers.dev/verifier-session', {
+        headers: { 'Authorization': 'Bearer ' + s.jetonSession }
+      }).then(function(r){ return r.json(); }).then(function(d){
+        if (!d.valide) {
+          localStorage.removeItem('lococlic_session');
+          window.location.href = '../login.html';
+        }
+      }).catch(function(){});
+    }
+  } catch(e) {}
+})();
+</script>
+
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fiche patient — Myélopathie cervicarthrosique</title>
