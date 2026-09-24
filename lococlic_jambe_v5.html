@@ -1336,23 +1336,23 @@ const P = {
     desc:"Compression du nerf sural — branche sensitive pure issue de l'anastomose entre le nerf tibial et le nerf fibulaire commun — à son passage à travers l'aponévrose superficielle, le plus souvent au tiers moyen à inférieur du mollet, ou en arrière/sous la malléole latérale. Douleur chronique du mollet ou rétromalléolaire latérale, à type de brûlure ou dysesthésies, majorée à l'effort et par le chaussage. Fréquemment confondue avec une tendinopathie achilléenne.",
     alert:null,
     imaging:[
-      {t:"Pas d'imagerie en première intention",d:"Diagnostic avant tout clinique (zone gâchette, signe de Tinel, test anesthésique)"},
-      {t:'Échographie nerveuse dynamique',d:"Sondes hautes fréquences — visualise le renflement du nerf au site de compression et ses branches de division en aval ; examen dynamique en flexion plantaire passive/active"},
-      {t:'EMG (électroneuromyogramme) comparatif',d:"Diminution de la vitesse de conduction et de l'amplitude du potentiel sensitif, optimisée en flexion plantaire — anomalies présentes seulement chez une partie des patients, ne pas éliminer le diagnostic si EMG normal"}
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique (zone gâchette, Tinel, test anesthésique)"},
+      {t:'Échographie nerveuse dynamique',d:"Visualise le nerf au site de compression, en flexion plantaire"},
+      {t:'EMG comparatif',d:"Utile mais normal chez une partie des patients — ne pas éliminer le diagnostic"}
     ],
     treatment:[
-      {t:'Modification du chaussage',d:"Éviter ou adapter les chaussures à tige montante (ski alpin, ski nautique, randonnée) — logette de décharge à la face externe du tiers inférieur de jambe"},
-      {t:'Repos relatif / adaptation de la charge',d:"Réduction temporaire du volume de course"},
-      {t:'Kinésithérapie',d:"Mobilisation neurale, étirements de la chaîne postérieure"},
-      {t:'Infiltration écho-guidée',d:"Corticoïde ou anesthésique local au site de compression — si échec du traitement conservateur"},
-      {t:'Chirurgie (libération du dédoublement aponévrotique ou neurolyse)',d:"Si échec conservateur — résultats habituellement favorables"}
+      {t:'Modification du chaussage',d:"Adapter les chaussures à tige montante (ski, randonnée)"},
+      {t:'Repos relatif',d:"Réduction temporaire du volume de course"},
+      {t:'Kinésithérapie',d:"Mobilisation neurale, étirements"},
+      {t:'Infiltration écho-guidée',d:"Si échec du traitement conservateur"},
+      {t:'Chirurgie',d:"Si échec conservateur — résultats habituellement favorables"}
     ],
     exercises:[
-      {t:'Mobilisation neurale du nerf sural',d:'Glissements nerveux doux, encadrés par kiné formé'},
-      {t:'Étirement de la chaîne postérieure',d:'Gastrocnémien, soléaire'},
-      {t:'Renforcement progressif du triceps sural',d:'Reprise progressive après amélioration des symptômes'},
-      {t:'Reprise sportive progressive',d:'Réintroduction graduelle du volume de course'}
-    ],ficheExercice:null,
+      {t:'Mobilisation neurale du nerf sural',d:'Glissements nerveux doux'},
+      {t:'Étirement du mollet',d:'Chaîne postérieure'},
+      {t:'Renforcement du mollet',d:'Une fois les symptômes améliorés'},
+      {t:'Reprise sportive progressive',d:'Retour graduel au volume habituel'}
+    ],ficheExercice:'lococlic_fiches_patient/jambe_14_nerf_sural.html',
     referral:[
       {who:'Neurologue',why:"EMG comparatif pour argumenter la compression",p:true},
       {who:'Médecin du sport',why:"Évaluation des facteurs déclenchants (chaussage, technique de course) et adaptation",p:true},
@@ -1616,8 +1616,8 @@ const VIGNETTES = {
     score:{NERF_FIB_PROF:55}
   },
   loc_paresth_lat_mollet: {
-    id:'loc_paresth_lat_mollet', lbl:'⚡ Paresthésies/brûlures mollet postéro-latéral ou rétromalléolaire latérale',
-    desc:"Fourmillements ou brûlures le long du trajet du nerf sural (mollet postéro-latéral, arrière de la malléole latérale)",
+    id:'loc_paresth_lat_mollet', lbl:'⚡ Paresthésies mollet arrière / cheville externe',
+    desc:"Fourmillements sur le trajet du nerf sural",
     score:{NERF_SURAL:55}
   },
   // === PRÉSENTATIONS / CONTEXTE ===
@@ -1632,8 +1632,8 @@ const VIGNETTES = {
     score:{DECHIRURE_GASTROC:45, RUPTURE_ACHILLE:45}
   },
   pres_brulure_mollet: {
-    id:'pres_brulure_mollet', lbl:'🔥 Brûlure/dysesthésies du mollet, chaussage montant ou entorses répétées',
-    desc:"Douleur chronique du mollet à type de brûlure ou fourmillements, favorisée par des chaussures à tige montante (ski, randonnée) ou des antécédents d'entorses de cheville répétées",
+    id:'pres_brulure_mollet', lbl:'🔥 Brûlure du mollet liée au chaussage',
+    desc:"Brûlure ou fourmillements du mollet, favorisés par des chaussures montantes ou des entorses répétées",
     score:{NERF_SURAL:50}
   },
   pres_aug_volume: {
