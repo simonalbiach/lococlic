@@ -1330,6 +1330,40 @@ const P = {
     ],
     sources:[{l:'HAS 2013 — Syndrome du canal carpien : optimiser la pertinence du parcours patient (référence pour syndromes canalaires)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}],
     keys:['Plante du pied','Coureur','Tinel rétromalléolaire médial','Pied plat','Tunnel tarsien']
+  },
+  NERF_SURAL: {
+    id:'NERF_SURAL', name:'Compression du nerf sural', icon:'⚡', pop:'Coureur, sport à chaussures montantes (ski, randonnée), ATCD entorses de cheville répétées',
+    desc:"Compression du nerf sural — branche sensitive pure issue de l'anastomose entre le nerf tibial et le nerf fibulaire commun — à son passage à travers l'aponévrose superficielle, le plus souvent au tiers moyen à inférieur du mollet, ou en arrière/sous la malléole latérale. Douleur chronique du mollet ou rétromalléolaire latérale, à type de brûlure ou dysesthésies, majorée à l'effort et par le chaussage. Fréquemment confondue avec une tendinopathie achilléenne.",
+    alert:null,
+    imaging:[
+      {t:"Pas d'imagerie en première intention",d:"Diagnostic avant tout clinique (zone gâchette, signe de Tinel, test anesthésique)"},
+      {t:'Échographie nerveuse dynamique',d:"Sondes hautes fréquences — visualise le renflement du nerf au site de compression et ses branches de division en aval ; examen dynamique en flexion plantaire passive/active"},
+      {t:'EMG (électroneuromyogramme) comparatif',d:"Diminution de la vitesse de conduction et de l'amplitude du potentiel sensitif, optimisée en flexion plantaire — anomalies présentes seulement chez une partie des patients, ne pas éliminer le diagnostic si EMG normal"}
+    ],
+    treatment:[
+      {t:'Modification du chaussage',d:"Éviter ou adapter les chaussures à tige montante (ski alpin, ski nautique, randonnée) — logette de décharge à la face externe du tiers inférieur de jambe"},
+      {t:'Repos relatif / adaptation de la charge',d:"Réduction temporaire du volume de course"},
+      {t:'Kinésithérapie',d:"Mobilisation neurale, étirements de la chaîne postérieure"},
+      {t:'Infiltration écho-guidée',d:"Corticoïde ou anesthésique local au site de compression — si échec du traitement conservateur"},
+      {t:'Chirurgie (libération du dédoublement aponévrotique ou neurolyse)',d:"Si échec conservateur — résultats habituellement favorables"}
+    ],
+    exercises:[
+      {t:'Mobilisation neurale du nerf sural',d:'Glissements nerveux doux, encadrés par kiné formé'},
+      {t:'Étirement de la chaîne postérieure',d:'Gastrocnémien, soléaire'},
+      {t:'Renforcement progressif du triceps sural',d:'Reprise progressive après amélioration des symptômes'},
+      {t:'Reprise sportive progressive',d:'Réintroduction graduelle du volume de course'}
+    ],ficheExercice:null,
+    referral:[
+      {who:'Neurologue',why:"EMG comparatif pour argumenter la compression",p:true},
+      {who:'Médecin du sport',why:"Évaluation des facteurs déclenchants (chaussage, technique de course) et adaptation",p:true},
+      {who:'Chirurgien orthopédique',why:"Si échec du traitement conservateur prolongé",p:false}
+    ],
+    sources:[
+      {l:'Bojovic et al. 2025 — Overview of nerve entrapment syndromes in the foot and ankle (International Orthopaedics)',u:'https://pubmed.ncbi.nlm.nih.gov/40042611/'},
+      {l:'Fichez O, Rousseau R — Les syndromes canalaires du membre inférieur (La médecine du sport)',u:'https://www.lamedecinedusport.com/traumatologie/les-syndromes-canalaires-du-membre-inferieur/'},
+      {l:'Garção et al. 2023 — Anatomical patterns of the sural nerve: a meta-analysis (Surgical and Radiologic Anatomy)',u:'https://pubmed.ncbi.nlm.nih.gov/37115291/'}
+    ],
+    keys:['Douleur mollet chronique','Brûlure/dysesthésies','Tiers moyen-inférieur du mollet ou rétromalléolaire latéral','Majorée par chaussage montant','Souvent confondue avec tendinopathie achilléenne']
   }
 };
 
@@ -1532,6 +1566,14 @@ const TESTS = {
     pos:"Hypoesthésie ou paresthésie plantaire — atteinte du nerf tibial postérieur (tunnel tarsien)",
     neg:"Sensibilité conservée et symétrique",
     affects_pos:{SYND_TUNNEL_TARSIEN:50}, affects_neg:{SYND_TUNNEL_TARSIEN:-22}
+  },
+  tinel_sural: {
+    name:"Percussion du trajet du nerf sural (Tinel)", family:'SURAL', badge:'SUR',
+    desc:"Recherche d'une zone gâchette le long du trajet du nerf sural",
+    how:"Percuter/palper le trajet du nerf sural au tiers moyen-inférieur du mollet (face postéro-latérale) et en arrière/sous la malléole latérale. Sensibiliser par une flexion plantaire passive de la cheville.",
+    pos:"Reproduction de la douleur, brûlure ou dysesthésies (signe de Tinel positif) — en faveur d'une compression du nerf sural",
+    neg:"Pas de reproduction des symptômes sur le trajet du nerf",
+    affects_pos:{NERF_SURAL:50}, affects_neg:{NERF_SURAL:-20}
   }
 };
 
@@ -1573,12 +1615,11 @@ const VIGNETTES = {
     desc:'Fourmillements au 1er espace (entre 1er et 2e orteil)',
     score:{NERF_FIB_PROF:55}
   },
-  loc_hallux: {
-    id:'loc_hallux', lbl:'🦶 Douleur de l\'hallux à la flexion',
-    desc:"Douleur retromalléolaire médiale à la flexion du gros orteil, sensation de blocage — tendinopathie du FHL",
-    score:{TEND_FHL:55}
+  loc_paresth_lat_mollet: {
+    id:'loc_paresth_lat_mollet', lbl:'⚡ Paresthésies/brûlures mollet postéro-latéral ou rétromalléolaire latérale',
+    desc:"Fourmillements ou brûlures le long du trajet du nerf sural (mollet postéro-latéral, arrière de la malléole latérale)",
+    score:{NERF_SURAL:55}
   },
-
   // === PRÉSENTATIONS / CONTEXTE ===
   loc_plantaire: {
     id:'loc_plantaire', lbl:'🦶 Paresthésies / brûlures plantaires',
@@ -1590,10 +1631,10 @@ const VIGNETTES = {
     desc:"Sensation de coup de fouet, claquage, à un démarrage ou un saut — déchirure musculaire ou rupture tendineuse",
     score:{DECHIRURE_GASTROC:45, RUPTURE_ACHILLE:45}
   },
-  pres_effort_seuil: {
-    id:'pres_effort_seuil', lbl:'⚙️ Douleur à un seuil reproductible d\'effort',
-    desc:"Douleur à un seuil d'effort reproductible, soulagée au repos",
-    score:{SYND_LOGES:45, CLAUDICATION_VASC:35, SYND_POPLITE:25}
+  pres_brulure_mollet: {
+    id:'pres_brulure_mollet', lbl:'🔥 Brûlure/dysesthésies du mollet, chaussage montant ou entorses répétées',
+    desc:"Douleur chronique du mollet à type de brûlure ou fourmillements, favorisée par des chaussures à tige montante (ski, randonnée) ou des antécédents d'entorses de cheville répétées",
+    score:{NERF_SURAL:50}
   },
   pres_aug_volume: {
     id:'pres_aug_volume', lbl:'📈 Augmentation récente du volume sportif',
@@ -1629,9 +1670,9 @@ const VIGNETTES = {
 
 const MECA_VIGS = {
   trauma_aigu: ['loc_post_haut','loc_post_bas','pres_brutal'],
-  surcharge: ['loc_tibia_int','loc_tibia_ant','loc_post_bas','loc_retromall_med','loc_hallux','loc_plantaire','pres_aug_volume','pres_effort_seuil','pres_mollet_dur'],
-  vasculaire: ['loc_post_haut','pres_fdr_thrombose','pres_fdr_vasculaire','pres_jeune_claudication','pres_effort_seuil','pres_mollet_dur','pres_mollet_souple'],
-  neuro: ['loc_paresth_dos','loc_paresth_1er','loc_plantaire']
+  surcharge: ['loc_tibia_int','loc_tibia_ant','loc_post_bas','loc_retromall_med','loc_plantaire','pres_aug_volume','pres_mollet_dur','pres_brulure_mollet'],
+  vasculaire: ['loc_post_haut','pres_fdr_thrombose','pres_fdr_vasculaire','pres_jeune_claudication','pres_mollet_dur','pres_mollet_souple'],
+  neuro: ['loc_paresth_dos','loc_paresth_1er','loc_plantaire','loc_paresth_lat_mollet']
 };
 
 const CHOICES = {
@@ -1643,13 +1684,13 @@ const CHOICES = {
         score:{DECHIRURE_GASTROC:35, RUPTURE_ACHILLE:35}},
       {key:'surcharge', lbl:'Surcharge progressive (sport, métier)',
         desc:"Apparition progressive à l\'augmentation du volume, course, marche prolongée",
-        score:{PERIOSTITE:25, FRACT_STRESS_TIB:25, TEND_ACHILLE_J:20, TEND_TIB_POST:20, TEND_TIB_ANT:20, TEND_FHL:18, SYND_LOGES:20, SYND_TUNNEL_TARSIEN:18}},
+        score:{PERIOSTITE:25, FRACT_STRESS_TIB:25, TEND_ACHILLE_J:20, TEND_TIB_POST:20, TEND_TIB_ANT:20, TEND_FHL:18, SYND_LOGES:20, SYND_TUNNEL_TARSIEN:18, NERF_SURAL:18}},
       {key:'vasculaire', lbl:'Mollet douloureux + facteurs de risque vasculaire ou thrombose',
         desc:"Œdème, asymétrie, FDR vasculaires (tabac, contraception, voyage, alitement, post-op)",
         score:{TVP:40, CLAUDICATION_VASC:35, SYND_POPLITE:20}},
       {key:'neuro', lbl:'Paresthésies / faiblesse',
         desc:"Fourmillements, hypoesthésie, faiblesse releveurs — atteinte nerveuse",
-        score:{NERF_FIB_PROF:40, NERF_FIB_SUPERF:40, SYND_TUNNEL_TARSIEN:40}}
+        score:{NERF_FIB_PROF:40, NERF_FIB_SUPERF:40, SYND_TUNNEL_TARSIEN:40, NERF_SURAL:40}}
     ]
   },
   AGE: {
@@ -1657,7 +1698,7 @@ const CHOICES = {
     items:[
       {key:'sport_jeune', lbl:'< 40 ans, sportif',
         desc:"Coureur, sportif pivot, militaire, danseur",
-        score:{PERIOSTITE:18, FRACT_STRESS_TIB:18, SYND_LOGES:25, SYND_POPLITE:15, TEND_ACHILLE_J:10, SYND_TUNNEL_TARSIEN:15}},
+        score:{PERIOSTITE:18, FRACT_STRESS_TIB:18, SYND_LOGES:25, SYND_POPLITE:15, TEND_ACHILLE_J:10, SYND_TUNNEL_TARSIEN:15, NERF_SURAL:15}},
       {key:'a40_60', lbl:'40-60 ans, sportif occasionnel',
         desc:"\'Weekend warrior\', sport repris à l\'âge mûr, tendinopathies de surmenage",
         score:{TEND_ACHILLE_J:20, RUPTURE_ACHILLE:20, DECHIRURE_GASTROC:25, TEND_TIB_POST:15, SYND_TUNNEL_TARSIEN:12}},
@@ -1705,6 +1746,7 @@ const CIRCUITS = {
   NERF_FIB_SUPERF:   ['palp_nerf_superf','tinel_fibulaire','palp_tibia','palp_achille','flexdors_contrariee'],
   NERF_FIB_PROF:     ['tinel_fibulaire','paresth_1er','flexdors_contrariee','palp_nerf_superf','palp_tibia'],
   SYND_TUNNEL_TARSIEN: ['tinel_tarsien','sensitif_plante','palp_tib_post','tinel_fibulaire','palp_achille'],
+  NERF_SURAL:          ['tinel_sural','palp_achille'],
         NERF_FIB_PROF: ['tinel_fibulaire','flexdors_contrariee','paresth_1er','palp_tibia','palp_achille']
 };
 
