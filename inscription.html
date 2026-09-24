@@ -207,7 +207,6 @@
         <div class="champ">
           <label>Email</label>
           <input type="email" id="medecin-email" required>
-          <div style="font-size:11px; color:#94a3b8; margin-top:5px; line-height:1.4;"><strong style="color:#475569;">Adresse professionnelle de santé MSSanté obligatoire</strong> (se terminant par mssante.fr) pour vous abonner.</div>
         </div>
         <div class="champ">
           <label>Mot de passe</label>
@@ -291,12 +290,6 @@ function ressembleInstitutionnel(email) {
   const domainesPublics = ['gmail.com','yahoo.fr','yahoo.com','hotmail.com','hotmail.fr','outlook.com','outlook.fr','free.fr','orange.fr','laposte.net','icloud.com'];
   if (domainesPublics.includes(domaine)) return false;
   return /univ|etu|etud|chu|chru|ch-|aphp|aphm|u-[a-z]/i.test(domaine);
-}
-
-function estAdresseProSante(email) {
-  const domaine = (email.split('@')[1] || '').toLowerCase();
-  if (domaine.includes('patient.mssante.fr')) return false;
-  return domaine.includes('mssante');
 }
 
 function basculerAffichage(id) {
@@ -391,11 +384,6 @@ async function soumettreMedecin(e) {
     return;
   }
   const codeInvite = document.getElementById('medecin-code').value.trim();
-  if (!codeInvite && !estAdresseProSante(emailInput.value)) {
-    emailInput.classList.add('erreur');
-    afficherMessage('message-medecin', "Une adresse professionnelle de santé MSSanté est obligatoire (se terminant par mssante.fr).", 'erreur');
-    return;
-  }
   const btn = document.getElementById('btn-medecin');
   btn.disabled = true;
   btn.textContent = 'Envoi en cours...';
