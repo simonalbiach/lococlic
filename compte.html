@@ -278,6 +278,21 @@ function afficherAbonnement(abonnement) {
     return;
   }
 
+  if (abonnement.type === 'msp') {
+    conteneur.innerHTML = `
+      <div class="ligne-info">
+        <span class="ligne-info-label">Statut</span>
+        <span class="badge-actif">Actif</span>
+      </div>
+      <div class="ligne-info">
+        <span class="ligne-info-label">Formule</span>
+        <span class="ligne-info-valeur">Licence collective${abonnement.structure_nom ? ' — ' + abonnement.structure_nom : ''}</span>
+      </div>
+      <p class="message-info">Votre accès est pris en charge par votre structure. Vous n'avez rien à payer directement ; en cas de résiliation de la licence par la structure, vous pourrez toujours souscrire un abonnement individuel pour conserver l'accès.</p>
+    `;
+    return;
+  }
+
   const libellePlan = abonnement.plan === 'annuel' ? 'Médecin — Annuel' : 'Médecin — Mensuel';
   const unite = abonnement.plan === 'annuel' ? '/ an' : '/ mois';
   const autrePlan = abonnement.plan === 'annuel' ? 'mensuel' : 'annuel';

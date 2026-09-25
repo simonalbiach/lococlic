@@ -165,7 +165,7 @@
     </div>
     <div class="champ">
       <label>Nombre de professionnels</label>
-      <input type="number" id="nombre-comptes" min="2" value="2" required>
+      <input type="number" id="nombre-comptes" min="2" max="100" value="2" required>
     </div>
 
     <div class="recap">
@@ -191,7 +191,7 @@ function calculerPrixUnitaire(nb) {
 }
 
 function mettreAJourRecap() {
-  const nb = Math.max(2, parseInt(document.getElementById('nombre-comptes').value) || 2);
+  const nb = Math.min(100, Math.max(2, parseInt(document.getElementById('nombre-comptes').value) || 2));
   const prixUnitaire = calculerPrixUnitaire(nb);
   const total = nb * prixUnitaire;
   document.getElementById('recap-detail').textContent = `${nb} comptes × ${prixUnitaire}€`;
@@ -213,6 +213,13 @@ async function soumettre() {
   if (!structureNom || !emailCoordinateur || !nombreComptes || nombreComptes < 2) {
     msg.className = 'message erreur';
     msg.textContent = 'Merci de remplir tous les champs (2 comptes minimum).';
+    msg.style.display = 'block';
+    return;
+  }
+
+  if (nombreComptes > 100) {
+    msg.className = 'message erreur';
+    msg.textContent = 'Le nombre de comptes ne peut pas dépasser 100.';
     msg.style.display = 'block';
     return;
   }
