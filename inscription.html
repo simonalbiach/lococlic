@@ -289,6 +289,8 @@ function ressembleInstitutionnel(email) {
   const domaine = (email.split('@')[1] || '').toLowerCase();
   const domainesPublics = ['gmail.com','yahoo.fr','yahoo.com','hotmail.com','hotmail.fr','outlook.com','outlook.fr','free.fr','orange.fr','laposte.net','icloud.com'];
   if (domainesPublics.includes(domaine)) return false;
+  const domainesInstitutionnelsExacts = ['utoulouse.fr','uvsq.fr','ens.uvsq.fr','ap-hm.fr','sorbonne-paris-nord.fr','edu.sorbonne-paris-nord.fr','ube.fr','unistra.fr','unicaen.fr','unilim.fr','umontpellier.fr','uca.fr'];
+  if (domainesInstitutionnelsExacts.includes(domaine)) return true;
   return /univ|etu|etud|chu|chru|ch-|aphp|aphm|u-[a-z]/i.test(domaine);
 }
 
