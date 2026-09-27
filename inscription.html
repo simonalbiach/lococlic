@@ -406,14 +406,15 @@ async function soumettreMedecin(e) {
     });
     const data = await reponse.json();
 
-    if (data.success && data.url) {
-      afficherMessage('message-medecin', 'Redirection vers le paiement...', 'succes');
-      window.location.href = data.url;
-      return;
-    }
-    if (data.success && data.statut === 'medecin_actif') {
-      afficherMessage('message-medecin', 'Compte activé ! Vous pouvez maintenant vous connecter.', 'succes');
-      document.getElementById('form-medecin').reset();
+    if (data.success) {
+      if (codeInvite) {
+        afficherMessage('message-medecin', 'Compte activé ! Vous pouvez maintenant vous connecter.', 'succes');
+        document.getElementById('form-medecin').reset();
+      } else {
+        afficherMessage('message-medecin', "Un email de confirmation vous a été envoyé. Cliquez sur le lien qu'il contient pour finaliser votre inscription et accéder au paiement.", 'succes');
+        btn.textContent = 'Email envoyé ✓';
+        return;
+      }
     } else {
       afficherMessage('message-medecin', data.error || 'Une erreur est survenue.', 'erreur');
       if (data.champ === 'email') { emailInput.classList.add('erreur'); }
