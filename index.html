@@ -102,6 +102,8 @@
   .main-nav {
     display: flex;
     gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     font-size: 14px;
     font-weight: 500;
   }
@@ -122,13 +124,13 @@
     padding: 8px 14px;
     border-radius: 20px;
     background: #1e3a5f;
-    color: white;
     font-size: 13px;
     font-weight: 600;
     text-decoration: none;
     margin-left: 4px;
     transition: all 0.15s;
   }
+  .main-nav a.profil-icone { color: white; }
   .profil-icone:hover { background: #2c5f8d; }
 
   /* ===== HERO ===== */
@@ -583,6 +585,7 @@
       <a href="#help">Aide</a>
       <a href="#modules" class="cta">Commencer</a>
       <a href="compte.html" class="profil-icone" title="Mon compte" aria-label="Mon compte">👤 Mon compte</a>
+      <button onclick="seDeconnecter()" style="background:transparent; border:1px solid #e2e8f0; color:#dc2626; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px; cursor:pointer; margin-left:4px; font-family:inherit;">Déconnexion</button>
     </nav>
   </div>
 </header>
@@ -940,6 +943,20 @@ document.addEventListener('click', function(e) {
     searchResults.classList.remove('open');
   }
 });
+
+async function seDeconnecter() {
+  try {
+    var s = JSON.parse(localStorage.getItem('lococlic_session'));
+    if (s && s.jetonSession) {
+      await fetch('https://lococlic-worker.simon-albiach.workers.dev/deconnexion', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + s.jetonSession }
+      });
+    }
+  } catch(e) {}
+  localStorage.removeItem('lococlic_session');
+  window.location.href = 'login.html';
+}
 </script>
 
 
