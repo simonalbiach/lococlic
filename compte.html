@@ -60,6 +60,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
   }
   .topbar-brand {
     display: flex;
@@ -89,6 +91,10 @@
     color: white; font-size: 16px;
   }
   .profil-email { font-size: 13px; color: var(--text-muted); }
+
+  @media (max-width: 480px) {
+    .profil-email { display: none; }
+  }
 
   .conteneur { max-width: 640px; margin: 0 auto; padding: 40px 20px 80px; }
 
@@ -177,7 +183,7 @@
       <div class="profil-avatar">👤</div>
       <span class="profil-email" id="email-affiche">···</span>
     </div>
-    <button onclick="seDeconnecter()" style="background:transparent; border:1px solid #e2e8f0; color:#64748b; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px; cursor:pointer;">
+    <button onclick="seDeconnecter()" style="background:transparent; border:1px solid #e2e8f0; color:#dc2626; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px; cursor:pointer;">
       Déconnexion
     </button>
   </div>
