@@ -102,7 +102,6 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
-  .lien-code-msp { font-size: 12px; color: #64748b; cursor: pointer; text-decoration: underline; margin-bottom: 16px; display: inline-block; }
   .champ-code-msp { display: none; }
   .champ-code-msp.visible { display: block; }
 
@@ -141,6 +140,29 @@
   .panneau { display: none; }
   .panneau.actif { display: block; }
 </style>
+<style>
+  .bandeau-msp { display: none; margin: 0 0 18px; padding: 14px 16px; border-radius: 10px; font-size: 13px; line-height: 1.55; }
+  .bandeau-msp.ok { display: block; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+  .bandeau-msp.info { display: block; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+  .bandeau-msp-titre { font-weight: 700; margin-bottom: 2px; }
+</style>
+<style>
+  .msp-carte { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; font-family: inherit; cursor: pointer; padding: 14px 16px; border: 2px solid #1e3a5f; border-radius: 14px; background: #eff6ff; margin: 4px 0 14px; }
+  .msp-carte:hover { background: #dbeafe; }
+  .msp-carte-icone { font-size: 26px; line-height: 1; }
+  .msp-carte-texte { display: flex; flex-direction: column; }
+  .msp-carte-titre { font-size: 16px; font-weight: 700; color: #1e3a5f; }
+  .msp-carte-sous { font-size: 12.5px; color: #475569; margin-top: 2px; line-height: 1.4; }
+  .msp-carte-chevron { margin-left: auto; font-size: 26px; color: #1e3a5f; font-weight: 700; }
+  .separateur { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #94a3b8; margin: 0 0 14px; }
+  .separateur::before, .separateur::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+  .msp-champ-carte { border: 2px solid #1e3a5f; border-radius: 14px; padding: 14px 16px; background: #eff6ff; margin: 4px 0 14px; }
+  .msp-champ-titre { font-size: 14px; font-weight: 700; color: #1e3a5f; margin-bottom: 8px; }
+  .msp-champ-carte input { width: 100%; padding: 12px; border: 1.5px solid #bfdbfe; border-radius: 10px; font-size: 14px; background: #fff; letter-spacing: .3px; }
+  .msp-champ-aide { font-size: 12px; color: #475569; margin-top: 8px; }
+  .msp-retour { display: inline-block; margin-top: 8px; font-size: 12px; color: #64748b; text-decoration: underline; cursor: pointer; }
+  .msp-note { display: none; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 13px; padding: 10px 12px; border-radius: 10px; margin: 0 0 16px; }
+</style>
 </head>
 <body>
 
@@ -150,6 +172,8 @@
       <img src="images/logo.png" alt="LocoClic">
       <h1>Créer un compte</h1>
     </div>
+
+    <div class="bandeau-msp" id="bandeau-msp" role="status"><div class="bandeau-msp-titre" id="bandeau-msp-titre"></div><div id="bandeau-msp-texte"></div></div>
 
     <div class="onglets-profil">
       <button class="onglet-profil actif" onclick="changerProfil('interne', event)">Interne</button>
@@ -236,6 +260,19 @@
           </div>
           <div style="font-size:11px; color:#94a3b8; margin-top:5px; line-height:1.4;"><strong style="color:#475569;">8 caractères minimum</strong></div>
         </div>
+        <button type="button" class="msp-carte" id="lien-code-msp" onclick="basculerCodeMsp()">
+          <span class="msp-carte-icone">🏥</span>
+          <span class="msp-carte-texte"><span class="msp-carte-titre">J'ai un code MSP</span><span class="msp-carte-sous">Ma structure m'a donné un code : accès sans paiement</span></span>
+          <span class="msp-carte-chevron">›</span>
+        </button>
+        <div class="champ champ-code-msp msp-champ-carte" id="champ-code-msp">
+          <div class="msp-champ-titre">🏥 Votre structure vous a donné un code ?</div>
+          <input type="text" id="medecin-code" placeholder="Code MSP : LOCOCLIC-XXXXXXXXXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Code MSP">
+          <div class="msp-champ-aide"><strong>Sans paiement</strong> : votre compte est activé immédiatement.</div>
+          <span class="msp-retour" onclick="basculerCodeMsp()">Je n'ai pas de code MSP</span>
+        </div>
+        <div class="msp-note" id="msp-note">✓ Aucune formule à choisir : votre structure prend en charge votre accès.</div>
+        <div class="separateur" id="separateur-msp">ou choisissez un abonnement individuel</div>
         <div class="champ" id="bloc-formule">
           <label>Formule</label>
           <div class="plans">
@@ -252,12 +289,6 @@
               <div class="unite">/ an après l'essai</div>
             </div>
           </div>
-        </div>
-        <span class="lien-code-msp" id="lien-code-msp" onclick="basculerCodeMsp()">J'ai un code MSP</span>
-        <div class="champ champ-code-msp" id="champ-code-msp">
-          <label>Code MSP</label>
-          <input type="text" id="medecin-code" placeholder="LOCOCLIC-XXXXXXXXXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false">
-          <div style="font-size:11px; color:#94a3b8; margin-top:5px; line-height:1.4;">Code MSP reçu par email ou transmis par votre structure (MSP, SISA…). <strong style="color:#475569;">Aucun paiement</strong> : votre compte est activé immédiatement.</div>
         </div>
         <div class="cgu-ligne">
           <input type="checkbox" id="medecin-cgu">
@@ -327,8 +358,10 @@ function libelleBoutonMedecin() {
 
 function basculerCodeMsp() {
   const ouvert = document.getElementById('champ-code-msp').classList.toggle('visible');
+  document.getElementById('lien-code-msp').style.display = ouvert ? 'none' : '';
+  document.getElementById('separateur-msp').style.display = ouvert ? 'none' : '';
   document.getElementById('bloc-formule').style.display = ouvert ? 'none' : '';
-  document.getElementById('lien-code-msp').textContent = ouvert ? "Je n'ai pas de code MSP" : "J'ai un code MSP";
+  document.getElementById('msp-note').style.display = ouvert ? 'block' : 'none';
   document.getElementById('btn-medecin').textContent = libelleBoutonMedecin();
   if (ouvert) document.getElementById('medecin-code').focus();
 }
@@ -446,6 +479,57 @@ async function soumettreMedecin(e) {
   btn.disabled = false;
   btn.textContent = libelleBoutonMedecin();
 }
+function activerOngletMedecin() {
+  document.querySelectorAll('.onglet-profil').forEach(o => o.classList.remove('actif'));
+  document.querySelectorAll('.panneau').forEach(p => p.classList.remove('actif'));
+  document.querySelectorAll('.onglet-profil')[1].classList.add('actif');
+  document.getElementById('form-medecin').classList.add('actif');
+}
+
+async function retourPaiementMsp() {
+  const jeton = new URLSearchParams(window.location.search).get('msp');
+  if (!jeton) return;
+  const bandeau = document.getElementById('bandeau-msp');
+  const titre = document.getElementById('bandeau-msp-titre');
+  const texte = document.getElementById('bandeau-msp-texte');
+  bandeau.className = 'bandeau-msp info';
+  titre.textContent = 'Paiement reçu — activation de votre licence en cours…';
+  texte.textContent = '';
+  let prepare = false;
+  for (let essai = 0; essai < 15; essai++) {
+    try {
+      const reponse = await fetch(WORKER_URL + '/code-msp?jeton=' + encodeURIComponent(jeton));
+      if (reponse.status === 400 || reponse.status === 404) {
+        bandeau.className = 'bandeau-msp';
+        titre.textContent = '';
+        return;
+      }
+      const data = await reponse.json();
+      if (!prepare) {
+        activerOngletMedecin();
+        if (!codeMspOuvert()) basculerCodeMsp();
+        prepare = true;
+      }
+      if (data.statut === 'pret') {
+        document.getElementById('medecin-code').value = data.code;
+        const champEmail = document.getElementById('medecin-email');
+        if (!champEmail.value && data.email) champEmail.value = data.email;
+        bandeau.className = 'bandeau-msp ok';
+        titre.textContent = '✅ Paiement reçu — votre licence MSP' + (data.structure_nom ? ' « ' + data.structure_nom + ' »' : '') + ' est active.';
+        texte.textContent = 'Le code MSP est déjà renseigné ci-dessous : créez maintenant votre compte.' + (data.nombre_comptes ? ' Il permet ' + data.nombre_comptes + ' inscriptions au total et vous a aussi été envoyé par email pour le transmettre à votre équipe.' : '');
+        try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
+        const champMdp = document.getElementById('medecin-mdp');
+        if (champMdp) champMdp.focus();
+        return;
+      }
+    } catch (e) {}
+    await new Promise(function (resoudre) { setTimeout(resoudre, 2000); });
+  }
+  titre.textContent = 'Paiement reçu — validation en cours';
+  texte.textContent = "Votre paiement est en cours de validation. Le code MSP vous sera envoyé par email dès qu'il sera confirmé (pour un virement SEPA, cela peut prendre quelques jours).";
+}
+
+retourPaiementMsp();
 </script>
 
 </body>
