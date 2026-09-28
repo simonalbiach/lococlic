@@ -23,7 +23,7 @@
   try {
     var s = JSON.parse(localStorage.getItem('lococlic_session'));
     if (s && s.jetonSession) {
-      fetch('https://lococlic-worker.simon-albiach.workers.dev/verifier-session', {
+      fetch('https://lococlic-worker.simon-albiach.workers.dev/verifier-session?limite=1', {
         headers: { 'Authorization': 'Bearer ' + s.jetonSession }
       }).then(function(r){ return r.json(); }).then(function(d){
         if (!d.valide) {
@@ -170,6 +170,63 @@
 
   .message-info { font-size: 14px; color: var(--text-muted); text-align: center; padding: 20px 0; }
 </style>
+<style>
+  .badge-termine { display:inline-flex; align-items:center; gap:6px; background:#fef2f2; color:#dc2626; font-size:13px; font-weight:600; padding:4px 12px; border-radius:20px; }
+  .badge-termine::before { content:''; width:6px; height:6px; border-radius:50%; background:#dc2626; }
+  .zone-reprise { margin-top:20px; padding:20px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; }
+  .zone-reprise-titre { font-size:14px; font-weight:700; color:var(--navy); margin-bottom:6px; }
+  .zone-reprise-texte { font-size:13px; color:#475569; line-height:1.55; margin-bottom:16px; }
+  .plans-reabo { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+  .plan-reabo { border:1.5px solid var(--border); border-radius:12px; padding:14px 12px; text-align:center; cursor:pointer; background:#fff; }
+  .plan-reabo.selectionne { border-color:var(--navy); box-shadow:0 0 0 3px rgba(30,58,95,0.10); }
+  .plan-reabo .nom { font-size:13px; font-weight:600; color:var(--text-muted); }
+  .plan-reabo .prix { font-size:21px; font-weight:700; color:var(--navy); margin:4px 0 2px; }
+  .plan-reabo .unite { font-size:12px; color:var(--text-muted); }
+  .plan-reabo .eco { font-size:11px; color:#16a34a; font-weight:600; margin-top:5px; }
+  .btn-principal { background:var(--navy); color:#fff; border:none; font-size:14px; font-weight:600; padding:13px 20px; border-radius:10px; width:100%; cursor:pointer; }
+  .btn-principal:hover { background:var(--accent2); }
+  .btn-principal:disabled { opacity:0.6; cursor:not-allowed; }
+  .aide-reprise { font-size:12px; color:var(--text-muted); text-align:center; margin-top:10px; line-height:1.5; }
+  .recap-licence { display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:14px; font-size:13px; color:#475569; }
+  .recap-licence strong { font-size:19px; color:var(--navy); }
+  .lien-secondaire { display:block; text-align:center; font-size:13px; color:var(--navy); font-weight:600; margin-top:14px; text-decoration:underline; cursor:pointer; }
+  .bloc-reabo-indiv { display:none; margin-top:16px; padding-top:16px; border-top:1px solid #bfdbfe; }
+  .bloc-reabo-indiv.actif { display:block; }
+  .bandeau-paiement { display:none; margin-bottom:16px; padding:14px 16px; border-radius:10px; font-size:13px; line-height:1.5; }
+  .bandeau-paiement.ok { display:block; background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+  .bandeau-paiement.info { display:block; background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; }
+</style>
+<style>
+  .lien-quitter { display:block; text-align:center; font-size:13px; color:var(--text-muted); text-decoration:underline; cursor:pointer; margin-top:4px; }
+  .zone-quitter { display:none; margin-top:16px; padding:20px; border:1px solid var(--border); border-radius:12px; background:#fff; }
+  .zone-quitter.actif { display:block; }
+  .zone-quitter-titre { font-size:14px; font-weight:700; color:var(--navy); margin-bottom:4px; }
+  .zone-quitter-texte { font-size:13px; color:#475569; line-height:1.55; margin-bottom:16px; }
+  .option-quitter { border:1.5px solid var(--border); border-radius:12px; padding:16px; margin-bottom:12px; }
+  .option-quitter:last-child { margin-bottom:0; }
+  .option-quitter.principale { border-color:#bfdbfe; background:#eff6ff; }
+  .option-quitter-titre { font-size:14px; font-weight:700; color:var(--navy); margin-bottom:4px; }
+  .option-quitter-texte { font-size:13px; color:#475569; line-height:1.5; margin-bottom:12px; }
+  .note-gestion { font-size:12px; color:#92400e; background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:10px 12px; margin-bottom:14px; line-height:1.5; }
+  .confirmation-depart { background:#fef2f2; border:1px solid #fecaca; border-radius:12px; padding:18px; }
+  .confirmation-depart-titre { font-size:15px; font-weight:700; color:#7f1d1d; margin-bottom:8px; }
+  .confirmation-depart p { font-size:13px; color:#7f1d1d; line-height:1.55; margin-bottom:14px; }
+  .confirmation-depart .btn-resilier { margin-top:10px; }
+</style>
+<style>
+  .g-onglets { display:flex; gap:6px; background:#f1f5f9; padding:5px; border-radius:12px; margin-bottom:8px; }
+  .g-onglet { flex:1; text-align:center; font-size:13px; font-weight:600; color:var(--text-muted); padding:10px 8px; border-radius:9px; border:none; background:transparent; cursor:pointer; font-family:inherit; }
+  .g-onglet em { display:block; font-style:normal; font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:#94a3b8; margin-top:2px; }
+  .g-onglet.actif { background:#fff; color:var(--navy); box-shadow:0 1px 4px rgba(15,42,68,.12); }
+  .g-onglet.actif em { color:#1e3a5f; }
+  .g-point { display:inline-block; width:8px; height:8px; border-radius:50%; background:#f59e0b; margin-left:4px; vertical-align:middle; }
+  .g-bande { background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; font-size:13px; border-radius:10px; padding:10px 12px; margin:6px 0 4px; }
+  .btn-collectif { width:100%; background:#fff; border:1.5px solid #fca5a5; color:#b91c1c; font-size:14px; font-weight:600; padding:12px 16px; border-radius:10px; cursor:pointer; margin-top:16px; }
+  .btn-collectif:hover { background:#fef2f2; }
+  .g-confirm { margin-top:16px; background:#fef2f2; border:1px solid #fecaca; border-radius:12px; padding:18px; }
+  .g-confirm-titre { font-size:15px; font-weight:700; color:#7f1d1d; margin-bottom:8px; }
+  .g-confirm ul { margin:0 0 14px 18px; font-size:13px; color:#7f1d1d; line-height:1.6; }
+</style>
 </head>
 <body>
 
@@ -201,6 +258,8 @@
     <button class="onglet" onclick="changerOnglet('factures', event)">Mes factures</button>
     <button class="onglet" onclick="changerOnglet('compte', event)">Mes informations</button>
   </div>
+
+  <div class="bandeau-paiement" id="bandeau-paiement"></div>
 
   <div class="carte">
 
@@ -262,6 +321,10 @@ function formaterDate(iso) {
   return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
+function echapperHtml(texte) {
+  return String(texte).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function afficherAbonnement(abonnement) {
   const conteneur = document.getElementById('details-abonnement');
   if (!abonnement) {
@@ -287,18 +350,123 @@ function afficherAbonnement(abonnement) {
     return;
   }
 
+  if (abonnement.type === 'termine') {
+    const nomStructure = abonnement.structure_nom ? ' — ' + echapperHtml(abonnement.structure_nom) : '';
+    const lignesTermine = `
+      <div class="ligne-info">
+        <span class="ligne-info-label">Statut</span>
+        <span class="badge-termine">Terminé</span>
+      </div>
+      <div class="ligne-info">
+        <span class="ligne-info-label">Formule</span>
+        <span class="ligne-info-valeur">${abonnement.profil === 'individuel' ? 'Médecin' : 'Licence collective' + nomStructure}</span>
+      </div>
+    `;
+    const aidePaiement = `<div class="aide-reprise">Paiement sécurisé par Stripe · accès rétabli dès la validation du paiement.</div>`;
+    if (abonnement.profil === 'gestionnaire') {
+      const nb = abonnement.nombre_comptes;
+      const prixUnitaire = nb && nb <= 4 ? 159 : 149;
+      conteneur.innerHTML = lignesTermine + `
+        <div class="zone-reprise">
+          <div class="zone-reprise-titre">Renouveler la licence</div>
+          <div class="zone-reprise-texte">La licence de votre structure est terminée. Dès le paiement, ${nb ? 'les ' + nb + ' professionnels' : 'les professionnels'} retrouvent l'accès avec le même code.</div>
+          ${nb ? `<div class="recap-licence"><span>${nb} professionnels × ${prixUnitaire} €</span><strong>${nb * prixUnitaire} € / an</strong></div>` : ''}
+          <button class="btn-principal" id="btn-renouveler" onclick="renouvelerLicence()">Renouveler la licence</button>
+          ${aidePaiement}
+          <span class="lien-secondaire" onclick="afficherReaboIndividuel()">Ou souscrire un abonnement individuel</span>
+          <div class="bloc-reabo-indiv" id="bloc-reabo-indiv">
+            ${htmlPlansReabo()}
+            <button class="btn-principal" id="btn-reabonner-indiv" onclick="reabonnerIndividuel()">Me réabonner</button>
+          </div>
+        </div>
+      `;
+    } else if (abonnement.profil === 'membre') {
+      conteneur.innerHTML = lignesTermine + `
+        <div class="zone-reprise">
+          <div class="zone-reprise-titre">La licence de votre structure est terminée</div>
+          <div class="zone-reprise-texte">Contactez la personne qui gère la licence dans votre structure pour la renouveler, ou abonnez-vous individuellement :</div>
+          ${htmlPlansReabo()}
+          <button class="btn-principal" id="btn-reabonner" onclick="reabonner()">Me réabonner</button>
+          ${aidePaiement}
+        </div>
+      `;
+    } else {
+      conteneur.innerHTML = lignesTermine + `
+        <div class="zone-reprise">
+          <div class="zone-reprise-titre">Retrouvez votre accès</div>
+          <div class="zone-reprise-texte">Votre abonnement est terminé. Réabonnez-vous pour retrouver toutes les fiches : votre compte et vos données sont conservés.</div>
+          ${htmlPlansReabo()}
+          <button class="btn-principal" id="btn-reabonner" onclick="reabonner()">Me réabonner</button>
+          ${aidePaiement}
+          <div class="aide-reprise">Le mois d'essai gratuit n'est proposé qu'à la première inscription.</div>
+        </div>
+      `;
+    }
+    return;
+  }
+
   if (abonnement.type === 'msp') {
-    conteneur.innerHTML = `
+    const dateLicence = abonnement.prochain_prelevement ? formaterDate(abonnement.prochain_prelevement) : null;
+    const lignesAcces = `
       <div class="ligne-info">
         <span class="ligne-info-label">Statut</span>
         <span class="badge-actif">Actif</span>
       </div>
       <div class="ligne-info">
         <span class="ligne-info-label">Formule</span>
-        <span class="ligne-info-valeur">Licence collective${abonnement.structure_nom ? ' — ' + abonnement.structure_nom : ''}</span>
+        <span class="ligne-info-valeur">Licence collective${abonnement.structure_nom ? ' — ' + echapperHtml(abonnement.structure_nom) : ''}</span>
       </div>
-      <p class="message-info">Votre accès est pris en charge par votre structure. Vous n'avez rien à payer directement ; en cas de résiliation de la licence par la structure, vous pourrez toujours souscrire un abonnement individuel pour conserver l'accès.</p>
+      <p class="message-info">Accès pris en charge par votre structure. Si la licence prend fin, vous pourrez souscrire un abonnement individuel.</p>
     `;
+    if (!abonnement.gestionnaire) {
+      conteneur.innerHTML = lignesAcces + htmlQuitterLicence(false);
+      return;
+    }
+
+    const nb = abonnement.nombre_comptes;
+    const textePros = nb ? 'les ' + nb + ' professionnels' : 'tous les professionnels';
+    const lignesLicence = `
+      <div class="ligne-info">
+        <span class="ligne-info-label">Statut</span>
+        <span class="badge-actif">Actif</span>
+      </div>
+      ${nb ? `<div class="ligne-info"><span class="ligne-info-label">Places utilisées</span><span class="ligne-info-valeur">${abonnement.places_utilisees != null ? abonnement.places_utilisees : '—'} sur ${nb}</span></div>` : ''}
+      ${dateLicence ? `<div class="ligne-info"><span class="ligne-info-label">${abonnement.annulation_prevue ? 'Fin de la licence' : 'Renouvellement'}</span><span class="ligne-info-valeur">${dateLicence}</span></div>` : ''}
+    `;
+    let actionsLicence;
+    if (abonnement.annulation_prevue) {
+      actionsLicence = `<div class="zone-info-annulation">⚠️ Résiliation programmée : la licence prendra fin le <strong>${dateLicence || 'à la fin de la période en cours'}</strong> pour ${textePros} de la structure.</div>` + `<div class="zone-reprise"><div class="zone-reprise-titre">Vous changez d'avis ?</div><div class="zone-reprise-texte">La licence continue normalement pour tous les professionnels de la structure : aucun paiement à faire.</div><button class="btn-principal" id="btn-reprendre" onclick="reprendreAbonnement()">Reprendre la licence</button></div>`;
+    } else {
+      actionsLicence = `
+        <button class="btn-collectif" id="btn-resilier-collectif" onclick="demanderResiliationCollective()">Résilier la licence de toute la structure</button>
+        <div id="confirmation-collective" style="display:none;">
+          <div class="g-confirm">
+            <div class="g-confirm-titre">Résilier la licence pour ${textePros} ?</div>
+            <ul>
+              <li>La licence reste active jusqu'au <strong>${dateLicence || 'la fin de la période déjà payée'}</strong>, puis n'est pas renouvelée.</li>
+              <li>À cette date, <strong>${textePros}</strong> perdent l'accès en même temps que vous.</li>
+              <li>Chacun pourra ensuite s'abonner individuellement.</li>
+            </ul>
+            <button class="btn-principal" onclick="annulerResiliationCollective()">Garder la licence</button>
+            <button class="btn-resilier" id="btn-confirmer" onclick="confirmerResiliation()" disabled style="margin-top:10px;">Confirmer la résiliation pour tous</button>
+          </div>
+        </div>
+      `;
+    }
+    const point = abonnement.annulation_prevue ? ' <b class="g-point"></b>' : '';
+    conteneur.innerHTML = `
+      <div class="g-onglets">
+        <button class="g-onglet" id="onglet-acces" onclick="changerOngletGestion('acces')">👤 Mon accès</button>
+        <button class="g-onglet" id="onglet-licence" onclick="changerOngletGestion('licence')">👥 Licence de la structure${point}<em>gestionnaire</em></button>
+      </div>
+      <div id="vue-acces">${lignesAcces}${htmlQuitterLicence(true)}</div>
+      <div id="vue-licence" style="display:none;">
+        <div class="g-bande">Vous agissez pour <strong>toute la structure</strong>${nb ? ' (' + nb + ' professionnels)' : ''}.</div>
+        ${lignesLicence}
+        ${actionsLicence}
+      </div>
+    `;
+    changerOngletGestion(ongletGestion);
     return;
   }
 
@@ -330,7 +498,7 @@ function afficherAbonnement(abonnement) {
   `;
 
   if (abonnement.annulation_prevue) {
-    html += `<div class="zone-info-annulation">⚠️ Résiliation programmée : votre abonnement prendra fin le ${formaterDate(abonnement.prochain_prelevement)} et ne sera pas renouvelé.</div>`;
+    html += `<div class="zone-info-annulation">⚠️ Résiliation programmée : votre abonnement prendra fin le ${formaterDate(abonnement.prochain_prelevement)} et ne sera pas renouvelé.</div>` + `<div class="zone-reprise"><div class="zone-reprise-titre">Vous changez d'avis ?</div><div class="zone-reprise-texte">Votre abonnement continue normalement : aucun paiement à faire, aucune démarche de plus.</div><button class="btn-principal" id="btn-reprendre" onclick="reprendreAbonnement()">Reprendre mon abonnement</button></div>`;
   } else {
     html += `
       <div class="zone-modifier">
@@ -429,6 +597,7 @@ async function changerPlan() {
 
 async function confirmerResiliation() {
   const btnConfirmer = document.getElementById('btn-confirmer');
+  const libelleConfirmer = btnConfirmer.textContent;
   btnConfirmer.disabled = true;
   btnConfirmer.textContent = 'Traitement...';
   try {
@@ -447,16 +616,227 @@ async function confirmerResiliation() {
     } else {
       alert(data.error || 'Erreur lors de la résiliation.');
       btnConfirmer.disabled = false;
-      btnConfirmer.textContent = 'Confirmer la résiliation';
+      btnConfirmer.textContent = libelleConfirmer;
     }
   } catch(e) {
     alert('Erreur de connexion. Réessayez.');
     btnConfirmer.disabled = false;
-    btnConfirmer.textContent = 'Confirmer la résiliation';
+    btnConfirmer.textContent = libelleConfirmer;
   }
 }
 
+let planReabo = 'annuel';
+
+function htmlPlansReabo() {
+  return `<div class="plans-reabo">
+    <div class="plan-reabo" id="plan-reabo-mensuel" onclick="choisirPlanReabo('mensuel')"><div class="nom">Mensuel</div><div class="prix">14,90 €</div><div class="unite">/ mois</div></div>
+    <div class="plan-reabo selectionne" id="plan-reabo-annuel" onclick="choisirPlanReabo('annuel')"><div class="nom">Annuel</div><div class="prix">159 €</div><div class="unite">/ an</div><div class="eco">Économisez 19,80 €</div></div>
+  </div>`;
+}
+
+function choisirPlanReabo(plan) {
+  planReabo = plan;
+  document.querySelectorAll('.plan-reabo').forEach(function (c) { c.classList.remove('selectionne'); });
+  const carte = document.getElementById('plan-reabo-' + plan);
+  if (carte) carte.classList.add('selectionne');
+}
+
+function afficherReaboIndividuel() {
+  const bloc = document.getElementById('bloc-reabo-indiv');
+  if (bloc) bloc.classList.toggle('actif');
+}
+
+async function appelerWorker(chemin, corps) {
+  const reponse = await fetch(WORKER_URL + chemin, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + session.jetonSession, 'Content-Type': 'application/json' },
+    body: corps ? JSON.stringify(corps) : undefined
+  });
+  if (reponse.status === 401) {
+    localStorage.removeItem('lococlic_session');
+    window.location.href = 'login.html';
+    return null;
+  }
+  return await reponse.json();
+}
+
+async function lancerPaiement(chemin, corps, idBouton, libelle) {
+  const btn = document.getElementById(idBouton);
+  if (btn) { btn.disabled = true; btn.textContent = 'Redirection vers le paiement...'; }
+  try {
+    const data = await appelerWorker(chemin, corps);
+    if (data === null) return;
+    if (data.url) { window.location.href = data.url; return; }
+    alert(data.error || 'Une erreur est survenue.');
+  } catch (e) {
+    alert('Erreur de connexion. Réessayez.');
+  }
+  if (btn) { btn.disabled = false; btn.textContent = libelle; }
+}
+
+function reabonner() { return lancerPaiement('/reabonner', { plan: planReabo }, 'btn-reabonner', 'Me réabonner'); }
+function reabonnerIndividuel() { return lancerPaiement('/reabonner', { plan: planReabo }, 'btn-reabonner-indiv', 'Me réabonner'); }
+function renouvelerLicence() { return lancerPaiement('/renouveler-licence', null, 'btn-renouveler', 'Renouveler la licence'); }
+
+async function reprendreAbonnement() {
+  const btn = document.getElementById('btn-reprendre');
+  const libelle = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Traitement...'; }
+  try {
+    const data = await appelerWorker('/reprendre-abonnement', null);
+    if (data === null) return;
+    if (data.success) { chargerFactures(); return; }
+    alert(data.error || 'Une erreur est survenue.');
+  } catch (e) {
+    alert('Erreur de connexion. Réessayez.');
+  }
+  if (btn) { btn.disabled = false; btn.textContent = libelle; }
+}
+
+function gererRetourPaiement() {
+  const retour = new URLSearchParams(window.location.search).get('paiement');
+  const bandeau = document.getElementById('bandeau-paiement');
+  if (!bandeau) return;
+  if (retour === 'annule') {
+    bandeau.className = 'bandeau-paiement info';
+    bandeau.textContent = "Paiement annulé : rien n'a été débité. Vous pouvez réessayer quand vous voulez.";
+    return;
+  }
+  if (retour !== 'succes') return;
+  bandeau.className = 'bandeau-paiement ok';
+  const attendIndividuel = new URLSearchParams(window.location.search).get('changement') === 'individuel';
+  bandeau.textContent = attendIndividuel ? "Paiement reçu — passage à votre abonnement individuel en cours…" : "Paiement reçu — activation de votre accès en cours…";
+  let essais = 0;
+  const boucle = async function () {
+    essais++;
+    try {
+      const reponse = await fetch(WORKER_URL + '/mes-factures', { headers: { 'Authorization': 'Bearer ' + session.jetonSession } });
+      const data = await reponse.json();
+      if (data.abonnement && (attendIndividuel ? data.abonnement.type === 'medecin' : data.abonnement.type !== 'termine')) {
+        const s = getSession();
+        if (s) { s.statut = 'medecin_actif'; delete s.profil; localStorage.setItem('lococlic_session', JSON.stringify(s)); }
+        window.location.href = 'index.html';
+        return;
+      }
+    } catch (e) {}
+    if (essais < 15) setTimeout(boucle, 2000);
+    else bandeau.textContent = "Votre paiement est en cours de traitement. Rechargez cette page dans quelques instants : votre accès sera rétabli dès sa validation.";
+  };
+  boucle();
+}
+
+function htmlQuitterLicence(estGestionnaire) {
+  const note = estGestionnaire ? `<div class="note-gestion">Vous avez activé cette licence en premier : en partant, sa gestion (résiliation, renouvellement) passera automatiquement à un autre membre de la structure.</div>` : '';
+  return `
+    <span class="lien-quitter" id="lien-quitter" onclick="ouvrirQuitter()">Quitter la structure (pour moi seulement)</span>
+    <div class="zone-quitter" id="zone-quitter">
+      <div id="quitter-options">
+        <div class="zone-quitter-titre">Quitter la structure</div>
+        <div class="zone-quitter-texte">Cela ne concerne que vous : votre place sera libérée pour un collègue. Choisissez comment continuer :</div>
+        ${note}
+        <div class="option-quitter principale">
+          <div class="option-quitter-titre">Passer à un abonnement individuel</div>
+          <div class="option-quitter-texte">Votre accès continue sans interruption. Dès le paiement, vous quittez la structure.</div>
+          ${htmlPlansReabo()}
+          <button class="btn-principal" id="btn-passer-individuel" onclick="passerEnIndividuel()">Continuer vers le paiement</button>
+          <div class="aide-reprise">Sans mois d'essai gratuit · paiement sécurisé par Stripe.</div>
+        </div>
+        <div class="option-quitter">
+          <div class="option-quitter-titre">Quitter sans abonnement</div>
+          <div class="option-quitter-texte">Votre accès s'arrête immédiatement. Votre compte est conservé : vous pourrez vous réabonner à tout moment.</div>
+          <button class="btn-resilier" onclick="demanderConfirmationDepart()">Quitter la structure</button>
+        </div>
+      </div>
+      <div id="quitter-confirmation" style="display:none;">
+        <div class="confirmation-depart">
+          <div class="confirmation-depart-titre">Confirmer votre départ ?</div>
+          <p>Votre accès s'arrêtera maintenant et votre place sera libérée pour un collègue. Votre compte et vos données sont conservés : vous pourrez vous réabonner quand vous voulez.</p>
+          <button class="btn-principal" onclick="annulerDepart()">Rester dans la structure</button>
+          <button class="btn-resilier" id="btn-confirmer-depart" onclick="confirmerDepart()" disabled>Confirmer mon départ</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+let minuterieDepart = null;
+
+function ouvrirQuitter() {
+  document.getElementById('lien-quitter').style.display = 'none';
+  document.getElementById('zone-quitter').classList.add('actif');
+}
+
+function demanderConfirmationDepart() {
+  document.getElementById('quitter-options').style.display = 'none';
+  document.getElementById('quitter-confirmation').style.display = 'block';
+  const btn = document.getElementById('btn-confirmer-depart');
+  btn.disabled = true;
+  clearTimeout(minuterieDepart);
+  minuterieDepart = setTimeout(function () { btn.disabled = false; }, 2000);
+}
+
+function annulerDepart() {
+  clearTimeout(minuterieDepart);
+  document.getElementById('quitter-confirmation').style.display = 'none';
+  document.getElementById('quitter-options').style.display = 'block';
+}
+
+async function confirmerDepart() {
+  const btn = document.getElementById('btn-confirmer-depart');
+  btn.disabled = true;
+  btn.textContent = 'Traitement...';
+  try {
+    const data = await appelerWorker('/quitter-licence', null);
+    if (data === null) return;
+    if (data.success) {
+      const s = getSession();
+      if (s) { s.statut = 'medecin_resilie'; s.profil = 'individuel'; localStorage.setItem('lococlic_session', JSON.stringify(s)); }
+      chargerFactures();
+      return;
+    }
+    alert(data.error || 'Une erreur est survenue.');
+  } catch (e) {
+    alert('Erreur de connexion. Réessayez.');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Confirmer mon départ';
+}
+
+function passerEnIndividuel() { return lancerPaiement('/reabonner', { plan: planReabo }, 'btn-passer-individuel', 'Continuer vers le paiement'); }
+
+let ongletGestion = 'acces';
+let minuterieCollective = null;
+
+function changerOngletGestion(nom) {
+  ongletGestion = nom;
+  const vueAcces = document.getElementById('vue-acces');
+  const vueLicence = document.getElementById('vue-licence');
+  const ongletAcces = document.getElementById('onglet-acces');
+  const ongletLicence = document.getElementById('onglet-licence');
+  if (!vueAcces || !vueLicence || !ongletAcces || !ongletLicence) return;
+  vueAcces.style.display = nom === 'acces' ? 'block' : 'none';
+  vueLicence.style.display = nom === 'licence' ? 'block' : 'none';
+  if (nom === 'acces') { ongletAcces.classList.add('actif'); ongletLicence.classList.remove('actif'); }
+  else { ongletLicence.classList.add('actif'); ongletAcces.classList.remove('actif'); }
+}
+
+function demanderResiliationCollective() {
+  document.getElementById('btn-resilier-collectif').style.display = 'none';
+  document.getElementById('confirmation-collective').style.display = 'block';
+  const btn = document.getElementById('btn-confirmer');
+  btn.disabled = true;
+  clearTimeout(minuterieCollective);
+  minuterieCollective = setTimeout(function () { btn.disabled = false; }, 2000);
+}
+
+function annulerResiliationCollective() {
+  clearTimeout(minuterieCollective);
+  document.getElementById('confirmation-collective').style.display = 'none';
+  document.getElementById('btn-resilier-collectif').style.display = 'block';
+}
+
 chargerFactures();
+gererRetourPaiement();
 </script>
 
 </body>

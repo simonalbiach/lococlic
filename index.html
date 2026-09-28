@@ -14,6 +14,10 @@
       window.location.href = destination;
       return;
     }
+    if (d.statut === 'medecin_resilie') {
+      document.documentElement.classList.add('abo-termine');
+      document.documentElement.setAttribute('data-profil', d.profil || 'individuel');
+    }
   } catch(e) { window.location.href = 'login.html'; }
 })();
 </script>
@@ -25,13 +29,28 @@
   try {
     var s = JSON.parse(localStorage.getItem('lococlic_session'));
     if (s && s.jetonSession) {
-      fetch('https://lococlic-worker.simon-albiach.workers.dev/verifier-session', {
+      window.majAboTermine = function(){
+        var on = document.documentElement.classList.contains('abo-termine');
+        document.querySelectorAll('.zone-floutee > section').forEach(function(x){ if (on) x.setAttribute('inert', ''); else x.removeAttribute('inert'); });
+      };
+      document.addEventListener('DOMContentLoaded', window.majAboTermine);
+      fetch('https://lococlic-worker.simon-albiach.workers.dev/verifier-session?limite=1', {
         headers: { 'Authorization': 'Bearer ' + s.jetonSession }
       }).then(function(r){ return r.json(); }).then(function(d){
         if (!d.valide) {
           localStorage.removeItem('lococlic_session');
           window.location.href = 'login.html';
+          return;
         }
+        var h = document.documentElement;
+        if (d.abonnement_termine) {
+          h.classList.add('abo-termine'); h.setAttribute('data-profil', d.profil || 'individuel');
+          if (s.statut !== 'medecin_resilie' || s.profil !== d.profil) { s.statut = 'medecin_resilie'; s.profil = d.profil; localStorage.setItem('lococlic_session', JSON.stringify(s)); }
+        } else {
+          h.classList.remove('abo-termine'); h.removeAttribute('data-profil');
+          if (s.statut === 'medecin_resilie') { s.statut = 'medecin_actif'; delete s.profil; localStorage.setItem('lococlic_session', JSON.stringify(s)); }
+        }
+        window.majAboTermine();
       }).catch(function(){});
     }
   } catch(e) {}
@@ -565,6 +584,22 @@
     .search-icon { left: 16px; font-size: 19px; }
   }
 </style>
+<style>
+  /* ===== Abonnement terminé : recherche et modules floutés ===== */
+  .zone-floutee { position: relative; }
+  .voile-abo { display: none; }
+  html.abo-termine .zone-floutee > section { filter: blur(7px); user-select: none; pointer-events: none; }
+  html.abo-termine .voile-abo { display: flex; position: absolute; inset: 0; z-index: 5; justify-content: center; align-items: flex-start; background: rgba(245,243,238,0.42); }
+  .voile-carte { position: sticky; top: 110px; margin-top: 90px; background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 30px 34px 24px; width: min(440px, 88%); text-align: center; box-shadow: 0 24px 60px rgba(15,42,68,0.20); }
+  .voile-cadenas { width: 54px; height: 54px; margin: 0 auto 14px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .voile-carte h3 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; color: #1e3a5f; margin-bottom: 8px; line-height: 1.3; }
+  .voile-carte p { font-size: 14px; color: #475569; line-height: 1.55; margin-bottom: 18px; }
+  .voile-btn { display: inline-block; background: #1e3a5f; color: #fff; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 10px; text-decoration: none; }
+  .voile-btn:hover { background: #2c5f8d; }
+  .voile-note { font-size: 12px; color: #94a3b8; margin-top: 14px; }
+  .pfa { display: none; }
+  html:not([data-profil]) .pfa-indiv, html[data-profil="individuel"] .pfa-indiv, html[data-profil="membre"] .pfa-membre, html[data-profil="gestionnaire"] .pfa-gest { display: block; }
+</style>
 </head>
 <body>
 
@@ -580,9 +615,6 @@
     </a>
 
     <nav class="main-nav">
-      <a href="#modules">Modules</a>
-      <a href="#about">À propos</a>
-      <a href="#help">Aide</a>
       <a href="#modules" class="cta">Commencer</a>
       <a href="compte.html" class="profil-icone" title="Mon compte" aria-label="Mon compte">👤 Mon compte</a>
       <button onclick="seDeconnecter()" style="background:transparent; border:1px solid #e2e8f0; color:#dc2626; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px; cursor:pointer; margin-left:4px; font-family:inherit;">Déconnexion</button>
@@ -619,7 +651,7 @@
 
 
 <!-- ===== SEARCH SECTION ===== -->
-<section class="search-section">
+<div class="zone-floutee"><section class="search-section">
   <div class="search-wrap">
     <span class="search-tag">Diagnostic déjà connu ?</span>
     <h2>Recherche directe par pathologie</h2>
@@ -736,6 +768,30 @@
 </section>
 
 <!-- ===== INFOS / PHILOSOPHIE ===== -->
+
+<div class="voile-abo">
+  <div class="voile-carte" role="dialog" aria-live="polite">
+    <div class="voile-cadenas">🔒</div>
+    <div class="pfa pfa-indiv">
+      <h3>Votre abonnement est terminé</h3>
+      <p>Réabonnez-vous depuis <strong>Mon compte</strong> pour retrouver l'accès à la recherche de pathologies et à tous les modules.</p>
+      <a href="compte.html" class="voile-btn">Aller à Mon compte</a>
+    </div>
+    <div class="pfa pfa-membre">
+      <h3>La licence de votre structure est terminée</h3>
+      <p>Contactez la personne qui gère la licence dans votre structure, ou abonnez-vous individuellement depuis <strong>Mon compte</strong>.</p>
+      <a href="compte.html" class="voile-btn">Aller à Mon compte</a>
+    </div>
+    <div class="pfa pfa-gest">
+      <h3>La licence de votre structure est terminée</h3>
+      <p>Renouvelez-la depuis <strong>Mon compte</strong> : tous les professionnels de la structure retrouveront l'accès.</p>
+      <a href="compte.html" class="voile-btn">Renouveler dans Mon compte</a>
+    </div>
+    <div class="voile-note">Votre compte et vos données sont conservés.</div>
+  </div>
+</div>
+</div>
+
 <section class="info-section" id="about">
   <div class="info-inner">
     <div class="info-card">
