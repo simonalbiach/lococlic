@@ -1151,7 +1151,7 @@ const P = {
       {who:'Service d\'urgence ou angiologue (urgent)',why:'Confirmation diagnostic + initiation anticoagulation',p:true},
       {who:'Médecin vasculaire',why:'Suivi à distance, bilan étiologique si nécessaire',p:false}
     ],
-    sources:[{l:'HAS 2024 — Prise en charge des artériopathies chroniques oblitérantes des membres inférieurs',u:'https://www.has-sante.fr/jcms/c_272513/fr/guide-parcours-de-soins-maladie-renale-chronique-de-l-adulte-chez-le-patient-diabetique'}],
+    sources:[{l:"HAS 2006 — Prise en charge de l'artériopathie chronique oblitérante athéroscléreuse des membres inférieurs (indications médicamenteuses, de revascularisation et de rééducation)",u:'https://www.has-sante.fr/jcms/c_272513/fr/prise-en-charge-de-l-arteriopathie-chronique-obliterante-atherosclerotique-des-membres-inferieurs'}],
     keys:['Asymétrie mollet','Wells','D-Dimères','FDR thrombose','Urgence']
   },
   PERIOSTITE:{id:'PERIOSTITE',name:'Périostite tibiale',icon:'🟣',pop:'20–40 ans , sportif , femmes',
@@ -1286,7 +1286,7 @@ const P = {
       {who:'Cardiologue',why:'Bilan CV global — risque coronarien associé fréquent',p:true},
       {who:'Chirurgien vasculaire',why:'Si stade évolué nécessitant revascularisation',p:false}
     ],
-    sources:[{l:'HAS 2024 — Prise en charge des artériopathies chroniques oblitérantes des membres inférieurs',u:'https://www.has-sante.fr/jcms/c_272513/fr/guide-parcours-de-soins-maladie-renale-chronique-de-l-adulte-chez-le-patient-diabetique'}],
+    sources:[{l:"HAS 2006 — Prise en charge de l'artériopathie chronique oblitérante athéroscléreuse des membres inférieurs (indications médicamenteuses, de revascularisation et de rééducation)",u:'https://www.has-sante.fr/jcms/c_272513/fr/prise-en-charge-de-l-arteriopathie-chronique-obliterante-atherosclerotique-des-membres-inferieurs'}],
     keys:['Périmètre marche','Tabac','Pouls absents','IPS bas','AOMI']
   },
   SYND_POPLITE:{id:'SYND_POPLITE',name:'Syndrome artère poplitée piégée',icon:'⚡',pop:'< 30 ans , sportif',
@@ -1401,7 +1401,7 @@ const P = {
     ],
     sources:[
       {l:'Bojovic et al. 2025 — Overview of nerve entrapment syndromes in the foot and ankle (International Orthopaedics)',u:'https://pubmed.ncbi.nlm.nih.gov/40042611/'},
-      {l:'Fichez O, Rousseau R — Les syndromes canalaires du membre inférieur (La médecine du sport)',u:'https://www.lamedecinedusport.com/traumatologie/les-syndromes-canalaires-du-membre-inferieur/'},
+      {l:'La médecine du sport — Les syndromes canalaires du membre inférieur',u:'https://www.lamedecinedusport.com/traumatologie/les-syndromes-canalaires-du-membre-inferieur/'},
       {l:'Garção et al. 2023 — Anatomical patterns of the sural nerve: a meta-analysis (Surgical and Radiologic Anatomy)',u:'https://pubmed.ncbi.nlm.nih.gov/37115291/'}
     ],
     keys:['Douleur mollet chronique','Brûlure/dysesthésies','Tiers moyen-inférieur du mollet ou rétromalléolaire latéral','Majorée par chaussage montant','Souvent confondue avec tendinopathie achilléenne']
@@ -2267,7 +2267,7 @@ function showModal(pid){
       </div>
       <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
     </div>`).join('');
-  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('');
   
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-head">

@@ -1987,7 +1987,7 @@ function showModal(pid){
       </div>
       <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
     </div>`).join('');
-  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('');
   
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-head">

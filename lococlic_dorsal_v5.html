@@ -1391,7 +1391,7 @@ const P = {
     },
     sources:[
       {l:"Stillerman et al. 1998 — Experience in the surgical management of 82 symptomatic herniated thoracic discs and review of the literature (J Neurosurg)",u:'https://pubmed.ncbi.nlm.nih.gov/9525706/'},
-      {l:"Wood et al. 1995 — Magnetic resonance imaging of the thoracic spine: evaluation of asymptomatic individuals (J Bone Joint Surg Am)",u:'https://pubmed.ncbi.nlm.nih.gov/7593072/'},
+      {l:"Brown et al. 1992 — The natural history of thoracic disc herniation (Spine)",u:'https://pubmed.ncbi.nlm.nih.gov/1631725/'},{l:"Wood et al. 1995 — Magnetic resonance imaging of the thoracic spine: evaluation of asymptomatic individuals (J Bone Joint Surg Am)",u:'https://pubmed.ncbi.nlm.nih.gov/7593072/'},
       
       {l:"McInerney & Ball 2000 — The pathophysiology of thoracic disc disease (Neurosurg Focus)",u:'https://pubmed.ncbi.nlm.nih.gov/16833239/'}
     ],
@@ -1487,7 +1487,7 @@ const P = {
       {who:'Kinésithérapeute',why:"Programme de mobilisation et renforcement",p:false}
     ],
     sources:[
-      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/mal-de-dos'},
+      {l:'HAS 2019 — Prise en charge du patient présentant une lombalgie commune',u:'https://www.has-sante.fr/jcms/c_2961499/fr/prise-en-charge-du-patient-presentant-une-lombalgie-commune'},
       {l:"Alptekin et al. 2017 — Effectiveness of Exercise and Local Steroid Injections for Thoracolumbar Junction Syndrome (Open Orthop J)",u:'https://pubmed.ncbi.nlm.nih.gov/28694884/'}
     ],
     ficheExercice:'lococlic_fiches_patient/dorsal_09_charniere_dl_maigne.html',
@@ -2323,7 +2323,7 @@ function showModal(pid){
       </div>
       <span class="ref-b">${r.p?'Prioritaire':'Si besoin'}</span>
     </div>`).join('');
-  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank">${s.l}</a>`).join('');
+  const sourcesHTML = p.sources.map(s => `<a class="src-chip" href="${s.u}" target="_blank" rel="noopener">${s.l}</a>`).join('');
   
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-head">
