@@ -102,9 +102,9 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
-  .lien-code-invite { font-size: 12px; color: #64748b; cursor: pointer; text-decoration: underline; margin-bottom: 16px; display: inline-block; }
-  .champ-code-invite { display: none; }
-  .champ-code-invite.visible { display: block; }
+  .lien-code-msp { font-size: 12px; color: #64748b; cursor: pointer; text-decoration: underline; margin-bottom: 16px; display: inline-block; }
+  .champ-code-msp { display: none; }
+  .champ-code-msp.visible { display: block; }
 
   .cgu-ligne { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 20px; }
   .cgu-ligne input { accent-color: #1e3a5f; margin-top: 2px; cursor: pointer; }
@@ -236,7 +236,7 @@
           </div>
           <div style="font-size:11px; color:#94a3b8; margin-top:5px; line-height:1.4;"><strong style="color:#475569;">8 caractères minimum</strong></div>
         </div>
-        <div class="champ">
+        <div class="champ" id="bloc-formule">
           <label>Formule</label>
           <div class="plans">
             <div class="plan-carte selectionne" id="plan-mensuel" onclick="choisirPlan('mensuel')">
@@ -253,10 +253,11 @@
             </div>
           </div>
         </div>
-        <span class="lien-code-invite" onclick="afficherCodeInvite()">J'ai un code invité</span>
-        <div class="champ champ-code-invite" id="champ-code-invite">
-          <label>Code invité</label>
-          <input type="text" id="medecin-code">
+        <span class="lien-code-msp" id="lien-code-msp" onclick="basculerCodeMsp()">J'ai un code MSP</span>
+        <div class="champ champ-code-msp" id="champ-code-msp">
+          <label>Code MSP</label>
+          <input type="text" id="medecin-code" placeholder="LOCOCLIC-XXXXXXXXXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false">
+          <div style="font-size:11px; color:#94a3b8; margin-top:5px; line-height:1.4;">Code MSP reçu par email ou transmis par votre structure (MSP, SISA…). <strong style="color:#475569;">Aucun paiement</strong> : votre compte est activé immédiatement.</div>
         </div>
         <div class="cgu-ligne">
           <input type="checkbox" id="medecin-cgu">
@@ -316,8 +317,20 @@ function choisirPlan(plan) {
   document.getElementById('plan-annuel').classList.toggle('selectionne', plan === 'annuel');
 }
 
-function afficherCodeInvite() {
-  document.getElementById('champ-code-invite').classList.add('visible');
+function codeMspOuvert() {
+  return document.getElementById('champ-code-msp').classList.contains('visible');
+}
+
+function libelleBoutonMedecin() {
+  return codeMspOuvert() ? 'Activer mon compte' : 'Continuer';
+}
+
+function basculerCodeMsp() {
+  const ouvert = document.getElementById('champ-code-msp').classList.toggle('visible');
+  document.getElementById('bloc-formule').style.display = ouvert ? 'none' : '';
+  document.getElementById('lien-code-msp').textContent = ouvert ? "Je n'ai pas de code MSP" : "J'ai un code MSP";
+  document.getElementById('btn-medecin').textContent = libelleBoutonMedecin();
+  if (ouvert) document.getElementById('medecin-code').focus();
 }
 
 function afficherMessage(id, texte, type) {
@@ -389,7 +402,11 @@ async function soumettreMedecin(e) {
     afficherMessage('message-medecin', 'Les deux mots de passe ne correspondent pas.', 'erreur');
     return;
   }
-  const codeInvite = document.getElementById('medecin-code').value.trim();
+  const codeMsp = codeMspOuvert() ? document.getElementById('medecin-code').value.trim() : '';
+  if (codeMspOuvert() && !codeMsp) {
+    afficherMessage('message-medecin', 'Saisissez votre code MSP, ou cliquez sur « Je n\'ai pas de code MSP ».', 'erreur');
+    return;
+  }
   const btn = document.getElementById('btn-medecin');
   btn.disabled = true;
   btn.textContent = 'Envoi en cours...';
@@ -400,7 +417,7 @@ async function soumettreMedecin(e) {
     plan: planChoisi,
     cgu_accepted: true
   };
-  if (codeInvite) corps.code_invite = codeInvite;
+  if (codeMsp) corps.code_msp = codeMsp;
 
   try {
     const reponse = await fetch(WORKER_URL + '/creer-abonnement', {
@@ -411,7 +428,7 @@ async function soumettreMedecin(e) {
     const data = await reponse.json();
 
     if (data.success) {
-      if (codeInvite) {
+      if (codeMsp) {
         afficherMessage('message-medecin', 'Compte activé ! Vous pouvez maintenant vous connecter.', 'succes');
         document.getElementById('form-medecin').reset();
       } else {
@@ -427,7 +444,7 @@ async function soumettreMedecin(e) {
     afficherMessage('message-medecin', 'Erreur de connexion. Réessayez.', 'erreur');
   }
   btn.disabled = false;
-  btn.textContent = 'Continuer';
+  btn.textContent = libelleBoutonMedecin();
 }
 </script>
 
