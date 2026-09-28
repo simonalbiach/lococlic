@@ -330,27 +330,53 @@ const SESSION_DURATION_DAYS = 7;
 // LOGIQUE D'AUTHENTIFICATION (via le serveur)
 // ============================================================
 
-// Si déjà connecté, redirection vers l'app
-(function checkExistingSession() {
+// « Badge » de session : le serveur LocoClic n'envoie les modules et les fiches
+// qu'aux navigateurs qui présentent un badge valide (cookie déposé par /api/session).
+async function poserBadge(jeton) {
+  try {
+    const ctrl = new AbortController();
+    const minuteur = setTimeout(function() { ctrl.abort(); }, 6000);
+    const r = await fetch('/api/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ jeton: jeton }),
+      signal: ctrl.signal
+    });
+    clearTimeout(minuteur);
+    return r.ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Si déjà connecté : on demande au SERVEUR si la session est encore valable (le badge dure
+// moins longtemps que la session locale). Redirection uniquement si le badge est bien posé,
+// sinon on reste sur la connexion (évite toute boucle de redirections).
+(async function checkExistingSession() {
   try {
     const session = localStorage.getItem('lococlic_session');
-    if (session) {
-      const data = JSON.parse(session);
-      if (data.expires && Date.now() < data.expires) {
-        // Session valide → redirection
-        window.location.href = 'index.html';
-        return;
-      } else {
-        // Session expirée → nettoyer
-        localStorage.removeItem('lococlic_session');
-      }
+    if (!session) return;
+    const data = JSON.parse(session);
+    if (!data.expires || Date.now() >= data.expires || !data.jetonSession) {
+      localStorage.removeItem('lococlic_session');
+      return;
     }
-  } catch(e) {
-    localStorage.removeItem('lococlic_session');
-  }
+    const r = await fetch(WORKER_URL + '/verifier-session?limite=1', {
+      headers: { 'Authorization': 'Bearer ' + data.jetonSession }
+    });
+    const d = await r.json();
+    if (!d.valide) {
+      localStorage.removeItem('lococlic_session');
+      return;
+    }
+    if (await poserBadge(data.jetonSession)) {
+      window.location.href = 'index.html';
+    }
+  } catch(e) {}
 })();
 
-function finaliserConnexion(resultat) {
+async function finaliserConnexion(resultat) {
   const session = {
     email: resultat.email,
     statut: resultat.statut,
@@ -361,7 +387,17 @@ function finaliserConnexion(resultat) {
     cguAcceptedAt: new Date().toISOString()
   };
   localStorage.setItem('lococlic_session', JSON.stringify(session));
-  window.location.href = 'index.html';
+  if (await poserBadge(resultat.jeton_session)) {
+    window.location.href = 'index.html';
+    return;
+  }
+  // Badge impossible à poser : on libère la session côté serveur pour ne pas bloquer la personne, et on le lui dit.
+  localStorage.removeItem('lococlic_session');
+  try { await fetch(WORKER_URL + '/deconnexion', { method: 'POST', headers: { 'Authorization': 'Bearer ' + resultat.jeton_session } }); } catch (e) {}
+  const errorMsg = document.getElementById('errorMsg');
+  errorMsg.textContent = 'Connexion impossible pour le moment. Réessayez dans un instant.';
+  errorMsg.classList.add('show');
+  setTimeout(function() { errorMsg.classList.remove('show'); }, 6000);
 }
 
 async function checkAccess(event) {
@@ -400,7 +436,7 @@ async function checkAccess(event) {
     const resultat = await reponse.json();
     
     if (resultat.success) {
-      finaliserConnexion(resultat);
+      await finaliserConnexion(resultat);
     } else if (resultat.conflit_session) {
       document.getElementById('conflitSessionMsg').style.display = 'block';
       document.getElementById('btnPrendreLaMain').onclick = async function() {
@@ -414,7 +450,7 @@ async function checkAccess(event) {
           });
           const resultat2 = await reponse2.json();
           if (resultat2.success) {
-            finaliserConnexion(resultat2);
+            await finaliserConnexion(resultat2);
           } else {
             document.getElementById('conflitSessionMsg').style.display = 'none';
             errorMsg.textContent = resultat2.error || 'Une erreur est survenue.';

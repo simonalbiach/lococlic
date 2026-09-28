@@ -1010,6 +1010,7 @@ async function seDeconnecter() {
       });
     }
   } catch(e) {}
+  try { await fetch('/api/session', { method: 'DELETE', credentials: 'same-origin' }); } catch(e) {}
   localStorage.removeItem('lococlic_session');
   window.location.href = 'login.html';
 }
