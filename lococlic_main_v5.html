@@ -1196,10 +1196,9 @@ const P = {
       text:"Tendinopathie de De Quervain et épicondylalgie latérale peuvent coexister chez le sportif de raquette ou le travailleur sur écran — penser à examiner aussi le coude (module coude)."
     },
     sources:[
-      
-      
-      
-      {l:'HAS 2023 — Tendinopathies de la coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'}
+      {l:'Challoumas et al. 2023 — Systematic Review and Network Meta-Analysis: Management of de Quervain Tenosynovitis (JAMA Network Open)',u:'https://pubmed.ncbi.nlm.nih.gov/37889490/'},
+      {l:"Cavaleri et al. 2016 — Systematic Review and Meta-analysis: Hand therapy versus corticosteroid injections in de Quervain's disease (J Hand Ther)",u:'https://pubmed.ncbi.nlm.nih.gov/26705671/'},
+      {l:"McBain et al. 2023 — Isometric thumb extension exercise as part of a multimodal intervention for de Quervain's syndrome: A randomised feasibility trial (Hand Therapy)",u:'https://pubmed.ncbi.nlm.nih.gov/37904860/'}
     ],
     keys:['Base du pouce','Finkelstein','Mère jeune','Styloïde radiale','De Quervain']
   },
@@ -1413,8 +1412,8 @@ const P = {
   },
   TEND_FLECH: {
     id:'TEND_FLECH', name:'Tendinopathie des fléchisseurs des doigts', icon:'🟠', pop:"20-50 ans, métier manuel répétitif, sport préhension forte (escalade ++), musicien",
-    desc:"Tendinopathie des fléchisseurs (superficiel et profond) des doigts, souvent au niveau des poulies digitales (notamment poulie A2 chez l'escalader) ou au canal digital. Douleur palmaire à la pression, exacerbée par les préhensions fortes (poignée, doigts crochetés). Possible nodule palpable. À différencier du doigt à ressaut (tendinopathie sténosante avec ressaut audible).",
-    alert:{type:'yellow',text:"Chez l'escalader : penser à une rupture de poulie A2 (gonflement face palmaire base P1, perte de force en doigts crochetés) — référer si suspicion."},
+    desc:"Tendinopathie des fléchisseurs (superficiel et profond) des doigts, souvent au niveau des poulies digitales (notamment poulie A2 chez l'escaladeur) ou au canal digital. Douleur palmaire à la pression, exacerbée par les préhensions fortes (poignée, doigts crochetés). Possible nodule palpable. À différencier du doigt à ressaut (tendinopathie sténosante avec ressaut audible).",
+    alert:{type:'yellow',text:"Chez l'escaladeur : penser à une rupture de poulie A2 (gonflement face palmaire base P1, perte de force en doigts crochetés) — référer si suspicion."},
     imaging:[
       {t:"Pas d'imagerie en première intention",d:"Diagnostic clinique"},
       {t:"Échographie",d:"Examen de choix — épaississement tendineux, ténosynovite, rupture de poulie"},
@@ -1424,20 +1423,18 @@ const P = {
       {t:"Adaptation des gestes",d:"Réduction temporaire des préhensions fortes (escalade, vélo, port de charge), pauses"},
       {t:'Kinésithérapie',d:"Excentrique des fléchisseurs, glissements tendineux, étirements"},
       {t:"Antalgiques simples (paracétamol)",d:"Éviter AINS prolongés et glaçage — retardent cicatrisation"},
-      {t:"Strapping poulie A2",d:"Pour l'escalader — décharge mécanique pendant la reprise"},
+      {t:"Strapping poulie A2",d:"Pour l'escaladeur — décharge mécanique pendant la reprise"},
       {t:'Infiltration de corticoïde',d:"Échoguidée — si échec médical (à utiliser avec parcimonie sur les tendons fléchisseurs)"},
       {t:'Chirurgie',d:"Rare — si rupture de poulie symptomatique"}
     ],
     exercises:[{t:'Étirement des fléchisseurs du doigt',d:''},{t:'Renforcement isométrique des fléchisseurs',d:''},{t:'Glissement tendineux des doigts',d:''},{t:'Mobilisation globale du poignet',d:''}],ficheExercice:'lococlic_fiches_patient/main_10_tendinopathie_flechisseurs.html',
     referral:[
-      {who:'Médecin du sport',why:"Pour le sportif (escalader ++) — programme de rééducation et reprise",p:true},
+      {who:'Médecin du sport',why:"Pour le sportif (escaladeur ++) — programme de rééducation et reprise",p:true},
       {who:'Chirurgien de la main',why:"Si rupture de poulie ou échec médical prolongé",p:false}
     ],
     sources:[
-      
-      
-      
-      {l:'HAS 2023 — Tendinopathies de la coiffe des rotateurs',u:'https://www.has-sante.fr/jcms/p_3459565/fr/conduite-diagnostique-devant-une-epaule-douloureuse-non-traumatique-de-l-adulte-et-prise-en-charge-des-tendinopathies-de-la-coiffe-des-rotateurs'}
+      {l:'Artiaco et al. 2023 — Flexor Tendon Pulley Injuries: Systematic Review PRISMA, 189 patients (J Hand Microsurg)',u:'https://www.thieme-connect.com/products/ejournals/abstract/10.1055/s-0042-1749420'},
+      {l:'Cordella et al. 2023 — Systematic Review: Evidence for exercise therapy in hand and wrist tendinopathy (J Hand Ther)',u:'https://www.jhandtherapy.org/article/S0894-1130(23)00127-8/abstract'}
     ],
     keys:['Préhension','Escalade','Poulie A2','Fléchisseurs','Tendinopathie']
   },
@@ -1502,7 +1499,7 @@ const P = {
     imaging:[
       {t:"Radiographie pouce face + profil",d:"Première intention — éliminer une fracture-arrachement de la base de P1 du pouce (fragment osseux) ou une luxation"},
       {t:"Échographie dynamique",d:"Examen de référence en première ligne — visualise la rupture du LCU, recherche la lésion de Stener (interposition de l'adducteur)"},
-      {t:"IRM main",d:"Si doute échographique ou bilan préopératoire — confirme la lésion de Stener (or-standard)"}
+      {t:"IRM main",d:"Si doute échographique ou bilan préopératoire — confirme la lésion de Stener (gold standard)"}
     ],
     treatment:[
       {t:"Immobilisation par attelle thumb spica",d:"Lésion partielle (laxité < 15° vs côté sain) — 4-6 semaines en position de protection du LCU"},
@@ -1521,12 +1518,41 @@ const P = {
       text:"Ne pas confondre avec une simple entorse banale du pouce — toujours quantifier la laxité en valgus stress (comparer aux 2 côtés) et orienter rapidement vers l'imagerie. Une lésion de Stener méconnue évolue vers une instabilité chronique et une arthrose précoce de la MCP."
     },
     sources:[
-      
-      
-      
-      {l:'HAS — Pathologies de la main (référence syndrome du canal carpien)',u:'https://www.has-sante.fr/jcms/c_1365548/fr/syndrome-du-canal-carpien-optimiser-la-pertinence-du-parcours-patient'}
+      {l:'Heyman 1997 — Injuries to the Ulnar Collateral Ligament of the Thumb Metacarpophalangeal Joint (J Am Acad Orthop Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/10797225/'}
     ],
     keys:['Pouce skieur','Valgus stress','Stener','MCP pouce','LCU']
+  },
+  LESION_TFCC: {
+    id:'LESION_TFCC', name:'Lésion du TFCC (complexe fibro-cartilagineux triangulaire)', icon:'🔴', pop:"Adulte jeune et sportif (chute sur poignet en extension/pronation, sport de raquette, gymnastique, golf, judo) — ou forme dégénérative après 40-50 ans avec variance ulnaire positive",
+    desc:"Lésion du fibrocartilage qui stabilise l'articulation radio-ulnaire distale (ARUD), du côté du petit doigt — un peu comme le ménisque du poignet. Douleur du bord ulnaire du poignet, majorée par la préhension en force, la rotation de l'avant-bras et l'appui (push-up, gymnastique). Origine traumatique (chute, torsion) ou dégénérative après 40-50 ans (classification de Palmer).",
+    alert:{type:'yellow',text:"Une touche de piano positive oriente vers une instabilité de l'ARUD — réparation chirurgicale plutôt que traitement conservateur."},
+    imaging:[
+      {t:"Radiographie standard",d:"Recherche une variance ulnaire positive ou une fracture associée"},
+      {t:"IRM",d:"Meilleure sur les lésions centrales que périphériques"},
+      {t:"Arthro-IRM ou arthroscanner",d:"Plus sensibles que l'IRM standard — si forte suspicion et IRM négative"},
+      {t:"Arthroscopie du poignet",d:"Gold standard, diagnostique et thérapeutique"}
+    ],
+    treatment:[
+      {t:"Immobilisation au-dessus du coude",d:"Attelle limitant la rotation de l'avant-bras, 4 à 6 semaines"},
+      {t:"Antalgiques simples / AINS",d:"En phase aiguë"},
+      {t:"Rééducation structurée",d:"Programme progressif en plusieurs phases"},
+      {t:"Infiltration intra-articulaire",d:"Sous échoguidage, en cas d'échec du traitement initial"},
+      {t:"Chirurgie arthroscopique",d:"Débridement (lésion centrale) ou réparation (lésion périphérique) — si échec du traitement conservateur ou instabilité de l'ARUD"}
+    ],
+    exercises:[{t:'Activation précoce de la chaîne cinétique',d:''},{t:"Mobilisation du poignet hors rotation de l'avant-bras",d:''},{t:'Renforcement progressif de la prono-supination',d:''},{t:'Mouvement diagonal du poignet (dart-throwing)',d:''},{t:"Travail proprioceptif et stabilisation de l'ARUD",d:''}],ficheExercice:'lococlic_fiches_patient/main_14_tfcc.html',
+    referral:[
+      {who:'Chirurgien de la main',why:"Instabilité de l'ARUD, ou suspicion de lésion périphérique nécessitant réparation",p:true},
+      {who:'Médecin du sport',why:"Programme de rééducation structuré",p:false}
+    ],
+    sources:[
+      {l:'Tay et al. 2007 — The Ulnar Fovea Sign: analyse de sensibilité/spécificité, n=272 (J Hand Surg Am)',u:'https://pubmed.ncbi.nlm.nih.gov/17398352/'},
+      {l:'Schmauss et al. 2016 — Clinical tests and MRI have limited diagnostic value for TFCC lesions, n=908 (Arch Orthop Trauma Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/26969464/'},
+      {l:'Treiser, Crawford & Iorio 2018 — Méta-analyse : IRM, arthro-IRM, arthroscanner (J Wrist Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/29922507/'},
+      {l:'Choi, MacLean & Malik 2024 — Revue systématique : évolution sans chirurgie des lésions traumatiques (J Wrist Surg)',u:'https://pubmed.ncbi.nlm.nih.gov/39619455/'},
+      {l:'Tse, Chau & Wong 2023 — Programme de rééducation structuré en 5 phases, étude quasi-expérimentale (Hand Surg Rehabil)',u:'https://www.sciencedirect.com/science/article/abs/pii/S2468122923001275'},
+      {l:'Chen 2019 — Rééducation sensorimotrice du poignet, cas clinique isolé (J Hand Ther)',u:'https://www.jhandtherapy.org/article/S0894-1130(18)30332-6/abstract'}
+    ],
+    keys:['Bord ulnaire','Fovéa ulnaire','Chute poignet','TFCC','Ménisque poignet']
   }
 };
 
@@ -1755,6 +1781,39 @@ const TESTS = {
     pos:"Douleur exquise reproductible sur le LCU ± œdème/ecchymose — lésion du LCU",
     neg:"Indolore",
     affects_pos:{LESION_LCU:45}, affects_neg:{LESION_LCU:-20}
+  },
+  palp_masse_stener: {
+    name:"Recherche d'une masse palpable (signe de Stener)", family:'LCU', badge:'LCU',
+    desc:"Une fois le stress en valgus positif, recherche clinique d'une lésion de Stener",
+    how:"Après un stress en valgus positif, palper la face ulnaire de la MCP du pouce à la recherche d'une petite masse — le moignon du LCU rompu, replié au-dessus de l'aponévrose de l'adducteur.",
+    pos:"Masse palpable sur le bord ulnaire de la MCP — forte suspicion de lésion de Stener, indication chirurgicale",
+    neg:"Pas de masse palpable — n'exclut pas une lésion de Stener (signe peu sensible), mais rend une simple entorse plus probable",
+    affects_pos:{LESION_LCU:35}, affects_neg:{LESION_LCU:-10}
+  },
+  // === FAMILLE TFCC (poignet, bord ulnaire) ===
+  fovea_ulnaire: {
+    name:"Signe de la fovéa ulnaire", family:'TFCC', badge:'TFC',
+    desc:"Test de provocation de la fovéa ulnaire (insertion du TFCC)",
+    how:"Palpation directe avec le pouce dans le creux situé entre la styloïde ulnaire et le tendon du cubital postérieur (fléchisseur ulnaire du carpe), juste au-dessus du pisiforme.",
+    pos:"Douleur exquise reproduite à la palpation — lésion du TFCC ou du ligament ulno-triquétral",
+    neg:"Indolore",
+    affects_pos:{LESION_TFCC:45}, affects_neg:{LESION_TFCC:-20}
+  },
+  piano_key: {
+    name:"Touche de piano (piano key test)", family:'TFCC', badge:'TFC',
+    desc:"Test de stabilité de l'articulation radio-ulnaire distale (ARUD)",
+    how:"Avant-bras en pronation, poignet posé sur une table. Appuyer sur la tête ulnaire distale (comme une touche de piano) puis relâcher.",
+    pos:"Excursion excessive et douloureuse de la tête ulnaire, qui remonte comme une touche de piano relâchée — instabilité de l'ARUD",
+    neg:"Pas d'excursion anormale",
+    affects_pos:{LESION_TFCC:40}, affects_neg:{LESION_TFCC:-8}
+  },
+  grinding_ulnaire: {
+    name:"Test de grinding ulnaire (ulnocarpal stress test)", family:'TFCC', badge:'TFC',
+    desc:"Test de compression axiale du compartiment ulno-carpien",
+    how:"Poignet en déviation ulnaire maximale, compression axiale à travers le poignet tout en effectuant une rotation de l'avant-bras (prono-supination).",
+    pos:"Douleur reproduite du côté ulnaire — test très sensible mais peu spécifique (nombreux faux positifs)",
+    neg:"Indolore — rend une lésion du TFCC peu probable (bonne valeur d'exclusion)",
+    affects_pos:{LESION_TFCC:25}, affects_neg:{LESION_TFCC:-35}
   }
 };
 
@@ -1762,7 +1821,7 @@ const TESTS = {
 const VIGNETTES = {
   // === LOCALISATIONS ===
   loc_base_pouce: {
-    id:'loc_base_pouce', lbl:'🟤 Douleur à la base du pouce',
+    id:'loc_base_pouce', lbl:'Douleur à la base du pouce',
     desc:'Douleur à la base du pouce à la pince',
     score:{RHIZARTHROSE:45, DE_QUERVAIN:40}
   },
@@ -1786,13 +1845,18 @@ const VIGNETTES = {
     desc:'Douleur sur le dos du poignet',
     score:{KYSTE_SYNO:35, KIENBOCK:30, INSTAB_SL:30}
   },
+  loc_bord_ulnaire: {
+    id:'loc_bord_ulnaire', lbl:"Douleur dans le creux entre le poignet et l'ulna (fovéa)",
+    desc:"Douleur ou point sensible dans le creux entre le poignet et l'ulna, au niveau de la fovéa",
+    score:{LESION_TFCC:75}
+  },
   loc_tumefaction_dos: {
-    id:'loc_tumefaction_dos', lbl:'🔵 Tuméfaction sur le dos du poignet',
+    id:'loc_tumefaction_dos', lbl:'Tuméfaction sur le dos du poignet',
     desc:'Tuméfaction du dos du poignet',
     score:{KYSTE_SYNO:60}
   },
   loc_ressaut_blocage: {
-    id:'loc_ressaut_blocage', lbl:'🟡 Blocage ou ressaut du doigt',
+    id:'loc_ressaut_blocage', lbl:'Blocage ou ressaut du doigt',
     desc:"Blocage transitoire d'un doigt en flexion avec ressaut",
     score:{DOIGT_RESSAUT:60}
   },
@@ -1802,12 +1866,12 @@ const VIGNETTES = {
     score:{ARTHROSE_IP:55}
   },
   loc_bride_paume: {
-    id:'loc_bride_paume', lbl:'🟤 Bride ou nodule dans la paume',
+    id:'loc_bride_paume', lbl:'Bride ou nodule dans la paume',
     desc:"Nodules et brides palmaires avec rétraction d'un doigt",
     score:{DUPUYTREN:60}
   },
   loc_luxation_tendon: {
-    id:'loc_luxation_tendon', lbl:'🟠 Luxation visible du tendon extenseur',
+    id:'loc_luxation_tendon', lbl:'Luxation visible du tendon extenseur',
     desc:'Tendon extenseur qui saute latéralement sur MCP',
     score:{RUPTURE_BAND:60}
   },
@@ -1842,8 +1906,8 @@ const VIGNETTES = {
 
 const MECA_VIGS = {
   surcharge:   ['loc_base_pouce','loc_face_palm','loc_ressaut_blocage','loc_paresth_3prem','pres_nocturne','pres_metier_repet','pres_cycliste','loc_paresth_4_5'],
-  trauma:      ['loc_dorsale_poignet','loc_luxation_tendon','pres_chute_paume','pres_trauma_pouce'],
-  progressif:  ['loc_base_pouce','loc_nodules_doigts','loc_bride_paume','loc_dorsale_poignet','loc_tumefaction_dos','loc_ressaut_blocage'],
+  trauma:      ['loc_dorsale_poignet','loc_bord_ulnaire','loc_luxation_tendon','pres_chute_paume','pres_trauma_pouce'],
+  progressif:  ['loc_base_pouce','loc_nodules_doigts','loc_bride_paume','loc_dorsale_poignet','loc_bord_ulnaire','loc_tumefaction_dos','loc_ressaut_blocage'],
   neuro:       ['loc_paresth_3prem','loc_paresth_4_5','pres_nocturne','pres_cycliste']
 };
 
@@ -1856,10 +1920,10 @@ const CHOICES = {
         score:{CANAL_CARPIEN:25, DE_QUERVAIN:25, DOIGT_RESSAUT:25, TEND_FLECH:25, CANAL_GUYON:20}},
       {key:'trauma', lbl:"Traumatisme aigu (chute, choc direct)",
         desc:"Chute sur la paume, choc direct sur la main, mécanisme en hyperflexion ou hyperextension",
-        score:{INSTAB_SL:35, RUPTURE_BAND:35, LESION_LCU:35, KIENBOCK:15}},
+        score:{INSTAB_SL:35, RUPTURE_BAND:35, LESION_LCU:35, KIENBOCK:15, LESION_TFCC:30}},
       {key:'progressif', lbl:'Installation progressive sans cause évidente',
         desc:"Tuméfaction, nodules, brides, déformations apparues lentement, sans traumatisme déclenchant",
-        score:{RHIZARTHROSE:30, ARTHROSE_IP:30, DUPUYTREN:30, KYSTE_SYNO:25, KIENBOCK:20}},
+        score:{RHIZARTHROSE:30, ARTHROSE_IP:30, DUPUYTREN:30, KYSTE_SYNO:25, KIENBOCK:20, LESION_TFCC:20}},
       {key:'neuro', lbl:'Paresthésies / faiblesse',
         desc:"Fourmillements, engourdissements, faiblesse de la pince ou de la préhension",
         score:{CANAL_CARPIEN:45, CANAL_GUYON:45}}
@@ -1876,7 +1940,7 @@ const CHOICES = {
         score:{CANAL_CARPIEN:25, DE_QUERVAIN:25, DOIGT_RESSAUT:18, CANAL_GUYON:12}},
       {key:'femme_50p', lbl:'Femme > 50 ans (ménopause)',
         desc:"Femme ménopausée, contexte arthrosique, hérédité familiale d'arthrose",
-        score:{RHIZARTHROSE:35, ARTHROSE_IP:35, DOIGT_RESSAUT:15, CANAL_CARPIEN:15}},
+        score:{RHIZARTHROSE:35, ARTHROSE_IP:35, DOIGT_RESSAUT:15, CANAL_CARPIEN:15, KIENBOCK:15}},
       {key:'homme_50p', lbl:'Homme > 50 ans',
         desc:"Homme sénior, terrain dégénératif, origine nord-européenne",
         score:{DUPUYTREN:35, KIENBOCK:15, ARTHROSE_IP:15}}
@@ -1890,7 +1954,7 @@ const CHOICES = {
         score:{CANAL_CARPIEN:35, CANAL_GUYON:15}},
       {key:'mec_effort', lbl:"Mécanique à l'effort (pince, préhension, geste)",
         desc:"Douleur reproduite par les gestes précis (pince, préhension forte) — tendinopathies, arthroses",
-        score:{DE_QUERVAIN:25, RHIZARTHROSE:25, TEND_FLECH:25, DOIGT_RESSAUT:15, ARTHROSE_IP:15}},
+        score:{DE_QUERVAIN:25, RHIZARTHROSE:25, TEND_FLECH:25, DOIGT_RESSAUT:15, ARTHROSE_IP:15, LESION_TFCC:25}},
       {key:'demarrage', lbl:'Au démarrage (raideur matinale)',
         desc:"Douleur en début d'utilisation qui s'estompe progressivement — arthroses, doigt à ressaut",
         score:{ARTHROSE_IP:25, RHIZARTHROSE:20, DOIGT_RESSAUT:20}},
@@ -1915,7 +1979,8 @@ const CIRCUITS = {
   TEND_FLECH:     ['palp_flech','prehension_contrariee','ressaut_obs','palp_a1','phalen'],
   KIENBOCK:       ['palp_lunatum','flex_ext_poignet','watson_test','palp_sl','transillumination'],
   INSTAB_SL:      ['watson_test','palp_sl','flex_ext_poignet','palp_lunatum','transillumination'],
-  LESION_LCU:     ['valgus_stress_pouce','palp_mcp_pouce','grinding_test','palp_tmc','obs_luxation']
+  LESION_LCU:     ['valgus_stress_pouce','palp_masse_stener','palp_mcp_pouce','grinding_test','palp_tmc'],
+  LESION_TFCC:    ['fovea_ulnaire','piano_key','grinding_ulnaire','watson_test','flex_ext_poignet']
 };
 
 // ========== MOTEUR + RENDU ==========
@@ -1926,6 +1991,7 @@ const PATHO_LIST = Object.keys(P);
 let scores = {};
 let history = [];
 let mecaKey = null;
+let ageKey = null;
 let testsToRun = [];
 let testIdx = 0;
 let currentStep = 'MECANISME';
@@ -1936,6 +2002,7 @@ function init(){
   PATHO_LIST.forEach(p => scores[p] = 0);
   history = [];
   mecaKey = null;
+  ageKey = null;
   testsToRun = [];
   testIdx = 0;
   currentStep = 'MECANISME';
@@ -2060,6 +2127,7 @@ function pickChoice(stepKey, item){
     mecaKey = item.key;
     currentStep = 'AGE';
   } else if(stepKey === 'AGE'){
+    ageKey = item.key;
     currentStep = 'TABLEAU';
   } else if(stepKey === 'HORAIRE'){
     testsToRun = buildInitialQueue();
@@ -2143,6 +2211,11 @@ function stepIndicator(currentIdx){
 // ========== ÉTAPE CHOIX (Mécanisme, Âge, Horaire) ==========
 function renderChoice(stepKey, stepIdx){
   const c = CHOICES[stepKey];
+  // À l'étape Horaire, l'option « paresthésies / douleurs nocturnes » (canal carpien/Guyon)
+  // n'est pas pertinente pour un profil 50 ans et plus (terrain dégénératif) : on la masque.
+  const items = (stepKey === 'HORAIRE' && (ageKey === 'homme_50p' || ageKey === 'femme_50p'))
+    ? c.items.filter(it => it.key !== 'nocturne')
+    : c.items;
   const html = `
     ${backBtn()}
     ${stepIndicator(stepIdx)}
@@ -2151,7 +2224,7 @@ function renderChoice(stepKey, stepIdx){
       <div class="card-tag">${c.tag}</div>
       <h2 class="card-q">${c.q}</h2>
       <div class="choices">
-        ${c.items.map(it => `
+        ${items.map(it => `
           <button class="choice" onclick="pickChoice('${stepKey}', CHOICES['${stepKey}'].items.find(x=>x.key==='${it.key}'))">
             <div class="choice-lbl">${it.lbl}</div>
             <div class="choice-desc">${it.desc}</div>

@@ -557,9 +557,11 @@ async function chargerFactures() {
     const planPourLibelle = data.abonnement && data.abonnement.type === 'medecin' ? data.abonnement.plan : null;
     conteneurFactures.innerHTML = data.factures.map(f => {
       const libelle = formaterLibelleFacture(f.date, planPourLibelle);
+      // Le lien n'est affiché que si c'est une adresse https:// propre (sans guillemets ni caractères spéciaux)
+      const lienPdf = (typeof f.pdf === 'string' && /^https:\/\/[^\s"'<>`]+$/.test(f.pdf)) ? f.pdf : '';
       return `<div class="ligne-info">
         <span class="ligne-info-label">${libelle}</span>
-        <span class="ligne-info-valeur">${f.montant} € — <a href="${f.pdf}" target="_blank" rel="noopener">Télécharger PDF</a></span>
+        <span class="ligne-info-valeur">${f.montant} €${lienPdf ? ' — <a href="' + lienPdf + '" target="_blank" rel="noopener">Télécharger PDF</a>' : ''}</span>
       </div>`;
     }).join('');
   } catch(e) {

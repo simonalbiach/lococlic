@@ -9,17 +9,34 @@ const WORKER_PAR_DEFAUT = 'https://lococlic-worker.simon-albiach.workers.dev';
 const NOM_COOKIE = 'lococlic_session';
 const FORME_JETON = /^[A-Za-z0-9+/=_-]{10,1500}\.[a-f0-9]{64}$/;
 
-// Classe une adresse : 'contenu' (abonnement actif requis), 'accueil' (session valide,
-// même abonnement terminé), 'introuvable', 'refuser' ou 'public'.
+// PRINCIPE : TOUT est protégé par défaut. Seules les pages ci-dessous (qui ne contiennent aucun contenu
+// payant) et les images sont publiques. Une adresse inconnue, mal formée ou déguisée est donc protégée :
+// impossible de contourner le contrôle en inventant une variante d'adresse.
+// ➜ Si vous ajoutez un jour une page publique (ex. « tarifs.html »), ajoutez-la ICI, sinon elle sera protégée.
+const PAGES_PUBLIQUES = new Set([
+  '/login', '/inscription', '/licence-msp', '/cgu', '/confidentialite', '/mentions-legales',
+  '/mot-de-passe-oublie', '/reinitialiser-mot-de-passe', '/compte', '/references',
+  '/auth-check.js', '/api/session', '/favicon.ico', '/robots.txt'
+]);
+const DOSSIERS_PUBLICS = ['/images/', '/images_pathologies/'];
+
+// Classe une adresse : 'contenu' (abonnement actif requis), 'accueil' (session valide, même abonnement
+// terminé), 'public', 'introuvable' ou 'refuser'.
 export function classer(pathname) {
   let p;
   try { p = decodeURIComponent(pathname); } catch (e) { return 'refuser'; }
+  // Un « % » encore présent après décodage = double encodage (%256c pour « l ») : aucune adresse légitime
+  // n'en contient, et un hébergeur qui décoderait une 2e fois pourrait servir un fichier protégé. On refuse.
+  // Idem pour les caractères de contrôle et les « ; » (paramètres de chemin) qu'aucune adresse du site n'utilise.
+  if (/%[0-9a-f]{2}/i.test(p) || /[\u0000-\u001f\u007f;]/.test(p)) return 'refuser';
   p = p.replace(/\\/g, '/').replace(/\/{2,}/g, '/').toLowerCase();
-  if (p.includes('/../') || p.endsWith('/..')) return 'refuser';
+  if (p.includes('/../') || p.endsWith('/..') || p.includes('/./') || p.endsWith('/.')) return 'refuser';
   if (p.startsWith('/functions') || p.startsWith('/_')) return 'introuvable';
-  if (p === '/' || p === '/index' || p === '/index.html') return 'accueil';
-  if (p.startsWith('/lococlic_') || p.startsWith('/fiches_pathologies/')) return 'contenu';
-  return 'public';
+  if (p === '/' || p.startsWith('/index')) return 'accueil';
+  const sansExtension = p.endsWith('.html') ? p.slice(0, -5) : p;
+  if (PAGES_PUBLIQUES.has(sansExtension) || PAGES_PUBLIQUES.has(p)) return 'public';
+  if (DOSSIERS_PUBLICS.some(d => p.startsWith(d))) return 'public';
+  return 'contenu';
 }
 
 function lireJeton(request) {

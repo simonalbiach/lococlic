@@ -39,7 +39,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fiche patient — Pubalgie / Tendinopathie des adducteurs</title>
+<title>Fiche patient — Lésion du TFCC</title>
 <style>
   @page { size: A4; margin: 15mm; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,6 +54,12 @@
   .intro { padding: 24px 36px; background: #f0f9ff; border-bottom: 1px solid #e0f2fe; }
   .intro-text { font-size: 14px; color: #0c4a6e; line-height: 1.6; }
   .intro-text strong { color: #1e3a5f; }
+
+  .surgical-notice { background: #eff6ff; border-left: 4px solid #1e3a5f; padding: 16px 24px; margin: 0 36px 0 36px; margin-top: 16px; border-radius: 0 8px 8px 0; }
+  .surgical-title { color: #1e3a5f; font-weight: 800; font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .surgical-text { color: #1e3a5f; font-size: 13px; line-height: 1.6; }
+  .surgical-text strong { color: #0c2545; }
+
   .section-title { font-size: 17px; font-weight: 800; color: #1e3a5f; padding: 24px 36px 12px; display: flex; align-items: center; gap: 10px; }
   .section-title::before { content: ''; width: 4px; height: 22px; background: #10b981; border-radius: 2px; }
   .exercises { padding: 0 36px 24px; }
@@ -66,16 +72,15 @@
   .exercise-prescription { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .pill { background: white; color: #1e3a5f; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid #cbd5e1; display: inline-flex; align-items: center; gap: 6px; }
   .pill-icon { font-size: 13px; }
-  .alternative { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 14px; margin-top: 12px; font-size: 13px; }
-  .alternative-title { color: #1e40af; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-  .alternative-name { color: #1e3a5f; font-weight: 600; margin-top: 6px; margin-bottom: 4px; }
-  .alternative-desc { color: #1e40af; line-height: 1.5; }
   .avoid { background: #fef3f2; border: 1px solid #fecdd3; border-radius: 12px; margin: 8px 36px 24px; padding: 16px 20px; }
   .avoid-title { font-weight: 800; color: #991b1b; font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
   .avoid-list { font-size: 13px; color: #7f1d1d; line-height: 1.6; padding-left: 22px; }
   .niveaux-list { margin: 10px 0 0; padding-left: 20px; font-size: 14px; color: #334155; line-height: 1.65; }
   .niveaux-list li { margin-bottom: 4px; }
   .niveaux-list li strong { color: #1e3a5f; }
+  .etapes-list { margin: 10px 0 0; padding-left: 20px; font-size: 14px; color: #334155; line-height: 1.65; }
+  .etapes-list li { margin-bottom: 6px; }
+  .etapes-list li::marker { font-weight: 700; color: #1e3a5f; }
   .reconsult { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; margin: 0 36px 24px; padding: 16px 20px; }
   .reconsult-title { font-weight: 800; color: #92400e; font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
   .reconsult-list { font-size: 13px; color: #78350f; line-height: 1.6; padding-left: 22px; }
@@ -89,89 +94,115 @@
 <div class="sheet">
   <header class="header">
     <div class="header-top"><span class="logo">lococlic<sup>™</sup></span><span class="doc-type">Fiche patient</span></div>
-    <h1>Pubalgie / Tendinopathie des adducteurs</h1>
+    <h1 class="title">Lésion du TFCC (complexe fibro-cartilagineux triangulaire)</h1>
     <p class="subtitle">Programme d'exercices à réaliser à la maison</p>
   </header>
-  <section class="intro"><p class="intro-text">Vous souffrez d'une <strong>pubalgie</strong> (douleur du pubis), pathologie fréquente chez le sportif. La rééducation vise à <strong>équilibrer la sangle abdominale et les adducteurs</strong>, et à <strong>renforcer la stabilité du bassin</strong>. Programme rigoureux de 8 à 12 semaines.</p></section>
+  <section class="intro"><p class="intro-text">Vous souffrez d'une <strong>lésion du fibrocartilage du poignet</strong> (TFCC) — un peu comme le ménisque du genou, mais au poignet. Il est situé du côté du petit doigt et stabilise l'articulation entre le radius et le cubitus. La rééducation vise à <strong>retrouver la mobilité et la force sans aggraver la lésion</strong>. Programme progressif de 8 à 12 semaines, après la période d'immobilisation prescrite par votre médecin.</p></section>
+
   <h2 class="section-title">Vos exercices quotidiens</h2>
   <div class="exercises">
     <div class="exercise">
       <div class="exercise-header">
         <span class="exercise-number">1</span>
-        <span class="exercise-name">Serrer un ballon entre les jambes (squeeze test)</span>
+        <span class="exercise-name">Bouger le bras sans bouger le poignet</span>
       </div>
-      <p class="exercise-description">Allongez-vous sur le dos. Placez un <strong>ballon (foot ou basket) ou un coussin</strong> entre vos jambes. <strong>Serrez fort</strong> quelques secondes, comme si vous vouliez écraser l'objet. Vous devez sentir les muscles du milieu de vos cuisses travailler. <strong>3 versions, du plus facile au plus dur</strong> : 🟢 <strong>Facile</strong> : le ballon entre les chevilles, jambes tendues. 🟡 <strong>Moyen</strong> : le ballon entre les genoux, genoux pliés. 🔴 <strong>Plus dur</strong> : le ballon entre les genoux, pieds au sol, bassin légèrement décollé. <em>C'est l'exercice pour démarrer, même quand vous avez encore mal. Il muscle sans bouger.</em><br><br><strong>💪 Au quotidien :</strong> retrouver le geste de marcher, monter les escaliers, enfiler ses chaussures.</p>
+      <p class="exercise-description">Bras le long du corps, poignet et avant-bras immobiles dans l'attelle.</p>
+      <ol class="etapes-list">
+        <li>Levez le bras tendu devant vous, puis redescendez-le — 10 fois</li>
+        <li>Levez le bras tendu sur le côté, puis redescendez-le — 10 fois</li>
+        <li>Pliez et dépliez le coude, comme pour porter une cuillère à la bouche — 10 fois</li>
+      </ol>
+      <p class="exercise-description">Le poignet reste immobile dans l'attelle pendant tout l'exercice : c'est le bras qui travaille. <em>Cela évite que le bras ne se raidisse pendant le port de l'attelle.</em><br><br><strong>💪 Au quotidien :</strong> s'habiller, se laver, porter un sac.</p>
       <div class="exercise-prescription">
-        <span class="pill"><span class="pill-icon">🔁</span> Serrer 5 à 10 secondes × 10 fois × 3 séries</span>
+        <span class="pill"><span class="pill-icon">🔁</span> 3 séries de 10-15 répétitions</span>
         <span class="pill"><span class="pill-icon">📅</span> 1 à 2 fois par jour</span>
-        <span class="pill"><span class="pill-icon">⏱️</span> Pendant 4 semaines environ</span>
+        <span class="pill"><span class="pill-icon">⏱️</span> Dès la phase d'immobilisation</span>
       </div>
     </div>
     <div class="exercise">
       <div class="exercise-header">
         <span class="exercise-number">2</span>
-        <span class="exercise-name">Gainage de côté avec la jambe sur une chaise (Copenhagen plank)</span>
+        <span class="exercise-name">Bouger la main sans tourner la paume</span>
       </div>
-      <p class="exercise-description">⭐ <strong>L'exercice le plus important.</strong> Allongez-vous sur le côté, en appui sur votre coude (coude bien sous l'épaule). <strong>Posez la jambe du dessus sur une chaise</strong>. Puis <strong>décollez votre bassin du sol</strong> pour faire une ligne droite : épaules → bassin → pieds. Serrez les muscles du ventre et de l'intérieur de la cuisse pour tenir. <strong>3 versions, du plus facile au plus dur</strong> : 🟢 <strong>Facile</strong> : posez le <strong>genou</strong> sur la chaise (plus l'appui est proche du tronc, plus c'est facile). 🟡 <strong>Moyen</strong> : posez la <strong>cheville</strong> sur la chaise (jambe tendue). 🔴 <strong>Plus dur</strong> : pendant que vous tenez la position, <strong>levez la jambe du dessous</strong> vers le plafond, puis redescendez-la. <em>Ne sautez pas cet exercice. C'est lui qui fait vraiment la différence pour récupérer.</em><br><br><strong>💪 Au quotidien :</strong> retrouver le geste de marcher, monter les escaliers, enfiler ses chaussures.</p>
+      <p class="exercise-description">Avant-bras à plat sur une table, main dans le vide au bord de la table, <strong>paume vers le sol (pronation)</strong>.</p>
+      <ol class="etapes-list">
+        <li>Montez la main vers le haut comme pour dire « au revoir », puis redescendez-la doucement — 10 fois</li>
+        <li>Gardez la paume vers le sol et bougez la main d'un côté puis de l'autre, comme un essuie-glace — 10 fois</li>
+      </ol>
+      <p class="exercise-description"><strong>Règle simple</strong> : la paume ne se retourne jamais vers le ciel — seule la main bouge de haut en bas ou de côté. Arrêtez si ça fait mal. <em>Cet exercice évite le mouvement qui fait le plus souffrir votre poignet : le tourner.</em><br><br><strong>💪 Au quotidien :</strong> écrire, taper au clavier, tenir une fourchette.</p>
       <div class="exercise-prescription">
-        <span class="pill"><span class="pill-icon">🔁</span> Tenir 10 à 30 secondes × 3 à 5 fois de chaque côté</span>
-        <span class="pill"><span class="pill-icon">📅</span> 1 fois par jour</span>
-        <span class="pill"><span class="pill-icon">⏱️</span> De la 2e semaine jusqu'à la 12e</span>
+        <span class="pill"><span class="pill-icon">🔁</span> 10 répétitions par direction × 2-3 séries</span>
+        <span class="pill"><span class="pill-icon">📅</span> 2 à 3 fois par jour</span>
+        <span class="pill"><span class="pill-icon">⏱️</span> Dès l'ablation de l'attelle</span>
       </div>
     </div>
     <div class="exercise">
       <div class="exercise-header">
         <span class="exercise-number">3</span>
-        <span class="exercise-name">Le chien d'arrêt à quatre pattes (bird-dog)</span>
+        <span class="exercise-name">Tourner la main, comme une clé</span>
       </div>
-      <p class="exercise-description">Mettez-vous <strong>à quatre pattes</strong> : mains sous les épaules, genoux sous les hanches, dos bien plat (ni creusé, ni rond). <strong>Tendez en même temps le bras droit devant vous et la jambe gauche derrière vous</strong>, à l'horizontale. Restez stable, sans pencher d'un côté. Tenez quelques secondes, puis changez de côté. <strong>2 versions</strong> : 🟢</p>
+      <p class="exercise-description">Assis, coude plié à 90° et collé contre vos côtes — il ne bouge plus jusqu'à la fin de l'exercice. <strong>Avant-bras en position neutre (pouce vers le haut)</strong>, tenant un marteau, une bouteille d'eau, ou une cuillère en bois. Tournez lentement la paume vers le haut, <strong>comme pour porter un bol de soupe</strong>, puis vers le bas, <strong>comme pour essorer un linge</strong>. Arrêtez si ça fait mal.</p>
       <ul class="niveaux-list">
-        <li><strong>Niveau 1</strong> : tendez bras + jambe et tenez 5 à 10 secondes. 🟡</li>
-        <li><strong>Niveau 2</strong> — (plus dur) : ramenez <strong>le coude vers le genou opposé</strong> sous le ventre, puis rallongez lentement.</li>
+        <li><strong>Niveau 1</strong> : le mouvement à mains nues, sur un petit trajet</li>
+        <li><strong>Niveau 2</strong> : le mouvement en entier, avec la bouteille d'eau en main</li>
       </ul>
-      <p class="exercise-description"><em>Renforce votre dos et vos abdos profonds. Un tronc solide protège l'aine en répartissant mieux les efforts.</em><br><br><strong>💪 Au quotidien :</strong> retrouver le geste de marcher, monter les escaliers, enfiler ses chaussures.</p>
+      <p class="exercise-description"><strong>💪 Au quotidien :</strong> tourner une clé dans une serrure, visser un bouchon, essorer une serpillère.</p>
       <div class="exercise-prescription">
-        <span class="pill"><span class="pill-icon">🔁</span> 3 séries de 8 à 10 répétitions de chaque côté</span>
+        <span class="pill"><span class="pill-icon">🔁</span> 3 séries de 10-12 répétitions (mouvement lent)</span>
         <span class="pill"><span class="pill-icon">📅</span> 1 fois par jour</span>
-        <span class="pill"><span class="pill-icon">⏱️</span> Pendant 6 à 12 semaines</span>
+        <span class="pill"><span class="pill-icon">⏱️</span> À partir de la 6e-8e semaine, selon douleur</span>
       </div>
     </div>
     <div class="exercise">
       <div class="exercise-header">
         <span class="exercise-number">4</span>
-        <span class="exercise-name">Pas chassés sur le côté (side-stepping)</span>
+        <span class="exercise-name">Mouvement diagonal, comme lancer une fléchette</span>
       </div>
-      <p class="exercise-description">Debout, <strong>déplacez-vous sur le côté</strong> en faisant des pas chassés : un pied avance sur le côté, l'autre vient le rejoindre, et ainsi de suite. Restez <strong>légèrement fléchi sur les genoux</strong>, comme un défenseur de basket prêt à intercepter le ballon. <strong>4 versions, du plus facile au plus dur</strong> : 🟢</p>
+      <p class="exercise-description">Avant-bras posé à plat sur une table, main dans le vide au bord, comme à l'exercice 2. <strong>Position de départ</strong> : poignet remonté et penché vers le pouce, comme pour viser avant de lancer. <strong>Mouvement</strong> : descendez le poignet en diagonale vers le petit doigt, comme si vous lanciez une fléchette vers une cible devant vous. Revenez à la position de départ.</p>
       <ul class="niveaux-list">
-        <li><strong>Niveau 1</strong> : pas chassés lents, sans flexion particulière. 🟡</li>
-        <li><strong>Niveau 2</strong> : avec <strong>genoux pliés</strong> (position défense de basket). 🟠</li>
-        <li><strong>Niveau 3</strong> : avec <strong>un élastique</strong> (mini-band) autour des cuisses ou des chevilles pour résister. 🔴</li>
-        <li><strong>Niveau 4</strong> : <strong>marche en X</strong> — vos pieds se croisent devant et derrière pendant que vous avancez sur le côté.</li>
+        <li><strong>Niveau 1</strong> : mouvement lent, à mains nues</li>
+        <li><strong>Niveau 2</strong> : mouvement plus rapide, ou avec un élastique fin autour de la main</li>
       </ul>
-      <p class="exercise-description"><em>L'exercice de la dernière phase pour préparer la reprise du sport ou des activités du quotidien (foot, basket, monter un escalier latéralement…).</em><br><br><strong>💪 Au quotidien :</strong> retrouver le geste de marcher, monter les escaliers, enfiler ses chaussures.</p>
+      <p class="exercise-description"><em>Ce mouvement suit le trajet le plus naturel du poignet.</em><br><br><strong>💪 Au quotidien :</strong> les gestes qui combinent plier le poignet et le pencher sur le côté (lancer, balayer, jouer au tennis).</p>
       <div class="exercise-prescription">
-        <span class="pill"><span class="pill-icon">🔁</span> 3 séries × 15 à 20 pas de chaque côté</span>
-        <span class="pill"><span class="pill-icon">📅</span> 3 à 4 fois par semaine</span>
-        <span class="pill"><span class="pill-icon">⏱️</span> À partir de la 4e semaine, sur 8 semaines</span>
+        <span class="pill"><span class="pill-icon">🔁</span> 10 répétitions</span>
+        <span class="pill"><span class="pill-icon">📅</span> 1 fois par jour</span>
+        <span class="pill"><span class="pill-icon">⏱️</span> Après les 3 premiers exercices, si indolore</span>
       </div>
     </div>
-  
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-number">5</span>
+        <span class="exercise-name">Poser la main et s'appuyer dessus</span>
+      </div>
+      <p class="exercise-description">À genoux par terre, face à une chaise, un lit ou une table basse. Main à plat dessus, <strong>paume vers le bas (pronation)</strong>, doigts écartés, bras tendu. Penchez doucement le corps vers l'avant pour faire porter du poids sur la main, sans que le poignet ne se creuse vers le bas ou parte sur le côté. Restez ainsi quelques secondes, puis reculez.</p>
+      <ul class="niveaux-list">
+        <li><strong>Niveau 1</strong> : un appui léger, sur une table haute</li>
+        <li><strong>Niveau 2</strong> : un appui plus franc, sur une surface plus basse</li>
+      </ul>
+      <p class="exercise-description"><em>Prépare le poignet aux appuis du quotidien et du sport.</em><br><br><strong>💪 Au quotidien :</strong> se relever d'une chaise en poussant sur les mains, faire une pompe sans douleur.</p>
+      <div class="exercise-prescription">
+        <span class="pill"><span class="pill-icon">🔁</span> Maintenir 15-20 secondes × 5 répétitions</span>
+        <span class="pill"><span class="pill-icon">📅</span> 1 fois par jour</span>
+        <span class="pill"><span class="pill-icon">⏱️</span> En fin de programme, avant reprise sportive</span>
+      </div>
     </div>
+
+  </div>
   <div class="avoid">
     <div class="avoid-title">⚠️ À éviter pendant la rééducation</div>
     <ul class="avoid-list">
-      <li>La reprise sportive précoce (rechute quasi certaine)</li>
-      <li>Les shoots en force et changements de direction</li>
-      <li>Les exercices abdominaux classiques type "crunch" en phase aiguë</li>
+      <li>Les mouvements de rotation forcée de l'avant-bras (tourner une clé, visser fort) avant l'accord de votre médecin</li>
+      <li>Les appuis sur la main en extension (pompes, gymnastique) tant que la phase de renforcement n'est pas atteinte</li>
+      <li>Le port de charges lourdes avec le poignet en torsion</li>
     </ul>
   </div>
   <div class="reconsult">
     <div class="reconsult-title">📞 Reconsulter rapidement si</div>
     <ul class="reconsult-list">
-      <li>La douleur s'aggrave malgré les exercices après 2-3 semaines</li>
-      <li>Apparition d'une boiterie marquée ou d'une perte de force</li>
-      <li>Douleur nocturne intense qui empêche le sommeil</li>
-      <li>Impossibilité de poser le pied au sol</li>
+      <li>La douleur s'aggrave malgré les exercices, ou un ressaut/une instabilité apparaît au poignet</li>
+      <li>Apparition d'une perte de sensibilité ou d'une faiblesse marquée de la main</li>
+      <li>Absence d'amélioration nette après plusieurs semaines de programme bien suivi</li>
     </ul>
   </div>
   <footer class="footer">
